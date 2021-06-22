@@ -1,0 +1,47 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-quartz'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'com.googlecode.jmapper-framework:jmapper-core:1.6.1.CR2'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+    testImplementation 'org.mockito:mockito-inline'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+
+    implementation project(":infrastructure")
+    implementation project(":invoices")
+    implementation project(":notifications")
+    implementation project(":kyc")
+    implementation project(":sellers")
+    implementation project(":reports")
+}
+
+jar {
+    enabled = false
+}
+
+bootJar {
+    enabled = true
+}
+
+bootRun {
+    bootRun {
+        jvmArgs = ["-Duser.timezone=UTC"]
+    }
+}
+
+bootBuildImage {
+    imageName = "$paypalHyperwalletDockerRepository:$project.version"
+}

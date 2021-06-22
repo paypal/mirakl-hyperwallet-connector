@@ -1,0 +1,11 @@
+{
+  "id": "cmVmdW5kXzhod3k1ZGZ0",
+  "createdAt":"2021-05-26T09:28:31.000000Z",
+  "orderId": "871633000",
+  "status": "SETTLED",
+  "amount": {
+    "value": "20.00",
+    "currencyCode": "USD"
+  },
+  "customFields": null
+}

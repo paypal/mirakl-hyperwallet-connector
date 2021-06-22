@@ -1,0 +1,44 @@
+dependencies {
+    implementation 'org.apache.commons:commons-lang3:3.11'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-quartz'
+    //Database config
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.h2database:h2'
+    runtimeOnly 'org.hsqldb:hsqldb'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'com.googlecode.jmapper-framework:jmapper-core:1.6.1.CR2'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+    testImplementation 'org.mockito:mockito-inline'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testImplementation 'com.callibrity.logging:log-tracker:1.0.1'
+
+    runtimeOnly 'net.minidev:json-smart:2.3'
+    api 'com.hyperwallet:sdk:2.2.5'
+    api 'com.mirakl:mmp-sdk-operator:4.10.0'
+
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

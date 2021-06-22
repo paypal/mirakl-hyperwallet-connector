@@ -1,0 +1,72 @@
+version: "3.8"
+services:
+  app:
+    image: @DOCKER_REPOSITORY_NAME@:@DOCKER_TAG@
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - queue
+    environment:
+      - PAYPAL_MIRAKL_ENVIRONMENT
+      - PAYPAL_MIRAKL_OPERATOR_API_KEY
+      - PAYPAL_HYPERWALLET_API_SERVER
+      - PAYPAL_HYPERWALLET_API_USERNAME
+      - PAYPAL_HYPERWALLET_API_PASSWORD
+      - PAYPAL_HYPERWALLET_PROGRAM_TOKENS
+      - PAYPAL_HYPERWALLET_PROGRAM_TOKEN_PAYMENTS_DEFAULT
+      - PAYPAL_HYPERWALLET_PROGRAM_TOKEN_USERS_DEFAULT
+      - PAYPAL_SERVER_EMAIL_HOST
+      - PAYPAL_SERVER_EMAIL_PORT
+      - PAYPAL_MAIL_USER_NAME
+      - PAYPAL_MAIL_USER_PASSWORD
+      - PAYPAL_MAIL_SMTP_AUTH
+      - PAYPAL_MAIL_SMTP_STARTTLS_ENABLE
+      - PAYPAL_HYPERWALLET_OPERATOR_BANK_ACCOUNT_TOKEN_DEFAULT
+      - PAYPAL_RABBITMQ_USERNAME
+      - PAYPAL_RABBITMQ_PASSWORD
+      - PAYPAL_MOCKSERVER_URL
+      - PAYPAL_HYPERWALLET_ENCRYPTION_ALGORITHM
+      - PAYPAL_HYPERWALLET_SIGN_ALGORITHM
+      - PAYPAL_HYPERWALLET_ENCRYPTION_METHOD
+      - PAYPAL_HYPERWALLET_PRIVATE_JWK_JSON_LOCATION
+      - PAYPAL_HYPERWALLET_PUBLIC_JWK_JSON_LOCATION
+      - PAYPAL_HYPERWALLET_QA_JWK_JSON_LOCATION
+      - PAYPAL_CONNECTOR_SERVER_URL
+      - PAYPAL_BRAINTREE_MERCHANT_ID
+      - PAYPAL_BRAINTREE_PUBLIC_KEY
+      - PAYPAL_BRAINTREE_PRIVATE_KEY
+      - SPRING_PROFILES_ACTIVE=${PAYPAL_SPRING_PROFILE_ACTIVE:-dev}
+      - PWD=/workspace
+    volumes:
+      - ${PWD}/keys:/home/keys
+      - ${PWD}/financial-reports:/home/reports
+  queue:
+    image: rabbitmq:management
+    restart: always
+    hostname: paypal-hyperwallet-rabbitmq
+    ports:
+      - '4369:4369'
+      - '5671:5671'
+      - '5672:5672'
+      - '8081:15672'
+      - '15691:15691'
+      - '15692:15692'
+      - '25672:25672'
+    volumes:
+      - ${PWD}/rabbitmq-data:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=paypal
+      - RABBITMQ_DEFAULT_PASS=hyperwallet
+      - RABBITMQ_ERLANG_COOKIE=super-secret-erlang-cookie
+  smtp:
+    image: mailhog/mailhog
+    restart: always
+    hostname: paypal-hyperwallet-mailhog
+    ports:
+        - "1025:1025"
+        - "8025:8025"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"

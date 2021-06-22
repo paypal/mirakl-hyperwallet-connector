@@ -1,0 +1,29 @@
+query TransactionSearchQuery($input: TransactionSearchInput!, $first:  Int, $after: String) {
+  search {
+      transactions(input: $input, first: $first, after: $after) {
+        pageInfo {
+          hasPreviousPage
+          hasNextPage
+          startCursor
+          endCursor
+        },
+        edges {
+          cursor
+          node {
+            legacyId
+            createdAt
+            orderId
+            status
+            amount {
+              value
+              currencyCode
+            }
+            customFields {
+              name
+              value
+            }
+          }
+        }
+      }
+    }
+}

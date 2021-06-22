@@ -1,0 +1,108 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath 'io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.25'
+        classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.1'
+    }
+}
+
+plugins {
+    id 'java-library'
+    id 'org.springframework.boot' version "${springBoot}"
+    id 'io.spring.dependency-management' version "${dependencyManagement}"
+    id 'org.sonarqube' version '3.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+allprojects {
+    group = 'com.paypal'
+    version = projectVersion
+}
+
+subprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java-library'
+    apply plugin: 'java'
+    apply plugin: 'io.spring.javaformat'
+    apply plugin: 'info.solidsoft.pitest'
+    apply plugin: 'jacoco'
+
+    sourceCompatibility = targetCompatibility = '15'
+
+    pitest {
+        junit5PluginVersion = '0.12'
+    }
+
+    ext {
+        set('springCloudVersion', "Hoxton.SR8")
+    }
+
+    repositories {
+        mavenCentral()
+        maven {
+            credentials {
+                username "$System.env.PAYPAL_MIRAKL_SDK_USER"
+                password "$System.env.PAYPAL_MIRAKL_SDK_PASSWORD"
+            }
+            url "https://artifactory.mirakl.net/artifactory/mirakl-ext-repo/"
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    dependencyManagement {
+        overriddenByDependencies = false
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+
+    compileJava {
+        dependsOn format
+    }
+
+
+    jacoco {
+        toolVersion = "0.8.6"
+        reportsDirectory = file("$buildDir/reports/jacoco") // Default value
+    }
+
+    jacocoTestReport {
+        dependsOn test
+
+        reports {
+            xml.enabled true
+            csv.enabled false
+            html.enabled true
+        }
+    }
+
+    bootBuildImage {
+        environment = ["BP_JVM_VERSION": "16"]
+    }
+}
+
+bootJar {
+    enabled = false
+}
+
+apply from: 'gradle/sonarqube.gradle'
+apply from: 'gradle/dockerCompose.gradle'
+
+File file = new File("internal-gradle-tasks/createBuild.gradle")
+if (file.exists()) {
+    apply from: 'internal-gradle-tasks/createBuild.gradle'
+}
+

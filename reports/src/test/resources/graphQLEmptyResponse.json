@@ -1,0 +1,18 @@
+{
+  "data": {
+    "search": {
+      "transactions": {
+        "pageInfo": {
+          "hasPreviousPage": false,
+          "hasNextPage": false,
+          "startCursor": null,
+          "endCursor": null
+        },
+        "edges": []
+      }
+    }
+  },
+  "extensions": {
+    "requestId": "9c66cb5d-6bf4-4487-8d0f-e418a4ffde33"
+  }
+}

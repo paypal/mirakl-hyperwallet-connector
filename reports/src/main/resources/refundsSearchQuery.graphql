@@ -1,0 +1,29 @@
+query RefundsSearchQuery($input: RefundSearchInput!, $first:  Int, $after: String) {
+  search {
+      refunds(input: $input, first: $first, after: $after) {
+        pageInfo {
+          hasPreviousPage
+          hasNextPage
+          startCursor
+          endCursor
+        },
+        edges {
+          cursor
+          node {
+            legacyId
+            createdAt
+            orderId
+            status
+            amount {
+              value
+              currencyCode
+            }
+            customFields {
+              name
+              value
+            }
+          }
+        }
+      }
+    }
+}

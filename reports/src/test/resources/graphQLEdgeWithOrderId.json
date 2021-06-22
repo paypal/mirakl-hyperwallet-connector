@@ -1,0 +1,10 @@
+{
+  "createdAt": "2021-05-13T06:56:03.000000Z",
+  "orderId": "854201000",
+  "status": "SETTLED",
+  "amount": {
+    "value": "108.84",
+    "currencyCode": "USD"
+  },
+  "customFields": null
+}

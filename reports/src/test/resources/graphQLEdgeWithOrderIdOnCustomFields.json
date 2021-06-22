@@ -1,0 +1,16 @@
+{
+  "legacyId": "dHJhbnNhY3Rpb25fbXZ5YXZxamo",
+  "createdAt": "2021-05-13T06:56:03.000000Z",
+  "orderId": null,
+  "status": "SETTLED",
+  "amount": {
+    "value": "108.84",
+    "currencyCode": "USD"
+  },
+  "customFields": [
+    {
+      "name": "order_id",
+      "value": "854201000"
+    }
+  ]
+}

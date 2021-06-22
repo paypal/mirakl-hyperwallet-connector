@@ -1,0 +1,30 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-quartz'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation 'commons-collections:commons-collections:3.2.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+    testImplementation 'com.callibrity.logging:log-tracker:1.0.1'
+    testImplementation 'org.mockito:mockito-inline'
+
+    implementation project(":infrastructure")
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

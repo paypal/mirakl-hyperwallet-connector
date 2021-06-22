@@ -1,0 +1,33 @@
+{
+  "data": {
+    "search": {
+      "transactions": {
+        "pageInfo": {
+          "hasPreviousPage": false,
+          "hasNextPage": false,
+          "startCursor": "ZEhKaGJuTmhZM1JwYjI1ZmJYWjVZWFp4YW1vOzIwMjEtMDUtMTNUMDY6NTY6MDNa",
+          "endCursor": "ZEhKaGJuTmhZM1JwYjI1ZmJYWjVZWFp4YW1vOzIwMjEtMDUtMTNUMDY6NTY6MDNa"
+        },
+        "edges": [
+          {
+            "cursor": "ZEhKaGJuTmhZM1JwYjI1ZmJYWjVZWFp4YW1vOzIwMjEtMDUtMTNUMDY6NTY6MDNa",
+            "node": {
+              "legacyId": "dHJhbnNhY3Rpb25fbXZ5YXZxamo",
+              "createdAt": "2021-05-13T06:56:03.000000Z",
+              "orderId": "854201000",
+              "status": "SETTLED",
+              "amount": {
+                "value": "108.84",
+                "currencyCode": "USD"
+              },
+              "customFields": null
+            }
+          }
+        ]
+      }
+    }
+  },
+  "extensions": {
+    "requestId": "62c8c261-8efa-4bd4-9fda-63c0564942d7"
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "code": "PUBLIC_KEYS_ERROR",
+  "description": "Something failed trying to recover public keys for Hyperwallet Encryption. Please, check the logs"
+}
