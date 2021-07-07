@@ -1,5 +1,6 @@
 package com.paypal.kyc.model;
 
+import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
 import lombok.Getter;
 import org.apache.commons.collections.CollectionUtils;
@@ -9,6 +10,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
+
+import static com.paypal.kyc.model.KYCConstants.HW_PROGRAM;
 
 /**
  * Model where all KYC Models must extend (except KYCDocumentModel)
@@ -28,11 +31,11 @@ public class KYCDocumentInfoModel implements Serializable {
 
 	protected final transient List<MiraklShopDocument> miraklShopDocuments;
 
-	private final List<KYCDocumentModel> documents;
-
 	protected final boolean sentToHyperwallet;
 
 	protected final String hyperwalletProgram;
+
+	private final List<KYCDocumentModel> documents;
 
 	protected KYCDocumentInfoModel(final Builder<?> builder) {
 		userToken = builder.userToken;
@@ -44,6 +47,16 @@ public class KYCDocumentInfoModel implements Serializable {
 		sentToHyperwallet = builder.sentToHyperwallet;
 		documents = builder.documents;
 		hyperwalletProgram = builder.hyperwalletProgram;
+	}
+
+	@SuppressWarnings("java:S3740")
+	public static Builder builder() {
+		return new Builder() {
+			@Override
+			public Builder getThis() {
+				return this;
+			}
+		};
 	}
 
 	public boolean existsDocumentInMirakl() {
@@ -74,16 +87,6 @@ public class KYCDocumentInfoModel implements Serializable {
 	@Override
 	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this);
-	}
-
-	@SuppressWarnings("java:S3740")
-	public static Builder builder() {
-		return new Builder() {
-			@Override
-			public Builder getThis() {
-				return this;
-			}
-		};
 	}
 
 	public abstract static class Builder<T extends Builder<T>> {
@@ -153,8 +156,26 @@ public class KYCDocumentInfoModel implements Serializable {
 			return getThis();
 		}
 
+		public T hyperwalletProgram(final List<MiraklAdditionalFieldValue> fields) {
+			getMiraklSingleValueListCustomFieldValue(fields, HW_PROGRAM)
+					.ifPresent(retrievedHyperwalletProgram -> this.hyperwalletProgram = retrievedHyperwalletProgram);
+
+			return getThis();
+		}
+
 		public KYCDocumentInfoModel build() {
 			return new KYCDocumentInfoModel(this);
+		}
+
+		protected Optional<String> getMiraklSingleValueListCustomFieldValue(
+				final List<MiraklAdditionalFieldValue> fields, final String customFieldCode) {
+			//@formatter:off
+			return fields.stream()
+					.filter(field -> field.getCode().equals(customFieldCode))
+					.filter(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::isInstance)
+					.map(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::cast).findAny()
+					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+			//@formatter:on
 		}
 
 	}

@@ -17,6 +17,7 @@ public class DateToMiraklGetShopsRequestConverter implements Converter<Date, Mir
 	public MiraklGetShopsRequest convert(@NonNull final Date source) {
 		final MiraklGetShopsRequest miraklGetShopsRequest = new MiraklGetShopsRequest();
 		miraklGetShopsRequest.setUpdatedSince(source);
+		miraklGetShopsRequest.setPaginate(false);
 
 		return miraklGetShopsRequest;
 	}

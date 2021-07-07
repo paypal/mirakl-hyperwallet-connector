@@ -24,14 +24,21 @@ public class MiraklProofOfIdentityStrategy extends AbstractMiraklSelectedDocumen
 		return KYCProofOfIdentityEnum.getMiraklFields(source.getProofOfIdentity());
 	}
 
+	/**
+	 * Executes the strategy if the {@code source} is of type
+	 * {@link KYCDocumentSellerInfoModel} and it's not a professional
+	 * @param source the source object
+	 * @return
+	 */
 	@Override
 	public boolean isApplicable(final KYCDocumentInfoModel source) {
 		if (!(source instanceof KYCDocumentSellerInfoModel)) {
 			return false;
 		}
 
-		KYCDocumentSellerInfoModel kycDocumentSellerInfoModel = (KYCDocumentSellerInfoModel) source;
-		return Objects.nonNull(kycDocumentSellerInfoModel.getProofOfIdentity());
+		final KYCDocumentSellerInfoModel kycDocumentSellerInfoModel = (KYCDocumentSellerInfoModel) source;
+		return Objects.nonNull(kycDocumentSellerInfoModel.getProofOfIdentity())
+				&& !kycDocumentSellerInfoModel.isProfessional();
 	}
 
 }

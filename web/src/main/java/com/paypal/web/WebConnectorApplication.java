@@ -10,9 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.core.env.Environment;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -23,7 +25,10 @@ import java.net.UnknownHostException;
 		KYCNotificationsSpringContextConfiguration.class, ReportsSpringContextConfiguration.class })
 public class WebConnectorApplication {
 
-	private static ConfigurableApplicationContext context;
+	private static final String LINE_LOG_SEPARATOR = "\n----------------------------------------------------------\n\t";
+
+	@Resource
+	private BuildProperties buildProperties;
 
 	public static void main(final String[] args) throws UnknownHostException {
 
@@ -36,7 +41,7 @@ public class WebConnectorApplication {
 
 		//@formatter:off
 		log.info(
-				"\n----------------------------------------------------------\n\t"
+				LINE_LOG_SEPARATOR
 						+ "Application '{}:' is running! Access URLs:\n\t" + "Local: \t\t{}://{}:{}\n\t"
 						+ "External: \t{}://{}:{}\n\t"
 						+ "Profile(s): \t{}\n\t"
@@ -57,6 +62,12 @@ public class WebConnectorApplication {
 				env.getProperty("hyperwallet.api.hmcPublicKeyLocation"));
 
 		//@formatter:on
+	}
+
+	@PostConstruct
+	public void printVersion() {
+		log.info(LINE_LOG_SEPARATOR + "Hyperwallet Mirakl Connector: Version [{}] \n\t" + LINE_LOG_SEPARATOR,
+				buildProperties.getVersion());
 	}
 
 }

@@ -58,7 +58,7 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 	 */
 	@Override
 	public List<String> getKYCRequiredVerificationBusinessStakeHolders(final String hyperwalletProgram,
-			String userToken) {
+			final String userToken) {
 		final Hyperwallet hyperwallet = hyperwalletSDKService.getHyperwalletInstance(hyperwalletProgram);
 		final HyperwalletList<HyperwalletBusinessStakeholder> businessStakeHolders = hyperwallet
 				.listBusinessStakeholders(userToken);
@@ -76,23 +76,23 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 	public List<KYCDocumentBusinessStakeHolderInfoModel> pushBusinessStakeholderDocuments(
 			final List<KYCDocumentBusinessStakeHolderInfoModel> kycBusinesStakeHolderInfoModels) {
 		//@formatter:off
-        if (CollectionUtils.isEmpty(kycBusinesStakeHolderInfoModels)) {
-            return List.of();
-        }
+		if (CollectionUtils.isEmpty(kycBusinesStakeHolderInfoModels)) {
+			return List.of();
+		}
 
-        final Map<String, List<KYCDocumentBusinessStakeHolderInfoModel>> businessStakeholdersGroupedByShops = kycBusinesStakeHolderInfoModels
-                .stream()
-                .collect(Collectors.groupingBy(KYCDocumentBusinessStakeHolderInfoModel::getClientUserId));
+		final Map<String, List<KYCDocumentBusinessStakeHolderInfoModel>> businessStakeholdersGroupedByShops = kycBusinesStakeHolderInfoModels
+				.stream()
+				.collect(Collectors.groupingBy(KYCDocumentBusinessStakeHolderInfoModel::getClientUserId));
 
-        printShopsToSkip(businessStakeholdersGroupedByShops);
+		printShopsToSkip(businessStakeholdersGroupedByShops);
 
-        //@formatter:off
-        final List<KYCDocumentBusinessStakeHolderInfoModel> businessStakeholderToBePushed = businessStakeholdersGroupedByShops.entrySet().stream()
-                .filter(entry -> !hasAnyDocumentNotFilled(entry.getValue()))
-                .map(Map.Entry::getValue)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-        //@formatter:on
+		//@formatter:off
+		final List<KYCDocumentBusinessStakeHolderInfoModel> businessStakeholderToBePushed = businessStakeholdersGroupedByShops.values()
+				.stream()
+				.filter(Predicate.not(this::hasAnyDocumentNotFilled))
+				.flatMap(Collection::stream)
+				.collect(Collectors.toList());
+		//@formatter:on
 
 		//@formatter:on
 		final Map<KYCDocumentBusinessStakeHolderInfoModel, List<HyperwalletVerificationDocument>> hyperwalletVerificationDocumentsToBePushed = businessStakeholderToBePushed
@@ -103,14 +103,14 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 				.collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
 		//@formatter:off
 
-        //@formatter:off
-        return hyperwalletVerificationDocumentsToBePushed.entrySet()
-                .stream()
-                .filter(kycDocumentInfoModelListEntry -> ObjectUtils.isNotEmpty(kycDocumentInfoModelListEntry.getValue()))
-                .map(this::callHyperwalletAPI)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        //@formatter:on
+		//@formatter:off
+		return hyperwalletVerificationDocumentsToBePushed.entrySet()
+				.stream()
+				.filter(kycDocumentInfoModelListEntry -> ObjectUtils.isNotEmpty(kycDocumentInfoModelListEntry.getValue()))
+				.map(this::callHyperwalletAPI)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 	@Override
@@ -126,13 +126,13 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 		//@formatter:off
-        return userWithBstkToBeNotified.entrySet()
-                .stream()
-                .map(this::notifyBstk)
-                .flatMap(Collection::stream)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        //@formatter:on
+		return userWithBstkToBeNotified.entrySet()
+				.stream()
+				.map(this::notifyBstk)
+				.flatMap(Collection::stream)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
+		//@formatter:on
 
 	}
 
@@ -161,14 +161,14 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 			}
 
 		}
-		catch (HyperwalletException e) {
+		catch (final HyperwalletException e) {
 			//@formatter:off
-            final String clientUserId = Optional.ofNullable(entry.getValue()).orElse(List.of())
-                    .stream()
-                    .map(KYCDocumentInfoModel::getClientUserId)
-                    .findAny()
-                    .orElse("undefined");
-            //@formatter:on
+			final String clientUserId = Optional.ofNullable(entry.getValue()).orElse(List.of())
+					.stream()
+					.map(KYCDocumentInfoModel::getClientUserId)
+					.findAny()
+					.orElse("undefined");
+			//@formatter:on
 			log.error("Error notifying to Hyperwallet that all documents were sent: [{}]",
 					HyperwalletLoggingErrorsUtil.stringify(e));
 			kycMailNotificationUtil.sendPlainTextEmail("Issue in Hyperwallet status notification", String.format(
@@ -216,17 +216,17 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 	private void printShopsToSkip(
 			final Map<String, List<KYCDocumentBusinessStakeHolderInfoModel>> kycDocumentInfoModelCollection) {
 		//@formatter:off
-        final List<String> shopsToSkip = Optional.ofNullable(kycDocumentInfoModelCollection).orElse(Map.of())
-                .entrySet()
-                .stream()
-                .filter(entry -> hasAnyDocumentNotFilled(entry.getValue()))
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+		final List<String> shopsToSkip = Optional.ofNullable(kycDocumentInfoModelCollection).orElse(Map.of())
+				.entrySet()
+				.stream()
+				.filter(entry -> hasAnyDocumentNotFilled(entry.getValue()))
+				.map(Map.Entry::getKey)
+				.collect(Collectors.toList());
 
-        if (!CollectionUtils.isEmpty(shopsToSkip)) {
-            log.warn("Mandatory documents missing for shop with id [{}] ", String.join(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR, shopsToSkip));
-        }
-        //@formatter:on
+		if (!CollectionUtils.isEmpty(shopsToSkip)) {
+			log.warn("Mandatory documents missing for shop with id [{}] ", String.join(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR, shopsToSkip));
+		}
+		//@formatter:on
 	}
 
 	private boolean hasAnyDocumentNotFilled(
@@ -241,9 +241,8 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 		return Optional.ofNullable(kYCDocumentBusinessStakeHolderInfoModelList).orElse(List.of())
 				.stream()
 				.filter(Objects::nonNull)
-				.filter(kycDocumentBusinessStakeHolderInfoModel -> StringUtils
-						.isNotEmpty(kycDocumentBusinessStakeHolderInfoModel.getHyperwalletProgram()))
 				.map(KYCDocumentInfoModel::getHyperwalletProgram)
+				.filter(StringUtils::isNotEmpty)
 				.findAny();
 		//@formatter:off
 	}

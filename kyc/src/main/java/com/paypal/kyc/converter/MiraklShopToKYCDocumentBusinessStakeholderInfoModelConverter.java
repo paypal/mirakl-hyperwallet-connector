@@ -20,12 +20,13 @@ public class MiraklShopToKYCDocumentBusinessStakeholderInfoModelConverter implem
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocStk = KYCDocumentBusinessStakeHolderInfoModel.builder()
 				.clientUserId(source.getId())
 				.businessStakeholderMiraklNumber(businessStakeholderNumber)
-				.countryIsoCode(source.getAdditionalFieldValues(),businessStakeholderNumber)
+				.countryIsoCode(source.getAdditionalFieldValues(), businessStakeholderNumber)
 				.userToken(source.getAdditionalFieldValues())
 				.token(source.getAdditionalFieldValues(), businessStakeholderNumber)
 				.requiresKYC(source.getAdditionalFieldValues(), businessStakeholderNumber)
 				.proofOfIdentity(source.getAdditionalFieldValues(), businessStakeholderNumber)
 				.contact(source.getAdditionalFieldValues(), businessStakeholderNumber)
+				.hyperwalletProgram(source.getAdditionalFieldValues())
 				.build();
 		//@formatter:on
 

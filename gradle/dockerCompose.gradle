@@ -14,9 +14,12 @@ task updateDockerComposeFile {
             rename { fileName ->
                 "docker-compose.yml"
             }
+            if (project.hasProperty('pipelineImage')) {
+                version = pipelineImage
+            }
             filter(ReplaceTokens, tokens: [
-                    'DOCKER_REPOSITORY_NAME': paypalHyperwalletDockerRepository,
-                    'DOCKER_TAG'            : projectVersion
+                'DOCKER_REPOSITORY_NAME': paypalHyperwalletDockerRepository,
+                'DOCKER_TAG'            : version ? version : projectVersion
             ])
         }
     }
