@@ -1,0 +1,264 @@
+{
+	"info": {
+		"_postman_id": "a491e5ab-fc41-44ef-8b5f-ace4da8d8b8a",
+		"name": "Hyperwallet Mirakl Connector V3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Professional sellers extract",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{env}}/job/professional-sellers-extract?name=professionalSellersExtractJob&delta=2021-03-08T14:53:00.000-00:00",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"job",
+						"professional-sellers-extract"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "professionalSellersExtractJob"
+						},
+						{
+							"key": "delta",
+							"value": "2021-03-08T14:53:00.000-00:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Individual sellers extract",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{env}}/job/sellers-extract?delta=2021-04-30T08:59:00.000-00:00&name=individualSellersExtractJob",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"job",
+						"sellers-extract"
+					],
+					"query": [
+						{
+							"key": "delta",
+							"value": "2021-04-30T08:59:00.000-00:00"
+						},
+						{
+							"key": "name",
+							"value": "individualSellersExtractJob"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bank accounts extract",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{env}}/job/bank-accounts-extract?delta=2021-04-27T10:30:00.000-00:00&name=bankAccountExtractJob",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"job",
+						"bank-accounts-extract"
+					],
+					"query": [
+						{
+							"key": "delta",
+							"value": "2021-04-27T10:30:00.000-00:00"
+						},
+						{
+							"key": "name",
+							"value": "bankAccountExtractJob"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invoices extract",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{env}}/job/invoices-extract?delta=2021-05-20T23:14:00.000-00:00&name=invoicesExtractJob",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"job",
+						"invoices-extract"
+					],
+					"query": [
+						{
+							"key": "delta",
+							"value": "2021-05-20T23:14:00.000-00:00"
+						},
+						{
+							"key": "name",
+							"value": "invoicesExtractJob"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Documents extract",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{env}}/job/documents-extract?delta=2021-06-15T09:14:00.000-00:00&name=documentsExtractJob",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"job",
+						"documents-extract"
+					],
+					"query": [
+						{
+							"key": "delta",
+							"value": "2021-06-15T09:14:00.000-00:00"
+						},
+						{
+							"key": "name",
+							"value": "documentsExtractJob"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Financial Report",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{env}}/downloads/get?startDate=2021-01-30T00:00:00.000-00:00&endDate=2021-01-30T23:59:59.000-00:00&name=financialReportExtractJob&fileName=financialReport-30-01-2021",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"downloads",
+						"get"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2021-01-30T00:00:00.000-00:00"
+						},
+						{
+							"key": "endDate",
+							"value": "2021-01-30T23:59:59.000-00:00"
+						},
+						{
+							"key": "name",
+							"value": "financialReportExtractJob"
+						},
+						{
+							"key": "fileName",
+							"value": "financialReport-30-01-2021"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{env}}/actuator/info",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"actuator",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List jobs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{env}}/job",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"job"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "App Info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{env}}/actuator/health",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"actuator",
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "env",
+			"value": "https://localhost:8080"
+		}
+	]
+}

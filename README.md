@@ -1,71 +1,112 @@
-# Paypal HyperWallet Mirakl Connector
+# Hyperwallet Mirakl Connector
 
-This is a multi-module gradle project composed by Spring Boot modules.
+The Hyperwallet Mirakl Connector (HMC) is a service that integrates the Hyperwallet and Mirakl platforms.
 
 ## Getting Started - Local Development
 
-### Requirements (local execution)
+This is a multi-module Gradle project composed by Spring Boot modules.
+
+### Requirements for local execution/deployment
 
 * Java 15
-* Lombok
 * RabbitMQ
 
-### Requirements (docker execution)
+### Requirements for Docker execution/deployment
 
 * Docker
 
-### Default setup (Single hierarchy programs)
+### Installation Steps
 
-The standard setup of this project provides a single-level hierarchy where 1 Issuing Merchant corresponds to 1 Issuing
-Store. This is defined in Mirakl using `hw-program` field, which contain a single value list with only one
-value `DEFAULT`. The HMC and Mirakl configurations can be extended to accommodate multi-level hierarchy structure where
-1 Issuing Merchant can have multiple Issuing Stores.
+- Download the repo
+- Acquire a Mirakl login account to access the Mirakl Artifactory https://artifactory.mirakl.net/artifactory/mirakl-ext-repo/. See the "Access to Artifactory" topic on https://hyperwallet-dev.mirakl.net/help/Customers/topics/Connectors/SDK/java/access_java_sdk.html
+    - These account credentials will be used for setting the Mirakl SDK User and Mirakl SDK Password environment variables
 
-Please refer to the Multiple Hyperwallet Programs configuration section below.
+- Define the following environment variables with the relevant values:
 
-* Download the repo
-* Setup mirakl login account to access mirakl artifactory https://artifactory.mirakl.net/artifactory/mirakl-ext-repo/
-* Setup the following environment variables with the credentials:
-    * `PAYPAL_MIRAKL_SDK_USER=<YOUR_USER_ACCOUNT>`
-    * `PAYPAL_MIRAKL_SDK_PASSWORD=<YOUR_PASSWORD>`
-    * `PAYPAL_MIRAKL_OPERATOR_API_KEY=<YOUR_MIRAKL_OPERATOR_API_KEY>`
-    * `PAYPAL_MIRAKL_ENVIRONMENT=<YOUR_MIRAKL_ENVIRONMENT>`
-    * `PAYPAL_HYPERWALLET_API_SERVER=<YOUR_HYPERWALLET_API_SERVER>`
-  * `PAYPAL_HYPERWALLET_API_USERNAME=<YOUR_HYPERWALLET_API_USERNAME>`
-  * `PAYPAL_HYPERWALLET_API_PASSWORD=<YOUR_HYPERWALLET_API_PASSWORD>`
-  * `PAYPAL_HYPERWALLET_PROGRAM_TOKENS=<YOUR_HYPERWALLET_PROGRAMS>`
-  * `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_USERS_DEFAULT=<YOUR_HYPERWALLET_PROGRAM_TOKEN_USERS_FOR_DEFAULT>`
-  * `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_PAYMENTS_DEFAULT=<YOUR_HYPERWALLET_PROGRAM_TOKEN_PAYMENTS_FOR_DEFAULT>`
-  * `PAYPAL_SERVER_EMAIL_HOST=<YOUR_PAYPAL_SERVER_EMAIL_HOST>`
-  * `PAYPAL_SERVER_EMAIL_PORT=<YOUR_PAYPAL_SERVER_EMAIL_PORT>`
-  * `PAYPAL_MAIL_USER_NAME=<YOUR_PAYPAL_MAIL_USER_NAME>`
-  * `PAYPAL_MAIL_USER_PASSWORD=<YOUR_PAYPAL_MAIL_USER_PASSWORD>`
-  * `PAYPAL_MAIL_SMTP_AUTH=<YOUR_PAYPAL_MAIL_SMTP_AUTH>`
-  * `PAYPAL_MAIL_SMTP_STARTTLS_ENABLE=<YOUR_PAYPAL_MAIL_SMTP_STARTTLS_ENABLE>`
-  * `PAYPAL_HYPERWALLET_OPERATOR_BANK_ACCOUNT_TOKEN_DEFAULT=<YOUR_PAYPAL_HYPERWALLET_OPERATOR_BANK_ACCOUNT_TOKEN_DEFAULT>`
-  * `PAYPAL_RABBITMQ_USERNAME=<YOUR_PAYPAL_RABBITMQ_PASSWORD>`
-  * `PAYPAL_RABBITMQ_PASSWORD=<YOUR_PAYPAL_RABBITMQ_PASSWORD>`
-  * `PAYPAL_SPRING_PROFILE_ACTIVE`=`dev`, `qa` or `prod` if these variables are not set spring profile active would
-    be `dev`
-  * `PAYPAL_MOCK_SERVER_URL`=`<YOUR_MOCK_BIN>` only for `QA` spring profile
-* Execute `./gradlew build :web:bootRun` to run the application in your local environment
+| ENVIRONMENT VARIABLE                                     | DESCRIPTION                                                                                                                                                                         | EXAMPLE VALUE                              |
+|----------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| `PAYPAL_MIRAKL_SDK_USER`                                 | Mirakl username for accessing the Mirakl Java SDK.                                                                                                                                  | `yourCompanyName`                          |
+| `PAYPAL_MIRAKL_SDK_PASSWORD`                             | Mirakl password, for accessing the Mirakl Java SDK.                                                                                                                                 | `secret`                                   |
+| `PAYPAL_MIRAKL_OPERATOR_API_KEY`                         | The operator API key generated for your operator account.                                                                                                                           | `c262b297-c8a7-45a5-a22f-a0d9fe25132a`     |
+| `PAYPAL_MIRAKL_ENVIRONMENT`                              | The URL for your Mirakl environment's API (provided by Mirakl).                                                                                                                     | `https://yourCompany.mirakl.net/api`       |
+| `PAYPAL_HYPERWALLET_API_SERVER`                          | The URL for your Hyperwallet environment's API (provided by Hyperwallet).                                                                                                           | `https://uat-api.paylution.com`            |
+| `PAYPAL_HYPERWALLET_API_USERNAME`                        | Hyperwallet environment username (provided by Hyperwallet).                                                                                                                         | `restapiuser@000001`                       |
+| `PAYPAL_HYPERWALLET_API_PASSWORD`                        | Hyperwallet environment password (provided by Hyperwallet).                                                                                                                         | `yourSecret`                               |
+| `PAYPAL_HYPERWALLET_PROGRAM_TOKENS`                      | A set of comma separated values based on the program hierarchy provided by Hyperwallet (See the Program Configuration section below).                                               | `DEFAULT`                                  |
+| `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_USERS_DEFAULT`         | The program token for contacting the Hyperwallet API on the `/users` path for `DEFAULT` program.                                                                                    | `prg-6541532-as1a23s242-12as124-as2454`    |
+| `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_PAYMENTS_DEFAULT`      | The program token for contacting the Hyperwallet API on the `/payments` path for `DEFAULT` program.                                                                                 | `prg-54545a532-asda2refs43-as2fd35-das233` |
+| `PAYPAL_SERVER_EMAIL_HOST`                               | The URL where your POP3/SMTP server is hosted. If using the Docker Compose script provided in this repo, use `smtp`.                                                                | `smtp.example.com`                         |
+| `PAYPAL_SERVER_EMAIL_PORT`                               | The port used by your POP3/SMTP server. If using the Docker Compose script provided in this repo, use `1025`.                                                                       | `1025`                                     |
+| `PAYPAL_MAIL_SMTP_AUTH`                                  | Whether or not authentication is needed for accessing the POP3/SMTP mail server.                                                                                                    | Possible values: `true` or `false`         |
+| `PAYPAL_MAIL_USER_NAME`                                  | The username credential for using the POP3/SMTP server. Can be left empty if `PAYPAL_MAIL_SMTP_AUTH` is set to `false`.                                                             | `smtp-username`                            |
+| `PAYPAL_MAIL_USER_PASSWORD`                              | The password credential for using the POP3/SMTP server. Can be left empty if `PAYPAL_MAIL_SMTP_AUTH` is set to `false`.                                                             | `smtp-pass`                                |
+| `PAYPAL_MAIL_SMTP_STARTTLS_ENABLE`                       | Whether or not TLS is needed for establishing connection with the POP3/SMTP server.                                                                                                 | Possible values:`true` or `false`          |
+| `PAYPAL_HYPERWALLET_OPERATOR_BANK_ACCOUNT_TOKEN_DEFAULT` | The transfer bank account token where commissions will be paid out too. Only needed if the operator commissions feature is being used (see the Operator Commissions section below). | `trm-2646asas54-21asdas5642-xasa45sxx`     |
+| `PAYPAL_RABBITMQ_USERNAME`                               | The username for connecting with the RabbitMQ host.                                                                                                                                 | `username`                                 |
+| `PAYPAL_RABBITMQ_PASSWORD`                               | The password for connecting with the RabbitMQ host.                                                                                                                                 | `password`                                 |
+| `PAYPAL_SPRING_PROFILE_ACTIVE`                           | The Spring Profile to execute/deploy the service on. Possible values: `dev`, `qa`, `prod`, followed by any feature profiles documented below. Default: `dev`.                       | `qa,financial-report`                      |
+| `PAYPAL_MOCK_SERVER_URL`                                 | The URL to your webhook/mock server. Only used when running with the `QA` Spring profile.                                                                                           | `https://mockserver.example.com`           |
 
-#### Operator comissions
+For a local execution you will need to build the connector and start it up with the following commands:
 
-The default setup in has operator commissions feature enabled through the property `invoices.operator.commissions.enabled`
-on file `invoices.properties`.  If you want to disable you can set this property to `false`
+* `./gradlew build`
+* `./gradlew web:bootRun`
 
+We strongly recommend for testing and development purposes to use the containerized version with Docker Compose, explained in the following sections.
 
+#### Running whole stack with Docker Compose
 
-### Multiple Hyperwallet Programs configuration
+To make it easier to run the application, as it depends on multiple services, a Docker Compose configuration exists within the project.
 
-Based on Hyperwallet's configuration, it will be necessary to modify Hyperwallet Program configuration. By default, HMC
-supports just one. Just in case it is needed multiple values, we need to do some easy modifications. Let put this
-example:
+#### Building the Docker image with Docker Compose
+
+The Docker image will create the file `docker-compose.yml`, which is based on the `docker-compose.yml.template` file:
+
+`./gradlew buildDockerCompose`
+
+#### Executing Docker container with Docker Compose
+
+This Gradle task will run the Docker image based on the generated `docker-compose.yml` file:
+
+`./gradlew dockerComposeUp`
+
+Optionally, you can pass arguments to Docker Compose with the property `dockerComposeArgs`:
+
+`./gradlew dockerCompose -PdockerComposeArgs='up -d'`
+
+This will start the services defined in `docker-compose.yml`.
+
+#### Production build
+
+In order to generate a Docker Compose ready to be used in production, the build command needs the property `prod` set to `true`:
+
+`./gradlew buildDockerCompose -Pprod=true`
+
+## Operator Commissions
+
+By default, the operator commissions feature is enabled. This is set in the property `invoices.operator.commissions.enabled` in the `invoices.properties` file. 
+This feature can be disabled by setting the value of this property to `false`.
+
+## Program Configuration
+
+### Single Program (Default)
+
+The default setup provides a single-level hierarchy where 1 Issuing Merchant corresponds to 1 Issuing Store.
+
+This is defined in Mirakl using the `hw-program` shop custom field (see the Mirakl Configuration section in the Solution Guide), which for a single hierarchy program should contain a single value list with only one value `DEFAULT`.
+
+### Multiple Programs
+
+The Hyperwallet, Mirakl, and HMC configurations can be extended to accommodate a multiple program hierarchy structure, where 1 Issuing Merchant can have multiple Issuing Stores.
+
+Based on Hyperwallet's configuration, it will be necessary to modify Hyperwallet Program configuration. 
+
+By default, HMC supports just one. Just in case it is needed multiple values, we need to do some easy modifications. 
+
+Let put this example:
 
 * We have two different Hyperwallet programs: UK and Europe.
-* We defined in Mirakl a custom attribute which label is `hw-program` as SingleValueList with these values: `EUROPE`
-  and `UK`
+* We defined in Mirakl a custom attribute which label is `hw-program` as SingleValueList with these values: `EUROPE` and `UK`
 
 In that case, we need to setup these variables as described:
 
@@ -92,22 +133,21 @@ In that case, we need to setup these variables as described:
     * Define token for UK: `sellers.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
     * Define token for EUROPE: `sellers.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
 
-If you're using docker remember to update docker accordingly to reflect the existence of those 2 new environment adding
-them on the docker template file you're using (`docker-compose.prod.yml.template` or `docker-compose.yml.template`).
-Following the previous example, you should add:
+If you're using Docker, remember to update the Docker Compose template file to reflect the existence of these 2 new environments. 
+Add them into the Docker Compose template file you're using (`docker-compose.prod.yml.template` or `docker-compose.yml.template`), for example with UK and Europe:
 
 - `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_PAYMENTS_UK`
 - `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_USERS_UK`
 - `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_PAYMENTS_EUROPE`
 - `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_USERS_EUROPE`
 
-### Financial Report (Braintree)
+## Financial Reporting (Braintree)
 
-The connector has the ability of generating a financial report with the information provided by Mirakl and Braintree
-payment gateway. For setting up this functionality you will need to add to `PAYPAL_SPRING_PROFILE_ACTIVE` environment
-variable the profile `financial-report` separated by comma. Eg.g: `PAYPAL_SPRING_PROFILE_ACTIVE=dev,financial-report`.
+The Hyperwallet Mirakl Connector has the ability to generate a financial report, compiling information from the Mirakl and Braintree platforms. 
 
-Whenever you enable this new spring profile it's necessary to setup the following environment variables:
+For enabling this functionality you will need to add the `financial-report` value to the `PAYPAL_SPRING_PROFILE_ACTIVE`, for example: `PAYPAL_SPRING_PROFILE_ACTIVE=dev,financial-report`.
+
+The following environment variables are required when enabling this Spring Profile:
 
 - `PAYPAL_BRAINTREE_MERCHANT_ID=<YOUR_BRAINTREE_MERCHANT_ID>`
 - `PAYPAL_BRAINTREE_PUBLIC_KEY=<YOUR_BRAINTREE_PUBLIC_KEY>`
@@ -116,43 +156,15 @@ Whenever you enable this new spring profile it's necessary to setup the followin
 The default setup uses `SANDBOX` environment, for using this feature on production remember to modify the file
 `reports/src/main/resources/reports.properties` and uncomment this line `#reports.braintree.environment=production`
 
-#### Running whole stack with Docker Compose
-
-To make it easier to run the application, as it depends on multiple services, a Docker Compose configuration exists
-within the project.
-
-#### Building the docker image with Docker Compose
-
-The docker image will create the file `docker-compose.yml` based on `docker-compose.yml.template` file:
-
-`./gradlew buildDockerCompose`
-
-#### Executing Docker container with Docker Compose
-This gradle task will run the docker image based on the `docker-compose.yml` generated.
-
-`./gradlew dockerComposeUp`
-
-Optionally you can pass arguments to docker-compose with the property `dockerComposeArgs` e.g.:
-
-`./gradlew dockerCompose -PdockerComposeArgs='up -d'`
-
-This will start the defined services in the `docker-compose.yml` based on the `docker-compose.yml.template` file with the configuration in there.
-
-## Production build
-
-In order to generate a Docker Compose ready to be used in production the command to build it needs the property prod set as true:
-
-`./gradlew buildDockerCompose -Pprod=true`
-
 ## Setting up jobs
 
-There are 3 different jobs existing on the system:
+The Hyperwallet Mirakl Connector runs jobs to perform various integrations between the Hyperwallet and Mirakl platforms.
+
 * Individual sellers extract job: Extracts the individual seller information from Mirakl and create it on Hyperwallet.
 * Professional sellers extract job: Extracts the professional seller information from Mirakl and create it on Hyperwallet.
-* Bank Accounts job sellers extract job: Extracts the bank detail information from sellers nad creates a bank on account
- hyperwallet associated to the corresponding user in hyperwallet
+* Bank Accounts job sellers extract job: Extracts the bank detail information from sellers nad creates a bank on account hyperwallet associated to the corresponding user in hyperwallet
 * Documents extract job: Extracts the documents from Mirakl and pushes them into Hyperwallet for kyc purposes.
- 
+
 Those jobs are currently setup across the properties file as this table follows:
 
 |                       Property                                        |  Cron expression  |                  Properties file                     |
@@ -161,18 +173,17 @@ Those jobs are currently setup across the properties file as this table follows:
 | `sellers.extractprofessionalsellers.scheduling.cronexpression`        | 0 0 0 1/1 * ? *   | `sellers/src/main/resources/sellers.properties`      |
 | `sellers.bankaccountextract.scheduling.cronexpression`                | 0 30 0 1/1 * ? *  | `sellers/src/main/resources/sellers.properties`      |
 | `invoices.extractinvoices.scheduling.cronexpression`                  | 1 0 0 1/1 * ? *   | `invoices/src/main/resources/invoices.properties`    |
-| `kyc.documentsextract.scheduling.cronexpression`                      | 1 30 0 1/1 * ? *  | `kycnotifications/src/main/resources/kyc.properties` |
+| `kyc.documentsextract.scheduling.cronexpression`                      | 1 30 0 1/1 * ? *  | `kyc/src/main/resources/kyc.properties`              |
 
-The existing jobs can be executed manually through their endpoints. All the endpoints supports 2 optional parameters:
+The existing jobs can be executed manually through their endpoints. All endpoints support 2 optional parameters:
 
-* `delta`: When filled the extract jobs would filter values to be updated/created from this date onwards
-* `name` : When filled the job instance running would have the name passed
+* `delta`: When provided for an extract job, the job will only process entities that were updated/created after this date
+* `name` : When provided, the job will be given this name
 
 |                       Param                                           |            Format              |
 | --------------------------------------------------------------------- | -----------------------------  |
 | `name`                                                                | String                         |
-| `delta`                                                               |  yyyy-MM-dd'T'HH:mm:ss.SSSXXX  | 
-
+| `delta`                                                               | yyyy-MM-dd'T'HH:mm:ss.SSSXXX   | 
 
 Endpoints:
 
@@ -190,9 +201,11 @@ See example of valid execution request:
 
 ## Webhook Notifications
 
-The Hyperwallet platform is capable of sending event notifications via webhook. This connector comes with a built-in listener to process supported webhook notification types, and works with both basic authentication and payload encryption.
+The Hyperwallet platform is capable of sending event notifications via webhook.
+This connector comes with a built-in listener to process supported webhook notification types, and works with both basic authentication and payload encryption.
 
-The endpoint for the webhook listener is on the path: `/webhooks/notifications`. This path is used by default, and no properties or configuration are used for enabling or setting up the webhook listener.
+The endpoint for the webhook listener is on the path: `/webhooks/notifications`. 
+This path is used by default, and no properties or configuration are used for enabling or setting up the webhook listener.
 
 During the onboarding process, Hyperwallet will enable webhook notifications by registering the webhook listener endpoint URL (for example, https://hmc.example.com/webhooks/notifications).
 
@@ -201,27 +214,26 @@ During the onboarding process, Hyperwallet will enable webhook notifications by 
 This connector supports payload encryption for connecting with Hyperwallet's API (https://docs.hyperwallet.com/content/api/v4/overview/payload-encryption).
 This payload encryption feature is based on JOSE (https://jose.readthedocs.io/en/latest/) and JWT (https://jwt.io/).
 
-If you need further information check hyperwallet API reference documentation (https://docs.hyperwallet.com/content/api/v4/overview/payload-encryption)
-
-Follow the next steps to correctly setup the feature.
+If you need further information, consult the Hyperwallet v4 API reference documentation (https://docs.hyperwallet.com/content/api/v4/overview/payload-encryption)
 
 ### Setting up JWK key sets
 
-To communicate with the connector Hyperwallet needs to retrieve a jwk key set and this set of keys should be published in an endpoint
-with a valid TLS certificate, it is needed that you generate one key for signing and another one for encrypting the messages.
+To communicate with the connector Hyperwallet needs to retrieve a jwk key set and this set of keys should be published in an endpoint with a valid TLS certificate, it is needed that you generate one key for signing and another one for encrypting the messages.
 
 You can generate the keys via this website: https://mkjwk.org/
 
 Supported sign algorithms (JWS):
+
 - RS256, RS384, RS512
 - PS256, PS384, PS512
 - ES256, ES384, ES512
 
 Supported JWE encryption algorithms are:
+
 - RSA-OAEP-256
 - ECDH-ES, ECDH-ES+A128KW, ECDH-ES+A192KW, ECDH-ES+A256KW
 
-Once you have generated both keys you need create 2 files, one with only the public keys and another one that'll contain both public and private keys like the following examples
+Once you have generated both keys you need create 2 files, one with only the public keys and another one containing both public and private keys, like the following examples
 
 ```
 {
@@ -253,12 +265,10 @@ Once you have generated both keys you need create 2 files, one with only the pub
     }
 }
 ```
-By default, and under encrypted profile, the connector allows you to share your public keys throughout this endpoint: ```/jwkset```
 
+By default, and under the encrypted profile, the connector allows you to share your public keys throughout this endpoint: ```/jwkset```
 
-
-
-#### Public keys
+### Public keys
 
 ``` 
 {
@@ -278,38 +288,66 @@ By default, and under encrypted profile, the connector allows you to share your 
 }
 ```
 
-Modify the property `hyperwallet.api.hmcKeySetLocation` of `application.properties` to point to the route where the file with private/public keys json file is stored
+Modify the property `hyperwallet.api.hmcKeySetLocation` of `application.properties` to point to the route where the file with private/public keys JSON file is stored.
 
-Modify accordingly the properties `hyperwallet.api.encryptionAlgorithm`, `hyperwallet.api.signAlgorithm`, `hyperwallet.api.encryptionMethod`
-with the encryption, sign and algorithm method you want to use, in this previous example the values would be:
+Modify accordingly the properties `hyperwallet.api.encryptionAlgorithm`, `hyperwallet.api.signAlgorithm`, and `hyperwallet.api.encryptionMethod` with the encryption, sign and algorithm method you want to use.
+
+Following this previous example the values would be:
 
 ```properties
-hyperwallet.api.encryptionAlgorithm=RSA-OAEP-256
-hyperwallet.api.signAlgorithm=RS256
-hyperwallet.api.encryptionMethod=A256CBC-HS512
+hyperwallet.api.encryptionAlgorithm = RSA-OAEP-256
+hyperwallet.api.signAlgorithm       = RS256
+hyperwallet.api.encryptionMethod    = A256CBC-HS512
 ```
 
-The public json file can be published directly in the connector specifying the file route where this file is stored via `hyperwallet.api.hmcPublicKeyLocation`
-stored in `application.properties` file.
+The public JSON file can be published directly in the connector specifying the file route where this file is stored via `hyperwallet.api.hmcPublicKeyLocation` stored in the `application.properties` file.
 
-Take into account that this file can be also published in a different server than the connector (like an S3 bucket) and you'll simply need
-to modify the `hyperwallet.api.hmcPublicKeyLocation` with the proper URL where this file is published.
+Take into account that this file can also be published in a different server than the connector (like an S3 bucket) and you'll simply need to modify the `hyperwallet.api.hmcPublicKeyLocation` with the proper URL where this file is published.
 
-**_IMPORTANT: Publish publicly only the PUBLIC keys json file_**
+**_IMPORTANT: Publish publicly only the PUBLIC keys JSON file_**
 
-For enabling the encryption payload feature you will also need to enable in `application.properties` file the profile `encrypted`, e.g. for
-a development machine:
+For enabling the encryption payload feature you will also need to enable in `application.properties` file the profile `encrypted`, e.g. for a development machine:
 
 `spring.profiles.active=dev,encrypted`
 
-By default the connector is pointing to Hyperwallet's UAT JWK key set url, for production you'll need to uncomment the following line:
+By default, the connector is pointing to Hyperwallet's UAT JWK key set url, for production you'll need to uncomment the following line:
 
 ```properties
 # Uncomment for PRODUCTION
 #hyperwallet.api.hwKeySetLocation = https://api.paylution.com/jwkset
 ```
 
-Notice also that Hyperwallet enables the possibility of having the webhook notifications encrypted, if you have asked this feature to be
-enabled, the connector will take care of decrypting the notifications whenever the profile `encrypted` is set.
+Notice also that Hyperwallet enables the possibility of having the webhook notifications encrypted, if you have asked this feature to be enabled, the connector will take care of decrypting the notifications whenever the profile `encrypted` is set.
 
- 
+## Other endpoints
+
+### Health check
+
+The connector exposes via `spring-boot-actuator` library a health check endpoint under route `/actuator/health` that will return an object like this whenever the server is up and running:
+
+```json
+{
+  "status": "UP"
+}
+```
+
+### Build and app information
+
+For knowing the version of the connector you're running you can also query the URL `/actuator/info` to return a version object:
+
+```json
+{
+  "app": {
+    "name": "Hyperwallet Mirakl Connector",
+    "description": "Drop in connector for interconnecting Mirakl and Hyperwallet systems"
+  },
+  "build": {
+    "artifact": "web",
+    "name": "web",
+    "time": "2021-06-25T12:55:52.428Z",
+    "version": "release-3.0-5-ga3d1009.dirty",
+    "group": "com.paypal"
+  }
+}
+```
+

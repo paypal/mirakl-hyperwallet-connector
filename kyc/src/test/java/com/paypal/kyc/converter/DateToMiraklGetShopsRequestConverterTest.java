@@ -12,12 +12,13 @@ class DateToMiraklGetShopsRequestConverterTest {
 	private final DateToMiraklGetShopsRequestConverter testObj = new DateToMiraklGetShopsRequestConverter();
 
 	@Test
-	void convert_shouldConvertFromDateToMiraklGetShopRequestWhenDateIsNotNull() {
+	void convert_shouldConvertFromDateToMiraklGetShopRequestWhenDateIsNotNullAndEnsurePaginatedIsFalse() {
 		final Date date = new Date();
 
 		final MiraklGetShopsRequest result = testObj.convert(date);
 
 		assertThat(result.getUpdatedSince()).isEqualTo(date);
+		assertThat(result.isPaginate()).isFalse();
 	}
 
 }

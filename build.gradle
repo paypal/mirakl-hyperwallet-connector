@@ -9,6 +9,7 @@ buildscript {
     dependencies {
         classpath 'io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.25'
         classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.1'
+        classpath "com.palantir.gradle.gitversion:gradle-git-version:0.12.3"
     }
 }
 
@@ -90,7 +91,16 @@ subprojects {
     }
 
     bootBuildImage {
-        environment = ["BP_JVM_VERSION": "16"]
+        environment =
+            environment = ["BP_JVM_VERSION"              : "16",
+                           "BPE_DELIM_JAVA_TOOL_OPTIONS" : " ",
+                           "BPE_APPEND_JAVA_TOOL_OPTIONS": "-Xms256m -Xmx1g"
+            ]
+    }
+
+
+    springBoot {
+        buildInfo()
     }
 }
 

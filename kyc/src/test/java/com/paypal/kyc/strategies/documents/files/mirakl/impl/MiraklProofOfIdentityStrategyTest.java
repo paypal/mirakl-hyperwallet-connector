@@ -23,6 +23,8 @@ import static org.mockito.Mockito.mockStatic;
 @ExtendWith(MockitoExtension.class)
 class MiraklProofOfIdentityStrategyTest {
 
+	private static MockedStatic<KYCProofOfIdentityEnum> kycProofOfIdentityEnumMockedStatic;
+
 	@InjectMocks
 	private MiraklProofOfIdentityStrategy testObj;
 
@@ -30,8 +32,6 @@ class MiraklProofOfIdentityStrategyTest {
 	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
 
 	private KYCDocumentSellerInfoModel kycDocumentSellerInfoModel;
-
-	private static MockedStatic<KYCProofOfIdentityEnum> kycProofOfIdentityEnumMockedStatic;
 
 	@AfterAll
 	static void afterAll() {
@@ -73,6 +73,15 @@ class MiraklProofOfIdentityStrategyTest {
 
 		assertThat(result).isFalse();
 
+	}
+
+	@Test
+	void isApplicable_shouldReturnFalseWhenIsProofOfIdentityAndIsProfessional() {
+		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder().professional(true).build();
+
+		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModel);
+
+		assertThat(result).isFalse();
 	}
 
 	@Test

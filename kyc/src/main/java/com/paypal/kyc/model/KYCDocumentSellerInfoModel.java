@@ -223,13 +223,6 @@ public class KYCDocumentSellerInfoModel extends KYCDocumentInfoModel {
 			return this;
 		}
 
-		public Builder hyperwalletProgram(final List<MiraklAdditionalFieldValue> fields) {
-			getMiraklSingleValueListCustomFieldValue(fields, HW_PROGRAM)
-					.ifPresent(hyperwalletProgramValue -> this.hyperwalletProgram = hyperwalletProgramValue);
-
-			return this;
-		}
-
 		@Override
 		public Builder documents(final List<KYCDocumentModel> documents) {
 			this.documents = Stream.ofNullable(documents).flatMap(Collection::stream).filter(Objects::nonNull)
@@ -304,17 +297,6 @@ public class KYCDocumentSellerInfoModel extends KYCDocumentInfoModel {
 					.filter(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::isInstance)
 					.map(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::cast).findAny()
 					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
-		}
-
-		private Optional<String> getMiraklSingleValueListCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
-				final String customFieldCode) {
-			//@formatter:off
-            return fields.stream()
-                    .filter(field -> field.getCode().equals(customFieldCode))
-                    .filter(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::isInstance)
-                    .map(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::cast).findAny()
-                    .map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
-            //@formatter:on
 		}
 
 	}

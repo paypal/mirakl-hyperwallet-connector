@@ -45,22 +45,26 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 		notifiedDocumentsReadyForReview = builder.notifiedDocumentsReadyForReview;
 	}
 
+	public static Builder builder() {
+		return new Builder();
+	}
+
 	public List<KYCDocumentModel> getIdentityDocuments() {
 		if (KYCProofOfIdentityEnum.PASSPORT.equals(proofOfIdentity)) {
 			//@formatter:off
-            return Stream.ofNullable(getDocuments())
-                    .flatMap(Collection::stream)
-                    .filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.IDENTIFICATION))
-                    .filter(document -> document.getDocumentSide().equals(KYCDocumentSideEnum.FRONT))
-                    .collect(Collectors.toList());
-            //@formatter:on
+			return Stream.ofNullable(getDocuments())
+					.flatMap(Collection::stream)
+					.filter(document -> KYCDocumentCategoryEnum.IDENTIFICATION.equals(document.getDocumentCategory()))
+					.filter(document -> document.getDocumentSide().equals(KYCDocumentSideEnum.FRONT))
+					.collect(Collectors.toList());
+			//@formatter:on
 		}
 		//@formatter:off
-        return Stream.ofNullable(getDocuments())
-                .flatMap(Collection::stream)
-                .filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.IDENTIFICATION))
-                .collect(Collectors.toList());
-        //@formatter:on
+		return Stream.ofNullable(getDocuments())
+				.flatMap(Collection::stream)
+				.filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.IDENTIFICATION))
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 	public List<KYCDocumentModel> getLetterOfAuthorizationDocument() {
@@ -116,27 +120,24 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 		return true;
 	}
 
-	public static Builder builder() {
-		return new Builder();
-	}
-
 	public Builder toBuilder() {
 		//@formatter:off
-        return KYCDocumentBusinessStakeHolderInfoModel.builder()
-													  .token(token)
-													  .requiresKYC(requiresKYC)
-													  .requiresLetterOfAuthorization(requiresLetterOfAuthorization)
-													  .countryIsoCode(countryIsoCode)
-													  .businessStakeholderMiraklNumber(businessStakeholderMiraklNumber)
-													  .userToken(userToken)
-													  .clientUserId(clientUserId)
-													  .proofOfIdentity(proofOfIdentity)
-													  .miraklShopDocuments(miraklShopDocuments)
-													  .contact(contact)
-													  .sentToHyperwallet(sentToHyperwallet)
-													  .notifiedDocumentsReadyForReview(notifiedDocumentsReadyForReview)
-													  .documents(getDocuments());
-        //@formatter:on
+		return KYCDocumentBusinessStakeHolderInfoModel.builder()
+				.token(token)
+				.requiresKYC(requiresKYC)
+				.requiresLetterOfAuthorization(requiresLetterOfAuthorization)
+				.countryIsoCode(countryIsoCode)
+				.businessStakeholderMiraklNumber(businessStakeholderMiraklNumber)
+				.userToken(userToken)
+				.clientUserId(clientUserId)
+				.proofOfIdentity(proofOfIdentity)
+				.miraklShopDocuments(miraklShopDocuments)
+				.contact(contact)
+				.sentToHyperwallet(sentToHyperwallet)
+				.notifiedDocumentsReadyForReview(notifiedDocumentsReadyForReview)
+				.hyperwalletProgram(hyperwalletProgram)
+				.documents(getDocuments());
+		//@formatter:on
 	}
 
 	@Override
@@ -331,17 +332,6 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 					.filter(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::isInstance)
 					.map(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::cast).findAny()
 					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
-		}
-
-		private Optional<String> getMiraklSingleValueListCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
-				final String customFieldCode) {
-			//@formatter:off
-            return fields.stream()
-                    .filter(field -> field.getCode().equals(customFieldCode))
-                    .filter(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::isInstance)
-                    .map(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::cast).findAny()
-                    .map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
-            //@formatter:on
 		}
 
 		public Builder requiresLetterOfAuthorization(final boolean requiresLetterOfAuthorization) {

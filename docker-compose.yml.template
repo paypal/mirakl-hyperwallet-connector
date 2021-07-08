@@ -6,7 +6,8 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - queue
+      queue:
+        condition: service_healthy
     environment:
       - PAYPAL_MIRAKL_ENVIRONMENT
       - PAYPAL_MIRAKL_OPERATOR_API_KEY
@@ -45,6 +46,10 @@ services:
     image: rabbitmq:management
     restart: always
     hostname: paypal-hyperwallet-rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: '10s'
+      timeout: '120s'
     ports:
       - '4369:4369'
       - '5671:5671'
