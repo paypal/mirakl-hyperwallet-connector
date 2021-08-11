@@ -1,6 +1,8 @@
 package com.paypal.infrastructure.listeners;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.listener.api.RabbitListenerErrorHandler;
@@ -22,8 +24,9 @@ public class RabbitMQGlobalErrorHandler implements RabbitListenerErrorHandler {
 	@Override
 	public Object handleError(final Message amqpMessage, final org.springframework.messaging.Message<?> message,
 			final ListenerExecutionFailedException exception) {
-		log.error(Arrays.toString(amqpMessage.getBody()));
-		log.error(message.getPayload().toString());
+		log.error("Body: {}", Arrays.toString(amqpMessage.getBody()));
+		log.error("Payload: {}",
+				ToStringBuilder.reflectionToString(message.getPayload(), ToStringStyle.NO_CLASS_NAME_STYLE));
 		throw new AmqpRejectAndDontRequeueException("Something failed processing the notifications, avoiding retry",
 				exception);
 	}

@@ -20,7 +20,7 @@ public enum KYCRejectionReasonTypeEnum {
 
 	private static final String HEADER = "There is an issue with verifying your details in Hyperwallet. Please ensure that you: <br /><ul>";
 
-	private static final String FOOTER = "</ul><br />For more information on document requirements please refer to the <a href=https://docs.hyperwallet.com/content/payee-requirements/v1/payee-verification/required-data Hypwerwallet> guidelines</a>.";
+	private static final String FOOTER = "</ul><br />For more information on document requirements please refer to the <a href=\"https://docs.hyperwallet.com/content/payee-requirements/v1/payee-verification/required-data\">Hyperwallet guidelines</a>.";
 
 	private KYCRejectionReasonTypeEnum(final String reason) {
 		this.reason = reason;
