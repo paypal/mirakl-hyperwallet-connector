@@ -94,7 +94,7 @@ subprojects {
         environment =
             environment = ["BP_JVM_VERSION"              : "16",
                            "BPE_DELIM_JAVA_TOOL_OPTIONS" : " ",
-                           "BPE_APPEND_JAVA_TOOL_OPTIONS": "-Xms256m -Xmx1g"
+                           "BPE_APPEND_JAVA_TOOL_OPTIONS": "-Xms256m -Xmx1524m"
             ]
     }
 

@@ -7,42 +7,19 @@ services:
       - "8080:8080"
     depends_on:
       - queue
-    volumes:
-      - ${PWD}/app-data:/workspace/data
     environment:
-      - PAYPAL_MIRAKL_ENVIRONMENT
-      - PAYPAL_MIRAKL_OPERATOR_API_KEY
-      - PAYPAL_HYPERWALLET_API_SERVER
-      - PAYPAL_HYPERWALLET_PROGRAM_TOKENS
-      - PAYPAL_HYPERWALLET_PROGRAM_TOKEN_PAYMENTS_DEFAULT
-      - PAYPAL_HYPERWALLET_PROGRAM_TOKEN_USERS_DEFAULT
-      - PAYPAL_HYPERWALLET_API_USERNAME
-      - PAYPAL_HYPERWALLET_API_PASSWORD
-      - PAYPAL_SERVER_EMAIL_HOST
-      - PAYPAL_SERVER_EMAIL_PORT
-      - PAYPAL_MAIL_USER_NAME
-      - PAYPAL_MAIL_USER_PASSWORD
-      - PAYPAL_MAIL_SMTP_AUTH
-      - PAYPAL_MAIL_SMTP_STARTTLS_ENABLE
-      - PAYPAL_HYPERWALLET_OPERATOR_BANK_ACCOUNT_TOKEN_DEFAULT
-      - PAYPAL_RABBITMQ_USERNAME
-      - PAYPAL_RABBITMQ_PASSWORD
-      - PAYPAL_HYPERWALLET_ENCRYPTION_ALGORITHM
-      - PAYPAL_HYPERWALLET_SIGN_ALGORITHM
-      - PAYPAL_HYPERWALLET_ENCRYPTION_METHOD
-      - PAYPAL_HYPERWALLET_PRIVATE_JWK_JSON_LOCATION
-      - PAYPAL_HYPERWALLET_PUBLIC_JWK_JSON_LOCATION
-      - PAYPAL_CONNECTOR_SERVER_URL
-      - PAYPAL_BRAINTREE_MERCHANT_ID
-      - PAYPAL_BRAINTREE_PUBLIC_KEY
-      - PAYPAL_BRAINTREE_PRIVATE_KEY
       - SPRING_PROFILES_ACTIVE=${PAYPAL_SPRING_PROFILE_ACTIVE:-prod}
+      - PAYPAL_BRAINTREE_REPORT_ENVIRONMENT
       - PWD=/workspace
+    env_file:
+      - '.env'
     volumes:
           - ${PWD}/keys:/home/keys
           - ${PWD}/financial-reports:/home/reports
+          - ${PWD}/logs:/workspace/logs
+          - ${PWD}/app-data:/workspace/data
   queue:
-    image: rabbitmq:management
+    image: rabbitmq:3.8.18-management
     restart: always
     hostname: paypal-hyperwallet-rabbitmq
     ports:
@@ -56,6 +33,7 @@ services:
     volumes:
       - ${PWD}/rabbitmq-data:/var/lib/rabbitmq
     environment:
-      - RABBITMQ_DEFAULT_USER=paypal
-      - RABBITMQ_DEFAULT_PASS=hyperwallet
-      - RABBITMQ_ERLANG_COOKIE=super-secret-erlang-cookie
+      - RABBITMQ_DEFAULT_USER=${PAYPAL_RABBITMQ_USERNAME}
+      - RABBITMQ_DEFAULT_PASS=${PAYPAL_RABBITMQ_PASSWORD}
+      - RABBITMQ_ERLANG_COOKIE=${PAYPAL_RABBITMQ_ERLANG_COOKIE}
+
