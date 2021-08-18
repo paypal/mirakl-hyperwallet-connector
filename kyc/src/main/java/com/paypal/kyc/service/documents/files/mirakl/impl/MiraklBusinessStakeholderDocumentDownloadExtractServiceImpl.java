@@ -87,6 +87,7 @@ public class MiraklBusinessStakeholderDocumentDownloadExtractServiceImpl
 					kycBusinessStakeHolderInfoModel.getClientUserId());
 			final List<MiraklShopDocument> shopDocuments = miraklMarketplacePlatformOperatorApiClient
 					.getShopDocuments(getShopBusinessStakeholderDocumentsRequest);
+
 			//@formatter:off
             log.info("Business stakeholder documents available for seller with id [{}]: [{}]", kycBusinessStakeHolderInfoModel.getClientUserId(),
                     shopDocuments.stream()

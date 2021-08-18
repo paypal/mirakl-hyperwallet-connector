@@ -13,6 +13,7 @@ import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.converter.KYCBusinessStakeHolderConverter;
+import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklSellerDocumentDownloadExtractService;
 import org.junit.jupiter.api.BeforeEach;
@@ -214,6 +215,36 @@ class MiraklSellerDocumentsExtractServiceImplTest {
 		final Optional<MiraklShop> result = testObj.extractMiraklShop(SHOP_ID);
 
 		assertThat(result).isPresent().contains(miraklShopMock);
+	}
+
+	@Test
+	void extractKYCSellerDocuments_shouldCallPopulateMiraklShopDocuments() {
+		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(Mockito.any(MiraklGetShopsRequest.class)))
+				.thenReturn(miraklShopsMock);
+		when(miraklShopsMock.getShops()).thenReturn(List.of(miraklShopMock));
+		when(miraklShopMock.getId()).thenReturn(SHOP_ID);
+		when(miraklShopKyCDocumentInfoModelConverterMock.convert(miraklShopMock))
+				.thenReturn(kycDocumentInfoModelNonRequiringKYCMockSeller);
+
+		testObj.extractKYCSellerDocuments(SHOP_ID);
+
+		verify(miraklShopKyCDocumentInfoModelConverterMock).convert(miraklShopMock);
+		verify(miraklSellerDocumentDownloadExtractServiceMock)
+				.populateMiraklShopDocuments(kycDocumentInfoModelNonRequiringKYCMockSeller);
+	}
+
+	@Test
+	void extractKYCSellerDocuments_shouldNotCallPopulateMiraklShopDocuments_whenShopIdDoesNotExist() {
+		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(Mockito.any(MiraklGetShopsRequest.class)))
+				.thenReturn(miraklShopsMock);
+		when(miraklShopsMock.getShops()).thenReturn(List.of());
+
+		final KYCDocumentInfoModel result = testObj.extractKYCSellerDocuments(SHOP_ID);
+
+		assertThat(result).isNull();
+		verify(miraklShopKyCDocumentInfoModelConverterMock, never()).convert(miraklShopMock);
+		verify(miraklSellerDocumentDownloadExtractServiceMock, never())
+				.populateMiraklShopDocuments(isA(KYCDocumentSellerInfoModel.class));
 	}
 
 }

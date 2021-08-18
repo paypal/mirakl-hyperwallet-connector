@@ -4,21 +4,25 @@ import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.core.error.MiraklErrorResponseBean;
 import com.mirakl.client.core.exception.MiraklApiException;
 import com.mirakl.client.mmp.domain.shop.MiraklShopKycStatus;
+import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
+import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
-import com.paypal.kyc.model.KYCRejectionReasonTypeEnum;
-import com.paypal.kyc.model.KYCUserStatusNotificationBodyModel;
+import com.paypal.kyc.model.*;
 import com.paypal.kyc.service.KYCRejectionReasonService;
+import com.paypal.kyc.service.documents.files.mirakl.MiraklSellerDocumentsExtractService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,6 +38,10 @@ class AbstractKYCUserStatusNotificationStrategyTest {
 
 	private static final String SHOP_ID = "2000";
 
+	private static final String MIRAKL_CUSTOM_FIELD_NAME_1 = "miraklCustomFieldName1";
+
+	private static final String MIRAKL_CUSTOM_FIELD_NAME_2 = "miraklCustomFieldName2";
+
 	@Spy
 	@InjectMocks
 	private MyAbstractKYCUserStatusNotificationStrategy testObj;
@@ -45,6 +53,12 @@ class AbstractKYCUserStatusNotificationStrategyTest {
 	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
 
 	@Mock
+	private Converter<KYCDocumentNotificationModel, List<String>> kycDocumentNotificationModelListConverterMock;
+
+	@Mock
+	private MiraklSellerDocumentsExtractService miraklSellerDocumentsExtractServiceMock;
+
+	@Mock
 	private MiraklUpdatedShops miraklUpdatedShopResponseMock;
 
 	@Mock
@@ -52,6 +66,18 @@ class AbstractKYCUserStatusNotificationStrategyTest {
 
 	@Mock
 	private KYCRejectionReasonService kycRejectionReasonServiceMock;
+
+	@Mock
+	private KYCDocumentInfoModel kycDocumentInfoModelMock;
+
+	@Mock
+	private KYCDocumentModel documentOneMock, documentTwoMock;
+
+	@Mock
+	private KYCDocumentNotificationModel notificationDocumentOneMock, notificationDocumentTwoMock;
+
+	@Mock
+	private MiraklShopDocument miraklShopDocumentOneMock, miraklShopDocumentTwoMock;
 
 	@Captor
 	private ArgumentCaptor<MiraklUpdateShopsRequest> miraklUpdateShopMockArgumentCaptor;
@@ -208,13 +234,86 @@ class AbstractKYCUserStatusNotificationStrategyTest {
 		verify(testObj).updateShop(kycUserStatusNotificationBodyModelMock);
 	}
 
+	@Test
+	void deleteInvalidDocuments_shouldNotCallDeleteDocuments_whenKycDocumentDoesNotContainsDocuments() {
+		when(kycUserStatusNotificationBodyModelMock.getClientUserId()).thenReturn(SHOP_ID);
+		when(miraklSellerDocumentsExtractServiceMock.extractKYCSellerDocuments(SHOP_ID))
+				.thenReturn(kycDocumentInfoModelMock);
+
+		testObj.deleteInvalidDocuments(kycUserStatusNotificationBodyModelMock);
+
+		verify(miraklSellerDocumentsExtractServiceMock, never()).deleteDocuments(isA(List.class));
+	}
+
+	@Test
+	void deleteInvalidDocuments_shouldNotCallDeleteDocuments_whenKycDocumentAreValid() {
+		when(kycUserStatusNotificationBodyModelMock.getClientUserId()).thenReturn(SHOP_ID);
+		when(miraklSellerDocumentsExtractServiceMock.extractKYCSellerDocuments(SHOP_ID))
+				.thenReturn(kycDocumentInfoModelMock);
+		when(notificationDocumentOneMock.getDocumentStatus()).thenReturn(KYCDocumentStatusEnum.VALID);
+		when(notificationDocumentTwoMock.getDocumentStatus()).thenReturn(KYCDocumentStatusEnum.VALID);
+		when(kycUserStatusNotificationBodyModelMock.getDocuments())
+				.thenReturn(List.of(notificationDocumentOneMock, notificationDocumentTwoMock));
+
+		testObj.deleteInvalidDocuments(kycUserStatusNotificationBodyModelMock);
+
+		verify(kycDocumentNotificationModelListConverterMock, never()).convert(notificationDocumentOneMock);
+		verify(kycDocumentNotificationModelListConverterMock, never()).convert(notificationDocumentTwoMock);
+		verify(miraklSellerDocumentsExtractServiceMock, never()).deleteDocuments(isA(List.class));
+	}
+
+	@Test
+	void deleteInvalidDocuments_shouldCallDeleteDocuments_whenOneKycDocumentIsInvalid() {
+		when(kycUserStatusNotificationBodyModelMock.getClientUserId()).thenReturn(SHOP_ID);
+		when(miraklSellerDocumentsExtractServiceMock.extractKYCSellerDocuments(SHOP_ID))
+				.thenReturn(kycDocumentInfoModelMock);
+		when(notificationDocumentOneMock.getDocumentStatus()).thenReturn(KYCDocumentStatusEnum.INVALID);
+		when(kycUserStatusNotificationBodyModelMock.getDocuments()).thenReturn(List.of(notificationDocumentOneMock));
+		when(notificationDocumentOneMock.getCreatedOn()).thenReturn(LocalDateTime.MAX);
+		when(kycDocumentNotificationModelListConverterMock.convert(notificationDocumentOneMock))
+				.thenReturn(List.of(MIRAKL_CUSTOM_FIELD_NAME_1));
+		when(kycDocumentInfoModelMock.getMiraklShopDocuments())
+				.thenReturn(List.of(miraklShopDocumentOneMock, miraklShopDocumentTwoMock));
+		when(miraklShopDocumentOneMock.getTypeCode()).thenReturn(MIRAKL_CUSTOM_FIELD_NAME_1);
+		when(miraklShopDocumentOneMock.getDateUploaded()).thenReturn(new Date());
+		when(miraklShopDocumentTwoMock.getTypeCode()).thenReturn(MIRAKL_CUSTOM_FIELD_NAME_2);
+
+		testObj.deleteInvalidDocuments(kycUserStatusNotificationBodyModelMock);
+
+		verify(miraklSellerDocumentsExtractServiceMock).deleteDocuments(List.of(miraklShopDocumentOneMock));
+	}
+
+	@Test
+	void deleteInvalidDocuments_shouldNotCallDeleteDocuments_whenOneKycDocumentIsInvalidButThereIsANewDocumentInMirakl() {
+		when(kycUserStatusNotificationBodyModelMock.getClientUserId()).thenReturn(SHOP_ID);
+		when(miraklSellerDocumentsExtractServiceMock.extractKYCSellerDocuments(SHOP_ID))
+				.thenReturn(kycDocumentInfoModelMock);
+		when(notificationDocumentOneMock.getDocumentStatus()).thenReturn(KYCDocumentStatusEnum.INVALID);
+		when(kycUserStatusNotificationBodyModelMock.getDocuments()).thenReturn(List.of(notificationDocumentOneMock));
+		when(notificationDocumentOneMock.getCreatedOn()).thenReturn(LocalDateTime.MIN);
+		when(kycDocumentNotificationModelListConverterMock.convert(notificationDocumentOneMock))
+				.thenReturn(List.of(MIRAKL_CUSTOM_FIELD_NAME_1));
+		when(kycDocumentInfoModelMock.getMiraklShopDocuments())
+				.thenReturn(List.of(miraklShopDocumentOneMock, miraklShopDocumentTwoMock));
+		when(miraklShopDocumentOneMock.getTypeCode()).thenReturn(MIRAKL_CUSTOM_FIELD_NAME_1);
+		when(miraklShopDocumentOneMock.getDateUploaded()).thenReturn(new Date());
+		when(miraklShopDocumentTwoMock.getTypeCode()).thenReturn(MIRAKL_CUSTOM_FIELD_NAME_2);
+
+		testObj.deleteInvalidDocuments(kycUserStatusNotificationBodyModelMock);
+
+		verify(miraklSellerDocumentsExtractServiceMock, never()).deleteDocuments(isA(List.class));
+	}
+
 	private static class MyAbstractKYCUserStatusNotificationStrategy extends AbstractKYCUserStatusNotificationStrategy {
 
 		public MyAbstractKYCUserStatusNotificationStrategy(
 				final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
 				final MailNotificationUtil mailNotificationUtil,
-				final KYCRejectionReasonService kycRejectionReasonService) {
-			super(miraklOperatorClient, mailNotificationUtil, kycRejectionReasonService);
+				final KYCRejectionReasonService kycRejectionReasonService,
+				final MiraklSellerDocumentsExtractService miraklSellerDocumentsExtractService,
+				final Converter<KYCDocumentNotificationModel, List<String>> kycDocumentNotificationModelListConverter) {
+			super(miraklOperatorClient, mailNotificationUtil, kycRejectionReasonService,
+					miraklSellerDocumentsExtractService, kycDocumentNotificationModelListConverter);
 		}
 
 		@Override

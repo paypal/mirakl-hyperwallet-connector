@@ -40,7 +40,6 @@ public class KYCUserNotificationServiceImpl implements KYCUserNotificationServic
 	 */
 	@Override
 	public void updateUserKYCStatus(final HyperwalletWebhookNotification incomingNotification) {
-
 		final KYCUserStatusNotificationBodyModel kycUserNotification = hyperWalletObjectToKycUserNotificationBodyModelConverter
 				.convert(incomingNotification.getObject());
 		kyCUserNotificationFactory.execute(kycUserNotification);

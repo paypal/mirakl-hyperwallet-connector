@@ -16,8 +16,6 @@ services:
     volumes:
       - ${PWD}/keys:/home/keys
       - ${PWD}/financial-reports:/home/reports
-      - ${PWD}/logs:/workspace/logs
-      - ${PWD}/app-data:/workspace/data
   queue:
     image: rabbitmq:3.8.18-management
     restart: always

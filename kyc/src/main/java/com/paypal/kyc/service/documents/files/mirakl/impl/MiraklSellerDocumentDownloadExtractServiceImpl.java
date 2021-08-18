@@ -62,7 +62,11 @@ public class MiraklSellerDocumentDownloadExtractServiceImpl implements MiraklSel
 				.build();
 	}
 
-	private KYCDocumentSellerInfoModel populateMiraklShopDocuments(
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public KYCDocumentSellerInfoModel populateMiraklShopDocuments(
 			final KYCDocumentSellerInfoModel kycDocumentSellerInfoModel) {
 		final MiraklGetShopDocumentsRequest getShopDocumentsRequest = new MiraklGetShopDocumentsRequest(
 				List.of(kycDocumentSellerInfoModel.getClientUserId()));

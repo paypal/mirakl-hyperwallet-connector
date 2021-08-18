@@ -11,7 +11,7 @@ import java.util.Optional;
  * Interface that manages logic of getting business stakeholder information related to KYC
  * in Mirakl
  */
-public interface MiraklBusinessStakeholderDocumentsExtractService {
+public interface MiraklBusinessStakeholderDocumentsExtractService extends MiraklDocumentsExtractService {
 
 	/**
 	 * Obtains valids and requiresKYC flagged business stakeholders since a delta time

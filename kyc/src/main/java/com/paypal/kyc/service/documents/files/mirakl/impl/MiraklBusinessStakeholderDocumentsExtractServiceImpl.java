@@ -39,7 +39,7 @@ import static com.paypal.kyc.model.KYCConstants.*;
  */
 @Slf4j
 @Service
-public class MiraklBusinessStakeholderDocumentsExtractServiceImpl
+public class MiraklBusinessStakeholderDocumentsExtractServiceImpl extends AbstractMiraklDocumentExtractServiceImpl
 		implements MiraklBusinessStakeholderDocumentsExtractService {
 
 	private final MiraklBusinessStakeholderDocumentDownloadExtractService miraklBusinessStakeholderDocumentDownloadExtractService;
@@ -58,6 +58,7 @@ public class MiraklBusinessStakeholderDocumentsExtractServiceImpl
 			final KYCBusinessStakeHolderConverter kycBusinessStakeHolderConverter,
 			final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
 			final MailNotificationUtil kycMailNotificationUtil) {
+		super(miraklOperatorClient);
 		this.miraklBusinessStakeholderDocumentDownloadExtractService = miraklBusinessStakeholderDocumentDownloadExtractService;
 		this.miraklGetShopsRequestConverter = miraklGetShopsRequestConverter;
 		this.kycBusinessStakeHolderConverter = kycBusinessStakeHolderConverter;
@@ -92,7 +93,7 @@ public class MiraklBusinessStakeholderDocumentsExtractServiceImpl
 
 		//@formatter:off
         final Map<String, List<KYCDocumentBusinessStakeHolderInfoModel>> shopsWithBusinessStakeholderVerificationRequired = kycBusinessStakeHolderInfoModelList.stream()
-                .filter(kycDocStk -> kycDocStk.isRequiresKYC() || kycDocStk.isRequiresLetterOfAuthorization() )
+                .filter(kycDocStk -> kycDocStk.isRequiresKYC() || kycDocStk.isRequiresLetterOfAuthorization())
                 .collect(Collectors.groupingBy(KYCDocumentInfoModel::getClientUserId));
         //@formatter:on
 
