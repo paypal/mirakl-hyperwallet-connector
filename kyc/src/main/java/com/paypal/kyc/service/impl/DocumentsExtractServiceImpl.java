@@ -2,7 +2,8 @@ package com.paypal.kyc.service.impl;
 
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
-import com.paypal.kyc.service.*;
+import com.paypal.kyc.service.DocumentsExtractService;
+import com.paypal.kyc.service.HMCDocumentsExtractService;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletBusinessStakeholderExtractService;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletSellerExtractService;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklBusinessStakeholderDocumentsExtractService;

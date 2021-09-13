@@ -15,6 +15,7 @@ import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.LoggingConstantsUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCConstants;
+import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklSellerDocumentDownloadExtractService;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklSellerDocumentsExtractService;
@@ -36,7 +37,8 @@ import java.util.stream.Stream;
  */
 @Slf4j
 @Service
-public class MiraklSellerDocumentsExtractServiceImpl implements MiraklSellerDocumentsExtractService {
+public class MiraklSellerDocumentsExtractServiceImpl extends AbstractMiraklDocumentExtractServiceImpl
+		implements MiraklSellerDocumentsExtractService {
 
 	private final MiraklSellerDocumentDownloadExtractService miraklSellerDocumentDownloadExtractService;
 
@@ -54,6 +56,7 @@ public class MiraklSellerDocumentsExtractServiceImpl implements MiraklSellerDocu
 			final Converter<MiraklShop, KYCDocumentSellerInfoModel> miraklShopKYCDocumentInfoModelConverter,
 			final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
 			final MailNotificationUtil kycMailNotificationUtil) {
+		super(miraklOperatorClient);
 		this.miraklSellerDocumentDownloadExtractService = miraklSellerDocumentDownloadExtractService;
 		this.miraklGetShopsRequestConverter = miraklGetShopsRequestConverter;
 		this.miraklShopKYCDocumentInfoModelConverter = miraklShopKYCDocumentInfoModelConverter;
@@ -71,57 +74,53 @@ public class MiraklSellerDocumentsExtractServiceImpl implements MiraklSellerDocu
 		final MiraklShops shops = miraklOperatorClient.getShops(miraklGetShopsRequest);
 
 		//@formatter:off
-        log.info("Retrieved modified shops since [{}]: [{}]", delta,
-                Stream.ofNullable(shops.getShops())
-                        .flatMap(Collection::stream)
-                        .map(MiraklShop::getId)
-                        .collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR)));
-        //@formatter:on
+		log.info("Retrieved modified shops since [{}]: [{}]", delta,
+						Stream.ofNullable(shops.getShops())
+										.flatMap(Collection::stream)
+										.map(MiraklShop::getId)
+										.collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR)));
+		//@formatter:on
 
 		//@formatter:off
-        final List<KYCDocumentSellerInfoModel> kycDocumentInfoList = Stream.ofNullable(shops.getShops())
-                .flatMap(Collection::stream)
-                .map(miraklShopKYCDocumentInfoModelConverter::convert)
-                .collect(Collectors.toList());
-        //@formatter:on
+		final List<KYCDocumentSellerInfoModel> kycDocumentInfoList = Stream.ofNullable(shops.getShops())
+						.flatMap(Collection::stream)
+						.map(miraklShopKYCDocumentInfoModelConverter::convert)
+						.collect(Collectors.toList());
+		//@formatter:on
 
 		//@formatter:off
-        final List<KYCDocumentSellerInfoModel> shopsWithVerificationRequired = kycDocumentInfoList.stream()
-                .filter(KYCDocumentSellerInfoModel::isRequiresKYC)
-                .collect(Collectors.toList());
-        //@formatter:on
+		final List<KYCDocumentSellerInfoModel> shopsWithVerificationRequired = kycDocumentInfoList.stream()
+						.filter(KYCDocumentSellerInfoModel::isRequiresKYC)
+						.collect(Collectors.toList());
+		//@formatter:on
 
 		if (!CollectionUtils.isEmpty(shopsWithVerificationRequired)) {
 			//@formatter:off
-            log.info("Shops with KYC seller verification required: [{}]",
-                    shopsWithVerificationRequired.stream()
-                            .map(KYCDocumentSellerInfoModel::getClientUserId)
-                            .collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR)));
-            //@formatter:on
+			log.info("Shops with KYC seller verification required: [{}]",
+							shopsWithVerificationRequired.stream()
+											.map(KYCDocumentSellerInfoModel::getClientUserId)
+											.collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR)));
+			//@formatter:on
 		}
 
 		skipShopsWithNonSelectedDocuments(shopsWithVerificationRequired);
 
 		//@formatter:off
-        final List<KYCDocumentSellerInfoModel> shopsWithSelectedVerificationDocuments = shopsWithVerificationRequired.stream()
-                .filter(KYCDocumentSellerInfoModel::hasSelectedDocumentControlFields)
-                .collect(Collectors.toList());
-        //@formatter:on
+		final List<KYCDocumentSellerInfoModel> shopsWithSelectedVerificationDocuments = shopsWithVerificationRequired.stream()
+						.filter(KYCDocumentSellerInfoModel::hasSelectedDocumentControlFields)
+						.collect(Collectors.toList());
+		//@formatter:on
 
 		//@formatter:off
-        return shopsWithSelectedVerificationDocuments.stream()
-                .filter(kycDocumentInfoModel -> !ObjectUtils.isEmpty(kycDocumentInfoModel.getUserToken()))
-                .map(miraklSellerDocumentDownloadExtractService::getDocumentsSelectedBySeller)
-                .collect(Collectors.toList());
-        //@formatter:on
+		return shopsWithSelectedVerificationDocuments.stream()
+						.filter(kycDocumentInfoModel -> !ObjectUtils.isEmpty(kycDocumentInfoModel.getUserToken()))
+						.map(miraklSellerDocumentDownloadExtractService::getDocumentsSelectedBySeller)
+						.collect(Collectors.toList());
+		//@formatter:on
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Optional<MiraklShop> extractMiraklShop(final String shopId) {
+	protected Optional<MiraklShop> extractMiraklShop(final String shopId) {
 		final MiraklGetShopsRequest miraklGetShopsRequest = new MiraklGetShopsRequest();
 		miraklGetShopsRequest.setShopIds(List.of(shopId));
 		log.info("Retrieving shopId [{}]", shopId);
@@ -143,16 +142,27 @@ public class MiraklSellerDocumentsExtractServiceImpl implements MiraklSellerDocu
 		return miraklUpdateShopCall(shopIdToUpdateList);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public KYCDocumentInfoModel extractKYCSellerDocuments(final String shopId) {
+		return extractMiraklShop(shopId)
+				.map(miraklShop -> miraklSellerDocumentDownloadExtractService
+						.populateMiraklShopDocuments(miraklShopKYCDocumentInfoModelConverter.convert(miraklShop)))
+				.orElse(null);
+	}
+
 	private void skipShopsWithNonSelectedDocuments(
 			final List<KYCDocumentSellerInfoModel> shopsWithVerificationRequired) {
 
 		//@formatter:off
-        final List<KYCDocumentSellerInfoModel> shopsWithNonSelectedVerificationDocuments = shopsWithVerificationRequired.stream()
-                .filter(Predicate
-                        .not(KYCDocumentSellerInfoModel::hasSelectedDocumentControlFields))
-                .collect(Collectors
-                        .toList());
-        //@formatter:on
+		final List<KYCDocumentSellerInfoModel> shopsWithNonSelectedVerificationDocuments = shopsWithVerificationRequired.stream()
+						.filter(Predicate
+										.not(KYCDocumentSellerInfoModel::hasSelectedDocumentControlFields))
+						.collect(Collectors
+										.toList());
+		//@formatter:on
 
 		if (!CollectionUtils.isEmpty(shopsWithNonSelectedVerificationDocuments)) {
 			log.warn("Skipping shops for seller with non selected documents to push to hyperwallet: [{}]",
@@ -187,15 +197,15 @@ public class MiraklSellerDocumentsExtractServiceImpl implements MiraklSellerDocu
 			return Optional.of(miraklUpdatedShops);
 			//@formatter:off
 
-        } catch (final MiraklException e) {
-            log.error("Something went wrong when removing flag to retrieve documents for shops [{}]", String.join(",", shopIdList));
-            kycMailNotificationUtil.sendPlainTextEmail("Issue setting push document flags to false in Mirakl",
-                    String.format("Something went wrong setting push document flag to false in Mirakl for shop Id [%s]%n%s",
-                            String.join(",", shopIdList),
-                            MiraklLoggingErrorsUtil.stringify(e)));
-        }
+		} catch (final MiraklException e) {
+			log.error("Something went wrong when removing flag to retrieve documents for shops [{}]", String.join(",", shopIdList));
+			kycMailNotificationUtil.sendPlainTextEmail("Issue setting push document flags to false in Mirakl",
+							String.format("Something went wrong setting push document flag to false in Mirakl for shop Id [%s]%n%s",
+											String.join(",", shopIdList),
+											MiraklLoggingErrorsUtil.stringify(e)));
+		}
 
-        return Optional.empty();
-    }
+		return Optional.empty();
+	}
 
 }

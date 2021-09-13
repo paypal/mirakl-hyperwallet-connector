@@ -12,6 +12,8 @@ public class KYCUserStatusNotificationBodyModel extends KYCNotificationBodyModel
 
 	protected final HyperwalletUser.LetterOfAuthorizationStatus letterOfAuthorizationStatus;
 
-	private final List<KYCRejectionReasonTypeEnum> reasonsType;
+	protected final transient List<KYCRejectionReasonTypeEnum> reasonsType;
+
+	protected final transient List<KYCDocumentNotificationModel> documents;
 
 }

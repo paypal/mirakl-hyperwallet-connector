@@ -3,14 +3,18 @@ package com.paypal.kyc.strategies.status.impl;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.mmp.domain.shop.MiraklShopKycStatus;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.kyc.model.KYCDocumentNotificationModel;
 import com.paypal.kyc.model.KYCUserStatusNotificationBodyModel;
 import com.paypal.kyc.service.KYCRejectionReasonService;
+import com.paypal.kyc.service.documents.files.mirakl.MiraklSellerDocumentsExtractService;
 import com.paypal.kyc.strategies.status.AbstractKYCUserStatusNotificationStrategy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.EnumMap;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -20,9 +24,11 @@ public class IndividualKYCUserStatusNotificationStrategy extends AbstractKYCUser
 
 	public IndividualKYCUserStatusNotificationStrategy(
 			final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
-			final MailNotificationUtil mailNotificationUtil,
-			final KYCRejectionReasonService kycRejectionReasonService) {
-		super(miraklOperatorClient, mailNotificationUtil, kycRejectionReasonService);
+			final MailNotificationUtil mailNotificationUtil, final KYCRejectionReasonService kycRejectionReasonService,
+			final MiraklSellerDocumentsExtractService miraklSellerDocumentsExtractService,
+			final Converter<KYCDocumentNotificationModel, List<String>> kycDocumentNotificationModelListConverter) {
+		super(miraklOperatorClient, mailNotificationUtil, kycRejectionReasonService,
+				miraklSellerDocumentsExtractService, kycDocumentNotificationModelListConverter);
 		initializeMap();
 	}
 

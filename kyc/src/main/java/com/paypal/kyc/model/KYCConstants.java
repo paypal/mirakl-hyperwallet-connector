@@ -26,6 +26,8 @@ public class KYCConstants {
 
 	public static final String PROOF_IDENTITY_PREFIX = "proof-identity-";
 
+	public static final String PROOF_ADDRESS_SUFFIX = "proof-address";
+
 	public static final String PROOF_AUTHORIZATION_PREFIX = "proof-authorization-";
 
 	public static final String CONTACT = "business-contact-";

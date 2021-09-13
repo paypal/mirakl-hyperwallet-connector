@@ -1,6 +1,8 @@
 package com.paypal.kyc.converter;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
+import com.paypal.infrastructure.converter.Converter;
+import com.paypal.kyc.model.KYCDocumentNotificationModel;
 import com.paypal.kyc.model.KYCRejectionReasonTypeEnum;
 import com.paypal.kyc.service.KYCRejectionReasonService;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class HyperWalletObjectToKYCUserStatusNotificationBodyModelConverterTest {
@@ -37,6 +40,9 @@ class HyperWalletObjectToKYCUserStatusNotificationBodyModelConverterTest {
 	@Mock
 	private KYCRejectionReasonService kycRejectionReasonServiceMock;
 
+	@Mock
+	private Converter<Object, List<KYCDocumentNotificationModel>> objectKYCDocumentNotificationModelListConverterMock;
+
 	@Test
 	void convert_shouldTransformHyperWalletWebhookBusinessUserNotificationToKycBusinessUserStatusNotificationModel_whenDetailsIsNotNull() {
 		final var hyperWalletKycUserBodyNotification = createHyperWalletKycUserBodyNotification(BUSINESS_PROFILE_TYPE);
@@ -54,6 +60,7 @@ class HyperWalletObjectToKYCUserStatusNotificationBodyModelConverterTest {
 		assertThat(result.getLetterOfAuthorizationStatus()).isEqualTo(FAILED_LETTER_VERIFICATION_STATUS);
 		assertThat(result.getReasonsType())
 				.containsExactlyInAnyOrder(KYCRejectionReasonTypeEnum.VERIFICATIONSTATUS_PROF_REQUIRED);
+		verify(objectKYCDocumentNotificationModelListConverterMock).convert(hyperWalletKycUserBodyNotification);
 	}
 
 	@Test
