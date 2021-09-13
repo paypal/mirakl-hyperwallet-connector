@@ -27,7 +27,8 @@ public class HyperWalletUpdateSellerServiceStrategy extends AbstractHyperwalletS
 	}
 
 	@Override
-	protected HyperwalletUser callMiraklAPI(final HyperwalletUser hyperwalletUser) {
+	protected HyperwalletUser createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl(
+			final HyperwalletUser hyperwalletUser) {
 		final Hyperwallet hyperwallet = hyperwalletSDKService
 				.getHyperwalletInstanceByProgramToken(hyperwalletUser.getProgramToken());
 		return hyperwallet.updateUser(hyperwalletUser);

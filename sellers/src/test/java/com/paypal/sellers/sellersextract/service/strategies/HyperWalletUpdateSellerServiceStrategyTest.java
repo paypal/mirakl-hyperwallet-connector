@@ -43,7 +43,8 @@ class HyperWalletUpdateSellerServiceStrategyTest {
 		when(hyperWalletUserRequestMock.getProgramToken()).thenReturn(PROGRAM_TOKEN_VALUE);
 		when(hyperwalletMock.updateUser(hyperWalletUserRequestMock)).thenReturn(hyperWalletUserResponseMock);
 
-		final HyperwalletUser result = testObj.callMiraklAPI(hyperWalletUserRequestMock);
+		final HyperwalletUser result = testObj
+				.createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl(hyperWalletUserRequestMock);
 
 		verify(hyperwalletMock).updateUser(hyperWalletUserRequestMock);
 		assertThat(result).isEqualTo(hyperWalletUserResponseMock);

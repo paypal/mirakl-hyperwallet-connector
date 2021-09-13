@@ -54,7 +54,7 @@ public abstract class AbstractHyperwalletSellerRetryApiStrategy
 		final HyperwalletUser hwUserRequest = sellerModelHyperwalletUserConverter.convert(seller);
 		log.debug("Hyperwallet API user request: [{}]", ToStringBuilder.reflectionToString(hwUserRequest));
 		try {
-			hyperwalletUser = callMiraklAPI(hwUserRequest);
+			hyperwalletUser = createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl(hwUserRequest);
 			log.info("Seller created or updated for seller with clientId [{}]", seller.getClientUserId());
 			log.debug("Hyperwallet created or updated seller response: [{}]",
 					ToStringBuilder.reflectionToString(hwUserRequest));
@@ -76,7 +76,8 @@ public abstract class AbstractHyperwalletSellerRetryApiStrategy
 		return hyperwalletUser;
 	}
 
-	protected abstract HyperwalletUser callMiraklAPI(HyperwalletUser hyperwalletUser);
+	protected abstract HyperwalletUser createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl(
+			HyperwalletUser hyperwalletUser);
 
 	protected void callToIncludeIntoRetryProcess(final SellerModel sellerModel, final Boolean include) {
 		executeRetryProcess(sellerModel.getClientUserId(), include);

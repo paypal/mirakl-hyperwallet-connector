@@ -26,6 +26,9 @@ public class RabbitMQConfig {
 	@Value("${notifications.users.kyc.queue}")
 	String usersKycQueueName;
 
+	@Value("${notifications.business.stakeholders.kyc.queue}")
+	String businessStakeholdersKycQueueName;
+
 	@Value("${notifications.exchange}")
 	String exchange;
 
@@ -35,6 +38,9 @@ public class RabbitMQConfig {
 	@Value("${notifications.users.kyc.routingKey}.*")
 	private String usersKycRoutingKey;
 
+	@Value("${notifications.business.stakeholders.kyc.routingKey}.*")
+	private String businessStakeHoldersKycRoutingKey;
+
 	@Bean
 	Queue paymentQueue() {
 		return new Queue(paymentQueueName, false);
@@ -43,6 +49,11 @@ public class RabbitMQConfig {
 	@Bean
 	Queue usersQueue() {
 		return new Queue(usersKycQueueName, false);
+	}
+
+	@Bean
+	Queue businessStakeHoldersQueue() {
+		return new Queue(businessStakeholdersKycQueueName, false);
 	}
 
 	@Bean
@@ -58,6 +69,11 @@ public class RabbitMQConfig {
 	@Bean
 	Binding userBinding(final TopicExchange exchange) {
 		return BindingBuilder.bind(usersQueue()).to(exchange).with(usersKycRoutingKey);
+	}
+
+	@Bean
+	Binding businessStakeholderBinding(final TopicExchange exchange) {
+		return BindingBuilder.bind(businessStakeHoldersQueue()).to(exchange).with(businessStakeHoldersKycRoutingKey);
 	}
 
 	@Bean

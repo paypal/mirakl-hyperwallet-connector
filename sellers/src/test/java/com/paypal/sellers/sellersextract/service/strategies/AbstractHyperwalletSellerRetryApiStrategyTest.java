@@ -55,7 +55,7 @@ class AbstractHyperwalletSellerRetryApiStrategyTest {
 		testObj.execute(sellerModelMock);
 
 		verify(sellerModelHyperwalletUserConverterMock).convert(sellerModelMock);
-		verify(testObj).callMiraklAPI(hyperwalletUserMock);
+		verify(testObj).createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl(hyperwalletUserMock);
 
 	}
 
@@ -65,7 +65,8 @@ class AbstractHyperwalletSellerRetryApiStrategyTest {
 		when(sellerModelMock.getClientUserId()).thenReturn("2001");
 		when(sellerModelHyperwalletUserConverterMock.convert(sellerModelMock)).thenReturn(hyperwalletUserMock);
 		doNothing().when(testObj).callToIncludeIntoRetryProcess(sellerModelMock, Boolean.FALSE);
-		doThrow(hyperwalletException).when(testObj).callMiraklAPI(hyperwalletUserMock);
+		doThrow(hyperwalletException).when(testObj)
+				.createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl(hyperwalletUserMock);
 
 		testObj.execute(sellerModelMock);
 
@@ -81,7 +82,8 @@ class AbstractHyperwalletSellerRetryApiStrategyTest {
 		when(hyperwalletExceptionMock.getCause()).thenReturn(ioExceptionMock);
 		when(sellerModelMock.getClientUserId()).thenReturn("2001");
 		when(sellerModelHyperwalletUserConverterMock.convert(sellerModelMock)).thenReturn(hyperwalletUserMock);
-		doThrow(hyperwalletExceptionMock).when(testObj).callMiraklAPI(hyperwalletUserMock);
+		doThrow(hyperwalletExceptionMock).when(testObj)
+				.createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl(hyperwalletUserMock);
 		doNothing().when(testObj).callToIncludeIntoRetryProcess(sellerModelMock, Boolean.TRUE);
 
 		testObj.execute(sellerModelMock);
@@ -100,7 +102,8 @@ class AbstractHyperwalletSellerRetryApiStrategyTest {
 		}
 
 		@Override
-		protected HyperwalletUser callMiraklAPI(final HyperwalletUser hyperwalletUser) {
+		protected HyperwalletUser createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl(
+				final HyperwalletUser hyperwalletUser) {
 			return null;
 		}
 

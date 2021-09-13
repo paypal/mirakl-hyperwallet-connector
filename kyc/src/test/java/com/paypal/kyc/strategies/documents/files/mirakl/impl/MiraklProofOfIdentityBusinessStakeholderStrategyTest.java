@@ -54,8 +54,8 @@ class MiraklProofOfIdentityBusinessStakeholderStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnTrueWhenIsProofOfIdentity() {
-
-		final boolean result = testObj.isApplicable(kycDocumentBusinessStakeHolderInfoModel);
+		final boolean result = testObj
+				.isApplicable(kycDocumentBusinessStakeHolderInfoModel.toBuilder().requiresKYC(true).build());
 
 		assertThat(result).isTrue();
 	}

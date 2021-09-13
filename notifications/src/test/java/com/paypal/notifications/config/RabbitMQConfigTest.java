@@ -16,11 +16,15 @@ class RabbitMQConfigTest {
 
 	private static final String USER_KYC_QUEUE_NAME = "USER_KYC_QUEUE";
 
+	private static final String BUSINESS_KYC_QUEUE_NAME = "BUSINESS_KYC_QUEUE";
+
 	private static final String EXCHANGE = "EXCHANGE";
 
 	private static final String PAYMENT_ROUTING_KEY = "PAYMENT_ROUTING_KEY";
 
 	private static final String USER_KYC_ROUTING_KEY = "USER_KYC_ROUTING_KEY";
+
+	private static final String BUSINESS_KYC_ROUTING_KEY = "BUSINESS_KYC_ROUTING_KEY";
 
 	@InjectMocks
 	private RabbitMQConfig testObj;
@@ -30,8 +34,10 @@ class RabbitMQConfigTest {
 		testObj.setExchange(EXCHANGE);
 		testObj.setPaymentQueueName(PAYMENT_QUEUE_NAME);
 		testObj.setUsersKycQueueName(USER_KYC_QUEUE_NAME);
+		testObj.setBusinessStakeholdersKycQueueName(BUSINESS_KYC_QUEUE_NAME);
 		testObj.setPaymentRoutingKey(PAYMENT_ROUTING_KEY);
 		testObj.setUsersKycRoutingKey(USER_KYC_ROUTING_KEY);
+		testObj.setBusinessStakeHoldersKycRoutingKey(BUSINESS_KYC_ROUTING_KEY);
 	}
 
 	@Test
@@ -71,6 +77,15 @@ class RabbitMQConfigTest {
 		assertThat(result.getExchange()).isEqualTo(EXCHANGE);
 		assertThat(result.getDestination()).isEqualTo(USER_KYC_QUEUE_NAME);
 		assertThat(result.getRoutingKey()).isEqualTo(USER_KYC_ROUTING_KEY);
+	}
+
+	@Test
+	void businessStakeholderBinding_shouldReturnBindingBetweenExchangeAndBusinessStakeholderKycQueue() {
+		final var result = testObj.businessStakeholderBinding(testObj.topicExchange());
+
+		assertThat(result.getExchange()).isEqualTo(EXCHANGE);
+		assertThat(result.getDestination()).isEqualTo(BUSINESS_KYC_QUEUE_NAME);
+		assertThat(result.getRoutingKey()).isEqualTo(BUSINESS_KYC_ROUTING_KEY);
 	}
 
 	@Test
