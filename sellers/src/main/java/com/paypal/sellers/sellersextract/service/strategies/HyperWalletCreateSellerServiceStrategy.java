@@ -31,8 +31,15 @@ public class HyperWalletCreateSellerServiceStrategy extends AbstractHyperwalletS
 		this.miraklSellersExtractService = miraklSellersExtractService;
 	}
 
+	/**
+	 * It creates the user on HyperWallet side, then it updates the user information on
+	 * Mirakl accordingly with the response received on user creation by HyperWallet
+	 * @param hyperwalletUser The User to be created
+	 * @return The created HyperWallet user
+	 */
 	@Override
-	protected HyperwalletUser callMiraklAPI(final HyperwalletUser hyperwalletUser) {
+	protected HyperwalletUser createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl(
+			final HyperwalletUser hyperwalletUser) {
 		final Hyperwallet hyperwallet = hyperwalletSDKService
 				.getHyperwalletInstanceByProgramToken(hyperwalletUser.getProgramToken());
 		final HyperwalletUser hwUser = hyperwallet.createUser(hyperwalletUser);

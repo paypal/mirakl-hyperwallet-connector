@@ -38,7 +38,7 @@ public class MiraklProofOfIdentityBusinessStakeholderStrategy extends AbstractMi
 		}
 
 		KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = (KYCDocumentBusinessStakeHolderInfoModel) source;
-		return Objects.nonNull(kycDocumentBusinessStakeHolderInfoModel.getProofOfIdentity());
+		return source.isRequiresKYC() && Objects.nonNull(kycDocumentBusinessStakeHolderInfoModel.getProofOfIdentity());
 	}
 
 }

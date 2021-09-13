@@ -47,7 +47,8 @@ class HyperWalletCreateSellerServiceStrategyTest {
 				.thenReturn(hyperwalletMock);
 		when(hyperwalletMock.createUser(hyperwalletUserRequestMock)).thenReturn(hyperwalletUserResponseMock);
 		when(hyperwalletUserRequestMock.getProgramToken()).thenReturn(PROGRAM_TOKEN_VALUE);
-		final HyperwalletUser result = testObj.callMiraklAPI(hyperwalletUserRequestMock);
+		final HyperwalletUser result = testObj
+				.createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl(hyperwalletUserRequestMock);
 
 		verify(hyperwalletMock).createUser(hyperwalletUserRequestMock);
 		verify(miraklSellersExtractServiceMock).updateUserToken(hyperwalletUserResponseMock);
