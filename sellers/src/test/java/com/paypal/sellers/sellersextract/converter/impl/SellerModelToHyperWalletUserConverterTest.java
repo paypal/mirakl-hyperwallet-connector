@@ -75,6 +75,10 @@ class SellerModelToHyperWalletUserConverterTest {
 
 	private static final String HYPERWALLET_PROGRAM = "hyperwalletProgram";
 
+	private static final String BUSINESS_REGISTRATION_STATE_PROVINCE = "businessRegistrationStateProvince";
+
+	private static final String COMPANY_REGISTRATION_COUNTRY = "companyRegistrationCountry";
+
 	@InjectMocks
 	private SellerModelToHyperWalletUserConverter testObj;
 
@@ -117,6 +121,8 @@ class SellerModelToHyperWalletUserConverterTest {
 		when(sellerModelMock.getCompanyName()).thenReturn(COMPANY_NAME);
 		when(sellerModelMock.getCompanyRegistrationNumber()).thenReturn(COMPANY_REGISTRATION_NUMBER);
 		when(sellerModelMock.getToken()).thenReturn(USER_TOKEN);
+		when(sellerModelMock.getBusinessRegistrationStateProvince()).thenReturn(BUSINESS_REGISTRATION_STATE_PROVINCE);
+		when(sellerModelMock.getCompanyRegistrationCountry()).thenReturn(COMPANY_REGISTRATION_COUNTRY);
 	}
 
 	@Test
@@ -147,7 +153,9 @@ class SellerModelToHyperWalletUserConverterTest {
 				.hasFieldOrPropertyWithValue("businessType", HyperwalletUser.BusinessType.PRIVATE_COMPANY)
 				.hasFieldOrPropertyWithValue("governmentIdType", HyperwalletUser.GovernmentIdType.NATIONAL_ID_CARD)
 				.hasFieldOrPropertyWithValue("businessOperatingName", COMPANY_NAME)
-				.hasFieldOrPropertyWithValue("token", USER_TOKEN);
+				.hasFieldOrPropertyWithValue("token", USER_TOKEN)
+				.hasFieldOrPropertyWithValue("businessRegistrationCountry", COMPANY_REGISTRATION_COUNTRY)
+				.hasFieldOrPropertyWithValue("businessRegistrationStateProvince", BUSINESS_REGISTRATION_STATE_PROVINCE);
 	}
 
 	@Test

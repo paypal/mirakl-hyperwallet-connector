@@ -31,6 +31,8 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 
 	private static final String CLIENT_ID_1 = "clientID1";
 
+	private static final String STATE_PROVINCE_VALUE = "stateProvince";
+
 	@Spy
 	@InjectMocks
 	private MiraklShopToProfessionalSellerModelConverter testObj;
@@ -78,6 +80,16 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 		when(miraklProfessionalInformationMock.getIdentificationNumber()).thenReturn(IDENTIFICATION_NUMBER);
 		when(miraklProfessionalInformationMock.getTaxIdentificationNumber()).thenReturn(VAT_NUMBER);
 
+		final var businessRegistrationStateProvinceMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		businessRegistrationStateProvinceMiraklCustomField.setCode("hw-business-reg-state-province");
+		businessRegistrationStateProvinceMiraklCustomField.setValue(STATE_PROVINCE_VALUE);
+
+		final var businessRegistrationCountryMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		businessRegistrationCountryMiraklCustomField.setCode("hw-business-reg-country");
+		businessRegistrationCountryMiraklCustomField.setValue("US");
+		when(miraklShopMock.getAdditionalFieldValues()).thenReturn(List
+				.of(businessRegistrationStateProvinceMiraklCustomField, businessRegistrationCountryMiraklCustomField));
+
 		final SellerModel.SellerModelBuilder sellerModelBuilderStub = SellerModel.builder();
 		doReturn(sellerModelBuilderStub).when(testObj).getCommonFieldsBuilder(miraklShopMock);
 
@@ -88,6 +100,8 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 		assertThat(result.getCompanyName()).isEqualTo(CORP_NAME);
 		assertThat(result.getCompanyRegistrationNumber()).isEqualTo(IDENTIFICATION_NUMBER);
 		assertThat(result.getVatNumber()).isEqualTo(VAT_NUMBER);
+		assertThat(result.getBusinessRegistrationStateProvince()).isEqualTo(STATE_PROVINCE_VALUE);
+		assertThat(result.getCompanyRegistrationCountry()).isEqualTo("US");
 	}
 
 	@Test
@@ -119,7 +133,9 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 				governmentIdCountTwoAdditionalFieldMock, driversLicenseTwoNumAdditionalFieldMock,
 				driversLicenseCntTwoAdditionalFieldMock);
 
-		when(miraklShopMock.getAdditionalFieldValues()).thenReturn(additionalFieldValues);
+		when(miraklShopMock.getAdditionalFieldValues()).thenReturn(additionalFieldValues)
+				.thenReturn(additionalFieldValues).thenReturn(additionalFieldValues).thenReturn(additionalFieldValues)
+				.thenReturn(additionalFieldValues).thenReturn(List.of());
 		when(businessStakeHolderModelConverterMock.convert(Triple.of(additionalFieldValues, 1, CLIENT_ID_1)))
 				.thenReturn(businessStakeHolderModelOneMock);
 		when(businessStakeHolderModelConverterMock.convert(Triple.of(additionalFieldValues, 2, CLIENT_ID_1)))

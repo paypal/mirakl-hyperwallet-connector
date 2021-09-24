@@ -85,6 +85,10 @@ public class SellerModel {
 
 	private final String companyRegistrationNumber;
 
+	private final String companyRegistrationCountry;
+
+	private final String businessRegistrationStateProvince;
+
 	private final String vatNumber;
 
 	private final boolean hwTermsConsent;
@@ -95,40 +99,42 @@ public class SellerModel {
 
 	public SellerModelBuilder toBuilder() {
 		//@formatter:off
-        return SellerModel.builder()
-                .clientUserId(clientUserId)
-                .firstName(firstName)
-                .lastName(lastName)
-                .dateOfBirth(dateOfBirth)
-                .countryOfBirth(countryOfBirth)
-                .countryOfNationality(countryOfNationality)
-                .gender(gender)
-                .phoneNumber(phoneNumber)
-                .mobilePhone(mobilePhone)
-                .email(email)
-                .governmentId(governmentId)
-                .governmentIdType(governmentIdType)
-                .passportId(passportId)
-                .driversLicenseId(driversLicenseId)
-                .employerId(employerId)
-                .addressLine1(addressLine1)
-                .addressLine2(addressLine2)
-                .city(city)
-                .stateProvince(stateProvince)
-                .internalCountry(country)
-                .postalCode(postalCode)
-                .language(language)
-                .programToken(programToken)
-                .businessType(businessType)
-                .businessName(businessName)
-                .token(token)
-                .bankAccountDetails(bankAccountDetails)
-                .profileType(profileType)
-                .companyName(companyName)
-                .companyRegistrationNumber(companyRegistrationNumber)
-                .vatNumber(vatNumber)
-                .businessStakeHolderDetails(businessStakeHolderDetails)
-				.hyperwalletProgram(hyperwalletProgram);
+		return SellerModel.builder()
+						.clientUserId(clientUserId)
+						.firstName(firstName)
+						.lastName(lastName)
+						.dateOfBirth(dateOfBirth)
+						.countryOfBirth(countryOfBirth)
+						.countryOfNationality(countryOfNationality)
+						.gender(gender)
+						.phoneNumber(phoneNumber)
+						.mobilePhone(mobilePhone)
+						.email(email)
+						.governmentId(governmentId)
+						.governmentIdType(governmentIdType)
+						.passportId(passportId)
+						.driversLicenseId(driversLicenseId)
+						.employerId(employerId)
+						.addressLine1(addressLine1)
+						.addressLine2(addressLine2)
+						.city(city)
+						.stateProvince(stateProvince)
+						.internalBusinessRegistrationStateProvince(businessRegistrationStateProvince)
+						.internalCountry(country)
+						.internalCompanyRegistrationCountry(companyRegistrationCountry)
+						.postalCode(postalCode)
+						.language(language)
+						.programToken(programToken)
+						.businessType(businessType)
+						.businessName(businessName)
+						.token(token)
+						.bankAccountDetails(bankAccountDetails)
+						.profileType(profileType)
+						.companyName(companyName)
+						.companyRegistrationNumber(companyRegistrationNumber)
+						.vatNumber(vatNumber)
+						.businessStakeHolderDetails(businessStakeHolderDetails)
+						.hyperwalletProgram(hyperwalletProgram);
         //@formatter:on
 	}
 
@@ -164,11 +170,33 @@ public class SellerModel {
 			return this;
 		}
 
-		public SellerModelBuilder country(final String country) {
-			final Locale countryLocale = CountriesUtil.getLocaleByThreeLettersIsocode(country).orElseThrow(
-					() -> new IllegalStateException(String.format("Country with isocode: [%s] not valid", country)));
+		private SellerModelBuilder internalCompanyRegistrationCountry(final String companyRegistrationCountry) {
+			this.companyRegistrationCountry = companyRegistrationCountry;
+			return this;
+		}
 
-			this.country = countryLocale.getCountry();
+		private SellerModelBuilder internalBusinessRegistrationStateProvince(
+				final String businessRegistrationStateProvince) {
+			this.businessRegistrationStateProvince = businessRegistrationStateProvince;
+			return this;
+		}
+
+		public SellerModelBuilder country(final String country) {
+			this.country = transform3CharIsocodeTo2CharIsocode(country);
+			return this;
+		}
+
+		public SellerModelBuilder companyRegistrationCountry(final List<MiraklAdditionalFieldValue> fields) {
+			getMiraklStringCustomFieldValue(fields, HYPERWALLET_BUSINESS_REGISTRATION_COUNTRY)
+					.ifPresent(countryIsocode -> companyRegistrationCountry = countryIsocode);
+
+			return this;
+		}
+
+		public SellerModelBuilder businessRegistrationStateProvince(final List<MiraklAdditionalFieldValue> fields) {
+			getMiraklStringCustomFieldValue(fields, HYPERWALLET_BUSINESS_REGISTRATION_STATE_PROVINCE).ifPresent(
+					businessRegistrationStateProvince -> this.businessRegistrationStateProvince = businessRegistrationStateProvince);
+
 			return this;
 		}
 
@@ -295,6 +323,13 @@ public class SellerModel {
 					.filter(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::isInstance)
 					.map(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::cast).findAny()
 					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+		}
+
+		private String transform3CharIsocodeTo2CharIsocode(final String country) {
+			final Locale countryLocale = CountriesUtil.getLocaleByThreeLettersIsocode(country).orElseThrow(
+					() -> new IllegalStateException(String.format("Country with isocode: [%s] not valid", country)));
+
+			return countryLocale.getCountry();
 		}
 
 		private SellerModelBuilder dateOfBirth(final Date dateOfBirth) {

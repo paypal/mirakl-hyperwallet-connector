@@ -48,7 +48,11 @@ public class MiraklShopToProfessionalSellerModelConverter extends AbstractMirakl
 				.filter(Predicate.not(BusinessStakeHolderModel::isEmpty))
 				.collect(Collectors.toCollection(ArrayList::new));
 
+		final List<MiraklAdditionalFieldValue> additionalFieldValues = source.getAdditionalFieldValues();
+
 		return sellerModelBuilder.profileType(SellerProfileType.BUSINESS)
+				.companyRegistrationCountry(additionalFieldValues)
+				.businessRegistrationStateProvince(additionalFieldValues)
 				.companyName(source.getProfessionalInformation().getCorporateName())
 				.companyRegistrationNumber(source.getProfessionalInformation().getIdentificationNumber())
 				.vatNumber(source.getProfessionalInformation().getTaxIdentificationNumber())

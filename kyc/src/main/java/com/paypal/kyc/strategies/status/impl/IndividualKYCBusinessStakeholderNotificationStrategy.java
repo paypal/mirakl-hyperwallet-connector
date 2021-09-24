@@ -113,7 +113,7 @@ public class IndividualKYCBusinessStakeholderNotificationStrategy
 	protected HyperwalletUser getHyperWalletUser(
 			final KYCBusinessStakeholderStatusNotificationBodyModel kycBusinessStakeholderStatusNotificationBodyModel) {
 		final List<HyperwalletUser> hyperWalletUser = kycHyperwalletApiConfig.getUserStoreTokens().entrySet().stream()
-				.map(Map.Entry::getKey).map(programToken -> hyperwalletSDKService.getHyperwalletInstance(programToken))
+				.map(Map.Entry::getKey).map(hyperwalletSDKService::getHyperwalletInstance)
 				.map(hyperwallet -> callHyperwalletSDKCatchingException(hyperwallet,
 						kycBusinessStakeholderStatusNotificationBodyModel.getUserToken()))
 				.filter(Objects::nonNull).collect(Collectors.toList());
