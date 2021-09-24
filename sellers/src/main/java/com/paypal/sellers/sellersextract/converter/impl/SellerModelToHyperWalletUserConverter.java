@@ -53,6 +53,8 @@ public class SellerModelToHyperWalletUserConverter implements Converter<SellerMo
 		hyperwalletUser.setToken(sellerModel.getToken());
 		hyperwalletUser.setBusinessOperatingName(Optional.ofNullable(sellerModel.getCompanyName()).orElse(null));
 		hyperwalletUser.setBusinessRegistrationId(Optional.ofNullable(sellerModel.getCompanyRegistrationNumber()).orElse(null));
+		hyperwalletUser.setBusinessRegistrationCountry(Optional.ofNullable(sellerModel.getCompanyRegistrationCountry()).orElse(null));
+		hyperwalletUser.setBusinessRegistrationStateProvince(Optional.ofNullable(sellerModel.getBusinessRegistrationStateProvince()).orElse(null));
 
 		Optional.ofNullable(sellerModel.getBusinessType())
                 .map(Enum::name)

@@ -194,6 +194,14 @@ class SellerModelTest {
 		businessTypeMiraklCustomField.setCode("hw-business-type");
 		businessTypeMiraklCustomField.setValue("CORPORATION");
 
+		final var businessRegistrationStateProvinceMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		businessRegistrationStateProvinceMiraklCustomField.setCode("hw-business-reg-state-province");
+		businessRegistrationStateProvinceMiraklCustomField.setValue("stateProvince");
+
+		final var businessRegistrationCountryMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		businessRegistrationCountryMiraklCustomField.setCode("hw-business-reg-country");
+		businessRegistrationCountryMiraklCustomField.setValue("US");
+
 		final SellerModel testObj = SellerModel.builder().build();
 
 		//@formatter:off
@@ -226,6 +234,8 @@ class SellerModelTest {
 				.companyName("companyName")
 				.companyRegistrationNumber("companyRegistrationNumber")
 				.vatNumber("vatNumber")
+				.businessRegistrationStateProvince(List.of(businessRegistrationStateProvinceMiraklCustomField))
+				.companyRegistrationCountry(List.of(businessRegistrationCountryMiraklCustomField))
 				.build();
 
 		assertThat(result.getDateOfBirth()).hasYear(2020).hasMonth(10).hasDayOfMonth(29);
@@ -255,7 +265,9 @@ class SellerModelTest {
 				.hasFieldOrPropertyWithValue("profileType", SellerProfileType.INDIVIDUAL)
 				.hasFieldOrPropertyWithValue("companyName", "companyName")
 				.hasFieldOrPropertyWithValue("companyRegistrationNumber", "companyRegistrationNumber")
-				.hasFieldOrPropertyWithValue("vatNumber", "vatNumber");
+				.hasFieldOrPropertyWithValue("vatNumber", "vatNumber")
+				.hasFieldOrPropertyWithValue("companyRegistrationCountry", "US")
+				.hasFieldOrPropertyWithValue("businessRegistrationStateProvince", "stateProvince");
 		//@formatter:on
 	}
 
@@ -461,6 +473,14 @@ class SellerModelTest {
 		businessTypeMiraklCustomField.setCode("hw-business-type");
 		businessTypeMiraklCustomField.setValue("CORPORATION");
 
+		final var businessRegistrationStateProvinceMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		businessRegistrationStateProvinceMiraklCustomField.setCode("hw-business-reg-state-province");
+		businessRegistrationStateProvinceMiraklCustomField.setValue("stateProvince");
+
+		final var businessRegistrationCountryMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		businessRegistrationCountryMiraklCustomField.setCode("hw-business-reg-country");
+		businessRegistrationCountryMiraklCustomField.setValue("US");
+
 		//@formatter:off
 		return SellerModel.builder().clientUserId("clientUserId")
 				.firstName("firstName")
@@ -491,6 +511,8 @@ class SellerModelTest {
 				.companyName("companyName")
 				.companyRegistrationNumber("companyRegistrationNumber")
 				.vatNumber("vatNumber")
+				.businessRegistrationStateProvince(List.of(businessRegistrationStateProvinceMiraklCustomField))
+				.companyRegistrationCountry(List.of(businessRegistrationCountryMiraklCustomField))
 				.build();
 	}
 

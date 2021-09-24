@@ -33,4 +33,8 @@ public final class SellerModelConstants {
 
 	public static final String HYPERWALLET_PROGRAM = "hw-program";
 
+	public static final String HYPERWALLET_BUSINESS_REGISTRATION_COUNTRY = "hw-business-reg-country";
+
+	public static final String HYPERWALLET_BUSINESS_REGISTRATION_STATE_PROVINCE = "hw-business-reg-state-province";
+
 }
