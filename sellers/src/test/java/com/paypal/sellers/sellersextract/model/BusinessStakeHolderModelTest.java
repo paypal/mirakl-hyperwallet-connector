@@ -20,6 +20,8 @@ class BusinessStakeHolderModelTest {
 
 	private static final String HYPERWALLET_PROGRAM = "hyperwalletProgram";
 
+	private static final String UTC = "UTC";
+
 	@RegisterExtension
 	LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.WARN)
 			.recordForType(BusinessStakeHolderModel.class);
@@ -329,8 +331,39 @@ class BusinessStakeHolderModelTest {
 		dateOfBirthBusinessStakeHolderField.setValue(DATE_OF_BIRTH);
 		//@formatter:off
 		final var result = BusinessStakeHolderModel.builder()
+				.timeZone(UTC)
 				.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
+		//@formatter:on
+
+		assertThat(result.getDateOfBirth()).hasYear(1970).hasMonth(10).hasDayOfMonth(10);
+	}
+
+	@Test
+	void dateOfBirth_whenMiraklDateOfBirthBusinessStakeHolderFieldValueHasAValueAndTimeZoneIsUTCPlusTwo_shouldSetDateOfBirthNextDay() {
+		final var dateOfBirthBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		dateOfBirthBusinessStakeHolderField.setCode(DOB);
+		dateOfBirthBusinessStakeHolderField.setValue("1970-10-10T23:00:00Z");
+		//@formatter:off
+		final var result = BusinessStakeHolderModel.builder()
+						.timeZone("UTC+2")
+						.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
+						.build();
+		//@formatter:on
+
+		assertThat(result.getDateOfBirth()).hasYear(1970).hasMonth(10).hasDayOfMonth(11);
+	}
+
+	@Test
+	void dateOfBirth_whenMiraklDateOfBirthBusinessStakeHolderFieldValueHasAValueAndTimeZoneIsUTCMinusThree_shouldSetDateOfBirthSameDay() {
+		final var dateOfBirthBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		dateOfBirthBusinessStakeHolderField.setCode(DOB);
+		dateOfBirthBusinessStakeHolderField.setValue("1970-10-10T23:00:00Z");
+		//@formatter:off
+		final var result = BusinessStakeHolderModel.builder()
+						.timeZone("UTC-3")
+						.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
+						.build();
 		//@formatter:on
 
 		assertThat(result.getDateOfBirth()).hasYear(1970).hasMonth(10).hasDayOfMonth(10);
@@ -343,6 +376,7 @@ class BusinessStakeHolderModelTest {
 		dateOfBirthBusinessStakeHolderField.setValue(DATE_OF_BIRTH);
 		//@formatter:off
 		BusinessStakeHolderModel.builder()
+				.timeZone(UTC)
 				.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), INVALID_BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -900,6 +934,7 @@ class BusinessStakeHolderModelTest {
 				.firstName(List.of(firstNameBusinessStakeHolderField), STK_ID)
 				.middleName(List.of(middleNameBusinessStakeHolderField), STK_ID)
 				.lastName(List.of(lastNameBusinessStakeHolderField), STK_ID)
+				.timeZone(UTC)
 				.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), STK_ID)
 				.countryOfBirth(List.of(countryOfBirthBusinessStakeHolderField), STK_ID)
 				.countryOfNationality(List.of(countryOfNacionalityBusinessStakeHolderField), STK_ID)
@@ -1077,6 +1112,7 @@ class BusinessStakeHolderModelTest {
 				.firstName(List.of(firstNameBusinessStakeHolderField), STK_ID)
 				.middleName(List.of(middleNameBusinessStakeHolderField), STK_ID)
 				.lastName(List.of(lastNameBusinessStakeHolderField), STK_ID)
+				.timeZone(UTC)
 				.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), STK_ID)
 				.countryOfBirth(List.of(countryOfBirthBusinessStakeHolderField), STK_ID)
 				.countryOfNationality(List.of(countryOfNacionalityBusinessStakeHolderField), STK_ID)
@@ -1304,6 +1340,7 @@ class BusinessStakeHolderModelTest {
 				.firstName(List.of(firstNameBusinessStakeHolderField), STK_ID)
 				.middleName(List.of(middleNameBusinessStakeHolderField), STK_ID)
 				.lastName(List.of(lastNameBusinessStakeHolderField), STK_ID)
+				.timeZone(UTC)
 				.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), STK_ID)
 				.countryOfBirth(List.of(countryOfBirthBusinessStakeHolderField), STK_ID)
 				.countryOfNationality(List.of(countryOfNacionalityBusinessStakeHolderField), STK_ID)

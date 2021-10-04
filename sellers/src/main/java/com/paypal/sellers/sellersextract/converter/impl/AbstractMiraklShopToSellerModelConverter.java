@@ -6,6 +6,7 @@ import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.infrastructure.strategy.StrategyFactory;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
+import com.paypal.sellers.infrastructure.configuration.SellersMiraklApiConfig;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 
 import java.util.List;
@@ -14,9 +15,13 @@ public abstract class AbstractMiraklShopToSellerModelConverter implements Strate
 
 	private final StrategyFactory<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyFactory;
 
+	private final SellersMiraklApiConfig sellersMiraklApiConfig;
+
 	protected AbstractMiraklShopToSellerModelConverter(
-			final StrategyFactory<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyFactory) {
+			final StrategyFactory<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyFactory,
+			final SellersMiraklApiConfig sellersMiraklApiConfig) {
 		this.miraklShopBankAccountModelStrategyFactory = miraklShopBankAccountModelStrategyFactory;
+		this.sellersMiraklApiConfig = sellersMiraklApiConfig;
 	}
 
 	protected SellerModel.SellerModelBuilder getCommonFieldsBuilder(final MiraklShop source) {
@@ -38,6 +43,7 @@ public abstract class AbstractMiraklShopToSellerModelConverter implements Strate
 				.postalCode(contactInformation.getZipCode())
 				.stateProvince(contactInformation.getState())
 				.country(contactInformation.getCountry())
+				.timeZone(sellersMiraklApiConfig.getTimeZone())
 				.dateOfBirth(additionalFieldValues)
 				.passportId(additionalFieldValues)
 				.countryOfBirth(additionalFieldValues)

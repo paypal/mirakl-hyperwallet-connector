@@ -26,6 +26,8 @@ public class SellersMiraklApiConfig {
 
 	private Long testingDelay;
 
+	private String timeZone;
+
 	/**
 	 * Creates a bean to handle api calls with a
 	 * {@link MiraklMarketplacePlatformOperatorApiClient}

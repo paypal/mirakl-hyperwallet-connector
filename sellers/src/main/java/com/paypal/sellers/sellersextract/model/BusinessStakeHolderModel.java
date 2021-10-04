@@ -1,8 +1,6 @@
 package com.paypal.sellers.sellersextract.model;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
-import com.paypal.infrastructure.constants.HyperWalletConstants;
-import com.paypal.infrastructure.util.DateUtil;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -11,11 +9,16 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static com.paypal.sellers.sellersextract.model.BusinessStakeHolderConstants.*;
 import static com.paypal.sellers.sellersextract.model.SellerModelConstants.HYPERWALLET_PROGRAM;
@@ -28,6 +31,8 @@ import static com.paypal.sellers.sellersextract.model.SellerModelConstants.HYPER
 @Getter
 @Builder
 public class BusinessStakeHolderModel {
+
+	private final String timeZone;
 
 	private final int stkId;
 
@@ -101,6 +106,7 @@ public class BusinessStakeHolderModel {
                 .firstName(firstName)
                 .middleName(middleName)
                 .lastName(lastName)
+								.timeZone(timeZone)
                 .dateOfBirth(dateOfBirth)
                 .countryOfBirth(countryOfBirth)
                 .countryOfNationality(countryOfNationality)
@@ -498,8 +504,12 @@ public class BusinessStakeHolderModel {
 					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue)
 					.map((dateAsStringISO8601 -> {
 						try {
-							return DateUtil.convertToDate(dateAsStringISO8601,
-									HyperWalletConstants.HYPERWALLET_DATE_FORMAT, DateUtil.TIME_UTC);
+							final ZonedDateTime zonedDateTime = Instant.parse(dateAsStringISO8601)
+									.atZone(ZoneId.of(timeZone));
+							long offsetMillis = TimeUnit.SECONDS
+									.toMillis(ZoneOffset.from(zonedDateTime).getTotalSeconds());
+							long isoMillis = zonedDateTime.toInstant().toEpochMilli();
+							return new Date(isoMillis + offsetMillis);
 						}
 						catch (final DateTimeParseException dtpex) {
 							log.error("Date value with [{}] is not in the correct ISO8601 format", dateAsStringISO8601);

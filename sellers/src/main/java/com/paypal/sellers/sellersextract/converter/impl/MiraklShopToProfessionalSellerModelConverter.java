@@ -5,6 +5,7 @@ import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.strategy.StrategyFactory;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
+import com.paypal.sellers.infrastructure.configuration.SellersMiraklApiConfig;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.model.SellerProfileType;
@@ -28,8 +29,9 @@ public class MiraklShopToProfessionalSellerModelConverter extends AbstractMirakl
 
 	protected MiraklShopToProfessionalSellerModelConverter(
 			final StrategyFactory<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyFactory,
-			final Converter<Triple<List<MiraklAdditionalFieldValue>, Integer, String>, BusinessStakeHolderModel> pairBusinessStakeHolderModelConverter) {
-		super(miraklShopBankAccountModelStrategyFactory);
+			final Converter<Triple<List<MiraklAdditionalFieldValue>, Integer, String>, BusinessStakeHolderModel> pairBusinessStakeHolderModelConverter,
+			final SellersMiraklApiConfig sellersMiraklApiConfig) {
+		super(miraklShopBankAccountModelStrategyFactory, sellersMiraklApiConfig);
 		this.pairBusinessStakeHolderModelConverter = pairBusinessStakeHolderModelConverter;
 	}
 
@@ -43,21 +45,21 @@ public class MiraklShopToProfessionalSellerModelConverter extends AbstractMirakl
 		final var sellerModelBuilder = getCommonFieldsBuilder(source);
 //@formatter:off
 		final List<BusinessStakeHolderModel> businessStakeHolderList = IntStream.range(1, 6).mapToObj(
-				i -> pairBusinessStakeHolderModelConverter.convert(Triple.of(source.getAdditionalFieldValues(), i, source.getId())))
-				.filter(Objects::nonNull)
-				.filter(Predicate.not(BusinessStakeHolderModel::isEmpty))
-				.collect(Collectors.toCollection(ArrayList::new));
+						i -> pairBusinessStakeHolderModelConverter.convert(Triple.of(source.getAdditionalFieldValues(), i, source.getId())))
+						.filter(Objects::nonNull)
+						.filter(Predicate.not(BusinessStakeHolderModel::isEmpty))
+						.collect(Collectors.toCollection(ArrayList::new));
 
 		final List<MiraklAdditionalFieldValue> additionalFieldValues = source.getAdditionalFieldValues();
 
 		return sellerModelBuilder.profileType(SellerProfileType.BUSINESS)
-				.companyRegistrationCountry(additionalFieldValues)
-				.businessRegistrationStateProvince(additionalFieldValues)
-				.companyName(source.getProfessionalInformation().getCorporateName())
-				.companyRegistrationNumber(source.getProfessionalInformation().getIdentificationNumber())
-				.vatNumber(source.getProfessionalInformation().getTaxIdentificationNumber())
-				.businessStakeHolderDetails(businessStakeHolderList)
-				.build();
+						.companyRegistrationCountry(additionalFieldValues)
+						.businessRegistrationStateProvince(additionalFieldValues)
+						.companyName(source.getProfessionalInformation().getCorporateName())
+						.companyRegistrationNumber(source.getProfessionalInformation().getIdentificationNumber())
+						.vatNumber(source.getProfessionalInformation().getTaxIdentificationNumber())
+						.businessStakeHolderDetails(businessStakeHolderList)
+						.build();
 		//@formatter:on
 	}
 

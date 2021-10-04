@@ -46,15 +46,45 @@ class SellerModelTest {
 	}
 
 	@Test
+	void dateOfBirth_whenMiraklDateOfBirthCustomFieldValueHasAValue_shouldSetDateOfBirthNextDayGivenTimeZoneUTCPlusTwo() {
+		final var dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		dateOfBirthMiraklCustomField.setCode("hw-date-of-birth");
+		dateOfBirthMiraklCustomField.setValue("2020-10-29T22:00:00Z");
+		//@formatter:off
+		final var result = SellerModel.builder().timeZone(("UTC+2"))
+						.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
+						.profileType(SellerProfileType.INDIVIDUAL)
+						.build();
+		//@formatter:on
+
+		assertThat(result.getDateOfBirth()).hasYear(2020).hasMonth(10).hasDayOfMonth(30);
+	}
+
+	@Test
+	void dateOfBirth_whenMiraklDateOfBirthCustomFieldValueHasAValue_shouldSetDateOfBirthSameDayGivenTimeZoneUTCMinusOne() {
+		final var dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		dateOfBirthMiraklCustomField.setCode("hw-date-of-birth");
+		dateOfBirthMiraklCustomField.setValue("2020-10-29T22:00:00Z");
+		//@formatter:off
+		final var result = SellerModel.builder().timeZone(("UTC-1"))
+						.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
+						.profileType(SellerProfileType.INDIVIDUAL)
+						.build();
+		//@formatter:on
+
+		assertThat(result.getDateOfBirth()).hasYear(2020).hasMonth(10).hasDayOfMonth(29);
+	}
+
+	@Test
 	void dateOfBirth_whenMiraklDateOfBirthCustomFieldValueHasAValue_shouldSetDateOfBirth() {
 		final var dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
 		dateOfBirthMiraklCustomField.setCode("hw-date-of-birth");
 		dateOfBirthMiraklCustomField.setValue("2020-10-29T13:34:35Z");
 		//@formatter:off
-		final var result = SellerModel.builder()
-				.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
-				.profileType(SellerProfileType.INDIVIDUAL)
-				.build();
+		final var result = SellerModel.builder().timeZone(("UTC+2"))
+						.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
+						.profileType(SellerProfileType.INDIVIDUAL)
+						.build();
 		//@formatter:on
 
 		assertThat(result.getDateOfBirth()).hasYear(2020).hasMonth(10).hasDayOfMonth(29);
@@ -206,68 +236,69 @@ class SellerModelTest {
 
 		//@formatter:off
 		final SellerModel result = testObj.toBuilder().clientUserId("clientUserId")
-				.firstName("firstName")
-				.lastName("lastName")
-				.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
-				.countryOfBirth(List.of(countryOfBirthMiraklCustomField))
-				.countryOfNationality(List.of(countryOfNationalityMiraklCustomField))
-				.gender("MALE")
-				.phoneNumber("phoneNumber")
-				.mobilePhone("mobilePhone")
-				.email("email")
-				.governmentId(List.of(governmentIdMiraklCustomField))
-				.governmentIdType(List.of(governmentIdTypeMiraklCustomField))
-				.passportId(List.of(passwordMiraklCustomField))
-				.driversLicenseId(List.of(driversLisenceMiraklCustomField))
-				.employerId(List.of(employerIdLisenceMiraklCustomField))
-				.addressLine1("addressLine1")
-				.addressLine2("addressLine2")
-				.city("city")
-				.stateProvince("stateProvince")
-				.country("USA")
-				.postalCode("postalCode")
-				.language("language")
-				.programToken("programToken")
-				.businessType(List.of(businessTypeMiraklCustomField))
-				.businessName("businessName").token("token")
-				.profileType(SellerProfileType.INDIVIDUAL)
-				.companyName("companyName")
-				.companyRegistrationNumber("companyRegistrationNumber")
-				.vatNumber("vatNumber")
-				.businessRegistrationStateProvince(List.of(businessRegistrationStateProvinceMiraklCustomField))
-				.companyRegistrationCountry(List.of(businessRegistrationCountryMiraklCustomField))
-				.build();
+						.firstName("firstName")
+						.lastName("lastName")
+						.timeZone("UTC")
+						.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
+						.countryOfBirth(List.of(countryOfBirthMiraklCustomField))
+						.countryOfNationality(List.of(countryOfNationalityMiraklCustomField))
+						.gender("MALE")
+						.phoneNumber("phoneNumber")
+						.mobilePhone("mobilePhone")
+						.email("email")
+						.governmentId(List.of(governmentIdMiraklCustomField))
+						.governmentIdType(List.of(governmentIdTypeMiraklCustomField))
+						.passportId(List.of(passwordMiraklCustomField))
+						.driversLicenseId(List.of(driversLisenceMiraklCustomField))
+						.employerId(List.of(employerIdLisenceMiraklCustomField))
+						.addressLine1("addressLine1")
+						.addressLine2("addressLine2")
+						.city("city")
+						.stateProvince("stateProvince")
+						.country("USA")
+						.postalCode("postalCode")
+						.language("language")
+						.programToken("programToken")
+						.businessType(List.of(businessTypeMiraklCustomField))
+						.businessName("businessName").token("token")
+						.profileType(SellerProfileType.INDIVIDUAL)
+						.companyName("companyName")
+						.companyRegistrationNumber("companyRegistrationNumber")
+						.vatNumber("vatNumber")
+						.businessRegistrationStateProvince(List.of(businessRegistrationStateProvinceMiraklCustomField))
+						.companyRegistrationCountry(List.of(businessRegistrationCountryMiraklCustomField))
+						.build();
 
 		assertThat(result.getDateOfBirth()).hasYear(2020).hasMonth(10).hasDayOfMonth(29);
 		assertThat(result).hasFieldOrPropertyWithValue("clientUserId", "clientUserId")
-				.hasFieldOrPropertyWithValue("firstName", "firstName")
-				.hasFieldOrPropertyWithValue("lastName", "lastName")
-				.hasFieldOrPropertyWithValue("countryOfBirth", "USA")
-				.hasFieldOrPropertyWithValue("countryOfNationality", "USA")
-				.hasFieldOrPropertyWithValue("gender", "MALE")
-				.hasFieldOrPropertyWithValue("phoneNumber", "phoneNumber")
-				.hasFieldOrPropertyWithValue("mobilePhone", "mobilePhone")
-				.hasFieldOrPropertyWithValue("email", "email")
-				.hasFieldOrPropertyWithValue("governmentId", "governmentId")
-				.hasFieldOrPropertyWithValue("governmentIdType", SellerGovernmentIdType.PASSPORT)
-				.hasFieldOrPropertyWithValue("passportId", "passportId")
-				.hasFieldOrPropertyWithValue("driversLicenseId", "driversLicenseId")
-				.hasFieldOrPropertyWithValue("employerId", "employerId")
-				.hasFieldOrPropertyWithValue("addressLine1", "addressLine1")
-				.hasFieldOrPropertyWithValue("addressLine2", "addressLine2")
-				.hasFieldOrPropertyWithValue("city", "city")
-				.hasFieldOrPropertyWithValue("stateProvince", "stateProvince")
-				.hasFieldOrPropertyWithValue("country", "US")
-				.hasFieldOrPropertyWithValue("postalCode", "postalCode")
-				.hasFieldOrPropertyWithValue("language", "language")
-				.hasFieldOrPropertyWithValue("programToken", "programToken")
-				.hasFieldOrPropertyWithValue("businessType", SellerBusinessType.CORPORATION)
-				.hasFieldOrPropertyWithValue("profileType", SellerProfileType.INDIVIDUAL)
-				.hasFieldOrPropertyWithValue("companyName", "companyName")
-				.hasFieldOrPropertyWithValue("companyRegistrationNumber", "companyRegistrationNumber")
-				.hasFieldOrPropertyWithValue("vatNumber", "vatNumber")
-				.hasFieldOrPropertyWithValue("companyRegistrationCountry", "US")
-				.hasFieldOrPropertyWithValue("businessRegistrationStateProvince", "stateProvince");
+						.hasFieldOrPropertyWithValue("firstName", "firstName")
+						.hasFieldOrPropertyWithValue("lastName", "lastName")
+						.hasFieldOrPropertyWithValue("countryOfBirth", "USA")
+						.hasFieldOrPropertyWithValue("countryOfNationality", "USA")
+						.hasFieldOrPropertyWithValue("gender", "MALE")
+						.hasFieldOrPropertyWithValue("phoneNumber", "phoneNumber")
+						.hasFieldOrPropertyWithValue("mobilePhone", "mobilePhone")
+						.hasFieldOrPropertyWithValue("email", "email")
+						.hasFieldOrPropertyWithValue("governmentId", "governmentId")
+						.hasFieldOrPropertyWithValue("governmentIdType", SellerGovernmentIdType.PASSPORT)
+						.hasFieldOrPropertyWithValue("passportId", "passportId")
+						.hasFieldOrPropertyWithValue("driversLicenseId", "driversLicenseId")
+						.hasFieldOrPropertyWithValue("employerId", "employerId")
+						.hasFieldOrPropertyWithValue("addressLine1", "addressLine1")
+						.hasFieldOrPropertyWithValue("addressLine2", "addressLine2")
+						.hasFieldOrPropertyWithValue("city", "city")
+						.hasFieldOrPropertyWithValue("stateProvince", "stateProvince")
+						.hasFieldOrPropertyWithValue("country", "US")
+						.hasFieldOrPropertyWithValue("postalCode", "postalCode")
+						.hasFieldOrPropertyWithValue("language", "language")
+						.hasFieldOrPropertyWithValue("programToken", "programToken")
+						.hasFieldOrPropertyWithValue("businessType", SellerBusinessType.CORPORATION)
+						.hasFieldOrPropertyWithValue("profileType", SellerProfileType.INDIVIDUAL)
+						.hasFieldOrPropertyWithValue("companyName", "companyName")
+						.hasFieldOrPropertyWithValue("companyRegistrationNumber", "companyRegistrationNumber")
+						.hasFieldOrPropertyWithValue("vatNumber", "vatNumber")
+						.hasFieldOrPropertyWithValue("companyRegistrationCountry", "US")
+						.hasFieldOrPropertyWithValue("businessRegistrationStateProvince", "stateProvince");
 		//@formatter:on
 	}
 
@@ -483,37 +514,38 @@ class SellerModelTest {
 
 		//@formatter:off
 		return SellerModel.builder().clientUserId("clientUserId")
-				.firstName("firstName")
-				.lastName("lastName")
-				.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
-				.countryOfBirth(List.of(countryOfBirthMiraklCustomField))
-				.countryOfNationality(List.of(countryOfNationalityMiraklCustomField))
-				.gender("MALE")
-				.phoneNumber("phoneNumber")
-				.mobilePhone("mobilePhone")
-				.email("email")
-				.governmentId(List.of(governmentIdMiraklCustomField))
-				.governmentIdType(List.of(governmentIdTypeMiraklCustomField))
-				.passportId(List.of(passwordMiraklCustomField))
-				.driversLicenseId(List.of(driversLisenceMiraklCustomField))
-				.employerId(List.of(employerIdLisenceMiraklCustomField))
-				.addressLine1("addressLine1")
-				.addressLine2("addressLine2")
-				.city("city")
-				.stateProvince("stateProvince")
-				.country("USA")
-				.postalCode("postalCode")
-				.language("language")
-				.programToken("programToken")
-				.businessType(List.of(businessTypeMiraklCustomField))
-				.businessName("businessName").token("token")
-				.profileType(SellerProfileType.INDIVIDUAL)
-				.companyName("companyName")
-				.companyRegistrationNumber("companyRegistrationNumber")
-				.vatNumber("vatNumber")
-				.businessRegistrationStateProvince(List.of(businessRegistrationStateProvinceMiraklCustomField))
-				.companyRegistrationCountry(List.of(businessRegistrationCountryMiraklCustomField))
-				.build();
+						.firstName("firstName")
+						.lastName("lastName")
+						.timeZone("UTC")
+						.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
+						.countryOfBirth(List.of(countryOfBirthMiraklCustomField))
+						.countryOfNationality(List.of(countryOfNationalityMiraklCustomField))
+						.gender("MALE")
+						.phoneNumber("phoneNumber")
+						.mobilePhone("mobilePhone")
+						.email("email")
+						.governmentId(List.of(governmentIdMiraklCustomField))
+						.governmentIdType(List.of(governmentIdTypeMiraklCustomField))
+						.passportId(List.of(passwordMiraklCustomField))
+						.driversLicenseId(List.of(driversLisenceMiraklCustomField))
+						.employerId(List.of(employerIdLisenceMiraklCustomField))
+						.addressLine1("addressLine1")
+						.addressLine2("addressLine2")
+						.city("city")
+						.stateProvince("stateProvince")
+						.country("USA")
+						.postalCode("postalCode")
+						.language("language")
+						.programToken("programToken")
+						.businessType(List.of(businessTypeMiraklCustomField))
+						.businessName("businessName").token("token")
+						.profileType(SellerProfileType.INDIVIDUAL)
+						.companyName("companyName")
+						.companyRegistrationNumber("companyRegistrationNumber")
+						.vatNumber("vatNumber")
+						.businessRegistrationStateProvince(List.of(businessRegistrationStateProvinceMiraklCustomField))
+						.companyRegistrationCountry(List.of(businessRegistrationCountryMiraklCustomField))
+						.build();
 	}
 
 }
