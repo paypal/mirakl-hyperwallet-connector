@@ -1,6 +1,7 @@
 package com.paypal.sellers.sellersextract.converter.impl;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
+import com.paypal.sellers.infrastructure.configuration.SellersMiraklApiConfig;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import org.apache.commons.lang3.tuple.Triple;
 import org.junit.jupiter.api.Test;
@@ -22,9 +23,14 @@ class ListAdditionalFieldValuesToBusinessStakeHolderModelConverterTest {
 
 	private static final String CLIENT_ID = "clientId1";
 
+	private static final String UTC = "UTC";
+
 	@Spy
 	@InjectMocks
 	private ListAdditionalFieldValuesToBusinessStakeHolderModelConverter testObj;
+
+	@Mock
+	private SellersMiraklApiConfig sellersMiraklApiConfigMock;
 
 	@Mock
 	private BusinessStakeHolderModel businessStakeHolderModelMock;
@@ -39,6 +45,8 @@ class ListAdditionalFieldValuesToBusinessStakeHolderModelConverterTest {
 	void convert_shouldReturnBusinessStakeHolderModelBasedOnValuesOfMiraklShop() {
 		final List<MiraklAdditionalFieldValue> miraklAdditionalFieldValues = List.of(miraklAdditionalFieldValueOneMock);
 		doReturn(businessStakeHolderModelBuilderMock).when(testObj).getBuilder();
+		when(sellersMiraklApiConfigMock.getTimeZone()).thenReturn(UTC);
+		when(businessStakeHolderModelBuilderMock.timeZone(UTC)).thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.userToken(miraklAdditionalFieldValues))
 				.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.clientUserId(CLIENT_ID))
@@ -144,6 +152,7 @@ class ListAdditionalFieldValuesToBusinessStakeHolderModelConverterTest {
 		verify(businessStakeHolderModelBuilderMock).city(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER);
 		verify(businessStakeHolderModelBuilderMock).stateProvince(miraklAdditionalFieldValues,
 				BUSINESS_STAKE_HOLDER_NUMBER);
+		verify(businessStakeHolderModelBuilderMock).timeZone(UTC);
 	}
 
 	@Test

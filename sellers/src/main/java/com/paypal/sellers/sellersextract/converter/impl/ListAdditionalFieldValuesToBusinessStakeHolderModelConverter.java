@@ -2,11 +2,13 @@ package com.paypal.sellers.sellersextract.converter.impl;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.sellers.infrastructure.configuration.SellersMiraklApiConfig;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,6 +18,9 @@ import java.util.List;
 @Service
 public class ListAdditionalFieldValuesToBusinessStakeHolderModelConverter
 		implements Converter<Triple<List<MiraklAdditionalFieldValue>, Integer, String>, BusinessStakeHolderModel> {
+
+	@Resource
+	private SellersMiraklApiConfig sellersMiraklApiConfig;
 
 	/**
 	 * Method that retrieves a {@link Pair<List<MiraklAdditionalFieldValue>, Integer>} and
@@ -43,6 +48,7 @@ public class ListAdditionalFieldValuesToBusinessStakeHolderModelConverter
 				.firstName(additionalFieldValues, businessStakeHolderNumber)
 				.middleName(additionalFieldValues, businessStakeHolderNumber)
 				.lastName(additionalFieldValues, businessStakeHolderNumber)
+				.timeZone(sellersMiraklApiConfig.getTimeZone())
 				.dateOfBirth(additionalFieldValues, businessStakeHolderNumber)
 				.countryOfBirth(additionalFieldValues, businessStakeHolderNumber)
 				.countryOfNationality(additionalFieldValues, businessStakeHolderNumber)

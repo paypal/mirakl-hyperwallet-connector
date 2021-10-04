@@ -5,6 +5,7 @@ import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.paypal.infrastructure.strategy.StrategyFactory;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextract.model.IBANBankAccountModel;
+import com.paypal.sellers.infrastructure.configuration.SellersMiraklApiConfig;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +25,9 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 	private MyAbstractMiraklShopToSellerModelConverter testObj;
 
 	@Mock
+	private SellersMiraklApiConfig sellersMiraklApiConfigMock;
+
+	@Mock
 	private MiraklShop miraklShopMock;
 
 	@Mock
@@ -37,6 +41,7 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 
 	@Test
 	void convert_ShouldTransformFromMiraklShopToProfessionalSeller() {
+		when(sellersMiraklApiConfigMock.getTimeZone()).thenReturn("UTC");
 		when(miraklShopMock.getId()).thenReturn("shopId");
 		when(miraklShopMock.getName()).thenReturn("shopName");
 		when(miraklShopMock.getContactInformation()).thenReturn(contactInformationMock);
@@ -79,6 +84,7 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 
 	@Test
 	void convert_ShouldTransformFromMiraklShopToProfessionalSellerWhenBankAccountDetailsAreNullOrEmpty() {
+		when(sellersMiraklApiConfigMock.getTimeZone()).thenReturn("UTC");
 		when(miraklShopMock.getId()).thenReturn("shopId");
 		when(miraklShopMock.getName()).thenReturn("shopName");
 		when(miraklShopMock.getContactInformation()).thenReturn(contactInformationMock);
@@ -119,8 +125,9 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 	private static class MyAbstractMiraklShopToSellerModelConverter extends AbstractMiraklShopToSellerModelConverter {
 
 		protected MyAbstractMiraklShopToSellerModelConverter(
-				final StrategyFactory<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyFactory) {
-			super(miraklShopBankAccountModelStrategyFactory);
+				final StrategyFactory<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyFactory,
+				final SellersMiraklApiConfig sellersMiraklApiConfig) {
+			super(miraklShopBankAccountModelStrategyFactory, sellersMiraklApiConfig);
 		}
 
 		@Override

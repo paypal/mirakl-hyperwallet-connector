@@ -1,8 +1,6 @@
 package com.paypal.sellers.sellersextract.model;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
-import com.paypal.infrastructure.constants.HyperWalletConstants;
-import com.paypal.infrastructure.util.DateUtil;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.infrastructure.utils.CountriesUtil;
 import lombok.Builder;
@@ -13,8 +11,12 @@ import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.time.format.DateTimeParseException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,6 +26,8 @@ import static com.paypal.sellers.sellersextract.model.SellerModelConstants.*;
 @Getter
 @Builder
 public class SellerModel {
+
+	protected final String timeZone;
 
 	private final String clientUserId;
 
@@ -103,6 +107,7 @@ public class SellerModel {
 						.clientUserId(clientUserId)
 						.firstName(firstName)
 						.lastName(lastName)
+						.timeZone(timeZone)
 						.dateOfBirth(dateOfBirth)
 						.countryOfBirth(countryOfBirth)
 						.countryOfNationality(countryOfNationality)
@@ -135,7 +140,7 @@ public class SellerModel {
 						.vatNumber(vatNumber)
 						.businessStakeHolderDetails(businessStakeHolderDetails)
 						.hyperwalletProgram(hyperwalletProgram);
-        //@formatter:on
+		//@formatter:on
 	}
 
 	public boolean hasAcceptedTermsAndConditions() {
@@ -208,18 +213,17 @@ public class SellerModel {
 
 		public SellerModelBuilder dateOfBirth(final List<MiraklAdditionalFieldValue> fields) {
 			//@formatter:off
-            fields.stream().filter(field -> field.getCode().equals(DATE_OF_BIRTH))
-                    .filter(MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue.class::isInstance)
-                    .map(MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue.class::cast).findAny()
-                    .map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue)
-                    .ifPresent(dateAsStringISO8601 -> {
-                        try {
-                            this.dateOfBirth = DateUtil.convertToDate(dateAsStringISO8601, HyperWalletConstants.HYPERWALLET_DATE_FORMAT, DateUtil.TIME_UTC);
-                        } catch (final DateTimeParseException dtpex) {
-                            log.error("Date value with [{}] is not in the correct ISO8601 format", dateAsStringISO8601);
-                        }
-                    });
-            //@formatter:on
+			fields.stream().filter(field -> field.getCode().equals(DATE_OF_BIRTH))
+							.filter(MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue.class::isInstance)
+							.map(MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue.class::cast).findAny()
+							.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue)
+							.ifPresent(dateAsStringISO8601 -> {
+								final ZonedDateTime zonedDateTime = Instant.parse(dateAsStringISO8601).atZone(ZoneId.of(timeZone));
+								long offsetMillis = TimeUnit.SECONDS.toMillis(ZoneOffset.from(zonedDateTime).getTotalSeconds());
+								long isoMillis = zonedDateTime.toInstant().toEpochMilli();
+								this.dateOfBirth = new Date(isoMillis + offsetMillis);
+							});
+			//@formatter:on
 
 			return this;
 		}
@@ -301,12 +305,12 @@ public class SellerModel {
 		private Optional<String> getMiraklSingleValueListCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
 				final String customFieldCode) {
 			//@formatter:off
-            return fields.stream()
-                    .filter(field -> field.getCode().equals(customFieldCode))
-                    .filter(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::isInstance)
-                    .map(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::cast).findAny()
-                    .map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
-            //@formatter:on
+			return fields.stream()
+							.filter(field -> field.getCode().equals(customFieldCode))
+							.filter(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::isInstance)
+							.map(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::cast).findAny()
+							.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+			//@formatter:on
 		}
 
 		private Optional<String> getMiraklStringCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
