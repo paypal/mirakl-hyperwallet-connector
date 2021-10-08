@@ -1,8 +1,8 @@
 package com.paypal.invoices.invoicesextract.converter;
 
 import com.mirakl.client.mmp.domain.common.currency.MiraklIsoCurrencyCode;
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoice;
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoiceSummary;
+import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoice;
+import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoiceSummary;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,10 +34,10 @@ class MiraklInvoiceToInvoiceModelConverterTest {
 	private MiraklInvoiceToInvoiceModelConverter testObj;
 
 	@Mock
-	private MiraklInvoice miraklInvoiceMock;
+	private HMCMiraklInvoice miraklInvoiceMock;
 
 	@Mock
-	private MiraklInvoiceSummary miraklInvoiceSummaryMock;
+	private HMCMiraklInvoiceSummary miraklInvoiceSummaryMock;
 
 	@Test
 	void convert_shouldConvertMiraklInvoiceIntoInvoiceModel() {
@@ -48,6 +48,7 @@ class MiraklInvoiceToInvoiceModelConverterTest {
 		when(this.miraklInvoiceSummaryMock.getAmountTransferred()).thenReturn(TRANSFER_AMOUNT);
 		when(this.miraklInvoiceSummaryMock.getTotalCommissionsIT()).thenReturn(TOTAL_COMMISSION);
 		when(this.miraklInvoiceSummaryMock.getTotalSubscriptionIT()).thenReturn(TOTAL_SUBSCRIPTIONS);
+		when(this.miraklInvoiceSummaryMock.getAmountTransferredToOperator()).thenReturn(BigDecimal.TEN);
 
 		final InvoiceModel result = this.testObj.convert(this.miraklInvoiceMock);
 
@@ -57,7 +58,7 @@ class MiraklInvoiceToInvoiceModelConverterTest {
 		assertThat(result.getSubscriptionAmountVat()).isEqualTo(TOTAL_SUBSCRIPTIONS.doubleValue());
 		assertThat(result.getOrderCommissionAmountVat()).isEqualTo(TOTAL_COMMISSION.doubleValue());
 		assertThat(result.getShopId()).isEqualTo("2000");
-
+		assertThat(result.getTransferAmountToOperator()).isEqualTo(10D);
 	}
 
 	@Test

@@ -1,6 +1,6 @@
 package com.paypal.invoices.infraestructure.configuration;
 
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,7 +25,7 @@ class InvoicesMiraklApiConfigTest {
 		testObj.setEnvironment(ENV);
 		testObj.setOperatorApiKey(API_KEY);
 
-		final MiraklMarketplacePlatformOperatorApiClient result = testObj
+		final MiraklMarketplacePlatformOperatorApiWrapper result = testObj
 				.invoicesMiraklMarketplacePlatformOperatorApiClient();
 
 		assertThat(result).hasFieldOrPropertyWithValue("defaultEndpoint.path", ENV)

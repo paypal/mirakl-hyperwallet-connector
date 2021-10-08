@@ -9,6 +9,8 @@ public class InvoiceModel extends AccountingDocumentModel {
 
 	private final Double transferAmount;
 
+	private final Double transferAmountToOperator;
+
 	private final Double subscriptionAmountVat;
 
 	private final Double orderCommissionAmountVat;
@@ -16,6 +18,7 @@ public class InvoiceModel extends AccountingDocumentModel {
 	public InvoiceModel(final Builder builder) {
 		super(builder);
 		transferAmount = builder.transferAmount;
+		transferAmountToOperator = builder.transferAmountToOperator;
 		subscriptionAmountVat = builder.subscriptionAmountVat;
 		orderCommissionAmountVat = builder.orderCommissionAmountVat;
 	}
@@ -75,6 +78,7 @@ public class InvoiceModel extends AccountingDocumentModel {
 				.destinationToken(destinationToken)
 				.hyperwalletProgram(hyperwalletProgram)
 				.transferAmount(transferAmount)
+				.transferAmountToOperator(transferAmountToOperator)
 				.subscriptionAmountVat(subscriptionAmountVat)
 				.orderCommissionAmountVat(orderCommissionAmountVat);
 		//@formatter:on
@@ -86,7 +90,14 @@ public class InvoiceModel extends AccountingDocumentModel {
 
 		private Double subscriptionAmountVat;
 
+		private Double transferAmountToOperator;
+
 		private Double orderCommissionAmountVat;
+
+		public Builder transferAmountToOperator(final Double transferAmountToOperator) {
+			this.transferAmountToOperator = transferAmountToOperator;
+			return this;
+		}
 
 		public Builder transferAmount(final Double transferAmount) {
 			this.transferAmount = transferAmount;

@@ -6,14 +6,9 @@ import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 import com.paypal.invoices.invoicesextract.service.hyperwallet.HyperwalletSDKService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.stream.Stream;
 
 import static com.paypal.infrastructure.constants.HyperWalletConstants.PAYMENT_OPERATOR_SUFFIX;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,16 +40,9 @@ class OperatorInvoiceModelToHyperwalletPaymentConverterTest {
 	@Mock
 	private InvoicesOperatorCommissionsConfig invoicesOperatorCommissionsConfigMock;
 
-	public static Stream<Arguments> invoicesValues() {
-		return Stream.of(Arguments.of(20.00D, 5.00D, 25.00D), Arguments.of(0.00D, 5.00D, 5.00D),
-				Arguments.of(10.00D, 0.00D, 10.00D), Arguments.of(7.00D, null, 7.00D),
-				Arguments.of(null, 2.00D, 2.00D));
-	}
-
-	@ParameterizedTest
-	@MethodSource("invoicesValues")
-	void convert_shouldConvertAnInvoiceIntoHyperwalletPayment(final Double orderCommissionAmount,
-			final Double subscriptionAmount, final Double expectedAmount) {
+	@Test
+	void convert_shouldConvertAnInvoiceIntoHyperwalletPayment() {
+		final Double transferAmountToOperator = 100.10D;
 		when(hyperwalletSDKServiceMock.getProgramTokenByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(PROGRAM_TOKEN);
 		when(invoicesOperatorCommissionsConfigMock.getBankAccountToken(HYPERWALLET_PROGRAM))
@@ -66,8 +54,7 @@ class OperatorInvoiceModelToHyperwalletPaymentConverterTest {
 												 .destinationToken(DESTINATION_TOKEN)
 												 .shopId(SHOP_ID)
 												 .invoiceNumber(INVOICE_NUMBER)
-												 .orderCommissionAmountVat(orderCommissionAmount)
-												 .subscriptionAmountVat(subscriptionAmount)
+												 .transferAmountToOperator(transferAmountToOperator)
 												 .currencyIsoCode(CURRENCY_ISO_CODE)
 												 .build();
 		//@formatter:on
@@ -76,7 +63,7 @@ class OperatorInvoiceModelToHyperwalletPaymentConverterTest {
 
 		assertThat(result.getDestinationToken()).isEqualTo(OPERATOR_BANK_ACOUNT_TOKEN);
 		assertThat(result.getClientPaymentId()).isEqualTo(INVOICE_NUMBER + PAYMENT_OPERATOR_SUFFIX);
-		assertThat(result.getAmount()).isEqualTo(expectedAmount);
+		assertThat(result.getAmount()).isEqualTo(transferAmountToOperator);
 		assertThat(result.getCurrency()).isEqualTo(CURRENCY_ISO_CODE);
 		assertThat(result.getPurpose()).isEqualTo("OTHER");
 		assertThat(result.getProgramToken()).isEqualTo(PROGRAM_TOKEN);
@@ -89,8 +76,7 @@ class OperatorInvoiceModelToHyperwalletPaymentConverterTest {
 				.destinationToken(DESTINATION_TOKEN)
 				.shopId(SHOP_ID)
 				.invoiceNumber(INVOICE_NUMBER)
-				.orderCommissionAmountVat(0.0D)
-				.subscriptionAmountVat(0.0D)
+				.transferAmountToOperator(0.0D)
 				.currencyIsoCode(CURRENCY_ISO_CODE)
 				.build();
 		//@formatter:on

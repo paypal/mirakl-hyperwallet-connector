@@ -63,6 +63,7 @@ public class MiraklInvoiceDTOToInvoiceModelConverter implements Converter<Mirakl
 				.totalManualInvoiceAmountVat(source.getTotalManualInvoiceAmountVat())
 				.totalManualCreditAmount(source.getTotalManualCreditAmount())
 				.totalManualCreditAmountVat(source.getTotalManualCreditAmountVat())
+				.transferAmountToOperator(source.getAmountTransferredToOperator())
 				.currencyIsoCode(source.getCurrencyIsoCode())
 				.paymentInfoType(source.getPaymentInfoType())
 				.build();
