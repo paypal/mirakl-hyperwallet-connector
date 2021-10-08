@@ -5,12 +5,12 @@ import com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocument
 import com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentType;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.MiraklShops;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.request.payment.invoice.MiraklGetInvoicesRequest;
 import com.mirakl.client.mmp.request.payment.invoice.MiraklAccountingDocumentState;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceTypeEnum;
@@ -33,13 +33,13 @@ public abstract class AbstractAccountingDocumentsExtractServiceImpl<T extends Ac
 
 	protected final Converter<MiraklShop, AccountingDocumentModel> miraklShopToAccountingModelConverter;
 
-	protected final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient;
+	protected final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient;
 
 	protected final MailNotificationUtil invoicesMailNotificationUtil;
 
 	protected AbstractAccountingDocumentsExtractServiceImpl(
 			final Converter<MiraklShop, AccountingDocumentModel> miraklShopToAccountingModelConverter,
-			final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient,
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient,
 			final MailNotificationUtil invoicesMailNotificationUtil) {
 		this.miraklShopToAccountingModelConverter = miraklShopToAccountingModelConverter;
 		this.miraklMarketplacePlatformOperatorApiClient = miraklMarketplacePlatformOperatorApiClient;

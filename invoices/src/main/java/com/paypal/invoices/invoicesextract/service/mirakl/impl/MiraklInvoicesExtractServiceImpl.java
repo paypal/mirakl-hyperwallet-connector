@@ -1,12 +1,12 @@
 package com.paypal.invoices.invoicesextract.service.mirakl.impl;
 
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoice;
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoices;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.request.payment.invoice.MiraklGetInvoicesRequest;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
+import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoice;
+import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoices;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceTypeEnum;
@@ -27,13 +27,13 @@ import java.util.stream.Collectors;
 @Profile({ "prod" })
 public class MiraklInvoicesExtractServiceImpl extends AbstractAccountingDocumentsExtractServiceImpl<InvoiceModel> {
 
-	private final Converter<MiraklInvoice, InvoiceModel> miraklInvoiceToInvoiceModelConverter;
+	private final Converter<HMCMiraklInvoice, InvoiceModel> miraklInvoiceToInvoiceModelConverter;
 
 	public MiraklInvoicesExtractServiceImpl(
-			final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient,
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient,
 			final Converter<MiraklShop, AccountingDocumentModel> miraklShopAccountingDocumentModelConverter,
 			final MailNotificationUtil invoicesMailNotificationUtil,
-			final Converter<MiraklInvoice, InvoiceModel> miraklInvoiceToInvoiceModelConverter) {
+			final Converter<HMCMiraklInvoice, InvoiceModel> miraklInvoiceToInvoiceModelConverter) {
 		super(miraklShopAccountingDocumentModelConverter, miraklMarketplacePlatformOperatorApiClient,
 				invoicesMailNotificationUtil);
 		this.miraklInvoiceToInvoiceModelConverter = miraklInvoiceToInvoiceModelConverter;
@@ -59,16 +59,16 @@ public class MiraklInvoicesExtractServiceImpl extends AbstractAccountingDocument
 	protected List<InvoiceModel> getAccountingDocument(final Date delta) {
 		final MiraklGetInvoicesRequest accountingDocumentRequest = createAccountingDocumentRequest(delta,
 				InvoiceTypeEnum.AUTO_INVOICE);
-		final MiraklInvoices invoices = miraklMarketplacePlatformOperatorApiClient
+		final HMCMiraklInvoices invoices = miraklMarketplacePlatformOperatorApiClient
 				.getInvoices(accountingDocumentRequest);
 
 		//@formatter:off
-        return Optional.ofNullable(Optional.ofNullable(invoices).orElse(new MiraklInvoices()).getInvoices())
-                .orElse(List.of())
-                .stream()
-                .map(miraklInvoiceToInvoiceModelConverter::convert)
-                .collect(Collectors.toList());
-        //@formatter:on
+		return Optional.ofNullable(Optional.ofNullable(invoices).orElse(new HMCMiraklInvoices()).getHmcInvoices())
+						.orElse(List.of())
+						.stream()
+						.map(miraklInvoiceToInvoiceModelConverter::convert)
+						.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 }

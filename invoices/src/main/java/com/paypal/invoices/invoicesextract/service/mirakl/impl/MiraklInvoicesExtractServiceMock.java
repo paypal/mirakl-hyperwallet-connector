@@ -1,10 +1,10 @@
 package com.paypal.invoices.invoicesextract.service.mirakl.impl;
 
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoice;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
+import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoice;
 import com.paypal.invoices.infraestructure.testing.TestingInvoicesSessionDataHelper;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
@@ -24,10 +24,10 @@ public class MiraklInvoicesExtractServiceMock extends MiraklInvoicesExtractServi
 	protected final TestingInvoicesSessionDataHelper testingInvoicesSessionDataHelper;
 
 	public MiraklInvoicesExtractServiceMock(
-			final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient,
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient,
 			final Converter<MiraklShop, AccountingDocumentModel> miraklShopAccountingDocumentModelConverter,
 			final MailNotificationUtil invoicesMailNotificationUtil,
-			final Converter<MiraklInvoice, InvoiceModel> miraklInvoiceToInvoiceModelConverter,
+			final Converter<HMCMiraklInvoice, InvoiceModel> miraklInvoiceToInvoiceModelConverter,
 			final TestingInvoicesSessionDataHelper testingInvoicesSessionDataHelper) {
 		super(miraklMarketplacePlatformOperatorApiClient, miraklShopAccountingDocumentModelConverter,
 				invoicesMailNotificationUtil, miraklInvoiceToInvoiceModelConverter);

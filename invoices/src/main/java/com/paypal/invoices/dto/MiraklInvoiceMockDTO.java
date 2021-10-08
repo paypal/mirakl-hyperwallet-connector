@@ -152,6 +152,9 @@ public class MiraklInvoiceMockDTO {
 	@JsonProperty("payment-info-type")
 	private String paymentInfoType;
 
+	@JsonProperty("amount-transferred-to-operator")
+	private Double amountTransferredToOperator;
+
 	private String token;
 
 	private String destinationToken;

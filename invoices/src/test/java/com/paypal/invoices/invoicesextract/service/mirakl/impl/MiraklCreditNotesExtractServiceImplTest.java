@@ -4,15 +4,16 @@ import com.mirakl.client.core.error.MiraklErrorResponseBean;
 import com.mirakl.client.core.exception.MiraklApiException;
 import com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentPaymentStatus;
 import com.mirakl.client.mmp.domain.invoice.MiraklInvoice;
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoices;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.MiraklShops;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.request.payment.invoice.MiraklGetInvoicesRequest;
 import com.mirakl.client.mmp.request.payment.invoice.MiraklAccountingDocumentState;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
+import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoice;
+import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoices;
 import com.paypal.infrastructure.util.DateUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.infrastructure.util.TimeMachine;
@@ -56,7 +57,7 @@ class MiraklCreditNotesExtractServiceImplTest {
 	private MiraklCreditNotesExtractServiceImpl testObj;
 
 	@Mock
-	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
+	private MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClientMock;
 
 	@Mock
 	private MiraklShops miraklShopsMock;
@@ -78,10 +79,10 @@ class MiraklCreditNotesExtractServiceImplTest {
 	private MiraklShop miraklShopThreeMock;
 
 	@Mock
-	private MiraklInvoices miraklInvoicesMock;
+	private HMCMiraklInvoices miraklInvoicesMock;
 
 	@Mock
-	private MiraklInvoice miraklInvoiceOneMock, miraklInvoiceTwoMock;
+	private HMCMiraklInvoice miraklInvoiceOneMock, miraklInvoiceTwoMock;
 
 	@Mock
 	private MailNotificationUtil mailNotificationUtilMock;
@@ -221,7 +222,7 @@ class MiraklCreditNotesExtractServiceImplTest {
 		final Date now = DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault());
 
 		when(miraklMarketplacePlatformOperatorApiClientMock.getInvoices(any())).thenReturn(miraklInvoicesMock);
-		when(miraklInvoicesMock.getInvoices()).thenReturn(List.of(miraklInvoiceOneMock, miraklInvoiceTwoMock));
+		when(miraklInvoicesMock.getHmcInvoices()).thenReturn(List.of(miraklInvoiceOneMock, miraklInvoiceTwoMock));
 		when(miraklInvoiceCreditNoteModelConverter.convert(miraklInvoiceOneMock)).thenReturn(creditNoteOneMock);
 		when(miraklInvoiceCreditNoteModelConverter.convert(miraklInvoiceTwoMock)).thenReturn(creditNoteTwoMock);
 

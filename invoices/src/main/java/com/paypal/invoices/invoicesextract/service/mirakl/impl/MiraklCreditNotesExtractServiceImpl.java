@@ -1,12 +1,12 @@
 package com.paypal.invoices.invoicesextract.service.mirakl.impl;
 
 import com.mirakl.client.mmp.domain.invoice.MiraklInvoice;
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoices;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.request.payment.invoice.MiraklGetInvoicesRequest;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
+import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoices;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceTypeEnum;
@@ -29,7 +29,7 @@ public class MiraklCreditNotesExtractServiceImpl
 	private final Converter<MiraklInvoice, CreditNoteModel> miraklInvoiceToInvoiceModelConverter;
 
 	public MiraklCreditNotesExtractServiceImpl(
-			final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient,
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient,
 			final Converter<MiraklShop, AccountingDocumentModel> miraklShopToAccountingModelConverter,
 			final Converter<MiraklInvoice, CreditNoteModel> miraklInvoiceToInvoiceModelConverter,
 			final MailNotificationUtil invoicesMailNotificationUtil) {
@@ -57,11 +57,11 @@ public class MiraklCreditNotesExtractServiceImpl
 	protected List<CreditNoteModel> getAccountingDocument(final Date delta) {
 		final MiraklGetInvoicesRequest accountingDocumentRequest = createAccountingDocumentRequest(delta,
 				InvoiceTypeEnum.MANUAL_CREDIT);
-		final MiraklInvoices invoices = miraklMarketplacePlatformOperatorApiClient
+		final HMCMiraklInvoices invoices = miraklMarketplacePlatformOperatorApiClient
 				.getInvoices(accountingDocumentRequest);
 
 		//@formatter:off
-        return Optional.ofNullable(Optional.ofNullable(invoices).orElse(new MiraklInvoices()).getInvoices())
+        return Optional.ofNullable(Optional.ofNullable(invoices).orElse(new HMCMiraklInvoices()).getHmcInvoices())
                 .orElse(List.of())
                 .stream()
                 .map(miraklInvoiceToInvoiceModelConverter::convert)

@@ -9,10 +9,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Optional;
-
 import static com.paypal.infrastructure.constants.HyperWalletConstants.PAYMENT_OPERATOR_SUFFIX;
 
 /**
@@ -39,12 +35,7 @@ public class OperatorInvoiceModelToHyperwalletPaymentConverter implements Conver
 	 */
 	@Override
 	public HyperwalletPayment convert(@NonNull final InvoiceModel source) {
-		final var amount = BigDecimal
-				.valueOf(Optional.ofNullable(source.getSubscriptionAmountVat()).orElse(0.0D)
-						+ Optional.ofNullable(source.getOrderCommissionAmountVat()).orElse(0.0))
-				.setScale(2, RoundingMode.HALF_EVEN).doubleValue();
-
-		if (NumberUtils.DOUBLE_ZERO.equals(amount)) {
+		if (NumberUtils.DOUBLE_ZERO.equals(source.getTransferAmountToOperator())) {
 			return null;
 		}
 
@@ -54,7 +45,7 @@ public class OperatorInvoiceModelToHyperwalletPaymentConverter implements Conver
 		target.setDestinationToken(
 				invoicesOperatorCommissionsConfig.getBankAccountToken(source.getHyperwalletProgram()));
 		target.setClientPaymentId(source.getInvoiceNumber() + PAYMENT_OPERATOR_SUFFIX);
-		target.setAmount(amount);
+		target.setAmount(source.getTransferAmountToOperator());
 		target.setCurrency(source.getCurrencyIsoCode());
 		target.setPurpose(PURPOSE);
 

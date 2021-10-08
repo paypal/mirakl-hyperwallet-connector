@@ -1,7 +1,8 @@
 package com.paypal.invoices.infraestructure.configuration;
 
 import com.mirakl.client.core.security.MiraklCredential;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
+import com.paypal.infrastructure.sdk.mirakl.impl.MiraklMarketplacePlatformOperatorApiClientWrapperImpl;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -27,13 +28,14 @@ public class InvoicesMiraklApiConfig {
 
 	/**
 	 * Creates a bean to handle api calls with a
-	 * {@link MiraklMarketplacePlatformOperatorApiClient}
-	 * @return the {@link MiraklMarketplacePlatformOperatorApiClient}
+	 * {@link MiraklMarketplacePlatformOperatorApiWrapper}
+	 * @return the {@link MiraklMarketplacePlatformOperatorApiWrapper}
 	 */
 	@Bean
 	@PostConstruct
-	public MiraklMarketplacePlatformOperatorApiClient invoicesMiraklMarketplacePlatformOperatorApiClient() {
-		return new MiraklMarketplacePlatformOperatorApiClient(environment, new MiraklCredential(operatorApiKey));
+	public MiraklMarketplacePlatformOperatorApiWrapper invoicesMiraklMarketplacePlatformOperatorApiClient() {
+		return new MiraklMarketplacePlatformOperatorApiClientWrapperImpl(environment,
+				new MiraklCredential(operatorApiKey));
 	}
 
 	/**
