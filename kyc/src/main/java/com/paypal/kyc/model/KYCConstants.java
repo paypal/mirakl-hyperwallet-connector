@@ -95,4 +95,16 @@ public class KYCConstants {
 
 	}
 
+	public static final class HwWebhookNotificationType {
+
+		private HwWebhookNotificationType() {
+
+		}
+
+		public static final String USERS_BUSINESS_STAKEHOLDERS_CREATED = "USERS.BUSINESS_STAKEHOLDERS.CREATED";
+
+		public static final String USERS_BUSINESS_STAKEHOLDERS_VERIFICATION_STATUS = "USERS.BUSINESS_STAKEHOLDERS.UPDATED.VERIFICATION_STATUS";
+
+	}
+
 }

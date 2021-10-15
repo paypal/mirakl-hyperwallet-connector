@@ -18,11 +18,11 @@ public class KYCBusinessStakeholderNotificationServiceImpl implements KYCBusines
 
 	private final KYCBusinessStakeholderStatusFactory kycBusinessStakeholderStatusFactory;
 
-	private final Converter<Object, KYCBusinessStakeholderStatusNotificationBodyModel> hyperWalletObjectToKycBusinessStakeholderStatusNotificationBodyModelConverter;
+	private final Converter<HyperwalletWebhookNotification, KYCBusinessStakeholderStatusNotificationBodyModel> hyperWalletObjectToKycBusinessStakeholderStatusNotificationBodyModelConverter;
 
 	public KYCBusinessStakeholderNotificationServiceImpl(
 			final KYCBusinessStakeholderStatusFactory kycBusinessStakeholderStatusFactory,
-			final Converter<Object, KYCBusinessStakeholderStatusNotificationBodyModel> hyperWalletObjectToKycBusinessStakeholderStatusNotificationBodyModelConverter) {
+			final Converter<HyperwalletWebhookNotification, KYCBusinessStakeholderStatusNotificationBodyModel> hyperWalletObjectToKycBusinessStakeholderStatusNotificationBodyModelConverter) {
 		this.kycBusinessStakeholderStatusFactory = kycBusinessStakeholderStatusFactory;
 		this.hyperWalletObjectToKycBusinessStakeholderStatusNotificationBodyModelConverter = hyperWalletObjectToKycBusinessStakeholderStatusNotificationBodyModelConverter;
 	}
@@ -33,7 +33,7 @@ public class KYCBusinessStakeholderNotificationServiceImpl implements KYCBusines
 	@Override
 	public void updateBusinessStakeholderKYCStatus(final HyperwalletWebhookNotification incomingNotification) {
 		final KYCBusinessStakeholderStatusNotificationBodyModel kycBusinessStakeholderNotification = hyperWalletObjectToKycBusinessStakeholderStatusNotificationBodyModelConverter
-				.convert(incomingNotification.getObject());
+				.convert(incomingNotification);
 		kycBusinessStakeholderStatusFactory.execute(kycBusinessStakeholderNotification);
 	}
 

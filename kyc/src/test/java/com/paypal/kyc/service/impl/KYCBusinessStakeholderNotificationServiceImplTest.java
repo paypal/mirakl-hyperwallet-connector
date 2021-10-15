@@ -29,21 +29,17 @@ class KYCBusinessStakeholderNotificationServiceImplTest {
 	private HyperwalletWebhookNotification hyperwalletWebhookNotificationMock;
 
 	@Mock
-	private Object notificationObjectMock;
-
-	@Mock
 	private KYCBusinessStakeholderStatusNotificationBodyModel kycBusinessStakeholderNotificationMock;
 
 	@Test
 	void updateBusinessStakeholderKYCStatus_shouldConvertAndTreatThenIncomingNotification() {
-		when(hyperwalletWebhookNotificationMock.getObject()).thenReturn(notificationObjectMock);
 		when(hyperWalletObjectToKYCBusinessStakeholderStatusNotificationBodyModelConverterMock
-				.convert(notificationObjectMock)).thenReturn(kycBusinessStakeholderNotificationMock);
+				.convert(hyperwalletWebhookNotificationMock)).thenReturn(kycBusinessStakeholderNotificationMock);
 
 		testObj.updateBusinessStakeholderKYCStatus(hyperwalletWebhookNotificationMock);
 
 		verify(hyperWalletObjectToKYCBusinessStakeholderStatusNotificationBodyModelConverterMock)
-				.convert(notificationObjectMock);
+				.convert(hyperwalletWebhookNotificationMock);
 		verify(kycBusinessStakeholderStatusFactoryMock).execute(kycBusinessStakeholderNotificationMock);
 	}
 
