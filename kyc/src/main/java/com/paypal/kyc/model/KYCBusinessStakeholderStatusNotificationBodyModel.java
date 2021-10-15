@@ -11,4 +11,8 @@ public class KYCBusinessStakeholderStatusNotificationBodyModel extends KYCNotifi
 
 	protected final String userToken;
 
+	protected final Boolean isBusinessContact;
+
+	protected final Boolean isDirector;
+
 }

@@ -21,4 +21,6 @@ public class KYCNotificationBodyModel implements NotificationBodyModel {
 
 	protected final HyperwalletUser.ProfileType profileType;
 
+	protected final String hyperwalletWebhookNotificationType;
+
 }

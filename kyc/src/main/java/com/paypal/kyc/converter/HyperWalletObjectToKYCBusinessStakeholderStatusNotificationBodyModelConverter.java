@@ -1,6 +1,7 @@
 package com.paypal.kyc.converter;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
+import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.kyc.model.KYCBusinessStakeholderStatusNotificationBodyModel;
 import com.paypal.kyc.model.KYCUserStatusNotificationBodyModel;
@@ -17,30 +18,34 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class HyperWalletObjectToKYCBusinessStakeholderStatusNotificationBodyModelConverter
-		implements Converter<Object, KYCBusinessStakeholderStatusNotificationBodyModel> {
+		implements Converter<HyperwalletWebhookNotification, KYCBusinessStakeholderStatusNotificationBodyModel> {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public KYCBusinessStakeholderStatusNotificationBodyModel convert(final Object source) {
-		if (source instanceof Map) {
-			final Map<String, Object> notificationDetails = (Map<String, Object>) source;
+	public KYCBusinessStakeholderStatusNotificationBodyModel convert(final HyperwalletWebhookNotification source) {
+		if (source.getObject() instanceof Map) {
+			final Map<String, Object> notificationDetails = (Map<String, Object>) source.getObject();
 
 			//@formatter:off
-			return KYCBusinessStakeholderStatusNotificationBodyModel.builder()
-							.verificationStatus(EnumUtils.getEnum(HyperwalletUser.VerificationStatus.class,
-											Optional.ofNullable((String) notificationDetails.get("verificationStatus"))
-															.orElse(null)))
-							.token(Optional.ofNullable((String) notificationDetails.get("token"))
-											.orElse(null))
-							.userToken(Optional.ofNullable((String) notificationDetails.get("userToken"))
-											.orElse(null))
-							.profileType(EnumUtils.getEnum(HyperwalletUser.ProfileType.class,
-											Optional.ofNullable((String) notificationDetails.get("profileType"))
-															.orElse(null)))
-							.build();
+			final KYCBusinessStakeholderStatusNotificationBodyModel.KYCBusinessStakeholderStatusNotificationBodyModelBuilder builder
+							= KYCBusinessStakeholderStatusNotificationBodyModel.builder();
+
+			Optional.ofNullable((Boolean) notificationDetails.get("isDirector")).ifPresent(builder::isDirector);
+			Optional.ofNullable((Boolean) notificationDetails.get("isBusinessContact")).ifPresent(builder::isBusinessContact);
+			Optional.ofNullable((String) notificationDetails.get("verificationStatus"))
+							.map(verificationStatus -> EnumUtils.getEnum(HyperwalletUser.VerificationStatus.class, verificationStatus))
+							.ifPresent(builder::verificationStatus);
+			Optional.ofNullable((String) notificationDetails.get("profileType"))
+							.map(profileType -> EnumUtils.getEnum(HyperwalletUser.ProfileType.class, profileType))
+							.ifPresent(builder::profileType);
+			Optional.ofNullable((String) notificationDetails.get("token")).ifPresent(builder::token);
+			Optional.ofNullable((String) notificationDetails.get("userToken")).ifPresent(builder::userToken);
+			Optional.ofNullable(source.getType()).ifPresent(builder::hyperwalletWebhookNotificationType);
+
+			return builder.build();
 			//@formatter:on
 		}
 		log.warn("The notification body looks empty");
