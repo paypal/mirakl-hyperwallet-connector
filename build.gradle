@@ -38,7 +38,11 @@ subprojects {
     apply plugin: 'info.solidsoft.pitest'
     apply plugin: 'jacoco'
 
-    sourceCompatibility = targetCompatibility = '15'
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(15)
+        }
+    }
 
     pitest {
         junit5PluginVersion = '0.12'
@@ -92,7 +96,7 @@ subprojects {
 
     bootBuildImage {
         environment =
-            environment = ["BP_JVM_VERSION"              : "16",
+            environment = ["BP_JVM_VERSION"              : "17",
                            "BPE_DELIM_JAVA_TOOL_OPTIONS" : " ",
                            "BPE_APPEND_JAVA_TOOL_OPTIONS": "-Xms256m -Xmx1g"
             ]
