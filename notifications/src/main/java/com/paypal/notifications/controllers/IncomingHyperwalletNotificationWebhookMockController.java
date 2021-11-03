@@ -28,8 +28,7 @@ public class IncomingHyperwalletNotificationWebhookMockController {
 
 	@PostMapping("/notifications")
 	@ResponseStatus(HttpStatus.OK)
-	public void receiveIncomingNotification(
-			@RequestBody(required = true) final HyperwalletWebhookNotification incomingNotificationDTO,
+	public void receiveIncomingNotification(@RequestBody final HyperwalletWebhookNotification incomingNotificationDTO,
 			@RequestParam(name = "enable_stk", required = false) String bstkTokenList,
 			@RequestParam(name = "client_user_id", required = false) String clientUserId) {
 		log.info("Incoming params for stk: {'enable_stk': [{}], 'client_user_id': [{}]}", bstkTokenList, clientUserId);

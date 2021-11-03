@@ -3,7 +3,7 @@ package com.paypal.sellers.sellersextract.converter.impl;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.paypal.infrastructure.converter.Converter;
-import com.paypal.infrastructure.strategy.StrategyFactory;
+import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.infrastructure.configuration.SellersMiraklApiConfig;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
@@ -28,10 +28,10 @@ public class MiraklShopToProfessionalSellerModelConverter extends AbstractMirakl
 	private final Converter<Triple<List<MiraklAdditionalFieldValue>, Integer, String>, BusinessStakeHolderModel> pairBusinessStakeHolderModelConverter;
 
 	protected MiraklShopToProfessionalSellerModelConverter(
-			final StrategyFactory<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyFactory,
+			final StrategyExecutor<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyExecutor,
 			final Converter<Triple<List<MiraklAdditionalFieldValue>, Integer, String>, BusinessStakeHolderModel> pairBusinessStakeHolderModelConverter,
 			final SellersMiraklApiConfig sellersMiraklApiConfig) {
-		super(miraklShopBankAccountModelStrategyFactory, sellersMiraklApiConfig);
+		super(miraklShopBankAccountModelStrategyExecutor, sellersMiraklApiConfig);
 		this.pairBusinessStakeHolderModelConverter = pairBusinessStakeHolderModelConverter;
 	}
 

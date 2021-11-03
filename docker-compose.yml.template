@@ -7,39 +7,12 @@ services:
     restart: always
     ports:
       - "8080:8080"
-    depends_on:
-      queue:
-        condition: service_healthy
     environment:
       - SPRING_PROFILES_ACTIVE=${PAYPAL_SPRING_PROFILE_ACTIVE:-dev}
       - PWD=/workspace
     volumes:
       - ${PWD}/keys:/home/keys
       - ${PWD}/financial-reports:/home/reports
-  queue:
-    image: rabbitmq:3.8.18-management
-    restart: always
-    hostname: paypal-hyperwallet-rabbitmq
-    healthcheck:
-      test: rabbitmq-diagnostics -q ping
-      interval: '10s'
-      timeout: '120s'
-    ports:
-      - '4369:4369'
-      - '5671:5671'
-      - '5672:5672'
-      - '8081:15672'
-      - '15691:15691'
-      - '15692:15692'
-      - '25672:25672'
-    volumes:
-      - ${PWD}/rabbitmq-data:/var/lib/rabbitmq
-    environment:
-      - RABBITMQ_DEFAULT_USER=${PAYPAL_RABBITMQ_USERNAME}
-      - RABBITMQ_DEFAULT_PASS=${PAYPAL_RABBITMQ_PASSWORD}
-      - RABBITMQ_ERLANG_COOKIE=${PAYPAL_RABBITMQ_ERLANG_COOKIE}
-    env_file:
-      - ".env"
   smtp:
     image: mailhog/mailhog
     restart: always

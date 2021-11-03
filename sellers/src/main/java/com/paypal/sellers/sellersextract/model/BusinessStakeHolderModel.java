@@ -106,7 +106,7 @@ public class BusinessStakeHolderModel {
                 .firstName(firstName)
                 .middleName(middleName)
                 .lastName(lastName)
-								.timeZone(timeZone)
+				.timeZone(timeZone)
                 .dateOfBirth(dateOfBirth)
                 .countryOfBirth(countryOfBirth)
                 .countryOfNationality(countryOfNationality)

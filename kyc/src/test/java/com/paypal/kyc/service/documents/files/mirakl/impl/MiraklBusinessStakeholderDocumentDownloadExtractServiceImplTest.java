@@ -10,7 +10,7 @@ import com.paypal.kyc.model.KYCConstants;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentModel;
 import com.paypal.kyc.model.KYCProofOfIdentityEnum;
-import com.paypal.kyc.strategies.documents.files.mirakl.impl.MiraklKYCSelectionDocumentMultipleStrategyFactory;
+import com.paypal.kyc.strategies.documents.files.mirakl.impl.MiraklKYCSelectionDocumentMultipleStrategyExecutor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,7 +34,7 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
 
 	@Mock
-	private MiraklKYCSelectionDocumentMultipleStrategyFactory proofOfIdentityStrategyFactoryMock;
+	private MiraklKYCSelectionDocumentMultipleStrategyExecutor proofOfIdentityStrategyExecutorMock;
 
 	@Mock
 	private MailNotificationUtil kycMailNotificationUtilMock;
@@ -83,7 +83,7 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeholderInfoModelWithMiraklDocumentsShopInformation = kycDocumentBusinessStakeHolderInfoModel
 				.toBuilder().miraklShopDocuments(miraklShopDocumentsList).build();
 
-		when(proofOfIdentityStrategyFactoryMock
+		when(proofOfIdentityStrategyExecutorMock
 				.execute(kycDocumentBusinessStakeholderInfoModelWithMiraklDocumentsShopInformation))
 						.thenReturn(List.of(List.of(kycDocumentModelFront, kycDocumentModelBack)));
 
@@ -211,7 +211,7 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeholderInfoModelWithMiraklDocumentsShopInformation = kycDocumentBusinessStakeHolderInfoModel
 				.toBuilder().miraklShopDocuments(miraklShopDocumentsList).build();
 
-		when(proofOfIdentityStrategyFactoryMock
+		when(proofOfIdentityStrategyExecutorMock
 				.execute(kycDocumentBusinessStakeholderInfoModelWithMiraklDocumentsShopInformation))
 						.thenReturn(List.of(List.of(kycDocumentModelProofOfIdentityFront,
 								kycDocumentModelProofOfIdentityBack, kycDocumentModelLetterOfAuthorization)));

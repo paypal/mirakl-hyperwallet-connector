@@ -1,20 +1,18 @@
 package com.paypal.notifications.services.impl;
 
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
-import com.paypal.infrastructure.strategy.StrategyFactory;
+import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.notifications.services.NotificationService;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
-	private final StrategyFactory<HyperwalletWebhookNotification, Optional<Void>> hyperwalletWebhookNotificationSenderStrategyFactory;
+	private final StrategyExecutor<HyperwalletWebhookNotification, Void> hyperwalletWebhookNotificationSenderStrategyExecutor;
 
 	public NotificationServiceImpl(
-			final StrategyFactory<HyperwalletWebhookNotification, Optional<Void>> hyperwalletWebhookNotificationSenderStrategyFactory) {
-		this.hyperwalletWebhookNotificationSenderStrategyFactory = hyperwalletWebhookNotificationSenderStrategyFactory;
+			final StrategyExecutor<HyperwalletWebhookNotification, Void> hyperwalletWebhookNotificationSenderStrategyExecutor) {
+		this.hyperwalletWebhookNotificationSenderStrategyExecutor = hyperwalletWebhookNotificationSenderStrategyExecutor;
 	}
 
 	/**
@@ -22,7 +20,7 @@ public class NotificationServiceImpl implements NotificationService {
 	 */
 	@Override
 	public void processNotification(final HyperwalletWebhookNotification incomingNotificationDTO) {
-		this.hyperwalletWebhookNotificationSenderStrategyFactory.execute(incomingNotificationDTO);
+		this.hyperwalletWebhookNotificationSenderStrategyExecutor.execute(incomingNotificationDTO);
 	}
 
 }

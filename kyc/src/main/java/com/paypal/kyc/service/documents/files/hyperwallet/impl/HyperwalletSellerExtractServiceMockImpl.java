@@ -7,7 +7,7 @@ import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.service.HyperwalletSDKService;
-import com.paypal.kyc.strategies.documents.files.hyperwallet.seller.impl.KYCDocumentInfoToHWVerificationDocumentMultipleStrategyFactory;
+import com.paypal.kyc.strategies.documents.files.hyperwallet.seller.impl.KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -34,7 +34,7 @@ public class HyperwalletSellerExtractServiceMockImpl extends HyperwalletSellerEx
 	private static final String HYPERWALLET_PUSH_DOCUMENTS = "/hyperwallet/v4/{userToken}/documents";
 
 	public HyperwalletSellerExtractServiceMockImpl(
-			final KYCDocumentInfoToHWVerificationDocumentMultipleStrategyFactory kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactory,
+			final KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactory,
 			@Value("${mockserver.url}") final String mockServerUrl, final RestTemplate restTemplate,
 			final MailNotificationUtil kycMailNotificationUtil, final HyperwalletSDKService hyperwalletSDKService) {
 		super(kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactory, hyperwalletSDKService,

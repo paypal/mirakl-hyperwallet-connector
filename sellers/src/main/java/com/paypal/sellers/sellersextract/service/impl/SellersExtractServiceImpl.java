@@ -7,7 +7,7 @@ import com.paypal.sellers.sellersextract.model.SellerProfileType;
 import com.paypal.sellers.sellersextract.service.BusinessStakeholderExtractService;
 import com.paypal.sellers.sellersextract.service.MiraklSellersExtractService;
 import com.paypal.sellers.sellersextract.service.SellersExtractService;
-import com.paypal.sellers.sellersextract.service.strategies.HyperWalletUserServiceStrategyFactorySingle;
+import com.paypal.sellers.sellersextract.service.strategies.HyperWalletUserServiceStrategyExecutor;
 import com.paypal.sellers.service.FailedEntityInformationService;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -31,17 +31,17 @@ public class SellersExtractServiceImpl implements SellersExtractService {
 
 	private final FailedEntityInformationService<FailedSellersInformation> failedEntityInformationService;
 
-	private final HyperWalletUserServiceStrategyFactorySingle hyperWalletUserServiceStrategyFactory;
+	private final HyperWalletUserServiceStrategyExecutor hyperWalletUserServiceStrategyExecutor;
 
 	private final BusinessStakeholderExtractService businessStakeHolderExtractService;
 
 	public SellersExtractServiceImpl(final MiraklSellersExtractService miraklSellersExtractService,
 			final FailedEntityInformationService<FailedSellersInformation> failedEntityInformationService,
-			final HyperWalletUserServiceStrategyFactorySingle hyperWalletUserServiceStrategyFactory,
+			final HyperWalletUserServiceStrategyExecutor hyperWalletUserServiceStrategyExecutor,
 			final BusinessStakeholderExtractService businessStakeHolderExtractService) {
 		this.miraklSellersExtractService = miraklSellersExtractService;
 		this.failedEntityInformationService = failedEntityInformationService;
-		this.hyperWalletUserServiceStrategyFactory = hyperWalletUserServiceStrategyFactory;
+		this.hyperWalletUserServiceStrategyExecutor = hyperWalletUserServiceStrategyExecutor;
 		this.businessStakeHolderExtractService = businessStakeHolderExtractService;
 	}
 
@@ -93,7 +93,7 @@ public class SellersExtractServiceImpl implements SellersExtractService {
 
 	@NonNull
 	private List<HyperwalletUser> createOrUpdateSellers(final List<SellerModel> allMiraklIndividualSellers) {
-		return allMiraklIndividualSellers.stream().map(hyperWalletUserServiceStrategyFactory::execute)
+		return allMiraklIndividualSellers.stream().map(hyperWalletUserServiceStrategyExecutor::execute)
 				.collect(Collectors.toList());
 	}
 

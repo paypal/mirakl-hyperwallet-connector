@@ -9,7 +9,7 @@ import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCDocumentModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklSellerDocumentDownloadExtractService;
-import com.paypal.kyc.strategies.documents.files.mirakl.impl.MiraklKYCSelectionDocumentMultipleStrategyFactory;
+import com.paypal.kyc.strategies.documents.files.mirakl.impl.MiraklKYCSelectionDocumentMultipleStrategyExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -25,16 +25,16 @@ public class MiraklSellerDocumentDownloadExtractServiceImpl implements MiraklSel
 
 	private final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient;
 
-	private final MiraklKYCSelectionDocumentMultipleStrategyFactory miraklKYCSelectionDocumentStrategyFactory;
+	private final MiraklKYCSelectionDocumentMultipleStrategyExecutor miraklKYCSelectionDocumentStrategyExecutor;
 
 	private final MailNotificationUtil kycMailNotificationUtil;
 
 	public MiraklSellerDocumentDownloadExtractServiceImpl(
 			final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient,
-			final MiraklKYCSelectionDocumentMultipleStrategyFactory miraklKYCSelectionDocumentStrategyFactory,
+			final MiraklKYCSelectionDocumentMultipleStrategyExecutor miraklKYCSelectionDocumentStrategyExecutor,
 			final MailNotificationUtil kycMailNotificationUtil) {
 		this.miraklMarketplacePlatformOperatorApiClient = miraklMarketplacePlatformOperatorApiClient;
-		this.miraklKYCSelectionDocumentStrategyFactory = miraklKYCSelectionDocumentStrategyFactory;
+		this.miraklKYCSelectionDocumentStrategyExecutor = miraklKYCSelectionDocumentStrategyExecutor;
 		this.kycMailNotificationUtil = kycMailNotificationUtil;
 	}
 
@@ -53,7 +53,7 @@ public class MiraklSellerDocumentDownloadExtractServiceImpl implements MiraklSel
 			return kycDocumentSellerInfoModelWithMiraklShops;
 		}
 
-		final List<KYCDocumentModel> extractedDocumentsSelectedBySeller = miraklKYCSelectionDocumentStrategyFactory
+		final List<KYCDocumentModel> extractedDocumentsSelectedBySeller = miraklKYCSelectionDocumentStrategyExecutor
 				.execute(kycDocumentSellerInfoModelWithMiraklShops).stream().flatMap(List::stream)
 				.collect(Collectors.toList());
 		//@formatter:on

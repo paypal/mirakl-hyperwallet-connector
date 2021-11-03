@@ -1,7 +1,7 @@
 package com.paypal.sellers.sellersextract.converter.impl;
 
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
-import com.paypal.infrastructure.strategy.StrategyFactory;
+import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.infrastructure.configuration.SellersMiraklApiConfig;
 import com.paypal.sellers.sellersextract.model.SellerModel;
@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 public class MiraklShopToIndividualSellerModelConverter extends AbstractMiraklShopToSellerModelConverter {
 
 	protected MiraklShopToIndividualSellerModelConverter(
-			final StrategyFactory<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyFactory,
+			final StrategyExecutor<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyExecutor,
 			final SellersMiraklApiConfig sellersMiraklApiConfig) {
-		super(miraklShopBankAccountModelStrategyFactory, sellersMiraklApiConfig);
+		super(miraklShopBankAccountModelStrategyExecutor, sellersMiraklApiConfig);
 	}
 
 	/**

@@ -26,8 +26,8 @@ public class ReportsExtractController {
 
 	@PostMapping("/financial-report-extract")
 	public ResponseEntity<String> runJob(
-			@RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final Date startDate,
-			@RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final Date endDate,
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final Date startDate,
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final Date endDate,
 			@RequestParam(required = false, defaultValue = DEFAULT_FINANCIAL_REPORT_EXTRACT_JOB_NAME) final String name,
 			@RequestParam(required = false) final String fileName) throws SchedulerException {
 		jobService.createAndRunSingleExecutionJob(name, ReportsExtractJob.class,

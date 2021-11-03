@@ -18,6 +18,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class MiraklLetterOfAuthorizationBusinessStakeholderStrategyTest {
 
+	private static final String PROOF_OF_AUTHORIZATION = "hw-bsh-letter-authorization";
+
 	@InjectMocks
 	private MiraklLetterOfAuthorizationBusinessStakeholderStrategy testObj;
 
@@ -26,8 +28,6 @@ class MiraklLetterOfAuthorizationBusinessStakeholderStrategyTest {
 
 	@Mock
 	private KYCDocumentSellerInfoModel kycDocumentSellerInfoModelMock;
-
-	public static final String PROOF_OF_AUTHORIZATION = "hw-bsh-letter-authorization";
 
 	@Test
 	void isApplicable_shouldReturnTrueWhensourceIsInstanceOfKYCDocumentBusinessStakeHolderInfoModelAndIsContactIsTrueAndRequiresLetterOfAuthorizationIsTrue() {

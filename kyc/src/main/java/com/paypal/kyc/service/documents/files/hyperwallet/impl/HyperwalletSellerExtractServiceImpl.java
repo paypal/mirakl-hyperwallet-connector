@@ -10,7 +10,7 @@ import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.service.HyperwalletSDKService;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletSellerExtractService;
-import com.paypal.kyc.strategies.documents.files.hyperwallet.seller.impl.KYCDocumentInfoToHWVerificationDocumentMultipleStrategyFactory;
+import com.paypal.kyc.strategies.documents.files.hyperwallet.seller.impl.KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -39,14 +39,14 @@ public class HyperwalletSellerExtractServiceImpl implements HyperwalletSellerExt
 
 	private final MailNotificationUtil kycMailNotificationUtil;
 
-	private final KYCDocumentInfoToHWVerificationDocumentMultipleStrategyFactory kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactory;
+	private final KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor;
 
 	public HyperwalletSellerExtractServiceImpl(
-			final KYCDocumentInfoToHWVerificationDocumentMultipleStrategyFactory kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactory,
+			final KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor,
 			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil kycMailNotificationUtil) {
 		this.hyperwalletSDKService = hyperwalletSDKService;
 		this.kycMailNotificationUtil = kycMailNotificationUtil;
-		this.kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactory = kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactory;
+		this.kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor = kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor;
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class HyperwalletSellerExtractServiceImpl implements HyperwalletSellerExt
                 .stream()
                 .filter(KYCDocumentSellerInfoModel::areDocumentsFilled)
                 .map(kycDocumentInfoModel -> Pair.of(kycDocumentInfoModel,
-                        kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactory.execute(kycDocumentInfoModel)))
+                        kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor.execute(kycDocumentInfoModel)))
                 .collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
         //@formatter:on
 

@@ -3,7 +3,7 @@ package com.paypal.sellers.bankaccountextract.service.strategies;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
-import com.paypal.infrastructure.strategy.StrategyFactory;
+import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.sellers.entity.FailedBankAccountInformation;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.service.FailedEntityInformationService;
@@ -21,10 +21,10 @@ public class HyperWalletUpdateBankAccountServiceStrategyBankAccount
 
 	protected HyperWalletUpdateBankAccountServiceStrategyBankAccount(
 			final FailedEntityInformationService<FailedBankAccountInformation> failedEntityInformationService,
-			final StrategyFactory<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyFactory,
+			final StrategyExecutor<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyExecutor,
 			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
-		super(failedEntityInformationService, sellerModelToHyperwalletBankAccountStrategyFactory, hyperwalletSDKService,
-				mailNotificationUtil);
+		super(failedEntityInformationService, sellerModelToHyperwalletBankAccountStrategyExecutor,
+				hyperwalletSDKService, mailNotificationUtil);
 	}
 
 	/**

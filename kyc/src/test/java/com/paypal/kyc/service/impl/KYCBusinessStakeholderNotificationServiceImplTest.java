@@ -3,7 +3,7 @@ package com.paypal.kyc.service.impl;
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.kyc.model.KYCBusinessStakeholderStatusNotificationBodyModel;
-import com.paypal.kyc.strategies.status.impl.KYCBusinessStakeholderStatusFactory;
+import com.paypal.kyc.strategies.status.impl.KYCBusinessStakeholderStatusExecutor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,7 +23,7 @@ class KYCBusinessStakeholderNotificationServiceImplTest {
 	private Converter<Object, KYCBusinessStakeholderStatusNotificationBodyModel> hyperWalletObjectToKYCBusinessStakeholderStatusNotificationBodyModelConverterMock;
 
 	@Mock
-	private KYCBusinessStakeholderStatusFactory kycBusinessStakeholderStatusFactoryMock;
+	private KYCBusinessStakeholderStatusExecutor kycBusinessStakeholderStatusExecutorMock;
 
 	@Mock
 	private HyperwalletWebhookNotification hyperwalletWebhookNotificationMock;
@@ -40,7 +40,7 @@ class KYCBusinessStakeholderNotificationServiceImplTest {
 
 		verify(hyperWalletObjectToKYCBusinessStakeholderStatusNotificationBodyModelConverterMock)
 				.convert(hyperwalletWebhookNotificationMock);
-		verify(kycBusinessStakeholderStatusFactoryMock).execute(kycBusinessStakeholderNotificationMock);
+		verify(kycBusinessStakeholderStatusExecutorMock).execute(kycBusinessStakeholderNotificationMock);
 	}
 
 }

@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,7 +48,7 @@ class MiraklInvoiceListDTOToInvoiceModelListConverterTest {
 
 		final List<InvoiceModel> result = testObj.convert(miraklInvoicesMockListDTOMock);
 
-		Assertions.assertThat(result).hasSize(2).containsExactlyInAnyOrder(invoiceModelOneMock, invoiceModelTwoMock);
+		assertThat(result).hasSize(2).containsExactlyInAnyOrder(invoiceModelOneMock, invoiceModelTwoMock);
 	}
 
 	@Test
@@ -55,7 +56,7 @@ class MiraklInvoiceListDTOToInvoiceModelListConverterTest {
 
 		final List<InvoiceModel> result = testObj.convert(null);
 
-		Assertions.assertThat(result).isEqualTo(Collections.emptyList());
+		assertThat(result).isEqualTo(Collections.emptyList());
 	}
 
 }

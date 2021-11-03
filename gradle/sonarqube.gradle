@@ -33,8 +33,10 @@ sonarqube {
                         "**/infrastructure/configuration/AbstractHyperwalletEncryptionApiConfig.java," +
                         "**/reports/ReportsSpringContextConfiguration.java," +
                         "**/reports/infraestructure/configuration/ReportsConfig.java," +
-                        "**/kyc/model/KYCBusinessStakeholderProofOfIdentityEnum.java"
+                        "**/kyc/model/KYCBusinessStakeholderProofOfIdentityEnum.java," +
+                        "**/infrastructure/events/**"
         property "sonar.cpd.exclusions", "**/sellers/sellersextract/model/**," +
-                "**/sellers/bankaccountextract/model/**"
+                "**/sellers/bankaccountextract/model/**," +
+                "**/infrastructure/events/**"
     }
 }

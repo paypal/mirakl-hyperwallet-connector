@@ -4,7 +4,7 @@ import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.Strategy;
-import com.paypal.infrastructure.strategy.StrategyFactory;
+import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.entity.FailedBankAccountInformation;
 import com.paypal.sellers.sellersextract.model.SellerModel;
@@ -23,7 +23,7 @@ public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
 		extends AbstractHyperwalletRetryAPIStrategy<FailedBankAccountInformation>
 		implements Strategy<SellerModel, Optional<HyperwalletBankAccount>> {
 
-	protected final StrategyFactory<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyFactory;
+	protected final StrategyExecutor<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyExecutor;
 
 	protected final HyperwalletSDKService hyperwalletSDKService;
 
@@ -34,10 +34,10 @@ public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
 
 	protected AbstractHyperwalletBankAccountRetryApiStrategy(
 			final FailedEntityInformationService<FailedBankAccountInformation> failedEntityInformationService,
-			final StrategyFactory<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyFactory,
+			final StrategyExecutor<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyExecutor,
 			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
 		super(failedEntityInformationService);
-		this.sellerModelToHyperwalletBankAccountStrategyFactory = sellerModelToHyperwalletBankAccountStrategyFactory;
+		this.sellerModelToHyperwalletBankAccountStrategyExecutor = sellerModelToHyperwalletBankAccountStrategyExecutor;
 		this.hyperwalletSDKService = hyperwalletSDKService;
 		this.mailNotificationUtil = mailNotificationUtil;
 	}
@@ -49,7 +49,7 @@ public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
 	public Optional<HyperwalletBankAccount> execute(final SellerModel seller) {
 		boolean includedAsFailed = false;
 		HyperwalletBankAccount hwCreatedBankAccount = null;
-		final HyperwalletBankAccount hwBankAccountRequest = sellerModelToHyperwalletBankAccountStrategyFactory
+		final HyperwalletBankAccount hwBankAccountRequest = sellerModelToHyperwalletBankAccountStrategyExecutor
 				.execute(seller);
 		if (Objects.nonNull(hwBankAccountRequest)) {
 			log.debug("Hyperwallet API bank account request: [{}]",

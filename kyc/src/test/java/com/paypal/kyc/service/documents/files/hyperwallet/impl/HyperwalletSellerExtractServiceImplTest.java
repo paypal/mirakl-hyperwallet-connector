@@ -10,7 +10,7 @@ import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCConstants;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.service.HyperwalletSDKService;
-import com.paypal.kyc.strategies.documents.files.hyperwallet.seller.impl.KYCDocumentInfoToHWVerificationDocumentMultipleStrategyFactory;
+import com.paypal.kyc.strategies.documents.files.hyperwallet.seller.impl.KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -49,7 +49,7 @@ class HyperwalletSellerExtractServiceImplTest {
 	private HyperwalletVerificationDocument uploadDataOneMock, uploadDataTwoMock;
 
 	@Mock
-	private KYCDocumentInfoToHWVerificationDocumentMultipleStrategyFactory kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactoryMock;
+	private KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorMock;
 
 	@Mock
 	private MailNotificationUtil mailNotificationUtilMock;
@@ -75,9 +75,9 @@ class HyperwalletSellerExtractServiceImplTest {
 
 		when(kycDocumentSellerInfoModelOneStub.areDocumentsFilled()).thenReturn(true);
 		when(kycDocumentSellerInfoModelTwoStub.areDocumentsFilled()).thenReturn(true);
-		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactoryMock
+		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorMock
 				.execute(kycDocumentSellerInfoModelOneStub)).thenReturn(List.of(uploadDataOneMock));
-		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactoryMock
+		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorMock
 				.execute(kycDocumentSellerInfoModelTwoStub)).thenReturn(List.of(uploadDataTwoMock));
 
 		when(hyperwalletSDKServiceMock.getHyperwalletInstance(Mockito.anyString())).thenReturn(hyperwalletClientMock);
@@ -113,7 +113,7 @@ class HyperwalletSellerExtractServiceImplTest {
 
 		when(kycDocumentSellerInfoModelOneStub.areDocumentsFilled()).thenReturn(true);
 		when(kycDocumentSellerInfoModelTwoStub.areDocumentsFilled()).thenReturn(false);
-		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactoryMock
+		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorMock
 				.execute(kycDocumentSellerInfoModelOneStub)).thenReturn(List.of(uploadDataOneMock));
 
 		when(hyperwalletSDKServiceMock.getHyperwalletInstance(Mockito.anyString())).thenReturn(hyperwalletClientMock);
@@ -148,9 +148,9 @@ class HyperwalletSellerExtractServiceImplTest {
 		when(kycDocumentSellerInfoModelOKStub.areDocumentsFilled()).thenReturn(true);
 		when(kycDocumentSellerInfoModelKOStub.areDocumentsFilled()).thenReturn(true);
 
-		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactoryMock
+		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorMock
 				.execute(kycDocumentSellerInfoModelOKStub)).thenReturn(List.of(uploadDataOneMock));
-		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactoryMock
+		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorMock
 				.execute(kycDocumentSellerInfoModelKOStub)).thenReturn(List.of(uploadDataTwoMock));
 
 		when(hyperwalletSDKServiceMock.getHyperwalletInstance(Mockito.anyString())).thenReturn(hyperwalletClientMock);
@@ -181,7 +181,7 @@ class HyperwalletSellerExtractServiceImplTest {
 						.build());
 
 		when(kycDocumentSellerInfoModelKOStub.areDocumentsFilled()).thenReturn(true);
-		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyFactoryMock
+		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorMock
 				.execute(kycDocumentSellerInfoModelKOStub)).thenReturn(List.of(uploadDataTwoMock));
 
 		when(hyperwalletSDKServiceMock.getHyperwalletInstance(Mockito.anyString())).thenReturn(hyperwalletClientMock);

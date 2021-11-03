@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class JWEConverterTest {
 
-	public static final String UTF_8 = "UTF-8";
+	private static final String UTF_8 = "UTF-8";
 
 	@Spy
 	@InjectMocks
