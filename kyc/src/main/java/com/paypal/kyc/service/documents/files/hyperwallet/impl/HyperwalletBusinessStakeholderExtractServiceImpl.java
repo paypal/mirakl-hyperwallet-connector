@@ -13,7 +13,7 @@ import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.service.HyperwalletSDKService;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletBusinessStakeholderExtractService;
-import com.paypal.kyc.strategies.documents.files.hyperwallet.businessstakeholder.impl.KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory;
+import com.paypal.kyc.strategies.documents.files.hyperwallet.businessstakeholder.impl.KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -41,15 +41,15 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 
 	private final HyperwalletSDKService hyperwalletSDKService;
 
-	private final KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory;
+	private final KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor;
 
 	private final MailNotificationUtil kycMailNotificationUtil;
 
 	protected HyperwalletBusinessStakeholderExtractServiceImpl(final HyperwalletSDKService hyperwalletSDKService,
-			final KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory,
+			final KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor,
 			final MailNotificationUtil kycMailNotificationUtil) {
 		this.hyperwalletSDKService = hyperwalletSDKService;
-		this.kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory = kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory;
+		this.kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor = kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor;
 		this.kycMailNotificationUtil = kycMailNotificationUtil;
 	}
 
@@ -98,7 +98,7 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 		final Map<KYCDocumentBusinessStakeHolderInfoModel, List<HyperwalletVerificationDocument>> hyperwalletVerificationDocumentsToBePushed = businessStakeholderToBePushed
 				.stream()
 				.map(businessStakeHolderElement -> Pair.of(businessStakeHolderElement,
-						kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory
+						kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor
 								.execute(businessStakeHolderElement)))
 				.collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
 		//@formatter:off

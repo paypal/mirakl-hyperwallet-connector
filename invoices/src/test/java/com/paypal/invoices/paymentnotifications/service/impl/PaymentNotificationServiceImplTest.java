@@ -3,7 +3,7 @@ package com.paypal.invoices.paymentnotifications.service.impl;
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.invoices.paymentnotifications.model.PaymentNotificationBodyModel;
-import com.paypal.invoices.paymentnotifications.service.PaymentNotificationFactorySingle;
+import com.paypal.invoices.paymentnotifications.service.PaymentNotificationExecutor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,7 +29,7 @@ class PaymentNotificationServiceImplTest {
 	private Converter<Object, PaymentNotificationBodyModel> paymentNotificationBodyModelConverterMock;
 
 	@Mock
-	private PaymentNotificationFactorySingle paymentNotificationFactoryMock;
+	private PaymentNotificationExecutor paymentNotificationExecutorMock;
 
 	@Test
 	void processPaymentNotification_shouldNotSendAnyEmailWhenPaymentNotificationIsNull() {
@@ -38,7 +38,7 @@ class PaymentNotificationServiceImplTest {
 
 		testObj.processPaymentNotification(hyperwalletWebhookNotificationMock);
 
-		verify(paymentNotificationFactoryMock).execute(paymentNotificationBodyModelMock);
+		verify(paymentNotificationExecutorMock).execute(paymentNotificationBodyModelMock);
 	}
 
 }

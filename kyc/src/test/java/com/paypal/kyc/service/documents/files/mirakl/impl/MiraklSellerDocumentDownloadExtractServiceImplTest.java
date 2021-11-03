@@ -7,7 +7,7 @@ import com.mirakl.client.mmp.request.shop.document.MiraklGetShopDocumentsRequest
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.*;
-import com.paypal.kyc.strategies.documents.files.mirakl.impl.MiraklKYCSelectionDocumentMultipleStrategyFactory;
+import com.paypal.kyc.strategies.documents.files.mirakl.impl.MiraklKYCSelectionDocumentMultipleStrategyExecutor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,7 +31,7 @@ class MiraklSellerDocumentDownloadExtractServiceImplTest {
 	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
 
 	@Mock
-	private MiraklKYCSelectionDocumentMultipleStrategyFactory proofOfIdentityStrategyFactoryMock;
+	private MiraklKYCSelectionDocumentMultipleStrategyExecutor proofOfIdentityStrategyExecutorMock;
 
 	@Mock
 	private MailNotificationUtil kycMailNotificationUtilMock;
@@ -76,7 +76,7 @@ class MiraklSellerDocumentDownloadExtractServiceImplTest {
 		final KYCDocumentSellerInfoModel kycDocumentSellerInfoModelWithMiraklDocumentsShopInformation = kycDocumentSellerInfoModel
 				.toBuilder().miraklShopDocuments(miraklShopDocumentsList).build();
 
-		when(proofOfIdentityStrategyFactoryMock.execute(kycDocumentSellerInfoModelWithMiraklDocumentsShopInformation))
+		when(proofOfIdentityStrategyExecutorMock.execute(kycDocumentSellerInfoModelWithMiraklDocumentsShopInformation))
 				.thenReturn(List.of(List.of(kycDocumentModelFront, kycDocumentModelBack)));
 
 		final KYCDocumentSellerInfoModel result = testObj.getDocumentsSelectedBySeller(kycDocumentSellerInfoModel);

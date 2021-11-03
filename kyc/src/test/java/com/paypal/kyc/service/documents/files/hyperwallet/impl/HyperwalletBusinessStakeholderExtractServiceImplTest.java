@@ -16,7 +16,7 @@ import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentModel;
 import com.paypal.kyc.model.KYCProofOfIdentityEnum;
 import com.paypal.kyc.service.HyperwalletSDKService;
-import com.paypal.kyc.strategies.documents.files.hyperwallet.businessstakeholder.impl.KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory;
+import com.paypal.kyc.strategies.documents.files.hyperwallet.businessstakeholder.impl.KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -54,7 +54,7 @@ class HyperwalletBusinessStakeholderExtractServiceImplTest {
 	private HyperwalletBusinessStakeholderExtractServiceImpl testObj;
 
 	@Mock
-	private KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactoryMock;
+	private KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutorMock;
 
 	@Mock
 	private MailNotificationUtil kycMailNotificationUtilMock;
@@ -215,13 +215,13 @@ class HyperwalletBusinessStakeholderExtractServiceImplTest {
 
 		final List<HyperwalletVerificationDocument> usrOneBstOneFilesOneDataList = List
 				.of(usrOneBstOneFilesOneDataMock);
-		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactoryMock
+		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutorMock
 				.execute(userOneBstkOne)).thenReturn(usrOneBstOneFilesOneDataList);
 		final List<HyperwalletVerificationDocument> usrOneBstThreeFilesDataList = List.of(usrOneBstThreeFilesDataMock);
-		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactoryMock
+		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutorMock
 				.execute(userOneBstkThree)).thenReturn(usrOneBstThreeFilesDataList);
 		final List<HyperwalletVerificationDocument> usrTwoBstOneFilesDataList = List.of(usrTwoBstThreeFilesDataMock);
-		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactoryMock
+		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutorMock
 				.execute(userTwoBstkThree)).thenReturn(usrTwoBstOneFilesDataList);
 		when(hyperwalletSDKServiceMock.getHyperwalletInstance(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletApiClientMock);
@@ -244,7 +244,7 @@ class HyperwalletBusinessStakeholderExtractServiceImplTest {
 
 		assertThat(result).isEmpty();
 		verifyNoInteractions(hyperwalletApiClientMock);
-		verifyNoInteractions(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactoryMock);
+		verifyNoInteractions(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutorMock);
 	}
 
 	@Test
@@ -323,10 +323,10 @@ class HyperwalletBusinessStakeholderExtractServiceImplTest {
 
 		final List<HyperwalletVerificationDocument> usrOneBstOneFilesOneDataList = List
 				.of(usrOneBstOneFilesOneDataMock);
-		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactoryMock
+		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutorMock
 				.execute(userOneBstkOne)).thenReturn(usrOneBstOneFilesOneDataList);
 		final List<HyperwalletVerificationDocument> usrOneBstThreeFilesDataList = List.of(usrOneBstThreeFilesDataMock);
-		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactoryMock
+		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutorMock
 				.execute(userOneBstkThree)).thenReturn(usrOneBstThreeFilesDataList);
 		when(hyperwalletSDKServiceMock.getHyperwalletInstance(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletApiClientMock);
@@ -425,13 +425,13 @@ class HyperwalletBusinessStakeholderExtractServiceImplTest {
 
 		final List<HyperwalletVerificationDocument> usrOneBstOneFilesOneDataList = List
 				.of(usrOneBstOneFilesOneDataMock);
-		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactoryMock
+		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutorMock
 				.execute(userOneBstkOne)).thenReturn(usrOneBstOneFilesOneDataList);
 		final List<HyperwalletVerificationDocument> usrOneBstThreeFilesDataList = List.of(usrOneBstThreeFilesDataMock);
-		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactoryMock
+		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutorMock
 				.execute(userOneBstkThree)).thenReturn(usrOneBstThreeFilesDataList);
 		final List<HyperwalletVerificationDocument> usrTwoBstOneFilesDataList = List.of(usrTwoBstThreeFilesDataMock);
-		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactoryMock
+		when(businessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutorMock
 				.execute(userTwoBstkThree)).thenReturn(usrTwoBstOneFilesDataList);
 		when(hyperwalletSDKServiceMock.getHyperwalletInstance(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletApiClientMock);

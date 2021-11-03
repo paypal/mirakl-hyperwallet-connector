@@ -7,7 +7,7 @@ import com.mirakl.client.mmp.domain.shop.MiraklShops;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
-import com.paypal.infrastructure.strategy.StrategyFactory;
+import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.sellers.infrastructure.utils.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +43,7 @@ class MiraklSellersExtractServiceImplTest {
 	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
 
 	@Mock
-	private StrategyFactory<MiraklShop, SellerModel> miraklShopSellerModelStrategyFactory;
+	private StrategyExecutor<MiraklShop, SellerModel> miraklShopSellerModelStrategyExecutor;
 
 	@Mock
 	private MiraklShops miraklShops;
@@ -66,7 +66,7 @@ class MiraklSellersExtractServiceImplTest {
 	@BeforeEach
 	void setUp() {
 		testObj = new MiraklSellersExtractServiceImpl(miraklMarketplacePlatformOperatorApiClientMock,
-				miraklShopSellerModelStrategyFactory, mailNotificationUtilMock);
+				miraklShopSellerModelStrategyExecutor, mailNotificationUtilMock);
 	}
 
 	@Test
@@ -74,8 +74,8 @@ class MiraklSellersExtractServiceImplTest {
 		when(miraklShops.getShops()).thenReturn(List.of(individualShopMock, professionalShopMock));
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestArgumentCaptor.capture()))
 				.thenReturn(miraklShops);
-		when(miraklShopSellerModelStrategyFactory.execute(individualShopMock)).thenReturn(individualSellerModelMock);
-		when(miraklShopSellerModelStrategyFactory.execute(professionalShopMock))
+		when(miraklShopSellerModelStrategyExecutor.execute(individualShopMock)).thenReturn(individualSellerModelMock);
+		when(miraklShopSellerModelStrategyExecutor.execute(professionalShopMock))
 				.thenReturn(professionalSellerModelMock);
 		when(individualShopMock.getId()).thenReturn(INVIDIVUAL_SHOP_ID);
 		when(professionalShopMock.getId()).thenReturn(PROFESSIONAL_SHOP_ID);
@@ -92,8 +92,8 @@ class MiraklSellersExtractServiceImplTest {
 		when(miraklShops.getShops()).thenReturn(List.of(individualShopMock, professionalShopMock));
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestArgumentCaptor.capture()))
 				.thenReturn(miraklShops);
-		when(miraklShopSellerModelStrategyFactory.execute(individualShopMock)).thenReturn(individualSellerModelMock);
-		when(miraklShopSellerModelStrategyFactory.execute(professionalShopMock))
+		when(miraklShopSellerModelStrategyExecutor.execute(individualShopMock)).thenReturn(individualSellerModelMock);
+		when(miraklShopSellerModelStrategyExecutor.execute(professionalShopMock))
 				.thenReturn(professionalSellerModelMock);
 
 		final var result = testObj.extractSellers(List.of(INVIDIVUAL_SHOP_ID, PROFESSIONAL_SHOP_ID));
@@ -136,7 +136,7 @@ class MiraklSellersExtractServiceImplTest {
 		when(individualSellerModelMock.hasAcceptedTermsAndConditions()).thenReturn(Boolean.TRUE);
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestArgumentCaptor.capture()))
 				.thenReturn(miraklShops);
-		when(miraklShopSellerModelStrategyFactory.execute(individualShopMock)).thenReturn(individualSellerModelMock);
+		when(miraklShopSellerModelStrategyExecutor.execute(individualShopMock)).thenReturn(individualSellerModelMock);
 		when(individualShopMock.getId()).thenReturn(INVIDIVUAL_SHOP_ID);
 
 		final var result = testObj.extractIndividuals(List.of(INVIDIVUAL_SHOP_ID));
@@ -151,7 +151,7 @@ class MiraklSellersExtractServiceImplTest {
 		when(individualSellerModelMock.hasAcceptedTermsAndConditions()).thenReturn(Boolean.TRUE);
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestArgumentCaptor.capture()))
 				.thenReturn(miraklShops);
-		when(miraklShopSellerModelStrategyFactory.execute(individualShopMock)).thenReturn(individualSellerModelMock);
+		when(miraklShopSellerModelStrategyExecutor.execute(individualShopMock)).thenReturn(individualSellerModelMock);
 		when(individualShopMock.getId()).thenReturn(INVIDIVUAL_SHOP_ID);
 
 		final var result = testObj.extractIndividuals(dateMock);
@@ -165,7 +165,7 @@ class MiraklSellersExtractServiceImplTest {
 		when(professionalShopMock.isProfessional()).thenReturn(true);
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestArgumentCaptor.capture()))
 				.thenReturn(miraklShops);
-		when(miraklShopSellerModelStrategyFactory.execute(professionalShopMock))
+		when(miraklShopSellerModelStrategyExecutor.execute(professionalShopMock))
 				.thenReturn(professionalSellerModelMock);
 		when(professionalSellerModelMock.hasAcceptedTermsAndConditions()).thenReturn(Boolean.TRUE);
 
@@ -181,7 +181,7 @@ class MiraklSellersExtractServiceImplTest {
 		when(professionalSellerModelMock.hasAcceptedTermsAndConditions()).thenReturn(Boolean.TRUE);
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestArgumentCaptor.capture()))
 				.thenReturn(miraklShops);
-		when(miraklShopSellerModelStrategyFactory.execute(professionalShopMock))
+		when(miraklShopSellerModelStrategyExecutor.execute(professionalShopMock))
 				.thenReturn(professionalSellerModelMock);
 
 		final var result = testObj.extractProfessionals(List.of(PROFESSIONAL_SHOP_ID));

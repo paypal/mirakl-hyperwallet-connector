@@ -15,23 +15,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 class KYCDocumentSellerInfoModelTest {
 
-	private static final String HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_STAKEHOLDER_FIELD = "hw-stakeholder-req-proof-identity-1";
-
-	private static final String HYPERWALLET_BUSINESS_STAKEHOLDER_TOKEN_FIELD = "hw-stakeholder-token-1";
-
-	private static final String PROOF_OF_ADDRESS = "hw-ind-proof-address";
-
-	public static final String PROOF_OF_BUSINESS = "hw-prof-proof-business-front";
-
-	private static final String HYPERWALLET_BUSINESS_STAKEHOLDER_PROOF_IDENTITY_TYPE_FIELD = "hw-stakeholder-proof-identity-type-1";
-
 	private static final String SHOP_ID_2000 = "2000";
 
 	private static final String SHOP_ID_2001 = "2001";
 
 	private static final String USER_TOKEN = "userToken";
 
+	private static final String PROOF_OF_ADDRESS = "hw-ind-proof-address";
+
+	private static final String PROOF_OF_BUSINESS = "hw-prof-proof-business-front";
+
 	private static final String BUSINESS_STAKEHOLDER_TOKEN = "businessStakeholderToken";
+
+	private static final String HYPERWALLET_BUSINESS_STAKEHOLDER_TOKEN_FIELD = "hw-stakeholder-token-1";
+
+	private static final String HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_STAKEHOLDER_FIELD = "hw-stakeholder-req-proof-identity-1";
+
+	private static final String HYPERWALLET_BUSINESS_STAKEHOLDER_PROOF_IDENTITY_TYPE_FIELD = "hw-stakeholder-proof-identity-type-1";
 
 	@Test
 	void containsIdentityDocuments_shouldReturnTrueWhenAllIdentityDocumentsAreFilled() {
@@ -47,7 +47,7 @@ class KYCDocumentSellerInfoModelTest {
 
 		final boolean result = testObj.isIdentityDocumentsFilled();
 
-		Assertions.assertThat(result).isTrue();
+		assertThat(result).isTrue();
 
 	}
 
@@ -63,7 +63,7 @@ class KYCDocumentSellerInfoModelTest {
 
 		final boolean result = testObj.isIdentityDocumentsFilled();
 
-		Assertions.assertThat(result).isFalse();
+		assertThat(result).isFalse();
 
 	}
 
@@ -78,7 +78,7 @@ class KYCDocumentSellerInfoModelTest {
 
 		final boolean result = testObj.isAddressDocumentsFilled();
 
-		Assertions.assertThat(result).isTrue();
+		assertThat(result).isTrue();
 
 	}
 
@@ -94,7 +94,7 @@ class KYCDocumentSellerInfoModelTest {
 
 		final boolean result = testObj.isIdentityDocumentsFilled();
 
-		Assertions.assertThat(result).isFalse();
+		assertThat(result).isFalse();
 
 	}
 

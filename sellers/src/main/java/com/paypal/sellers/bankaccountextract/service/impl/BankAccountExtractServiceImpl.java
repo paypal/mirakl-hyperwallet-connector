@@ -1,7 +1,7 @@
 package com.paypal.sellers.bankaccountextract.service.impl;
 
 import com.paypal.sellers.bankaccountextract.service.BankAccountExtractService;
-import com.paypal.sellers.bankaccountextract.service.strategies.HyperWalletBankAccountServiceStrategyFactorySingle;
+import com.paypal.sellers.bankaccountextract.service.strategies.HyperWalletBankAccountServiceStrategyExecutor;
 import com.paypal.sellers.entity.FailedBankAccountInformation;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.MiraklSellersExtractService;
@@ -26,14 +26,14 @@ public class BankAccountExtractServiceImpl implements BankAccountExtractService 
 
 	private final FailedEntityInformationService<FailedBankAccountInformation> failedEntityInformationService;
 
-	private final HyperWalletBankAccountServiceStrategyFactorySingle hyperWalletBankAccountServiceStrategyFactory;
+	private final HyperWalletBankAccountServiceStrategyExecutor hyperWalletBankAccountServiceStrategyExecutor;
 
 	public BankAccountExtractServiceImpl(final MiraklSellersExtractService miraklSellersExtractService,
 			final FailedEntityInformationService<FailedBankAccountInformation> failedEntityInformationService,
-			final HyperWalletBankAccountServiceStrategyFactorySingle hyperWalletBankAccountServiceStrategyFactory) {
+			final HyperWalletBankAccountServiceStrategyExecutor hyperWalletBankAccountServiceStrategyExecutor) {
 		this.miraklSellersExtractService = miraklSellersExtractService;
 		this.failedEntityInformationService = failedEntityInformationService;
-		this.hyperWalletBankAccountServiceStrategyFactory = hyperWalletBankAccountServiceStrategyFactory;
+		this.hyperWalletBankAccountServiceStrategyExecutor = hyperWalletBankAccountServiceStrategyExecutor;
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class BankAccountExtractServiceImpl implements BankAccountExtractService 
 	@Override
 	public void extractBankAccounts(final Date delta) {
 		final List<SellerModel> sellers = internalExtractSellers(delta);
-		sellers.forEach(hyperWalletBankAccountServiceStrategyFactory::execute);
+		sellers.forEach(hyperWalletBankAccountServiceStrategyExecutor::execute);
 	}
 
 	@NonNull

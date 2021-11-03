@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,7 +56,7 @@ class HyperWalletCreateSellerServiceStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnTrueWhenTokenIsNull() {
-		Mockito.when(sellerModelMock.getToken()).thenReturn(null);
+		when(sellerModelMock.getToken()).thenReturn(null);
 
 		final boolean result = testObj.isApplicable(sellerModelMock);
 
@@ -66,7 +65,7 @@ class HyperWalletCreateSellerServiceStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnFalseWhenTokenIsNull() {
-		Mockito.when(sellerModelMock.getToken()).thenReturn(TOKEN);
+		when(sellerModelMock.getToken()).thenReturn(TOKEN);
 
 		final boolean result = testObj.isApplicable(sellerModelMock);
 

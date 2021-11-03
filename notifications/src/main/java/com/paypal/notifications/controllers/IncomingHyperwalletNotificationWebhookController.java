@@ -23,9 +23,8 @@ public class IncomingHyperwalletNotificationWebhookController {
 
 	@PostMapping("/notifications")
 	@ResponseStatus(HttpStatus.OK)
-	public void receiveIncomingNotification(
-			@RequestBody(required = true) final HyperwalletWebhookNotification incomingNotificationDTO) {
-		this.notificationService.processNotification(incomingNotificationDTO);
+	public void receiveIncomingNotification(@RequestBody final HyperwalletWebhookNotification incomingNotificationDTO) {
+		notificationService.processNotification(incomingNotificationDTO);
 	}
 
 }

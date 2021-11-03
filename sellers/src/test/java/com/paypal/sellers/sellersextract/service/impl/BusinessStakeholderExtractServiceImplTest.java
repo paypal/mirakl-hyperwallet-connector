@@ -10,7 +10,7 @@ import com.paypal.sellers.sellersextract.model.BusinessStakeHolderConstants;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
-import com.paypal.sellers.sellersextract.service.strategies.HyperWalletBusinessStakeHolderServiceStrategyFactorySingle;
+import com.paypal.sellers.sellersextract.service.strategies.HyperWalletBusinessStakeHolderServiceStrategyExecutorExecutor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -92,7 +92,7 @@ class BusinessStakeholderExtractServiceImplTest {
 	private MailNotificationUtil mailNotificationUtilMock;
 
 	@Mock
-	private HyperWalletBusinessStakeHolderServiceStrategyFactorySingle hyperWalletBusinessStakeHolderServiceStrategyFactoryMock;
+	private HyperWalletBusinessStakeHolderServiceStrategyExecutorExecutor hyperWalletBusinessStakeHolderServiceStrategyExecutorMock;
 
 	@Mock
 	private MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractServiceMock;
@@ -118,13 +118,13 @@ class BusinessStakeholderExtractServiceImplTest {
 		final BusinessStakeHolderModel createdStkOneMock = stkOne.toBuilder().justCreated(true).build();
 		final BusinessStakeHolderModel updatedStkTwoMock = stkTwo.toBuilder().build();
 
-		when(hyperWalletBusinessStakeHolderServiceStrategyFactoryMock.execute(stkOne)).thenReturn(createdStkOneMock);
-		when(hyperWalletBusinessStakeHolderServiceStrategyFactoryMock.execute(stkTwo)).thenReturn(updatedStkTwoMock);
+		when(hyperWalletBusinessStakeHolderServiceStrategyExecutorMock.execute(stkOne)).thenReturn(createdStkOneMock);
+		when(hyperWalletBusinessStakeHolderServiceStrategyExecutorMock.execute(stkTwo)).thenReturn(updatedStkTwoMock);
 
 		testObj.extractBusinessStakeHolders(List.of(sellerModelOne, sellerModelTwo));
 
-		verify(hyperWalletBusinessStakeHolderServiceStrategyFactoryMock).execute(stkOne);
-		verify(hyperWalletBusinessStakeHolderServiceStrategyFactoryMock).execute(stkTwo);
+		verify(hyperWalletBusinessStakeHolderServiceStrategyExecutorMock).execute(stkOne);
+		verify(hyperWalletBusinessStakeHolderServiceStrategyExecutorMock).execute(stkTwo);
 
 		verify(miraklBusinessStakeholderExtractServiceMock).updateBusinessStakeholderToken("0001",
 				List.of(createdStkOneMock));

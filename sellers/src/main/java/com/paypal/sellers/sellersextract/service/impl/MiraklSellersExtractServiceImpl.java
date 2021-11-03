@@ -9,7 +9,7 @@ import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
-import com.paypal.infrastructure.strategy.StrategyFactory;
+import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.infrastructure.util.LoggingConstantsUtil;
 import com.paypal.sellers.infrastructure.utils.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.SellerModel;
@@ -44,7 +44,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 
 	private final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient;
 
-	private final StrategyFactory<MiraklShop, SellerModel> miraklShopSellerModelStrategyFactory;
+	private final StrategyExecutor<MiraklShop, SellerModel> miraklShopSellerModelStrategyExecutor;
 
 	private final MailNotificationUtil sellerMailNotificationUtil;
 
@@ -52,10 +52,10 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 			+ "information:\n";
 
 	public MiraklSellersExtractServiceImpl(final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
-			final StrategyFactory<MiraklShop, SellerModel> miraklShopSellerModelStrategyFactory,
+			final StrategyExecutor<MiraklShop, SellerModel> miraklShopSellerModelStrategyExecutor,
 			final MailNotificationUtil sellerMailNotificationUtil) {
 		this.miraklOperatorClient = miraklOperatorClient;
-		this.miraklShopSellerModelStrategyFactory = miraklShopSellerModelStrategyFactory;
+		this.miraklShopSellerModelStrategyExecutor = miraklShopSellerModelStrategyExecutor;
 		this.sellerMailNotificationUtil = sellerMailNotificationUtil;
 	}
 
@@ -111,7 +111,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 		}
 		final MiraklShops shops = retrieveMiraklShopsByShopIds(shopIds);
 		return Stream.ofNullable(shops.getShops()).flatMap(Collection::stream)
-				.map(miraklShopSellerModelStrategyFactory::execute).collect(Collectors.toList());
+				.map(miraklShopSellerModelStrategyExecutor::execute).collect(Collectors.toList());
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 
 		return Stream.ofNullable(shops.getShops())
 				.flatMap(Collection::stream)
-				.map(miraklShopSellerModelStrategyFactory::execute)
+				.map(miraklShopSellerModelStrategyExecutor::execute)
 				.filter(SellerModel::hasAcceptedTermsAndConditions)
 				.collect(Collectors.toList());
 
@@ -172,7 +172,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 		return shops.getShops()
 				.stream()
 				.filter(Predicate.not(MiraklShop::isProfessional))
-				.map(miraklShopSellerModelStrategyFactory::execute)
+				.map(miraklShopSellerModelStrategyExecutor::execute)
 				.filter(SellerModel::hasAcceptedTermsAndConditions)
 				.collect(Collectors.toList());
 		//@formatter:on
@@ -189,7 +189,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 		return shops.getShops()
 				.stream()
 				.filter(MiraklShop::isProfessional)
-				.map(miraklShopSellerModelStrategyFactory::execute)
+				.map(miraklShopSellerModelStrategyExecutor::execute)
 				.filter(SellerModel::hasAcceptedTermsAndConditions)
 				.collect(Collectors.toList());
 		//@formatter:on

@@ -5,8 +5,8 @@ import com.paypal.infrastructure.converter.Converter;
 import com.paypal.kyc.model.KYCUserDocumentFlagsNotificationBodyModel;
 import com.paypal.kyc.model.KYCUserStatusNotificationBodyModel;
 import com.paypal.kyc.service.KYCUserNotificationService;
-import com.paypal.kyc.strategies.documents.flags.impl.KYCUserDocumentFlagsFactory;
-import com.paypal.kyc.strategies.status.impl.KYCUserStatusFactory;
+import com.paypal.kyc.strategies.documents.flags.impl.KYCUserDocumentFlagsExecutor;
+import com.paypal.kyc.strategies.status.impl.KYCUserStatusExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,20 +17,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class KYCUserNotificationServiceImpl implements KYCUserNotificationService {
 
-	private final KYCUserStatusFactory kyCUserNotificationFactory;
+	private final KYCUserStatusExecutor kyCUserNotificationExecutor;
 
-	private final KYCUserDocumentFlagsFactory kycUserDocumentFlagsFactory;
+	private final KYCUserDocumentFlagsExecutor kycUserDocumentFlagsExecutor;
 
 	private final Converter<Object, KYCUserStatusNotificationBodyModel> hyperWalletObjectToKycUserNotificationBodyModelConverter;
 
 	private final Converter<Object, KYCUserDocumentFlagsNotificationBodyModel> hyperWalletObjectToKycUserDocumentFlagsNotificationBodyModelConverter;
 
-	public KYCUserNotificationServiceImpl(final KYCUserStatusFactory kyCUserNotificationFactory,
-			final KYCUserDocumentFlagsFactory kycUserDocumentFlagsFactory,
+	public KYCUserNotificationServiceImpl(final KYCUserStatusExecutor kyCUserNotificationExecutor,
+			final KYCUserDocumentFlagsExecutor kycUserDocumentFlagsExecutor,
 			final Converter<Object, KYCUserStatusNotificationBodyModel> hyperWalletObjectToKycUserNotificationBodyModelConverter,
 			final Converter<Object, KYCUserDocumentFlagsNotificationBodyModel> hyperWalletObjectToKycUserDocumentFlagsNotificationBodyModelConverter) {
-		this.kyCUserNotificationFactory = kyCUserNotificationFactory;
-		this.kycUserDocumentFlagsFactory = kycUserDocumentFlagsFactory;
+		this.kyCUserNotificationExecutor = kyCUserNotificationExecutor;
+		this.kycUserDocumentFlagsExecutor = kycUserDocumentFlagsExecutor;
 		this.hyperWalletObjectToKycUserNotificationBodyModelConverter = hyperWalletObjectToKycUserNotificationBodyModelConverter;
 		this.hyperWalletObjectToKycUserDocumentFlagsNotificationBodyModelConverter = hyperWalletObjectToKycUserDocumentFlagsNotificationBodyModelConverter;
 	}
@@ -42,7 +42,7 @@ public class KYCUserNotificationServiceImpl implements KYCUserNotificationServic
 	public void updateUserKYCStatus(final HyperwalletWebhookNotification incomingNotification) {
 		final KYCUserStatusNotificationBodyModel kycUserNotification = hyperWalletObjectToKycUserNotificationBodyModelConverter
 				.convert(incomingNotification.getObject());
-		kyCUserNotificationFactory.execute(kycUserNotification);
+		kyCUserNotificationExecutor.execute(kycUserNotification);
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class KYCUserNotificationServiceImpl implements KYCUserNotificationServic
 	public void updateUserDocumentsFlags(final HyperwalletWebhookNotification incomingNotification) {
 		final KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = hyperWalletObjectToKycUserDocumentFlagsNotificationBodyModelConverter
 				.convert(incomingNotification.getObject());
-		kycUserDocumentFlagsFactory.execute(kycUserDocumentFlagsNotificationBodyModel);
+		kycUserDocumentFlagsExecutor.execute(kycUserDocumentFlagsNotificationBodyModel);
 	}
 
 }

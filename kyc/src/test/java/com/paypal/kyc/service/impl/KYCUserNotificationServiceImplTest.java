@@ -5,8 +5,8 @@ import com.paypal.kyc.converter.HyperWalletObjectToKYCUserDocumentFlagsNotificat
 import com.paypal.kyc.converter.HyperWalletObjectToKYCUserStatusNotificationBodyModelConverter;
 import com.paypal.kyc.model.KYCUserDocumentFlagsNotificationBodyModel;
 import com.paypal.kyc.model.KYCUserStatusNotificationBodyModel;
-import com.paypal.kyc.strategies.documents.flags.impl.KYCUserDocumentFlagsFactory;
-import com.paypal.kyc.strategies.status.impl.KYCUserStatusFactory;
+import com.paypal.kyc.strategies.documents.flags.impl.KYCUserDocumentFlagsExecutor;
+import com.paypal.kyc.strategies.status.impl.KYCUserStatusExecutor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,10 +34,10 @@ class KYCUserNotificationServiceImplTest {
 	private Object nonTransformedNotificationBodyObjectMock;
 
 	@Mock
-	private KYCUserStatusFactory kycUserStatusFactoryMock;
+	private KYCUserStatusExecutor kycUserStatusExecutorMock;
 
 	@Mock
-	private KYCUserDocumentFlagsFactory kycUserDocumentFlagsFactoryMock;
+	private KYCUserDocumentFlagsExecutor kycUserDocumentFlagsExecutorMock;
 
 	@Mock
 	private KYCUserStatusNotificationBodyModel kycUserStatusNotificationBodyModelMock;
@@ -47,7 +47,7 @@ class KYCUserNotificationServiceImplTest {
 
 	@BeforeEach
 	void setUp() {
-		testObj = new KYCUserNotificationServiceImpl(kycUserStatusFactoryMock, kycUserDocumentFlagsFactoryMock,
+		testObj = new KYCUserNotificationServiceImpl(kycUserStatusExecutorMock, kycUserDocumentFlagsExecutorMock,
 				kycUserStatusNotificationBodyModelConverterMock,
 				kycUserDocumentFlagsNotificationBodyModelConverterMock);
 		when(hyperwalletWebhookNotificationMock.getObject()).thenReturn(nonTransformedNotificationBodyObjectMock);
@@ -60,7 +60,7 @@ class KYCUserNotificationServiceImplTest {
 
 		testObj.updateUserKYCStatus(hyperwalletWebhookNotificationMock);
 
-		verify(kycUserStatusFactoryMock).execute(kycUserStatusNotificationBodyModelMock);
+		verify(kycUserStatusExecutorMock).execute(kycUserStatusNotificationBodyModelMock);
 	}
 
 	@Test
@@ -70,7 +70,7 @@ class KYCUserNotificationServiceImplTest {
 
 		testObj.updateUserDocumentsFlags(hyperwalletWebhookNotificationMock);
 
-		verify(kycUserDocumentFlagsFactoryMock).execute(kycUserDocumentFlagsNotificationBodyModelMock);
+		verify(kycUserDocumentFlagsExecutorMock).execute(kycUserDocumentFlagsNotificationBodyModelMock);
 
 	}
 

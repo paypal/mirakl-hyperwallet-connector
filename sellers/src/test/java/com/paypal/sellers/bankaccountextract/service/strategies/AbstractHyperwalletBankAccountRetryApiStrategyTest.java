@@ -3,7 +3,7 @@ package com.paypal.sellers.bankaccountextract.service.strategies;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
-import com.paypal.infrastructure.strategy.StrategyFactory;
+import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.entity.FailedBankAccountInformation;
 import com.paypal.sellers.sellersextract.model.SellerModel;
@@ -33,7 +33,7 @@ class AbstractHyperwalletBankAccountRetryApiStrategyTest {
 	private SellerModel sellerModelMock;
 
 	@Mock
-	private StrategyFactory<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyFactoryMock;
+	private StrategyExecutor<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyExecutorMock;
 
 	@Mock
 	private HyperwalletBankAccount hyperwalletBankAccountMock;
@@ -52,13 +52,13 @@ class AbstractHyperwalletBankAccountRetryApiStrategyTest {
 
 	@Test
 	void execute_shouldcallMiraklAPI() {
-		when(sellerModelToHyperwalletBankAccountStrategyFactoryMock.execute(sellerModelMock))
+		when(sellerModelToHyperwalletBankAccountStrategyExecutorMock.execute(sellerModelMock))
 				.thenReturn(hyperwalletBankAccountMock);
 		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 		doNothing().when(testObj).callToIncludeIntoRetryProcess(sellerModelMock, Boolean.FALSE);
 		testObj.execute(sellerModelMock);
 
-		verify(sellerModelToHyperwalletBankAccountStrategyFactoryMock).execute(sellerModelMock);
+		verify(sellerModelToHyperwalletBankAccountStrategyExecutorMock).execute(sellerModelMock);
 		verify(testObj).callMiraklAPI(HYPERWALLET_PROGRAM, hyperwalletBankAccountMock);
 
 	}
@@ -68,7 +68,7 @@ class AbstractHyperwalletBankAccountRetryApiStrategyTest {
 		final var hyperwalletException = new HyperwalletException("Something went wrong");
 		when(sellerModelMock.getClientUserId()).thenReturn("2001");
 		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
-		when(sellerModelToHyperwalletBankAccountStrategyFactoryMock.execute(sellerModelMock))
+		when(sellerModelToHyperwalletBankAccountStrategyExecutorMock.execute(sellerModelMock))
 				.thenReturn(hyperwalletBankAccountMock);
 		doNothing().when(testObj).callToIncludeIntoRetryProcess(sellerModelMock, Boolean.FALSE);
 		doThrow(hyperwalletException).when(testObj).callMiraklAPI(HYPERWALLET_PROGRAM, hyperwalletBankAccountMock);
@@ -88,7 +88,7 @@ class AbstractHyperwalletBankAccountRetryApiStrategyTest {
 		when(hyperwalletExceptionMock.getCause()).thenReturn(ioExceptionMock);
 		when(sellerModelMock.getClientUserId()).thenReturn("2001");
 		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
-		when(sellerModelToHyperwalletBankAccountStrategyFactoryMock.execute(sellerModelMock))
+		when(sellerModelToHyperwalletBankAccountStrategyExecutorMock.execute(sellerModelMock))
 				.thenReturn(hyperwalletBankAccountMock);
 		doThrow(hyperwalletExceptionMock).when(testObj).callMiraklAPI(HYPERWALLET_PROGRAM, hyperwalletBankAccountMock);
 		doNothing().when(testObj).callToIncludeIntoRetryProcess(sellerModelMock, Boolean.TRUE);
@@ -103,9 +103,9 @@ class AbstractHyperwalletBankAccountRetryApiStrategyTest {
 
 		public MyAbstractHyperwalletBankAccountRetryApiStrategy(
 				final FailedEntityInformationService<FailedBankAccountInformation> failedEntityInformationService,
-				final StrategyFactory<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyFactory,
+				final StrategyExecutor<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyExecutor,
 				final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
-			super(failedEntityInformationService, sellerModelToHyperwalletBankAccountStrategyFactory,
+			super(failedEntityInformationService, sellerModelToHyperwalletBankAccountStrategyExecutor,
 					hyperwalletSDKService, mailNotificationUtil);
 		}
 

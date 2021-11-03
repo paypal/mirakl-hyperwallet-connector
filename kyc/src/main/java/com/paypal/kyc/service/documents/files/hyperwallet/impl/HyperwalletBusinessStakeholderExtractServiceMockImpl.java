@@ -10,7 +10,7 @@ import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentModel;
 import com.paypal.kyc.service.HyperwalletSDKService;
-import com.paypal.kyc.strategies.documents.files.hyperwallet.businessstakeholder.impl.KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory;
+import com.paypal.kyc.strategies.documents.files.hyperwallet.businessstakeholder.impl.KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -42,7 +42,7 @@ public class HyperwalletBusinessStakeholderExtractServiceMockImpl
 	private static final String HYPERWALLET_NOTIFY_USER = "/hyperwallet/v4/{userToken}";
 
 	public HyperwalletBusinessStakeholderExtractServiceMockImpl(final HyperwalletSDKService hyperwalletSDKService,
-			final KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory,
+			final KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory,
 			final MailNotificationUtil kycMailNotificationUtil, @Value("${mockserver.url}") final String mockServerUrl,
 			final RestTemplate restTemplate) {
 		super(hyperwalletSDKService,

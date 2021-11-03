@@ -4,7 +4,7 @@ import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.shop.MiraklContactInformation;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.paypal.infrastructure.strategy.Strategy;
-import com.paypal.infrastructure.strategy.StrategyFactory;
+import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.infrastructure.configuration.SellersMiraklApiConfig;
 import com.paypal.sellers.sellersextract.model.SellerModel;
@@ -13,21 +13,21 @@ import java.util.List;
 
 public abstract class AbstractMiraklShopToSellerModelConverter implements Strategy<MiraklShop, SellerModel> {
 
-	private final StrategyFactory<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyFactory;
+	private final StrategyExecutor<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyExecutor;
 
 	private final SellersMiraklApiConfig sellersMiraklApiConfig;
 
 	protected AbstractMiraklShopToSellerModelConverter(
-			final StrategyFactory<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyFactory,
+			final StrategyExecutor<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyExecutor,
 			final SellersMiraklApiConfig sellersMiraklApiConfig) {
-		this.miraklShopBankAccountModelStrategyFactory = miraklShopBankAccountModelStrategyFactory;
+		this.miraklShopBankAccountModelStrategyExecutor = miraklShopBankAccountModelStrategyExecutor;
 		this.sellersMiraklApiConfig = sellersMiraklApiConfig;
 	}
 
 	protected SellerModel.SellerModelBuilder getCommonFieldsBuilder(final MiraklShop source) {
 		final MiraklContactInformation contactInformation = source.getContactInformation();
 		final List<MiraklAdditionalFieldValue> additionalFieldValues = source.getAdditionalFieldValues();
-		final BankAccountModel bankAccountModel = miraklShopBankAccountModelStrategyFactory.execute(source);
+		final BankAccountModel bankAccountModel = miraklShopBankAccountModelStrategyExecutor.execute(source);
 		//@formatter:off
 		return SellerModel.builder()
 				.clientUserId(source.getId())

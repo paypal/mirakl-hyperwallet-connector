@@ -2,7 +2,7 @@ package com.paypal.sellers.sellersextract.converter.impl;
 
 import com.mirakl.client.mmp.domain.shop.MiraklContactInformation;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
-import com.paypal.infrastructure.strategy.StrategyFactory;
+import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextract.model.IBANBankAccountModel;
 import com.paypal.sellers.infrastructure.configuration.SellersMiraklApiConfig;
@@ -34,7 +34,7 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 	private MiraklContactInformation contactInformationMock;
 
 	@Mock
-	private StrategyFactory<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyFactory;
+	private StrategyExecutor<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyExecutor;
 
 	@Mock
 	private IBANBankAccountModel IBANBankAccountModelMock;
@@ -60,7 +60,7 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 		// mirakl custom fields
 		when(miraklShopMock.getAdditionalFieldValues()).thenReturn(Collections.emptyList());
 
-		when(miraklShopBankAccountModelStrategyFactory.execute(miraklShopMock)).thenReturn(IBANBankAccountModelMock);
+		when(miraklShopBankAccountModelStrategyExecutor.execute(miraklShopMock)).thenReturn(IBANBankAccountModelMock);
 
 		final var result = testObj.getCommonFieldsBuilder(miraklShopMock);
 
@@ -125,9 +125,9 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 	private static class MyAbstractMiraklShopToSellerModelConverter extends AbstractMiraklShopToSellerModelConverter {
 
 		protected MyAbstractMiraklShopToSellerModelConverter(
-				final StrategyFactory<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyFactory,
+				final StrategyExecutor<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyExecutor,
 				final SellersMiraklApiConfig sellersMiraklApiConfig) {
-			super(miraklShopBankAccountModelStrategyFactory, sellersMiraklApiConfig);
+			super(miraklShopBankAccountModelStrategyExecutor, sellersMiraklApiConfig);
 		}
 
 		@Override

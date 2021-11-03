@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -34,7 +35,7 @@ class KYCUserDocumentFlagProofOfBusinessStrategyTest {
 
 		final boolean result = testObj.isApplicable(kycUserDocumentFlagsNotificationBodyModel);
 
-		Assertions.assertThat(result).isTrue();
+		assertThat(result).isTrue();
 	}
 
 	@Test
@@ -46,7 +47,7 @@ class KYCUserDocumentFlagProofOfBusinessStrategyTest {
 
 		final boolean result = testObj.isApplicable(kycUserDocumentFlagsNotificationBodyModel);
 
-		Assertions.assertThat(result).isFalse();
+		assertThat(result).isFalse();
 	}
 
 	@Test
@@ -58,7 +59,7 @@ class KYCUserDocumentFlagProofOfBusinessStrategyTest {
 
 		final boolean result = testObj.isApplicable(kycUserDocumentFlagsNotificationBodyModel);
 
-		Assertions.assertThat(result).isFalse();
+		assertThat(result).isFalse();
 	}
 
 	@Test

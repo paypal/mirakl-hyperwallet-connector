@@ -4,9 +4,8 @@ import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.paypal.sellers.entity.FailedSellersInformation;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.BusinessStakeholderExtractService;
-import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
 import com.paypal.sellers.sellersextract.service.MiraklSellersExtractService;
-import com.paypal.sellers.sellersextract.service.strategies.HyperWalletUserServiceStrategyFactorySingle;
+import com.paypal.sellers.sellersextract.service.strategies.HyperWalletUserServiceStrategyExecutor;
 import com.paypal.sellers.service.FailedEntityInformationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +49,7 @@ class SellersExtractServiceImplTest {
 	private FailedEntityInformationService<FailedSellersInformation> failedEntityInformationServiceMock;
 
 	@Mock
-	private HyperWalletUserServiceStrategyFactorySingle hyperWalletUserServiceStrategyFactoryMock;
+	private HyperWalletUserServiceStrategyExecutor hyperWalletUserServiceStrategyExecutorMock;
 
 	@Mock
 	private FailedSellersInformation failedSellersInformationMock;
@@ -58,13 +57,10 @@ class SellersExtractServiceImplTest {
 	@Mock
 	private BusinessStakeholderExtractService businessStakeHolderExtractService;
 
-	@Mock
-	private MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractService;
-
 	@BeforeEach
 	void setUp() {
 		testObj = new SellersExtractServiceImpl(miraklSellersExtractServiceMock, failedEntityInformationServiceMock,
-				hyperWalletUserServiceStrategyFactoryMock, businessStakeHolderExtractService);
+				hyperWalletUserServiceStrategyExecutorMock, businessStakeHolderExtractService);
 	}
 
 	@Test
@@ -77,21 +73,21 @@ class SellersExtractServiceImplTest {
 		when(failedEntityInformationServiceMock.getAll()).thenReturn(List.of(failedSellersInformationMock));
 		when(failedSellersInformationMock.getShopId()).thenReturn("2001");
 		when(miraklSellersExtractServiceMock.extractSellers(List.of("2001"))).thenReturn(failedSellersList);
-		when(hyperWalletUserServiceStrategyFactoryMock.execute(professionalSellerOneMock))
+		when(hyperWalletUserServiceStrategyExecutorMock.execute(professionalSellerOneMock))
 				.thenReturn(hyperwalletUserOneMock);
-		when(hyperWalletUserServiceStrategyFactoryMock.execute(professionalSellerTwoMock))
+		when(hyperWalletUserServiceStrategyExecutorMock.execute(professionalSellerTwoMock))
 				.thenReturn(hyperwalletUserTwoMock);
-		when(hyperWalletUserServiceStrategyFactoryMock.execute(professionalSellerThreeMock))
+		when(hyperWalletUserServiceStrategyExecutorMock.execute(professionalSellerThreeMock))
 				.thenReturn(hyperwalletUserThreeMock);
-		when(hyperWalletUserServiceStrategyFactoryMock.execute(professionalFailedSellerMock))
+		when(hyperWalletUserServiceStrategyExecutorMock.execute(professionalFailedSellerMock))
 				.thenReturn(hyperwalletUserRetryMock);
 
 		final List<HyperwalletUser> result = testObj.extractSellers(dateMock);
 
-		verify(hyperWalletUserServiceStrategyFactoryMock).execute(professionalSellerOneMock);
-		verify(hyperWalletUserServiceStrategyFactoryMock).execute(professionalSellerTwoMock);
-		verify(hyperWalletUserServiceStrategyFactoryMock).execute(professionalSellerThreeMock);
-		verify(hyperWalletUserServiceStrategyFactoryMock).execute(professionalFailedSellerMock);
+		verify(hyperWalletUserServiceStrategyExecutorMock).execute(professionalSellerOneMock);
+		verify(hyperWalletUserServiceStrategyExecutorMock).execute(professionalSellerTwoMock);
+		verify(hyperWalletUserServiceStrategyExecutorMock).execute(professionalSellerThreeMock);
+		verify(hyperWalletUserServiceStrategyExecutorMock).execute(professionalFailedSellerMock);
 		assertThat(result).containsExactlyInAnyOrder(hyperwalletUserOneMock, hyperwalletUserTwoMock,
 				hyperwalletUserThreeMock, hyperwalletUserRetryMock);
 	}
@@ -105,21 +101,21 @@ class SellersExtractServiceImplTest {
 		when(failedEntityInformationServiceMock.getAll()).thenReturn(List.of(failedSellersInformationMock));
 		when(failedSellersInformationMock.getShopId()).thenReturn("2001");
 		when(miraklSellersExtractServiceMock.extractIndividuals(List.of("2001"))).thenReturn(failedSellersList);
-		when(hyperWalletUserServiceStrategyFactoryMock.execute(individualSellerOneMock))
+		when(hyperWalletUserServiceStrategyExecutorMock.execute(individualSellerOneMock))
 				.thenReturn(hyperwalletUserOneMock);
-		when(hyperWalletUserServiceStrategyFactoryMock.execute(individualSellerTwoMock))
+		when(hyperWalletUserServiceStrategyExecutorMock.execute(individualSellerTwoMock))
 				.thenReturn(hyperwalletUserTwoMock);
-		when(hyperWalletUserServiceStrategyFactoryMock.execute(individualSellerThreeMock))
+		when(hyperWalletUserServiceStrategyExecutorMock.execute(individualSellerThreeMock))
 				.thenReturn(hyperwalletUserThreeMock);
-		when(hyperWalletUserServiceStrategyFactoryMock.execute(individualFailedSellerMock))
+		when(hyperWalletUserServiceStrategyExecutorMock.execute(individualFailedSellerMock))
 				.thenReturn(hyperwalletUserRetryMock);
 
 		final List<HyperwalletUser> result = testObj.extractIndividuals(dateMock);
 
-		verify(hyperWalletUserServiceStrategyFactoryMock).execute(individualSellerOneMock);
-		verify(hyperWalletUserServiceStrategyFactoryMock).execute(individualSellerTwoMock);
-		verify(hyperWalletUserServiceStrategyFactoryMock).execute(individualSellerThreeMock);
-		verify(hyperWalletUserServiceStrategyFactoryMock).execute(individualFailedSellerMock);
+		verify(hyperWalletUserServiceStrategyExecutorMock).execute(individualSellerOneMock);
+		verify(hyperWalletUserServiceStrategyExecutorMock).execute(individualSellerTwoMock);
+		verify(hyperWalletUserServiceStrategyExecutorMock).execute(individualSellerThreeMock);
+		verify(hyperWalletUserServiceStrategyExecutorMock).execute(individualFailedSellerMock);
 		assertThat(result).containsExactlyInAnyOrder(hyperwalletUserOneMock, hyperwalletUserTwoMock,
 				hyperwalletUserThreeMock, hyperwalletUserRetryMock);
 	}
@@ -133,21 +129,21 @@ class SellersExtractServiceImplTest {
 		when(failedEntityInformationServiceMock.getAll()).thenReturn(List.of(failedSellersInformationMock));
 		when(failedSellersInformationMock.getShopId()).thenReturn("2001");
 		when(miraklSellersExtractServiceMock.extractProfessionals(List.of("2001"))).thenReturn(failedSellersList);
-		when(hyperWalletUserServiceStrategyFactoryMock.execute(professionalSellerOneMock))
+		when(hyperWalletUserServiceStrategyExecutorMock.execute(professionalSellerOneMock))
 				.thenReturn(hyperwalletUserOneMock);
-		when(hyperWalletUserServiceStrategyFactoryMock.execute(professionalSellerTwoMock))
+		when(hyperWalletUserServiceStrategyExecutorMock.execute(professionalSellerTwoMock))
 				.thenReturn(hyperwalletUserTwoMock);
-		when(hyperWalletUserServiceStrategyFactoryMock.execute(professionalSellerThreeMock))
+		when(hyperWalletUserServiceStrategyExecutorMock.execute(professionalSellerThreeMock))
 				.thenReturn(hyperwalletUserThreeMock);
-		when(hyperWalletUserServiceStrategyFactoryMock.execute(professionalFailedSellerMock))
+		when(hyperWalletUserServiceStrategyExecutorMock.execute(professionalFailedSellerMock))
 				.thenReturn(hyperwalletUserRetryMock);
 
 		final List<HyperwalletUser> result = testObj.extractProfessionals(dateMock);
 
-		verify(hyperWalletUserServiceStrategyFactoryMock).execute(professionalSellerOneMock);
-		verify(hyperWalletUserServiceStrategyFactoryMock).execute(professionalSellerTwoMock);
-		verify(hyperWalletUserServiceStrategyFactoryMock).execute(professionalSellerThreeMock);
-		verify(hyperWalletUserServiceStrategyFactoryMock).execute(professionalFailedSellerMock);
+		verify(hyperWalletUserServiceStrategyExecutorMock).execute(professionalSellerOneMock);
+		verify(hyperWalletUserServiceStrategyExecutorMock).execute(professionalSellerTwoMock);
+		verify(hyperWalletUserServiceStrategyExecutorMock).execute(professionalSellerThreeMock);
+		verify(hyperWalletUserServiceStrategyExecutorMock).execute(professionalFailedSellerMock);
 		assertThat(result).containsExactlyInAnyOrder(hyperwalletUserOneMock, hyperwalletUserTwoMock,
 				hyperwalletUserThreeMock, hyperwalletUserRetryMock);
 	}
