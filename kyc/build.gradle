@@ -2,7 +2,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-quartz'
-    implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'commons-collections:commons-collections:3.2.2'
     implementation 'com.google.code.gson:gson:2.8.5'
     compileOnly 'org.projectlombok:lombok'

@@ -4,7 +4,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-quartz'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
-    implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'org.jetbrains:annotations:19.0.0'
     implementation 'org.javamoney:moneta:1.4.2'
     implementation 'org.json:json:20201115'
