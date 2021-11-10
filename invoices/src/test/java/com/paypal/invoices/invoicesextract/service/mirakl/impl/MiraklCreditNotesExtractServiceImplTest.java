@@ -2,12 +2,10 @@ package com.paypal.invoices.invoicesextract.service.mirakl.impl;
 
 import com.mirakl.client.core.error.MiraklErrorResponseBean;
 import com.mirakl.client.core.exception.MiraklApiException;
-import com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentPaymentStatus;
 import com.mirakl.client.mmp.domain.invoice.MiraklInvoice;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.MiraklShops;
 import com.mirakl.client.mmp.operator.request.payment.invoice.MiraklGetInvoicesRequest;
-import com.mirakl.client.mmp.request.payment.invoice.MiraklAccountingDocumentState;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
@@ -19,11 +17,14 @@ import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.infrastructure.util.TimeMachine;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
+import com.paypal.invoices.invoicesextract.model.InvoiceModel;
+import com.paypal.invoices.invoicesextract.model.InvoiceTypeEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -32,7 +33,12 @@ import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import static com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentPaymentStatus.PENDING;
+import static com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentType.AUTO_INVOICE;
+import static com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentType.MANUAL_CREDIT;
+import static com.mirakl.client.mmp.request.payment.invoice.MiraklAccountingDocumentState.COMPLETE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -88,10 +94,13 @@ class MiraklCreditNotesExtractServiceImplTest {
 	private MailNotificationUtil mailNotificationUtilMock;
 
 	@Mock
-	private Converter<MiraklInvoice, CreditNoteModel> miraklInvoiceCreditNoteModelConverter;
+	private Converter<MiraklInvoice, CreditNoteModel> miraklInvoiceToCreditNoteModelConverter;
 
 	@Mock
 	private CreditNoteModel creditNoteOneMock, creditNoteTwoMock;
+
+	@Mock
+	private MiraklGetInvoicesRequest miraklGetInvoicesRequestMock;
 
 	@Captor
 	private ArgumentCaptor<MiraklGetInvoicesRequest> miraklGetInvoicesRequestArgumentCaptor;
@@ -99,13 +108,14 @@ class MiraklCreditNotesExtractServiceImplTest {
 	@BeforeEach
 	void setUp() {
 		testObj = new MiraklCreditNotesExtractServiceImpl(miraklMarketplacePlatformOperatorApiClientMock,
-				miraklShopToAccountingModelConverter, miraklInvoiceCreditNoteModelConverter, mailNotificationUtilMock);
+				miraklShopToAccountingModelConverter, miraklInvoiceToCreditNoteModelConverter,
+				mailNotificationUtilMock);
 
 		testObj = spy(testObj);
 	}
 
 	@Test
-	void extractCreditNotes_shouldPopulateCreditNotesModelWithTheTokensStoredInMirakl() {
+	void extractAccountingDocument_whenRequestRequiresPagination_shouldRequestAllShops_AndPopulateCreditNotesModelWithTheTokensStoredInMirakl() {
 		final LocalDateTime now = LocalDateTime.now();
 		TimeMachine.useFixedClockAt(now);
 		final Date nowAsDate = DateUtil.convertToDate(now, ZoneId.systemDefault());
@@ -114,7 +124,7 @@ class MiraklCreditNotesExtractServiceImplTest {
 				.build();
 		final CreditNoteModel creditNoteTwo = CreditNoteModel.builder().shopId(SHOP_ID_TWO).destinationToken(TOKEN_2)
 				.build();
-		doReturn(List.of(creditNoteOne, creditNoteTwo)).when(testObj).getAccountingDocument(nowAsDate);
+		doReturn(List.of(creditNoteOne, creditNoteTwo)).when(testObj).getAccountingDocuments(nowAsDate);
 
 		when(miraklShopsMock.getShops()).thenReturn(List.of(miraklShopOneMock, miraklShopTwoMock));
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(any(MiraklGetShopsRequest.class)))
@@ -144,7 +154,20 @@ class MiraklCreditNotesExtractServiceImplTest {
 	}
 
 	@Test
-	void extractCreditNotes_shouldPopulateTheCreditNotesWhenSeveralCreditNotesPerShopAreExtractedFromMirakl() {
+	void extractAccountingDocument_whenNoInvoicesAreReturned_shouldReturnEmptyList() {
+		final LocalDateTime now = LocalDateTime.now();
+		TimeMachine.useFixedClockAt(now);
+		final Date nowAsDate = DateUtil.convertToDate(now, ZoneId.systemDefault());
+
+		doReturn(Collections.emptyList()).when(testObj).getAccountingDocuments(nowAsDate);
+
+		final List<CreditNoteModel> result = testObj.extractAccountingDocument(nowAsDate);
+
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	void extractAccountingDocument_whenSeveralCreditNotesPerShopAreExtractedFromMirakl_shouldPopulateTheCreditNotes() {
 		final LocalDateTime now = LocalDateTime.now();
 		TimeMachine.useFixedClockAt(now);
 		final Date nowAsDate = DateUtil.convertToDate(now, ZoneId.systemDefault());
@@ -156,7 +179,8 @@ class MiraklCreditNotesExtractServiceImplTest {
 		final CreditNoteModel creditNoteThree = CreditNoteModel.builder().shopId(SHOP_ID_ONE).destinationToken(TOKEN_1)
 				.build();
 
-		doReturn(List.of(creditNoteOne, creditNoteTwo, creditNoteThree)).when(testObj).getAccountingDocument(nowAsDate);
+		doReturn(List.of(creditNoteOne, creditNoteTwo, creditNoteThree)).when(testObj)
+				.getAccountingDocuments(nowAsDate);
 
 		when(miraklShopsMock.getShops()).thenReturn(List.of(miraklShopOneMock, miraklShopTwoMock, miraklShopThreeMock));
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(any(MiraklGetShopsRequest.class)))
@@ -194,7 +218,7 @@ class MiraklCreditNotesExtractServiceImplTest {
 	}
 
 	@Test
-	void extractCreditNotes_shouldSendEmailNotification_whenMiraklExceptionIsThrown() {
+	void getAccountingDocuments_whenMiraklExceptionIsThrown_shouldSendEmailNotification() {
 		final LocalDateTime now = LocalDateTime.now();
 		TimeMachine.useFixedClockAt(now);
 		final Date nowAsDate = DateUtil.convertToDate(now, ZoneId.systemDefault());
@@ -203,7 +227,7 @@ class MiraklCreditNotesExtractServiceImplTest {
 				.hyperwalletProgram(HYPERWALLET_PROGRAM).build();
 
 		final List<CreditNoteModel> creditNoteList = List.of(creditNoteOne);
-		doReturn(creditNoteList).when(testObj).getAccountingDocument(nowAsDate);
+		doReturn(creditNoteList).when(testObj).getAccountingDocuments(nowAsDate);
 
 		final var miraklApiException = new MiraklApiException(new MiraklErrorResponseBean(1, "Something went wrong"));
 		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
@@ -217,16 +241,16 @@ class MiraklCreditNotesExtractServiceImplTest {
 	}
 
 	@Test
-	void getCreditNotes_shouldReturnListOfCreditNoteModels() {
+	void getAccountingDocuments_shouldReturnListOfCreditNoteModels() {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 0, 55));
 		final Date now = DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault());
 
 		when(miraklMarketplacePlatformOperatorApiClientMock.getInvoices(any())).thenReturn(miraklInvoicesMock);
 		when(miraklInvoicesMock.getHmcInvoices()).thenReturn(List.of(miraklInvoiceOneMock, miraklInvoiceTwoMock));
-		when(miraklInvoiceCreditNoteModelConverter.convert(miraklInvoiceOneMock)).thenReturn(creditNoteOneMock);
-		when(miraklInvoiceCreditNoteModelConverter.convert(miraklInvoiceTwoMock)).thenReturn(creditNoteTwoMock);
+		when(miraklInvoiceToCreditNoteModelConverter.convert(miraklInvoiceOneMock)).thenReturn(creditNoteOneMock);
+		when(miraklInvoiceToCreditNoteModelConverter.convert(miraklInvoiceTwoMock)).thenReturn(creditNoteTwoMock);
 
-		final List<CreditNoteModel> creditNoteList = testObj.getAccountingDocument(now);
+		final List<CreditNoteModel> creditNoteList = testObj.getAccountingDocuments(now);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock)
 				.getInvoices(miraklGetInvoicesRequestArgumentCaptor.capture());
@@ -234,23 +258,73 @@ class MiraklCreditNotesExtractServiceImplTest {
 		final MiraklGetInvoicesRequest miraklGetInvoicesRequest = miraklGetInvoicesRequestArgumentCaptor.getValue();
 
 		assertThat(miraklGetInvoicesRequest.getStartDate()).isEqualTo(now);
-		assertThat(miraklGetInvoicesRequest.getStates()).isEqualTo(List.of(MiraklAccountingDocumentState.COMPLETE));
-		assertThat(miraklGetInvoicesRequest.getPaymentStatus())
-				.isEqualTo(MiraklAccountingDocumentPaymentStatus.PENDING);
+		assertThat(miraklGetInvoicesRequest.getStates()).isEqualTo(List.of(COMPLETE));
+		assertThat(miraklGetInvoicesRequest.getPaymentStatus()).isEqualTo(PENDING);
 
 		assertThat(creditNoteList).containsExactlyInAnyOrder(creditNoteOneMock, creditNoteTwoMock);
 	}
 
 	@Test
-	void getCreditNotes_shouldReturnEmptyListWhenNoMiraklCreditNotesAreReceived() {
+	void getAccountingDocuments_whenNoMiraklCreditNotesAreReceived_shouldReturnEmptyList() {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 0, 55));
 		final Date now = DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault());
 
-		when(miraklMarketplacePlatformOperatorApiClientMock.getInvoices(any())).thenReturn(null);
+		when(miraklMarketplacePlatformOperatorApiClientMock.getInvoices(any())).thenReturn(miraklInvoicesMock);
 
-		final List<CreditNoteModel> creditNoteList = testObj.getAccountingDocument(now);
+		final List<CreditNoteModel> creditNoteList = testObj.getAccountingDocuments(now);
 
 		assertThat(creditNoteList).isEqualTo(Collections.emptyList());
+	}
+
+	@Test
+	void createAccountingDocumentRequest_shouldReturnRequestWithInvoiceType() {
+		final Date date = new Date();
+
+		final MiraklGetInvoicesRequest result = testObj.createAccountingDocumentRequest(date,
+				InvoiceTypeEnum.MANUAL_CREDIT);
+
+		assertThat(result.getMax()).isEqualTo(100);
+		assertThat(result.getStartDate()).isEqualTo(date);
+		assertThat(result.getType()).isEqualTo(MANUAL_CREDIT);
+		assertThat(result.getPaymentStatus()).isEqualTo(PENDING);
+		assertThat(result.getStates()).containsExactly(COMPLETE);
+	}
+
+	@Test
+	void getAccountingDocuments_whenRequestNeedsPagination_shouldRepeatRequestAndReturnAllInvoices() {
+		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 0, 55));
+		final Date now = DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault());
+
+		when(miraklMarketplacePlatformOperatorApiClientMock.getInvoices(miraklGetInvoicesRequestMock))
+				.thenReturn(miraklInvoicesMock);
+		when(miraklInvoicesMock.getTotalCount()).thenReturn(2L);
+		when(miraklInvoicesMock.getHmcInvoices()).thenReturn(Collections.singletonList(miraklInvoiceOneMock),
+				Collections.singletonList(miraklInvoiceTwoMock));
+		when(miraklInvoiceToCreditNoteModelConverter.convert(miraklInvoiceOneMock)).thenReturn(creditNoteOneMock);
+		when(miraklInvoiceToCreditNoteModelConverter.convert(miraklInvoiceTwoMock)).thenReturn(creditNoteTwoMock);
+		doReturn(miraklGetInvoicesRequestMock).when(testObj).createAccountingDocumentRequest(now,
+				InvoiceTypeEnum.MANUAL_CREDIT);
+
+		final List<CreditNoteModel> result = testObj.getAccountingDocuments(now);
+
+		final InOrder inOrder = inOrder(miraklGetInvoicesRequestMock, miraklMarketplacePlatformOperatorApiClientMock);
+
+		inOrder.verify(miraklGetInvoicesRequestMock).setOffset(0);
+		inOrder.verify(miraklMarketplacePlatformOperatorApiClientMock).getInvoices(miraklGetInvoicesRequestMock);
+		inOrder.verify(miraklGetInvoicesRequestMock).setOffset(1);
+		inOrder.verify(miraklMarketplacePlatformOperatorApiClientMock).getInvoices(miraklGetInvoicesRequestMock);
+
+		assertThat(result).containsExactlyInAnyOrder(creditNoteOneMock, creditNoteTwoMock);
+	}
+
+	@Test
+	void createShopRequest_shouldCreateShopRequestWithGivenIds() {
+		final Set<String> shopIds = Set.of(SHOP_ID_ONE, SHOP_ID_TWO);
+
+		final MiraklGetShopsRequest result = testObj.createShopRequest(shopIds);
+
+		assertThat(result.getShopIds()).isEqualTo(shopIds);
+		assertThat(result.isPaginate()).isFalse();
 	}
 
 }

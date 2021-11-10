@@ -35,7 +35,7 @@ public class MiraklInvoicesExtractServiceMock extends MiraklInvoicesExtractServi
 	}
 
 	@Override
-	protected List<InvoiceModel> getAccountingDocument(final Date delta) {
+	protected List<InvoiceModel> getAccountingDocuments(final Date delta) {
 		//@formatter:off
         return Stream.ofNullable(testingInvoicesSessionDataHelper.getInvoices())
                 .flatMap(Collection::stream)

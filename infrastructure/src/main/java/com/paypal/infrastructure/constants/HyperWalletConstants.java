@@ -14,4 +14,8 @@ public final class HyperWalletConstants {
 
 	public static final String JWKSET_ERROR_FILENAME = "public_keys_error.json";
 
+	// Mirakl's API allows returning a maximum of 100 results per "page" in any API call
+	// with pagination support
+	public static final int MIRAKL_MAX_RESULTS_PER_PAGE = 100;
+
 }

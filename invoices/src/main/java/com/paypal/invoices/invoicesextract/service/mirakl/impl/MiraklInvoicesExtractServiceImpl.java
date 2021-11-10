@@ -1,12 +1,10 @@
 package com.paypal.invoices.invoicesextract.service.mirakl.impl;
 
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
-import com.mirakl.client.mmp.operator.request.payment.invoice.MiraklGetInvoicesRequest;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoice;
-import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoices;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceTypeEnum;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -56,19 +53,14 @@ public class MiraklInvoicesExtractServiceImpl extends AbstractAccountingDocument
 	}
 
 	@Override
-	protected List<InvoiceModel> getAccountingDocument(final Date delta) {
-		final MiraklGetInvoicesRequest accountingDocumentRequest = createAccountingDocumentRequest(delta,
-				InvoiceTypeEnum.AUTO_INVOICE);
-		final HMCMiraklInvoices invoices = miraklMarketplacePlatformOperatorApiClient
-				.getInvoices(accountingDocumentRequest);
+	protected List<InvoiceModel> getAccountingDocuments(final Date delta) {
+		final List<HMCMiraklInvoice> invoices = getInvoicesForDateAndType(delta, InvoiceTypeEnum.AUTO_INVOICE);
 
 		//@formatter:off
-		return Optional.ofNullable(Optional.ofNullable(invoices).orElse(new HMCMiraklInvoices()).getHmcInvoices())
-						.orElse(List.of())
-						.stream()
-						.map(miraklInvoiceToInvoiceModelConverter::convert)
-						.collect(Collectors.toList());
-		//@formatter:on
+        return invoices.stream()
+                .map(miraklInvoiceToInvoiceModelConverter::convert)
+                .collect(Collectors.toList());
+        //@formatter:on
 	}
 
 }

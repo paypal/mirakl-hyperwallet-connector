@@ -11,6 +11,8 @@ import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
+import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoice;
+import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoices;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceTypeEnum;
@@ -25,6 +27,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.paypal.infrastructure.constants.HyperWalletConstants.MIRAKL_MAX_RESULTS_PER_PAGE;
 
 @Slf4j
 @Service
@@ -48,14 +52,14 @@ public abstract class AbstractAccountingDocumentsExtractServiceImpl<T extends Ac
 
 	@Override
 	public List<T> extractAccountingDocument(final Date delta) {
-		final List<T> invoices = getAccountingDocument(delta);
+		final List<T> invoices = getAccountingDocuments(delta);
 		final Map<String, Pair<String, String>> mapShopDestinationToken = getMapDestinationTokens(invoices);
 
 		return associateBillingDocumentsWithTokens(invoices, mapShopDestinationToken);
 	}
 
 	private Map<String, Pair<String, String>> getMapDestinationTokens(final List<T> creditNotes) {
-		final MiraklShops shops = getMiraklShops(creditNotes);
+		final List<MiraklShop> shops = getMiraklShops(creditNotes);
 		return mapShopsWithDestinationToken(shops);
 	}
 
@@ -80,37 +84,43 @@ public abstract class AbstractAccountingDocumentsExtractServiceImpl<T extends Ac
 	}
 
 	@NonNull
-	protected MiraklShops getMiraklShops(final List<T> invoices) {
-		final MiraklGetShopsRequest request = new MiraklGetShopsRequest();
+	protected List<MiraklShop> getMiraklShops(final List<T> invoices) {
 		//@formatter:off
-        final Set<String> shopsId = invoices.stream()
+        final Set<String> shopIds = invoices.stream()
                 .map(AccountingDocumentModel::getShopId)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
-        request.setShopIds(shopsId);
-
-        log.info("Retrieving information of shops [{}] for invoices [{}]", String.join(",", shopsId),
+        log.info("Retrieving information of shops [{}] for invoices [{}]", String.join(",", shopIds),
                 invoices.stream()
                         .map(AccountingDocumentModel::getInvoiceNumber)
                         .collect(Collectors.joining(",")));
         //@formatter:on
-		log.debug(ToStringBuilder.reflectionToString(request));
+
 		try {
-			return miraklMarketplacePlatformOperatorApiClient.getShops(request);
+			return getAllShops(shopIds);
 		}
 		catch (final MiraklApiException ex) {
-			log.error("Something went wrong getting information of shops [{}]", String.join(",", shopsId));
+			log.error("Something went wrong getting information of shops [{}]", String.join(",", shopIds));
 			invoicesMailNotificationUtil.sendPlainTextEmail("Issue detected getting shops in Mirakl",
 					String.format("Something went wrong getting information of shops [%s]%n%s",
-							String.join(",", shopsId), MiraklLoggingErrorsUtil.stringify(ex)));
-			return new MiraklShops();
+							String.join(",", shopIds), MiraklLoggingErrorsUtil.stringify(ex)));
+			return Collections.emptyList();
 		}
 	}
 
-	protected Map<String, Pair<String, String>> mapShopsWithDestinationToken(final MiraklShops shops) {
+	protected List<MiraklShop> getAllShops(final Set<String> shopIds) {
+		if (shopIds.isEmpty()) {
+			return Collections.emptyList();
+		}
+		final MiraklGetShopsRequest request = createShopRequest(shopIds);
+		final MiraklShops miraklShops = miraklMarketplacePlatformOperatorApiClient.getShops(request);
+		return miraklShops.getShops();
+	}
+
+	protected Map<String, Pair<String, String>> mapShopsWithDestinationToken(final List<MiraklShop> shops) {
 		//@formatter:off
-        return Stream.ofNullable(shops.getShops())
+        return Stream.ofNullable(shops)
                 .flatMap(Collection::stream)
                 .map(miraklShopToAccountingModelConverter::convert)
                 .filter(invoiceModel -> Objects.nonNull(invoiceModel.getDestinationToken()) && Objects.nonNull(invoiceModel.getHyperwalletProgram()))
@@ -126,10 +136,40 @@ public abstract class AbstractAccountingDocumentsExtractServiceImpl<T extends Ac
 		miraklGetInvoicesRequest.setPaymentStatus(MiraklAccountingDocumentPaymentStatus.PENDING);
 		miraklGetInvoicesRequest.addState(MiraklAccountingDocumentState.COMPLETE);
 		miraklGetInvoicesRequest.setType(EnumUtils.getEnum(MiraklAccountingDocumentType.class, invoiceType.name()));
+		miraklGetInvoicesRequest.setMax(MIRAKL_MAX_RESULTS_PER_PAGE);
 
 		return miraklGetInvoicesRequest;
 	}
 
-	protected abstract List<T> getAccountingDocument(final Date delta);
+	@NonNull
+	protected MiraklGetShopsRequest createShopRequest(final Set<String> shopIds) {
+		final MiraklGetShopsRequest request = new MiraklGetShopsRequest();
+		request.setShopIds(shopIds);
+		request.setPaginate(false);
+		log.debug(ToStringBuilder.reflectionToString(request));
+		return request;
+	}
+
+	protected List<HMCMiraklInvoice> getInvoicesForDateAndType(final Date delta, final InvoiceTypeEnum invoiceType) {
+		final List<HMCMiraklInvoice> invoices = new ArrayList<>();
+
+		int offset = 0;
+		final MiraklGetInvoicesRequest accountingDocumentRequest = createAccountingDocumentRequest(delta, invoiceType);
+		while (true) {
+			accountingDocumentRequest.setOffset(offset);
+			final HMCMiraklInvoices receivedInvoices = miraklMarketplacePlatformOperatorApiClient
+					.getInvoices(accountingDocumentRequest);
+			invoices.addAll(receivedInvoices.getHmcInvoices());
+
+			if (receivedInvoices.getTotalCount() <= invoices.size()) {
+				break;
+			}
+			offset++;
+		}
+
+		return invoices;
+	}
+
+	protected abstract List<T> getAccountingDocuments(final Date delta);
 
 }
