@@ -2,11 +2,10 @@ package com.paypal.invoices.invoicesextract.service.mirakl.impl;
 
 import com.mirakl.client.mmp.domain.invoice.MiraklInvoice;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
-import com.mirakl.client.mmp.operator.request.payment.invoice.MiraklGetInvoicesRequest;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
-import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoices;
+import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoice;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceTypeEnum;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -26,16 +24,16 @@ import java.util.stream.Collectors;
 public class MiraklCreditNotesExtractServiceImpl
 		extends AbstractAccountingDocumentsExtractServiceImpl<CreditNoteModel> {
 
-	private final Converter<MiraklInvoice, CreditNoteModel> miraklInvoiceToInvoiceModelConverter;
+	private final Converter<MiraklInvoice, CreditNoteModel> miraklInvoiceToCreditNoteModelConverter;
 
 	public MiraklCreditNotesExtractServiceImpl(
 			final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient,
 			final Converter<MiraklShop, AccountingDocumentModel> miraklShopToAccountingModelConverter,
-			final Converter<MiraklInvoice, CreditNoteModel> miraklInvoiceToInvoiceModelConverter,
+			final Converter<MiraklInvoice, CreditNoteModel> miraklInvoiceToCreditNoteModelConverter,
 			final MailNotificationUtil invoicesMailNotificationUtil) {
 		super(miraklShopToAccountingModelConverter, miraklMarketplacePlatformOperatorApiClient,
 				invoicesMailNotificationUtil);
-		this.miraklInvoiceToInvoiceModelConverter = miraklInvoiceToInvoiceModelConverter;
+		this.miraklInvoiceToCreditNoteModelConverter = miraklInvoiceToCreditNoteModelConverter;
 	}
 
 	@NonNull
@@ -54,17 +52,12 @@ public class MiraklCreditNotesExtractServiceImpl
 	}
 
 	@Override
-	protected List<CreditNoteModel> getAccountingDocument(final Date delta) {
-		final MiraklGetInvoicesRequest accountingDocumentRequest = createAccountingDocumentRequest(delta,
-				InvoiceTypeEnum.MANUAL_CREDIT);
-		final HMCMiraklInvoices invoices = miraklMarketplacePlatformOperatorApiClient
-				.getInvoices(accountingDocumentRequest);
+	protected List<CreditNoteModel> getAccountingDocuments(final Date delta) {
+		final List<HMCMiraklInvoice> invoices = getInvoicesForDateAndType(delta, InvoiceTypeEnum.MANUAL_CREDIT);
 
 		//@formatter:off
-        return Optional.ofNullable(Optional.ofNullable(invoices).orElse(new HMCMiraklInvoices()).getHmcInvoices())
-                .orElse(List.of())
-                .stream()
-                .map(miraklInvoiceToInvoiceModelConverter::convert)
+        return invoices.stream()
+                .map(miraklInvoiceToCreditNoteModelConverter::convert)
                 .collect(Collectors.toList());
         //@formatter:on
 	}
