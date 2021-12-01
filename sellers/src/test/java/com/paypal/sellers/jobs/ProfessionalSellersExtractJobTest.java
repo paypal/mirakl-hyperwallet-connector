@@ -1,8 +1,6 @@
 package com.paypal.sellers.jobs;
 
-import com.paypal.infrastructure.model.entity.JobExecutionInformationEntity;
 import com.paypal.infrastructure.repository.JobExecutionInformationRepository;
-import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.SellersExtractService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +9,10 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.quartz.*;
+import org.quartz.Job;
+import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
 
 import java.util.Date;
 import java.util.Map;
@@ -34,22 +35,13 @@ class ProfessionalSellersExtractJobTest {
 	private SellersExtractService sellersExtractServiceMock;
 
 	@Mock
-	private JobExecutionInformationRepository jobExecutionInformationRepositoryMock;
-
-	@Mock
 	private JobExecutionContext contextMock;
 
 	@Mock
-	private JobDetail jobDetailMock;
-
-	@Mock
-	private SellerModel professionalSellerModelMock;
+	private JobExecutionInformationRepository jobExecutionInformationRepositoryMock;
 
 	@Captor
 	private ArgumentCaptor<Date> dateArgumentCaptor;
-
-	@Captor
-	private ArgumentCaptor<JobExecutionInformationEntity> deltaEntityArgumentCaptor;
 
 	@Test
 	void execute_shouldCallSellersExtractServiceWithDeltaAsNullIfNoDeltaKeyIsFound() {

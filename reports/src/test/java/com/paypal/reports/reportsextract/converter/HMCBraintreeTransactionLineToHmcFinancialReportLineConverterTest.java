@@ -2,6 +2,7 @@ package com.paypal.reports.reportsextract.converter;
 
 import com.paypal.infrastructure.util.TimeMachine;
 import com.paypal.reports.reportsextract.model.HmcBraintreeTransactionLine;
+import com.paypal.reports.reportsextract.model.HmcFinancialReportLine;
 import com.paypal.reports.reportsextract.model.graphql.braintree.paymentransaction.BraintreeTransactionTypeEnum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,40 +24,38 @@ class HMCBraintreeTransactionLineToHmcFinancialReportLineConverterTest {
 
 	private static final String ORDER_ID = "orderId";
 
-	private static final String PAYAMENT_TRANSACTION_ID = "payamentTransactionId";
+	private static final String PAYMENT_TRANSACTION_ID = "payamentTransactionId";
 
 	@Test
 	void convert_shouldConvertBraintreeTransactionLineIntoFinancialReportLineWhenAllAttributesAreFilled() {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 45));
 		final LocalDateTime now = TimeMachine.now();
 		//@formatter:off
-        final HmcBraintreeTransactionLine HmcBraintreeTransactionLineStub = HmcBraintreeTransactionLine.builder()
-                .orderId(ORDER_ID)
-                .amount(BigDecimal.TEN)
+		final HmcBraintreeTransactionLine HmcBraintreeTransactionLineStub = HmcBraintreeTransactionLine.builder()
+				.orderId(ORDER_ID)
+				.amount(BigDecimal.TEN)
 				.currencyIsoCode(EUR_CURRENCY_ISO_CODE)
-                .paymentTransactionId(PAYAMENT_TRANSACTION_ID)
+				.paymentTransactionId(PAYMENT_TRANSACTION_ID)
 				.transactionType(BraintreeTransactionTypeEnum.OPERATOR_ORDER_AMOUNT.name())
-                .paymentTransactionTime(now)
-                .build();
-        //@formatter:on
+				.paymentTransactionTime(now)
+				.build();
+		//@formatter:on
 
-		final var result = testObj.convert(HmcBraintreeTransactionLineStub);
+		final HmcFinancialReportLine result = testObj.convert(HmcBraintreeTransactionLineStub);
 		assertThat(result.getBraintreeCommerceOrderId()).isEqualTo(ORDER_ID);
 		assertThat(result.getCurrencyIsoCode()).isEqualTo(EUR_CURRENCY_ISO_CODE);
 		assertThat(result.getBraintreeAmount()).isEqualTo(BigDecimal.TEN);
-		assertThat(result.getBraintreeTransactionId()).isEqualTo(PAYAMENT_TRANSACTION_ID);
+		assertThat(result.getBraintreeTransactionId()).isEqualTo(PAYMENT_TRANSACTION_ID);
 		assertThat(result.getBraintreeTransactionTime()).isEqualTo(now);
 		assertThat(result.getMiraklTransactionType())
 				.isEqualTo(BraintreeTransactionTypeEnum.OPERATOR_ORDER_AMOUNT.name());
-
 	}
 
 	@Test
 	void convert_shouldReturnNullWhenBraintreeTransactionLineIsNull() {
+		final HmcFinancialReportLine result = testObj.convert(null);
 
-		final var result = testObj.convert(null);
 		assertThat(result).isNull();
-
 	}
 
 }

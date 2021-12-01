@@ -10,7 +10,7 @@ import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.service.HyperwalletSDKService;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletSellerExtractService;
-import com.paypal.kyc.strategies.documents.files.hyperwallet.seller.impl.KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor;
+import com.paypal.kyc.strategies.documents.files.hyperwallet.seller.impl.KYCDocumentInfoToHWVerificationDocumentExecutor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -39,14 +39,14 @@ public class HyperwalletSellerExtractServiceImpl implements HyperwalletSellerExt
 
 	private final MailNotificationUtil kycMailNotificationUtil;
 
-	private final KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor;
+	private final KYCDocumentInfoToHWVerificationDocumentExecutor kycDocumentInfoToHWVerificationDocumentExecutor;
 
 	public HyperwalletSellerExtractServiceImpl(
-			final KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor,
+			final KYCDocumentInfoToHWVerificationDocumentExecutor kycDocumentInfoToHWVerificationDocumentExecutor,
 			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil kycMailNotificationUtil) {
 		this.hyperwalletSDKService = hyperwalletSDKService;
 		this.kycMailNotificationUtil = kycMailNotificationUtil;
-		this.kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor = kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor;
+		this.kycDocumentInfoToHWVerificationDocumentExecutor = kycDocumentInfoToHWVerificationDocumentExecutor;
 	}
 
 	/**
@@ -56,23 +56,24 @@ public class HyperwalletSellerExtractServiceImpl implements HyperwalletSellerExt
 	public List<KYCDocumentSellerInfoModel> pushProofOfIdentityAndBusinessSellerDocuments(
 			final List<KYCDocumentSellerInfoModel> kycDocumentSellerInfoModelList) {
 		//@formatter:off
-        printShopsToSkip(kycDocumentSellerInfoModelList);
-        final Map<KYCDocumentSellerInfoModel, List<HyperwalletVerificationDocument>> kycDocumentInfoModelListMap = kycDocumentSellerInfoModelList
-                .stream()
-                .filter(KYCDocumentSellerInfoModel::areDocumentsFilled)
-                .map(kycDocumentInfoModel -> Pair.of(kycDocumentInfoModel,
-                        kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor.execute(kycDocumentInfoModel)))
-                .collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
-        //@formatter:on
+		printShopsToSkip(kycDocumentSellerInfoModelList);
+		final Map<KYCDocumentSellerInfoModel, List<HyperwalletVerificationDocument>> kycDocumentInfoModelListMap = kycDocumentSellerInfoModelList
+				.stream()
+				.filter(KYCDocumentSellerInfoModel::areDocumentsFilled)
+				.map(kycDocumentInfoModel -> Pair.of(kycDocumentInfoModel,
+						kycDocumentInfoToHWVerificationDocumentExecutor.execute(kycDocumentInfoModel)))
+				.collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
+		//@formatter:on
 
 		//@formatter:off
-        return kycDocumentInfoModelListMap.entrySet()
-                .stream()
-                .filter(kycDocumentInfoModelListEntry -> ObjectUtils.isNotEmpty(kycDocumentInfoModelListEntry.getValue()))
-                .map(this::callHyperwalletAPI)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        //@formatter:on
+		return kycDocumentInfoModelListMap.entrySet()
+				.stream()
+				.filter(kycDocumentInfoModelListEntry -> ObjectUtils.isNotEmpty(kycDocumentInfoModelListEntry.getValue()))
+				.map(this::callHyperwalletAPI)
+				.filter(Objects::nonNull)
+				.map(document -> document.toBuilder().sentToHyperwallet(true).build())
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 	/**
@@ -103,17 +104,17 @@ public class HyperwalletSellerExtractServiceImpl implements HyperwalletSellerExt
 	}
 
 	private void printShopsToSkip(final List<KYCDocumentSellerInfoModel> kycDocumentInfoModelCollection) {
-//@formatter:off
-        final List<KYCDocumentSellerInfoModel> shopsToSkip = kycDocumentInfoModelCollection.stream()
-                .filter(Predicate.not(KYCDocumentSellerInfoModel::areDocumentsFilled))
-                .collect(Collectors.toList());
-        if (!CollectionUtils.isEmpty(shopsToSkip)) {
-            log.warn("Mandatory documents missing for shop with id [{}] ",
-                    shopsToSkip.stream()
-                            .map(KYCDocumentInfoModel::getClientUserId)
-                            .collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR)));
-        }
-        //@formatter:on
+		//@formatter:off
+		final List<KYCDocumentSellerInfoModel> shopsToSkip = kycDocumentInfoModelCollection.stream()
+				.filter(Predicate.not(KYCDocumentSellerInfoModel::areDocumentsFilled))
+				.collect(Collectors.toList());
+		if (!CollectionUtils.isEmpty(shopsToSkip)) {
+			log.warn("Mandatory documents missing for shop with id [{}] ",
+					shopsToSkip.stream()
+							.map(KYCDocumentInfoModel::getClientUserId)
+							.collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR)));
+		}
+		//@formatter:on
 	}
 
 }

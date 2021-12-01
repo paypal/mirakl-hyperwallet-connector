@@ -39,8 +39,7 @@ public class DownloadReportController {
 					.contentType(MediaType.parseMediaType("application/csv")).body(resource);
 		}
 		catch (final NoSuchFileException ex) {
-			log.error("Financial report file: [{}] not found in path [{}]", fileName, path.toAbsolutePath().toString(),
-					ex);
+			log.error("Financial report file: [{}] not found in path [{}]", fileName, path.toAbsolutePath(), ex);
 			return ResponseEntity.notFound().build();
 		}
 		catch (final IOException ex) {

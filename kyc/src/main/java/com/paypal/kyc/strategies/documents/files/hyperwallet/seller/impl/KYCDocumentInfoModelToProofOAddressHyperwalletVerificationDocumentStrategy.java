@@ -19,15 +19,15 @@ public class KYCDocumentInfoModelToProofOAddressHyperwalletVerificationDocumentS
 	public HyperwalletVerificationDocument execute(final KYCDocumentSellerInfoModel source) {
 		//@formatter:off
 		final Map<String, String> uploadFiles = source.getAddressDocuments()
-													  .stream()
-													  .collect(Collectors.toMap(kycDocumentModel -> source.getProofOfAddress()
-																										  .name()
-																										  .toLowerCase()
-																	  + '_' + kycDocumentModel.getDocumentSide()
-																							  .name()
-																							  .toLowerCase(),
-															  kycDocumentModel -> kycDocumentModel.getFile()
-																								  .getAbsolutePath()));
+				.stream()
+				.collect(Collectors.toMap(kycDocumentModel -> source.getProofOfAddress()
+								.name()
+								.toLowerCase()
+								+ '_' + kycDocumentModel.getDocumentSide()
+								.name()
+								.toLowerCase(),
+						kycDocumentModel -> kycDocumentModel.getFile()
+								.getAbsolutePath()));
 		//@formatter:on
 
 		final HyperwalletVerificationDocument hyperwalletVerificationDocument = new HyperwalletVerificationDocument();

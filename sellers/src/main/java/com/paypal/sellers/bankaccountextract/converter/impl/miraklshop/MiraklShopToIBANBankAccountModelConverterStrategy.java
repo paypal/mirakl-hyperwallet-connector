@@ -35,28 +35,28 @@ public class MiraklShopToIBANBankAccountModelConverterStrategy implements Strate
 		final MiraklContactInformation contactInformation = source.getContactInformation();
 
 		//@formatter:off
-        return IBANBankAccountModel.builder()
-                .transferMethodCountry(contactInformation.getCountry())
-                .transferMethodCurrency(source.getCurrencyIsoCode().name())
-                .transferType(TransferType.BANK_ACCOUNT)
-                .type(BankAccountType.IBAN)
-                .bankBic(miraklIbanBankAccountInformation.getBic())
-                .bankAccountNumber(miraklIbanBankAccountInformation.getIban())
-                .businessName(Optional.ofNullable(source.getProfessionalInformation())
-                        .map(MiraklProfessionalInformation::getCorporateName)
-                        .orElse(null))
-                .firstName(contactInformation.getFirstname())
-                .lastName(contactInformation.getLastname())
-                .country(contactInformation.getCountry())
-                .addressLine1(contactInformation.getStreet1())
-                .addressLine2(Optional.ofNullable(contactInformation.getStreet2())
-                        .orElse(StringUtils.EMPTY))
-                .city(miraklIbanBankAccountInformation.getBankCity())
-                .stateProvince(source.getAdditionalFieldValues())
-                .token(source.getAdditionalFieldValues())
-                .hyperwalletProgram(source.getAdditionalFieldValues())
-                .build();
-        //@formatter:on
+		return IBANBankAccountModel.builder()
+				.transferMethodCountry(contactInformation.getCountry())
+				.transferMethodCurrency(source.getCurrencyIsoCode().name())
+				.transferType(TransferType.BANK_ACCOUNT)
+				.type(BankAccountType.IBAN)
+				.bankBic(miraklIbanBankAccountInformation.getBic())
+				.bankAccountNumber(miraklIbanBankAccountInformation.getIban())
+				.businessName(Optional.ofNullable(source.getProfessionalInformation())
+						.map(MiraklProfessionalInformation::getCorporateName)
+						.orElse(null))
+				.firstName(contactInformation.getFirstname())
+				.lastName(contactInformation.getLastname())
+				.country(contactInformation.getCountry())
+				.addressLine1(contactInformation.getStreet1())
+				.addressLine2(Optional.ofNullable(contactInformation.getStreet2())
+						.orElse(StringUtils.EMPTY))
+				.city(miraklIbanBankAccountInformation.getBankCity())
+				.stateProvince(source.getAdditionalFieldValues())
+				.token(source.getAdditionalFieldValues())
+				.hyperwalletProgram(source.getAdditionalFieldValues())
+				.build();
+		//@formatter:on
 	}
 
 	/**

@@ -14,7 +14,6 @@ import java.util.List;
 
 import static com.paypal.kyc.model.KYCConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class MiraklShopToKYCDocumentSellerInfoModelConverterTest {
@@ -54,7 +53,6 @@ class MiraklShopToKYCDocumentSellerInfoModelConverterTest {
 		assertThat(result.isRequiresKYC()).isTrue();
 		assertThat(result.isProfessional()).isTrue();
 		assertThat(result.getHyperwalletProgram()).isEqualTo(EUROPE_HYPERWALLET_PROGRAM);
-
 	}
 
 }

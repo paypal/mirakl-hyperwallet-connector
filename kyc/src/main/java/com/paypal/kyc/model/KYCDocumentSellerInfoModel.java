@@ -4,7 +4,7 @@ import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -34,30 +34,29 @@ public class KYCDocumentSellerInfoModel extends KYCDocumentInfoModel {
 	public List<KYCDocumentModel> getIdentityDocuments() {
 		if (KYCProofOfIdentityEnum.PASSPORT.equals(proofOfIdentity)) {
 			//@formatter:off
-            return Stream.ofNullable(getDocuments())
-                    .flatMap(Collection::stream)
-                    .filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.IDENTIFICATION))
-                    .filter(document -> document.getDocumentSide().equals(KYCDocumentSideEnum.FRONT))
-                    .collect(Collectors.toList());
-            //@formatter:on
+			return Stream.ofNullable(getDocuments())
+					.flatMap(Collection::stream)
+					.filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.IDENTIFICATION))
+					.filter(document -> document.getDocumentSide().equals(KYCDocumentSideEnum.FRONT))
+					.collect(Collectors.toList());
+			//@formatter:on
 		}
 
 		//@formatter:off
-        return Stream.ofNullable(getDocuments())
-                .flatMap(Collection::stream)
-                .filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.IDENTIFICATION))
-                .collect(Collectors.toList());
-        //@formatter:on
-
+		return Stream.ofNullable(getDocuments())
+				.flatMap(Collection::stream)
+				.filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.IDENTIFICATION))
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 	public List<KYCDocumentModel> getAddressDocuments() {
 		//@formatter:off
-        return Stream.ofNullable(getDocuments())
-                .flatMap(Collection::stream)
-                .filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.ADDRESS))
-                .collect(Collectors.toList());
-        //@formatter:on
+		return Stream.ofNullable(getDocuments())
+				.flatMap(Collection::stream)
+				.filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.ADDRESS))
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 	public List<KYCDocumentModel> getProofOfBusinessDocuments() {
@@ -113,7 +112,6 @@ public class KYCDocumentSellerInfoModel extends KYCDocumentInfoModel {
 		}
 
 		return Objects.nonNull(getProofOfAddress()) && Objects.nonNull(getProofOfIdentity());
-
 	}
 
 	@Override
@@ -156,20 +154,20 @@ public class KYCDocumentSellerInfoModel extends KYCDocumentInfoModel {
 
 	public Builder toBuilder() {
 		//@formatter:off
-        return KYCDocumentSellerInfoModel.builder()
-										 .userToken(userToken)
-										 .clientUserId(clientUserId)
-										 .professional(professional)
-										 .requiresKYC(requiresKYC)
-										 .countryIsoCode(countryIsoCode)
-										 .proofOfIdentity(proofOfIdentity)
-										 .proofOfAddress(proofOfAddress)
-										 .proofOfBusiness(proofOfBusiness)
-										 .miraklShopDocuments(miraklShopDocuments)
-										 .sentToHyperwallet(sentToHyperwallet)
-										 .hyperwalletProgram(hyperwalletProgram)
-										 .documents(getDocuments());
-        //@formatter:on
+		return KYCDocumentSellerInfoModel.builder()
+				.userToken(userToken)
+				.clientUserId(clientUserId)
+				.professional(professional)
+				.requiresKYC(requiresKYC)
+				.countryIsoCode(countryIsoCode)
+				.proofOfIdentity(proofOfIdentity)
+				.proofOfAddress(proofOfAddress)
+				.proofOfBusiness(proofOfBusiness)
+				.miraklShopDocuments(miraklShopDocuments)
+				.sentToHyperwallet(sentToHyperwallet)
+				.hyperwalletProgram(hyperwalletProgram)
+				.documents(getDocuments());
+		//@formatter:on
 	}
 
 	public static Builder builder() {
@@ -218,7 +216,7 @@ public class KYCDocumentSellerInfoModel extends KYCDocumentInfoModel {
 
 		public Builder requiresKYC(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklBooleanCustomFieldValue(fields, HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_BUSINESS_FIELD)
-					.ifPresent(requiresKYCValue -> requiresKYC = Boolean.valueOf(requiresKYCValue));
+					.ifPresent(requiresKYCValue -> requiresKYC = Boolean.parseBoolean(requiresKYCValue));
 
 			return this;
 		}

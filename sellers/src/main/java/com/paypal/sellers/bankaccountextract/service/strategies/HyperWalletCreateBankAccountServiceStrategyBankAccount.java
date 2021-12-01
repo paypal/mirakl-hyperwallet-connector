@@ -39,14 +39,14 @@ public class HyperWalletCreateBankAccountServiceStrategyBankAccount
 	 */
 	@Override
 	public Optional<HyperwalletBankAccount> execute(final SellerModel seller) {
-		final var hwBankAccountCreated = callSuperExecute(seller);
+		final Optional<HyperwalletBankAccount> hwBankAccountCreated = callSuperExecute(seller);
 		hwBankAccountCreated
 				.ifPresent(bankAccount -> miraklBankAccountExtractService.updateBankAccountToken(seller, bankAccount));
 		return hwBankAccountCreated;
 	}
 
 	@Override
-	protected HyperwalletBankAccount callMiraklAPI(final String hyperwalletProgram,
+	protected HyperwalletBankAccount callHyperwalletAPI(final String hyperwalletProgram,
 			final HyperwalletBankAccount hyperwalletBankAccount) {
 		final Hyperwallet hyperwallet = hyperwalletSDKService
 				.getHyperwalletInstanceByHyperwalletProgram(hyperwalletProgram);

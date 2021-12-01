@@ -31,12 +31,12 @@ public class BusinessKYCUserLOAStatusNotificationStrategy extends AbstractKYCBus
 	}
 
 	@Override
-	public Optional<Void> execute(
+	public Void execute(
 			final KYCBusinessStakeholderStatusNotificationBodyModel kycBusinessStakeholderStatusNotificationBodyModel) {
 		Optional.ofNullable(getHyperWalletUser(kycBusinessStakeholderStatusNotificationBodyModel))
 				.ifPresent(hyperWalletUser -> updateMiraklLOAStatus(hyperWalletUser.getClientUserId(),
 						hyperWalletUser.getLetterOfAuthorizationStatus()));
-		return Optional.empty();
+		return null;
 	}
 
 	@Override
@@ -48,12 +48,12 @@ public class BusinessKYCUserLOAStatusNotificationStrategy extends AbstractKYCBus
 						kycBusinessStakeholderStatusNotificationBodyModel.getHyperwalletWebhookNotificationType());
 	}
 
-	protected Optional<Void> updateMiraklLOAStatus(final String miraklShopId,
+	protected void updateMiraklLOAStatus(final String miraklShopId,
 			final HyperwalletUser.LetterOfAuthorizationStatus letterOfAuthorizationStatus) {
 
 		final MiraklUpdateShop updateShop = new MiraklUpdateShop();
-		final String isLetterOfAuthorizationRequired = isLetterOfAuthorizationRequired(letterOfAuthorizationStatus)
-				? Boolean.TRUE.toString() : Boolean.FALSE.toString();
+		final String isLetterOfAuthorizationRequired = Boolean
+				.toString(isLetterOfAuthorizationRequired(letterOfAuthorizationStatus));
 
 		final MiraklSimpleRequestAdditionalFieldValue miraklSimpleRequestAdditionalFieldValue = new MiraklSimpleRequestAdditionalFieldValue(
 				KYCConstants.HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD,
@@ -75,8 +75,6 @@ public class BusinessKYCUserLOAStatusNotificationStrategy extends AbstractKYCBus
 					"Something went wrong updating KYC Letter of authorization business stakeholder information of shop [{}]. Details [{}]",
 					miraklShopId, ex.getMessage());
 		}
-
-		return Optional.empty();
 	}
 
 	protected boolean isLetterOfAuthorizationRequired(final LetterOfAuthorizationStatus letterOfAuthorizationStatus) {

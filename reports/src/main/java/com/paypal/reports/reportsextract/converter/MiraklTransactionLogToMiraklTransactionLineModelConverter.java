@@ -35,8 +35,8 @@ public class MiraklTransactionLogToMiraklTransactionLineModelConverter
 				.transactionLineId(source.getId())
 				.currencyIsoCode(String.valueOf(source.getCurrencyIsoCode()))
 				.sellerId(source.getShopId())
-                .build();
-        //@formatter:on
+				.build();
+		//@formatter:on
 	}
 
 }

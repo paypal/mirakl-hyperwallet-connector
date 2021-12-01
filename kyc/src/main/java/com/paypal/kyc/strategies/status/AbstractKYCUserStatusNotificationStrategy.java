@@ -10,6 +10,7 @@ import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
+import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.Strategy;
@@ -21,8 +22,8 @@ import com.paypal.kyc.model.KYCUserStatusNotificationBodyModel;
 import com.paypal.kyc.service.KYCRejectionReasonService;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklSellerDocumentsExtractService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.tuple.Pair;
@@ -38,11 +39,11 @@ import static com.paypal.kyc.model.KYCConstants.HYPERWALLET_KYC_REQUIRED_PROOF_I
 
 @Slf4j
 public abstract class AbstractKYCUserStatusNotificationStrategy
-		implements Strategy<KYCUserStatusNotificationBodyModel, Optional<Void>> {
+		implements Strategy<KYCUserStatusNotificationBodyModel, Void> {
+
+	protected static final String COMMA = ",";
 
 	protected static final String ERROR_MESSAGE_PREFIX = "There was an error, please check the logs for further information:\n";
-
-	public static final String COMMA = ",";
 
 	protected final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient;
 
@@ -50,9 +51,9 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 
 	protected final KYCRejectionReasonService kycRejectionReasonService;
 
-	protected MiraklSellerDocumentsExtractService miraklSellerDocumentsExtractService;
+	protected final MiraklSellerDocumentsExtractService miraklSellerDocumentsExtractService;
 
-	protected Converter<KYCDocumentNotificationModel, List<String>> kycDocumentNotificationModelListConverter;
+	protected final Converter<KYCDocumentNotificationModel, List<String>> kycDocumentNotificationModelListConverter;
 
 	protected AbstractKYCUserStatusNotificationStrategy(
 			final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
@@ -70,11 +71,12 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Optional<Void> execute(final KYCUserStatusNotificationBodyModel kycUserNotification) {
-		return updateShop(kycUserNotification);
+	public Void execute(final KYCUserStatusNotificationBodyModel kycUserNotification) {
+		updateShop(kycUserNotification);
+		return null;
 	}
 
-	protected Optional<Void> updateShop(final KYCUserStatusNotificationBodyModel kycUserStatusNotificationBodyModel) {
+	protected void updateShop(final KYCUserStatusNotificationBodyModel kycUserStatusNotificationBodyModel) {
 		final MiraklShopKycStatus status = expectedKycMiraklStatus(kycUserStatusNotificationBodyModel);
 		if (Objects.nonNull(status)) {
 			final String shopId = kycUserStatusNotificationBodyModel.getClientUserId();
@@ -99,8 +101,6 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 								shopId, MiraklLoggingErrorsUtil.stringify(ex)));
 			}
 		}
-
-		return Optional.empty();
 	}
 
 	protected void deleteInvalidDocuments(final KYCUserStatusNotificationBodyModel kycUserNotification) {
@@ -140,8 +140,8 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 	private boolean isANewMiraklDocument(final Map<String, LocalDateTime> documentsToBeDeleted,
 			final MiraklShopDocument miraklShopDocument) {
 		final LocalDateTime hyperwalletDateUploaded = documentsToBeDeleted.get(miraklShopDocument.getTypeCode());
-		final LocalDateTime miraklDateUplodaded = getLocalDateTimeFromDate(miraklShopDocument.getDateUploaded());
-		return miraklDateUplodaded.isAfter(hyperwalletDateUploaded);
+		final LocalDateTime miraklDateUploaded = getLocalDateTimeFromDate(miraklShopDocument.getDateUploaded());
+		return miraklDateUploaded.isAfter(hyperwalletDateUploaded);
 	}
 
 	protected abstract MiraklShopKycStatus expectedKycMiraklStatus(
@@ -162,14 +162,14 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 		final List<MiraklRequestAdditionalFieldValue> additionalFieldValues = new ArrayList<>();
 		if (HyperwalletUser.VerificationStatus.REQUIRED
 				.equals(kycUserStatusNotificationBodyModel.getVerificationStatus())) {
-			final var kycVerificationStatusCustomField = new MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue();
+			final MiraklSimpleRequestAdditionalFieldValue kycVerificationStatusCustomField = new MiraklSimpleRequestAdditionalFieldValue();
 			kycVerificationStatusCustomField.setCode(HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_BUSINESS_FIELD);
 			kycVerificationStatusCustomField.setValue(Boolean.TRUE.toString());
 			additionalFieldValues.add(kycVerificationStatusCustomField);
 		}
 		if (HyperwalletUser.LetterOfAuthorizationStatus.REQUIRED
 				.equals(kycUserStatusNotificationBodyModel.getLetterOfAuthorizationStatus())) {
-			final var kycLetterOfAuthorizationStatusCustomField = new MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue();
+			final MiraklSimpleRequestAdditionalFieldValue kycLetterOfAuthorizationStatusCustomField = new MiraklSimpleRequestAdditionalFieldValue();
 			kycLetterOfAuthorizationStatusCustomField
 					.setCode(HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD);
 			kycLetterOfAuthorizationStatusCustomField.setValue(Boolean.TRUE.toString());

@@ -37,7 +37,6 @@ public class SellerModelToHyperWalletUKBankAccount extends AbstractSellerModelTo
 	public boolean isApplicable(final SellerModel source) {
 		return Objects.nonNull(source.getBankAccountDetails())
 				&& source.getBankAccountDetails() instanceof UKBankAccountModel;
-
 	}
 
 }

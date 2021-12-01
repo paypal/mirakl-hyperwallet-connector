@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 class MailNotificationUtilImplTest {
 
 	@RegisterExtension
-	LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.ERROR)
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.ERROR)
 			.recordForType(MailNotificationUtilImpl.class);
 
 	private static final String SUBJECT = "Subject";

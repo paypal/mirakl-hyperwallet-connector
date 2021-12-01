@@ -1,8 +1,6 @@
 package com.paypal.kyc.model;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
@@ -15,7 +13,6 @@ class KYCProofOfIdentityEnumTest {
 
 	@Test
 	void getMiraklFields_shouldReturnProofOfIdentityFrontAndBackWhenProofOfIdentityIsNationalCard() {
-
 		final List<String> result = KYCProofOfIdentityEnum.getMiraklFields(KYCProofOfIdentityEnum.GOVERNMENT_ID);
 
 		assertThat(result).containsExactlyInAnyOrder(PREFIX_FIELD_NAME + KYCConstants.PROOF_IDENTITY_SIDE_FRONT,
@@ -24,7 +21,6 @@ class KYCProofOfIdentityEnumTest {
 
 	@Test
 	void getMiraklFields_shouldReturnProofOfIdentityFrontAndBackWhenProofOfIdentityIsDriversLicense() {
-
 		final List<String> result = KYCProofOfIdentityEnum.getMiraklFields(KYCProofOfIdentityEnum.DRIVERS_LICENSE);
 
 		assertThat(result).containsExactlyInAnyOrder(PREFIX_FIELD_NAME + KYCConstants.PROOF_IDENTITY_SIDE_FRONT,
@@ -33,15 +29,13 @@ class KYCProofOfIdentityEnumTest {
 
 	@Test
 	void getMiraklFields_shouldReturnProofOfIdentityFrontWhenProofOfIdentityIsPassport() {
-
 		final List<String> result = KYCProofOfIdentityEnum.getMiraklFields(KYCProofOfIdentityEnum.PASSPORT);
 
 		assertThat(result).containsExactlyInAnyOrder(PREFIX_FIELD_NAME + KYCConstants.PROOF_IDENTITY_SIDE_FRONT);
 	}
 
 	@Test
-	void getMiraklFields_shouldReturnEmpyListWhenProofOfIdentityEnumIsNull() {
-
+	void getMiraklFields_shouldReturnEmptyListWhenProofOfIdentityEnumIsNull() {
 		final List<String> result = KYCProofOfIdentityEnum.getMiraklFields(null);
 
 		assertThat(result).isEmpty();

@@ -26,8 +26,8 @@ public class KYCDocumentModel implements Serializable {
 	public KYCDocumentModelBuilder toBuilder() {
 		//@formatter:off
 		return KYCDocumentModel.builder()
-							   .documentFieldName(documentFieldName)
-							   .file(file);
+				.documentFieldName(documentFieldName)
+				.file(file);
 		//@formatter:on
 	}
 

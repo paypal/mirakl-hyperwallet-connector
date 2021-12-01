@@ -1,5 +1,6 @@
 package com.paypal.sellers.service.impl;
 
+import com.hyperwallet.clientsdk.Hyperwallet;
 import com.paypal.sellers.infrastructure.configuration.SellersHyperwalletApiConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,32 +36,30 @@ class SellerHyperwalletSDKServiceImplTest {
 
 	@Test
 	void getHyperwalletInstanceByHyperwalletProgram_shouldReturnAnHyperwalletInstance() {
-		when(this.sellersHyperwalletApiConfigMock.getUserStoreTokens())
+		when(sellersHyperwalletApiConfigMock.getUserStoreTokens())
 				.thenReturn(Map.of(HYPERWALLET_PROGRAM, PROGRAM_TOKEN));
-		when(this.sellersHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(this.sellersHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(this.sellersHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(sellersHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(sellersHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(sellersHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final var result = this.testObj.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
+		final Hyperwallet result = testObj.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
 
 		assertThat(result).hasFieldOrPropertyWithValue("programToken", PROGRAM_TOKEN)
 				.hasFieldOrPropertyWithValue("apiClient.username", USER_NAME)
 				.hasFieldOrPropertyWithValue("url", SERVER + "/rest/v4");
-
 	}
 
 	@Test
 	void getHyperwalletInstanceWithProgramToken_shouldReturnAnHyperwalletInstance() {
-		when(this.sellersHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(this.sellersHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(this.sellersHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(sellersHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(sellersHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(sellersHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final var result = this.testObj.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN);
+		final Hyperwallet result = testObj.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN);
 
 		assertThat(result).hasFieldOrPropertyWithValue("programToken", PROGRAM_TOKEN)
 				.hasFieldOrPropertyWithValue("apiClient.username", USER_NAME)
 				.hasFieldOrPropertyWithValue("url", SERVER + "/rest/v4");
-
 	}
 
 }

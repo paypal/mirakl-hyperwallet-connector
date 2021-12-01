@@ -48,7 +48,7 @@ class JobControllerTest {
 				jobExecutionInformationEntityTwoMock);
 	}
 
-	class MyJob implements Job {
+	static class MyJob implements Job {
 
 		@Override
 		public void execute(final JobExecutionContext context) {

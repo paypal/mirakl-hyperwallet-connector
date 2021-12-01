@@ -48,7 +48,7 @@ class HyperWalletCreateBankAccountServiceStrategyTest {
 	private BankAccountModel bankAccountModelMock;
 
 	@Test
-	void execute_shouldcallSuperExecuteAndUpdateBankAccountToken() {
+	void execute_shouldCallSuperExecuteAndUpdateBankAccountToken() {
 		doReturn(Optional.of(hyperwalletBankAccountRequestMock)).when(testObj).callSuperExecute(sellerModelMock);
 
 		final Optional<HyperwalletBankAccount> result = testObj.execute(sellerModelMock);
@@ -60,14 +60,14 @@ class HyperWalletCreateBankAccountServiceStrategyTest {
 	}
 
 	@Test
-	void callMiraklAPI_shouldCreateBankAccount() {
+	void callHyperwalletAPI_shouldCreateBankAccount() {
 		when(hyperwalletMock.createBankAccount(hyperwalletBankAccountRequestMock))
 				.thenReturn(hyperwalletBankAccountResultMock);
 
 		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletMock);
 
-		final HyperwalletBankAccount result = testObj.callMiraklAPI(HYPERWALLET_PROGRAM,
+		final HyperwalletBankAccount result = testObj.callHyperwalletAPI(HYPERWALLET_PROGRAM,
 				hyperwalletBankAccountRequestMock);
 
 		verify(hyperwalletSDKServiceMock).getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);

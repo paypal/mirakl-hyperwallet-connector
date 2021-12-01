@@ -42,9 +42,6 @@ class HyperWalletUpdateBusinessStakeHolderServiceStrategyTest {
 	@Mock
 	private MailNotificationUtil mailNotificationUtilMock;
 
-	@Mock
-	private BusinessStakeHolderModel.BusinessStakeHolderModelBuilder businessStakeHolderBuilderMock;
-
 	private static final String CLIENT_ID = "clientID";
 
 	private static final String TOKEN = "token";
@@ -80,7 +77,7 @@ class HyperWalletUpdateBusinessStakeHolderServiceStrategyTest {
 		when(hyperwalletSDKService.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletClientMock);
 
-		final var hyperwalletException = new HyperwalletException("Something went wrong");
+		final HyperwalletException hyperwalletException = new HyperwalletException("Something went wrong");
 		doThrow(hyperwalletException).when(hyperwalletClientMock).updateBusinessStakeholder(TOKEN,
 				hyperwalletBusinessStakeholderMock);
 
@@ -94,7 +91,6 @@ class HyperWalletUpdateBusinessStakeHolderServiceStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnFalseWhenBusinessStakeHolderHasAnEmptyToken() {
-
 		final boolean result = testObj.isApplicable(businessStakeHolderMock);
 
 		assertThat(result).isFalse();

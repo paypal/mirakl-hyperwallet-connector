@@ -48,30 +48,30 @@ class KYCBusinessStakeholderDocumentInfoModelToProofOfIdentityHyperwalletVerific
 	@BeforeEach
 	void setUp() {
 		//@formatter:off
-        documentProofOfIdentityFront = KYCDocumentModel.builder()
-                .documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_FRONT)
-                .file(proofOfIdentityFileFrontMock)
-                .build();
-        //@formatter:on
+		documentProofOfIdentityFront = KYCDocumentModel.builder()
+				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_FRONT)
+				.file(proofOfIdentityFileFrontMock)
+				.build();
+		//@formatter:on
 
 		//@formatter:off
-        documentProofOfIdentityBack = KYCDocumentModel.builder()
-                .documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_BACK)
-                .file(proofOfIdentityFileBackMock)
-                .build();
-        //@formatter:on
+		documentProofOfIdentityBack = KYCDocumentModel.builder()
+				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_BACK)
+				.file(proofOfIdentityFileBackMock)
+				.build();
+		//@formatter:on
 
 		//@formatter:off
-        kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
-                .clientUserId(CLIENT_USER_ID)
-                .businessStakeholderMiraklNumber(BUSINESS_STAKEHOLDER_NUMBER)
-                .userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
-                        KYCConstants.HYPERWALLET_USER_TOKEN_FIELD, USR_TOKEN)))
-                .proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+		kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
+				.clientUserId(CLIENT_USER_ID)
+				.businessStakeholderMiraklNumber(BUSINESS_STAKEHOLDER_NUMBER)
+				.userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
+						KYCConstants.HYPERWALLET_USER_TOKEN_FIELD, USR_TOKEN)))
+				.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
 						HW_STAKEHOLDER_PROOF_IDENTITY_TYPE_1, "GOVERNMENT_ID")), BUSINESS_STAKEHOLDER_NUMBER)
-                .documents(List.of(documentProofOfIdentityFront, documentProofOfIdentityBack))
-                .build();
-        //@formatter:on
+				.documents(List.of(documentProofOfIdentityFront, documentProofOfIdentityBack))
+				.build();
+		//@formatter:on
 	}
 
 	@Test
@@ -102,11 +102,11 @@ class KYCBusinessStakeholderDocumentInfoModelToProofOfIdentityHyperwalletVerific
 	@Test
 	void isApplicable_shouldReturnFalseWhenIdentityDocumentsIsEmpty() {
 		//@formatter:off
-        kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
-                .proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-                        KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD, "GOVERNMENT_ID")), BUSINESS_STAKEHOLDER_NUMBER)
-                .build();
-        //@formatter:on
+		kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
+				.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD, "GOVERNMENT_ID")), BUSINESS_STAKEHOLDER_NUMBER)
+				.build();
+		//@formatter:on
 
 		final boolean result = testObj.isApplicable(kycDocumentBusinessStakeHolderInfoModel);
 
@@ -116,10 +116,10 @@ class KYCBusinessStakeholderDocumentInfoModelToProofOfIdentityHyperwalletVerific
 	@Test
 	void isApplicable_shouldReturnFalseWhenProofOfIdentityIsEmpty() {
 		//@formatter:off
-        kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
-                .documents(List.of(documentProofOfIdentityFront, documentProofOfIdentityBack))
-                .build();
-        //@formatter:on
+		kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
+				.documents(List.of(documentProofOfIdentityFront, documentProofOfIdentityBack))
+				.build();
+		//@formatter:on
 		final boolean result = testObj.isApplicable(kycDocumentBusinessStakeHolderInfoModel);
 
 		assertThat(result).isFalse();

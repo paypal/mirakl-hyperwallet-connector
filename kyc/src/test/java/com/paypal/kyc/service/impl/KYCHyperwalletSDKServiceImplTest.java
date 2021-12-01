@@ -36,27 +36,25 @@ class KYCHyperwalletSDKServiceImplTest {
 
 	@Test
 	void getHyperwalletInstance_shouldReturnAnHyperwalletInstance() {
-		when(this.kycHyperwalletApiConfigMock.getUserStoreTokens())
-				.thenReturn(Map.of(HYPERWALLET_PROGRAM, PROGRAM_TOKEN));
-		when(this.kycHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(this.kycHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(this.kycHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(kycHyperwalletApiConfigMock.getUserStoreTokens()).thenReturn(Map.of(HYPERWALLET_PROGRAM, PROGRAM_TOKEN));
+		when(kycHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(kycHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(kycHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final var result = this.testObj.getHyperwalletInstance(HYPERWALLET_PROGRAM);
+		final Hyperwallet result = testObj.getHyperwalletInstance(HYPERWALLET_PROGRAM);
 
 		assertThat(result).hasFieldOrPropertyWithValue("programToken", PROGRAM_TOKEN)
 				.hasFieldOrPropertyWithValue("apiClient.username", USER_NAME)
 				.hasFieldOrPropertyWithValue("url", SERVER + "/rest/v4");
-
 	}
 
 	@Test
 	void getHyperwalletInstance_shouldReturnAnHyperwalletInstanceWithNOTEncryptedOption() {
-		when(this.kycHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(this.kycHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(this.kycHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(kycHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(kycHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(kycHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final Hyperwallet result = this.testObj.getHyperwalletInstance(PROGRAM_TOKEN);
+		final Hyperwallet result = testObj.getHyperwalletInstance(PROGRAM_TOKEN);
 
 		assertThat(result).hasFieldOrPropertyWithValue("apiClient.hyperwalletEncryption", null);
 	}

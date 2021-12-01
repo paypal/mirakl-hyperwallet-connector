@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-public class KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor extends
+public class KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor extends
 		MultipleAbstractStrategyExecutor<KYCDocumentBusinessStakeHolderInfoModel, HyperwalletVerificationDocument> {
 
 	private final Set<Strategy<KYCDocumentBusinessStakeHolderInfoModel, HyperwalletVerificationDocument>> strategies;
 
-	public KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor(
+	public KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor(
 			final Set<Strategy<KYCDocumentBusinessStakeHolderInfoModel, HyperwalletVerificationDocument>> strategies) {
 		this.strategies = strategies;
 	}

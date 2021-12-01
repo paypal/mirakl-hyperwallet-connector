@@ -9,6 +9,7 @@ import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiC
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
+import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
@@ -24,7 +25,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.paypal.kyc.model.KYCConstants.HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD;
@@ -71,9 +71,6 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 	private KYCDocumentInfoModel kycDocumentInfoModelMock;
 
 	@Mock
-	private KYCDocumentModel documentOneMock, documentTwoMock;
-
-	@Mock
 	private KYCDocumentNotificationModel notificationDocumentOneMock, notificationDocumentTwoMock;
 
 	@Mock
@@ -97,7 +94,7 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock)
 				.updateShops(miraklUpdateShopMockArgumentCaptor.capture());
-		final var request = miraklUpdateShopMockArgumentCaptor.getValue();
+		final MiraklUpdateShopsRequest request = miraklUpdateShopMockArgumentCaptor.getValue();
 		assertThat(request.getShops()).hasSize(1);
 		assertThat(request.getShops().get(0).getShopId()).isEqualTo(Long.valueOf(SHOP_ID));
 		assertThat(request.getShops().get(0).getKyc().getStatus()).isEqualTo(MiraklShopKycStatus.APPROVED);
@@ -118,13 +115,13 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock)
 				.updateShops(miraklUpdateShopMockArgumentCaptor.capture());
-		final var request = miraklUpdateShopMockArgumentCaptor.getValue();
+		final MiraklUpdateShopsRequest request = miraklUpdateShopMockArgumentCaptor.getValue();
 		assertThat(request.getShops()).hasSize(1);
 		assertThat(request.getShops().get(0).getShopId()).isEqualTo(Long.valueOf(SHOP_ID));
 		assertThat(request.getShops().get(0).getKyc().getStatus()).isEqualTo(MiraklShopKycStatus.REFUSED);
 		final MiraklRequestAdditionalFieldValue additionalFieldValue = request.getShops().get(0)
 				.getAdditionalFieldValues().get(0);
-		final var castedAdditionalFieldValue = (MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue) additionalFieldValue;
+		final MiraklSimpleRequestAdditionalFieldValue castedAdditionalFieldValue = (MiraklSimpleRequestAdditionalFieldValue) additionalFieldValue;
 		assertThat(castedAdditionalFieldValue.getCode())
 				.isEqualTo(HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_BUSINESS_FIELD);
 		assertThat(castedAdditionalFieldValue.getValue()).isEqualTo("true");
@@ -153,12 +150,12 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 				.getRejectionReasonDescriptions(List.of(KYCRejectionReasonTypeEnum.LETTER_OF_AUTHORIZATION_REQUIRED));
 		verify(miraklMarketplacePlatformOperatorApiClientMock)
 				.updateShops(miraklUpdateShopMockArgumentCaptor.capture());
-		final var request = miraklUpdateShopMockArgumentCaptor.getValue();
+		final MiraklUpdateShopsRequest request = miraklUpdateShopMockArgumentCaptor.getValue();
 		assertThat(request.getShops()).hasSize(1);
 		assertThat(request.getShops().get(0).getShopId()).isEqualTo(Long.valueOf(SHOP_ID));
 		final MiraklRequestAdditionalFieldValue additionalFieldValue = request.getShops().get(0)
 				.getAdditionalFieldValues().get(0);
-		final var castedAdditionalFieldValue = (MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue) additionalFieldValue;
+		final MiraklSimpleRequestAdditionalFieldValue castedAdditionalFieldValue = (MiraklSimpleRequestAdditionalFieldValue) additionalFieldValue;
 		assertThat(castedAdditionalFieldValue.getCode())
 				.isEqualTo(HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD);
 		assertThat(castedAdditionalFieldValue.getValue()).isEqualTo("true");
@@ -188,7 +185,7 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock)
 				.updateShops(miraklUpdateShopMockArgumentCaptor.capture());
-		final var request = miraklUpdateShopMockArgumentCaptor.getValue();
+		final MiraklUpdateShopsRequest request = miraklUpdateShopMockArgumentCaptor.getValue();
 
 		verify(kycRejectionReasonServiceMock)
 				.getRejectionReasonDescriptions(List.of(KYCRejectionReasonTypeEnum.LETTER_OF_AUTHORIZATION_REQUIRED));
@@ -210,7 +207,8 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 	@Test
 	void updateShop_shouldLogTheErrorAndSendAnEmailInCaseMiraklAPIFails() {
 		when(kycUserStatusNotificationBodyModelMock.getClientUserId()).thenReturn(SHOP_ID);
-		final var exception = new MiraklApiException(new MiraklErrorResponseBean(100, "Something went wrong"));
+		final MiraklApiException exception = new MiraklApiException(
+				new MiraklErrorResponseBean(100, "Something went wrong"));
 		doThrow(exception).when(miraklMarketplacePlatformOperatorApiClientMock)
 				.updateShops(any(MiraklUpdateShopsRequest.class));
 		when(testObj.expectedKycMiraklStatus(kycUserStatusNotificationBodyModelMock))
@@ -227,7 +225,7 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 
 	@Test
 	void execute_shouldCallExpectedMiraklStatusAndUpdatedShopWithProvidedParams() {
-		doReturn(Optional.empty()).when(testObj).updateShop(kycUserStatusNotificationBodyModelMock);
+		doNothing().when(testObj).updateShop(kycUserStatusNotificationBodyModelMock);
 
 		testObj.execute(kycUserStatusNotificationBodyModelMock);
 

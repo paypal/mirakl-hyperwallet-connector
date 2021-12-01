@@ -64,26 +64,26 @@ class ReportsBraintreeRefundsExtractServiceImplTest {
 		doReturn(graphQLClientMock).when(testObj).getGraphQLClient();
 		final Map<String, Object> graphQLQueryResponseMap = new ObjectMapper().readValue(
 				Paths.get("src", "test", "resources", "graphQLOnePageRefundQueryResponse.json").toFile(), Map.class);
-		final Map<String, Object> grahpQLFirstEdge = new ObjectMapper().readValue(
+		final Map<String, Object> graphQLFirstEdge = new ObjectMapper().readValue(
 				Paths.get("src", "test", "resources", "graphQLOnePageRefundFirstEdge.json").toFile(), Map.class);
-		final Map<String, Object> grahpQLSecondEdge = new ObjectMapper().readValue(
+		final Map<String, Object> graphQLSecondEdge = new ObjectMapper().readValue(
 				Paths.get("src", "test", "resources", "graphQLOnePageRefundSecondEdge.json").toFile(), Map.class);
 		when(graphQLClientMock.query(refundSearchQuery, createInputVars("SETTLED", startDate, endDate, null)))
 				.thenReturn(graphQLQueryResponseMap);
 		final HmcBraintreeRefundLine firstRefund = HmcBraintreeRefundLine.builder().paymentTransactionId("firstRefund")
 				.build();
-		when(mapToBraintreeRefundLineConverterMock.convert(grahpQLFirstEdge)).thenReturn(firstRefund);
+		when(mapToBraintreeRefundLineConverterMock.convert(graphQLFirstEdge)).thenReturn(firstRefund);
 
 		final HmcBraintreeRefundLine secondRefund = HmcBraintreeRefundLine.builder()
 				.paymentTransactionId("secondRefund").build();
-		when(mapToBraintreeRefundLineConverterMock.convert(grahpQLSecondEdge)).thenReturn(secondRefund);
+		when(mapToBraintreeRefundLineConverterMock.convert(graphQLSecondEdge)).thenReturn(secondRefund);
 
-		final var result = testObj.getAllRefundsByTypeAndDateInterval("SETTLED", startDate, endDate);
+		final List<HmcBraintreeRefundLine> result = testObj.getAllRefundsByTypeAndDateInterval("SETTLED", startDate,
+				endDate);
 
 		assertThat(result.stream().map(HmcBraintreeRefundLine::getPaymentTransactionId))
 				.containsExactlyInAnyOrder("firstRefund", "secondRefund");
 		verify(mapToBraintreeRefundLineConverterMock, times(2)).convert(any());
-
 	}
 
 	@Test
@@ -99,9 +99,9 @@ class ReportsBraintreeRefundsExtractServiceImplTest {
 		final Map<String, Object> graphQLSecondPageQueryResponseMap = new ObjectMapper().readValue(
 				Paths.get("src", "test", "resources", "graphQLTwoPagesRefundQueryResponseTwo.json").toFile(),
 				Map.class);
-		final Map<String, Object> grahpQLFirstEdge = new ObjectMapper().readValue(
+		final Map<String, Object> graphQLFirstEdge = new ObjectMapper().readValue(
 				Paths.get("src", "test", "resources", "graphQLOnePageRefundFirstEdge.json").toFile(), Map.class);
-		final Map<String, Object> grahpQLSecondEdge = new ObjectMapper().readValue(
+		final Map<String, Object> graphQLSecondEdge = new ObjectMapper().readValue(
 				Paths.get("src", "test", "resources", "graphQLOnePageRefundSecondEdge.json").toFile(), Map.class);
 		when(graphQLClientMock.query(refundSearchQuery, createInputVars("SETTLED", startDate, endDate, null)))
 				.thenReturn(graphQLFirstPageQueryResponseMap);
@@ -111,10 +111,10 @@ class ReportsBraintreeRefundsExtractServiceImplTest {
 								.thenReturn(graphQLSecondPageQueryResponseMap);
 		final HmcBraintreeRefundLine firstRefund = HmcBraintreeRefundLine.builder().paymentTransactionId("firstRefund")
 				.build();
-		when(mapToBraintreeRefundLineConverterMock.convert(grahpQLFirstEdge)).thenReturn(firstRefund);
+		when(mapToBraintreeRefundLineConverterMock.convert(graphQLFirstEdge)).thenReturn(firstRefund);
 		final HmcBraintreeRefundLine secondRefund = HmcBraintreeRefundLine.builder()
 				.paymentTransactionId("secondRefund").build();
-		when(mapToBraintreeRefundLineConverterMock.convert(grahpQLSecondEdge)).thenReturn(secondRefund);
+		when(mapToBraintreeRefundLineConverterMock.convert(graphQLSecondEdge)).thenReturn(secondRefund);
 
 		final List<HmcBraintreeRefundLine> result = testObj.getAllRefundsByTypeAndDateInterval("SETTLED", startDate,
 				endDate);

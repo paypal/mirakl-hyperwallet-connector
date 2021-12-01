@@ -81,13 +81,12 @@ class JobExecutionInformationEntityListenerTest {
 		verify(savedJobExecutionInformationEntityMock).setStatus(JobStatus.COMPLETED);
 		verify(savedJobExecutionInformationEntityMock).setEndTime(DateUtil.convertToDate(now, ZoneId.systemDefault()));
 		verify(jobExecutionInformationRepositoryMock).save(savedJobExecutionInformationEntityMock);
-
 	}
 
-	private class MyJob implements Job {
+	private static class MyJob implements Job {
 
 		@Override
-		public void execute(final JobExecutionContext context) throws JobExecutionException {
+		public void execute(final JobExecutionContext context) {
 			// doNothing
 		}
 

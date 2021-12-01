@@ -24,11 +24,11 @@ public class KYCBusinessStakeholderDocumentInfoModelToLetterOfAuthorizationHyper
 	@Override
 	public HyperwalletVerificationDocument execute(final KYCDocumentBusinessStakeHolderInfoModel source) {
 		//@formatter:off
-        final Map<String, String> uploadFiles = source.getLetterOfAuthorizationDocument()
-                .stream()
-                .collect(Collectors.toMap(kycDocumentModel -> LETTER_OF_AUTHORIZATION_NAME, kycDocumentModel -> kycDocumentModel.getFile()
-                        .getAbsolutePath()));
-        //@formatter:on
+		final Map<String, String> uploadFiles = source.getLetterOfAuthorizationDocument()
+				.stream()
+				.collect(Collectors.toMap(kycDocumentModel -> LETTER_OF_AUTHORIZATION_NAME, kycDocumentModel -> kycDocumentModel.getFile()
+						.getAbsolutePath()));
+		//@formatter:on
 
 		final HyperwalletVerificationDocument hyperwalletVerificationDocument = new HyperwalletVerificationDocument();
 		hyperwalletVerificationDocument.setType(LETTER_OF_AUTHORIZATION_TYPE);

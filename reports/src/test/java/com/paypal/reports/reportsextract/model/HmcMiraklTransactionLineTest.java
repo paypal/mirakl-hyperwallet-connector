@@ -28,17 +28,17 @@ class HmcMiraklTransactionLineTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 45));
 		final LocalDateTime now = TimeMachine.now();
 		//@formatter:off
-        final HmcMiraklTransactionLine result = HmcMiraklTransactionLine.builder()
-                .creditAmount(BigDecimal.ONE)
-                .debitAmount(BigDecimal.TEN)
-                .orderId(ORDER_ID)
-                .sellerId(SELLER_ID)
-                .transactionLineId(MIRAKL_TRANSACTION_LINE_ID)
-                .transactionTime(now)
-                .transactionType(MIRAKL_TRANSACTION_TYPE)
-                .transactionNumber(PAYMENT_TRANSACTION_ID)
-                .build();
-        //@formatter:on
+		final HmcMiraklTransactionLine result = HmcMiraklTransactionLine.builder()
+				.creditAmount(BigDecimal.ONE)
+				.debitAmount(BigDecimal.TEN)
+				.orderId(ORDER_ID)
+				.sellerId(SELLER_ID)
+				.transactionLineId(MIRAKL_TRANSACTION_LINE_ID)
+				.transactionTime(now)
+				.transactionType(MIRAKL_TRANSACTION_TYPE)
+				.transactionNumber(PAYMENT_TRANSACTION_ID)
+				.build();
+		//@formatter:on
 
 		assertThat(result.getCreditAmount()).isEqualTo(BigDecimal.ONE);
 		assertThat(result.getDebitAmount()).isEqualTo(BigDecimal.TEN);

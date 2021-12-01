@@ -21,14 +21,14 @@ public class KYCDocumentInfoModelToProofOfIdentityHyperwalletVerificationDocumen
 
 		//@formatter:off
 		final Map<String, String> uploadFiles = source.getIdentityDocuments()
-													  .stream()
-													  .collect(Collectors.toMap(kycDocumentModel -> source.getProofOfIdentity()
-																										  .name()
-																										  .toLowerCase() + '_' + kycDocumentModel
-															  .getDocumentSide()
-															  .name()
-															  .toLowerCase(), kycDocumentModel -> kycDocumentModel.getFile()
-																												  .getAbsolutePath()));
+				.stream()
+				.collect(Collectors.toMap(kycDocumentModel -> source.getProofOfIdentity()
+						.name()
+						.toLowerCase() + '_' + kycDocumentModel
+						.getDocumentSide()
+						.name()
+						.toLowerCase(), kycDocumentModel -> kycDocumentModel.getFile()
+						.getAbsolutePath()));
 		//@formatter:on
 
 		final HyperwalletVerificationDocument hyperwalletVerificationDocument = new HyperwalletVerificationDocument();

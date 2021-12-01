@@ -2,15 +2,13 @@ package com.paypal.kyc.service.documents.files.hyperwallet.impl;
 
 import com.google.gson.Gson;
 import com.hyperwallet.clientsdk.HyperwalletException;
-import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
-import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentModel;
 import com.paypal.kyc.service.HyperwalletSDKService;
-import com.paypal.kyc.strategies.documents.files.hyperwallet.businessstakeholder.impl.KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor;
+import com.paypal.kyc.strategies.documents.files.hyperwallet.businessstakeholder.impl.KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -39,10 +37,8 @@ public class HyperwalletBusinessStakeholderExtractServiceMockImpl
 
 	private static final String HYPERWALLET_PUSH_DOCUMENTS = "/hyperwallet/v4/{userToken}/{bstToken}/documents";
 
-	private static final String HYPERWALLET_NOTIFY_USER = "/hyperwallet/v4/{userToken}";
-
 	public HyperwalletBusinessStakeholderExtractServiceMockImpl(final HyperwalletSDKService hyperwalletSDKService,
-			final KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory,
+			final KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyFactory,
 			final MailNotificationUtil kycMailNotificationUtil, @Value("${mockserver.url}") final String mockServerUrl,
 			final RestTemplate restTemplate) {
 		super(hyperwalletSDKService,
@@ -89,78 +85,17 @@ public class HyperwalletBusinessStakeholderExtractServiceMockImpl
 
 			return kycDocumentBusinessStakeHolderInfoModel;
 		}
-
-	}
-
-	@Override
-	public List<KYCDocumentBusinessStakeHolderInfoModel> notifyAllDocumentsSentForBstk(
-			final List<KYCDocumentBusinessStakeHolderInfoModel> documentsTriedToBeSent) {
-		//@formatter:off
-        final Map<String, List<KYCDocumentBusinessStakeHolderInfoModel>> bstkGroupedByClientId = documentsTriedToBeSent
-                .stream()
-                .collect(Collectors.groupingBy(KYCDocumentInfoModel::getUserToken));
-        //@formatter:on
-
-		//@formatter:off
-        final Map<String, List<KYCDocumentBusinessStakeHolderInfoModel>> userWithBstkToBeNotified = bstkGroupedByClientId.entrySet().stream()
-                .filter(entry -> entry.getValue().stream()
-                        .allMatch(KYCDocumentBusinessStakeHolderInfoModel::isSentToHyperwallet))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        //@formatter:on
-
-		//@formatter:off
-        return userWithBstkToBeNotified.entrySet()
-                .stream()
-                .map(this::notifyBstk)
-                .flatMap(Collection::stream)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        //@formatter:on
-
-	}
-
-	@Override
-	protected List<KYCDocumentBusinessStakeHolderInfoModel> notifyBstk(
-			final Map.Entry<String, List<KYCDocumentBusinessStakeHolderInfoModel>> entry) {
-		final String token = entry.getKey();
-		final HyperwalletUser user = new HyperwalletUser();
-		user.setToken(token);
-		user.setBusinessStakeholderVerificationStatus(
-				HyperwalletUser.BusinessStakeholderVerificationStatus.READY_FOR_REVIEW);
-
-		final String postURL = HYPERWALLET_NOTIFY_USER.replace("{userToken}", token);
-		try {
-			Gson gsonConverter = new Gson();
-			restTemplate.put(getMockServerUrl() + postURL, gsonConverter.toJson(user), Object.class);
-			log.info("Pushed successfully to mockserver business stakeholder notification update shopId  [{}]",
-					entry.getValue().stream().map(KYCDocumentInfoModel::getClientUserId).findAny());
-
-			return entry.getValue();
-		}
-		catch (HyperwalletException e) {
-			final String clientUserId = Optional.ofNullable(entry.getValue().get(0))
-					.orElse(KYCDocumentBusinessStakeHolderInfoModel.builder().build()).getClientUserId();
-
-			log.error("Error notifying to Hyperwallet that all documents were sent: [{}]",
-					HyperwalletLoggingErrorsUtil.stringify(e));
-			getKycMailNotificationUtil().sendPlainTextEmail("Issue in Hyperwallet status notification", String.format(
-					"There was an error notifying Hyperwallet all documents were sent for shop Id [%s], so Hyperwallet will not be notified about this new situation%n%s",
-					clientUserId, HyperwalletLoggingErrorsUtil.stringify(e)));
-			return entry.getValue();
-		}
 	}
 
 	private boolean checkFailingFiles(final List<HyperwalletVerificationDocument> originalFiles) {
 		//@formatter:off
-        return Optional.ofNullable(originalFiles).orElse(List.of()).stream()
-                .map(HyperwalletVerificationDocument::getUploadFiles)
-                .filter(Objects::nonNull)
-                .map(Map::values)
-                .flatMap(Collection::stream)
-                .anyMatch(fileName -> fileName.contains(FAILING_FILES));
-
-
-        //@formatter:on
+		return Optional.ofNullable(originalFiles).orElse(List.of()).stream()
+				.map(HyperwalletVerificationDocument::getUploadFiles)
+				.filter(Objects::nonNull)
+				.map(Map::values)
+				.flatMap(Collection::stream)
+				.anyMatch(fileName -> fileName.contains(FAILING_FILES));
+		//@formatter:on
 	}
 
 	protected String getMockServerUrl() {

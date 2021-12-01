@@ -35,13 +35,12 @@ class PaymentSenderTest {
 	private HyperwalletWebhookNotification hyperwalletWebhookNotificationMock;
 
 	@Test
-	void execute_shouldPublishEvent_andReturnNull() {
+	void execute_shouldPublishEvent() {
 		doReturn(paymentEventMock).when(testObj).getEvent(hyperwalletWebhookNotificationMock);
 
-		final Void result = testObj.execute(hyperwalletWebhookNotificationMock);
+		testObj.execute(hyperwalletWebhookNotificationMock);
 
 		verify(applicationEventPublisherMock).publishEvent(paymentEventMock);
-		assertThat(result).isNull();
 	}
 
 	@Test

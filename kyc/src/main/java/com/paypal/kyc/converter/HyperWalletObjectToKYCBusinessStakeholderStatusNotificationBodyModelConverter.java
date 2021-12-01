@@ -31,16 +31,16 @@ public class HyperWalletObjectToKYCBusinessStakeholderStatusNotificationBodyMode
 
 			//@formatter:off
 			final KYCBusinessStakeholderStatusNotificationBodyModel.KYCBusinessStakeholderStatusNotificationBodyModelBuilder builder
-							= KYCBusinessStakeholderStatusNotificationBodyModel.builder();
+					= KYCBusinessStakeholderStatusNotificationBodyModel.builder();
 
 			Optional.ofNullable((Boolean) notificationDetails.get("isDirector")).ifPresent(builder::isDirector);
 			Optional.ofNullable((Boolean) notificationDetails.get("isBusinessContact")).ifPresent(builder::isBusinessContact);
 			Optional.ofNullable((String) notificationDetails.get("verificationStatus"))
-							.map(verificationStatus -> EnumUtils.getEnum(HyperwalletUser.VerificationStatus.class, verificationStatus))
-							.ifPresent(builder::verificationStatus);
+					.map(verificationStatus -> EnumUtils.getEnum(HyperwalletUser.VerificationStatus.class, verificationStatus))
+					.ifPresent(builder::verificationStatus);
 			Optional.ofNullable((String) notificationDetails.get("profileType"))
-							.map(profileType -> EnumUtils.getEnum(HyperwalletUser.ProfileType.class, profileType))
-							.ifPresent(builder::profileType);
+					.map(profileType -> EnumUtils.getEnum(HyperwalletUser.ProfileType.class, profileType))
+					.ifPresent(builder::profileType);
 			Optional.ofNullable((String) notificationDetails.get("token")).ifPresent(builder::token);
 			Optional.ofNullable((String) notificationDetails.get("userToken")).ifPresent(builder::userToken);
 			Optional.ofNullable(source.getType()).ifPresent(builder::hyperwalletWebhookNotificationType);

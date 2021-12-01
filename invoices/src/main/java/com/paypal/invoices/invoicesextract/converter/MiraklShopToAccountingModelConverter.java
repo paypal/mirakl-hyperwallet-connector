@@ -3,7 +3,6 @@ package com.paypal.invoices.invoicesextract.converter;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.paypal.infrastructure.converter.Converter;
-import com.paypal.invoices.infraestructure.configuration.InvoicesHyperwalletApiConfig;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 import org.springframework.lang.NonNull;
@@ -16,12 +15,6 @@ import java.util.List;
  */
 @Service
 public class MiraklShopToAccountingModelConverter implements Converter<MiraklShop, AccountingDocumentModel> {
-
-	protected final InvoicesHyperwalletApiConfig invoicesHyperwalletApiConfig;
-
-	public MiraklShopToAccountingModelConverter(final InvoicesHyperwalletApiConfig invoicesHyperwalletApiConfig) {
-		this.invoicesHyperwalletApiConfig = invoicesHyperwalletApiConfig;
-	}
 
 	/**
 	 * {@inheritDoc}

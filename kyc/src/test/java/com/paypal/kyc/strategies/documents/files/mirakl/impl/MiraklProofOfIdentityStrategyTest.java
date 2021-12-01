@@ -43,36 +43,32 @@ class MiraklProofOfIdentityStrategyTest {
 		testObj = new MiraklProofOfIdentityStrategy(miraklMarketplacePlatformOperatorApiClientMock);
 
 		//@formatter:off
-        kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
-                .proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-                        KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD, "PASSPORT")))
-                .build();
-        //@formatter:on
+		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
+				.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD, "PASSPORT")))
+				.build();
+		//@formatter:on
 	}
 
 	@Test
 	void isApplicable_shouldReturnTrueWhenIsProofOfIdentityAndObjectReceivedAsParameterIsKYCDocumentSellerInfoModel() {
-
 		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModel);
 
 		assertThat(result).isTrue();
-
 	}
 
 	@Test
 	void isApplicable_shouldReturnFalseWhenIsNotProofOfIdentityAndObjectReceivedAsParameterIsKYCDocumentSellerInfoModel() {
-
 		//@formatter:off
-        kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
-                .proofOfAddress(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-                        KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_ADDRESS_FIELD, "TAX_RETURN")))
-                .build();
-        //@formatter:on
+		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
+				.proofOfAddress(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_ADDRESS_FIELD, "TAX_RETURN")))
+				.build();
+		//@formatter:on
 
 		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModel);
 
 		assertThat(result).isFalse();
-
 	}
 
 	@Test
@@ -86,14 +82,12 @@ class MiraklProofOfIdentityStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnFalseWhenIsProofOfBusinessAndObjectReceivedAsParameterIsNotKYCDocumentSellerInfoModel() {
-
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
 				.builder().build();
 
 		final boolean result = testObj.isApplicable(kycDocumentBusinessStakeHolderInfoModel);
 
 		assertThat(result).isFalse();
-
 	}
 
 	@Test

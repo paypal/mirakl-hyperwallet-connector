@@ -7,8 +7,8 @@ import com.paypal.infrastructure.util.TimeMachine;
 import com.paypal.kyc.jobs.DocumentsExtractJob;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.quartz.SchedulerException;
 

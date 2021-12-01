@@ -33,7 +33,6 @@ class KYCHyperwalletApiConfigTest {
 		testObj.loadKYCTokenMapConfiguration();
 
 		verify(testObj).callSuperLoad(PREFIX);
-
 	}
 
 	@Test
@@ -47,7 +46,6 @@ class KYCHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenBothAreEquals() {
-
 		final KYCHyperwalletApiConfig kycApiConfigOne = createKycApiConfig();
 		final KYCHyperwalletApiConfig kycApiConfigTwo = createKycApiConfig();
 
@@ -58,7 +56,6 @@ class KYCHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenBothAreNotEquals() {
-
 		final KYCHyperwalletApiConfig kycApiConfigOne = createKycApiConfig();
 		final KYCHyperwalletApiConfig kycApiConfigTwo = createAnotherKycApiConfig();
 
@@ -69,7 +66,6 @@ class KYCHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenSameObjectIsCompared() {
-
 		final KYCHyperwalletApiConfig kycApiConfigOne = createKycApiConfig();
 
 		final boolean result = kycApiConfigOne.equals(kycApiConfigOne);
@@ -79,7 +75,6 @@ class KYCHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenComparedWithAnotherInstanceObject() {
-
 		final KYCHyperwalletApiConfig kycApiConfigOne = createKycApiConfig();
 
 		final Object o = new Object();

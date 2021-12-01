@@ -8,13 +8,12 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Class that handles the error on payment notifications
  */
 @Service
-public class FailurePaymentNotificationStrategy implements Strategy<PaymentNotificationBodyModel, Optional<Void>> {
+public class FailurePaymentNotificationStrategy implements Strategy<PaymentNotificationBodyModel, Void> {
 
 	@Resource
 	private PaymentNotificationConfig paymentNotificationConfig;
@@ -31,13 +30,13 @@ public class FailurePaymentNotificationStrategy implements Strategy<PaymentNotif
 	 * @return the converted object of type {@link Void}
 	 */
 	@Override
-	public Optional<Void> execute(final PaymentNotificationBodyModel paymentNotificationBodyModel) {
+	public Void execute(final PaymentNotificationBodyModel paymentNotificationBodyModel) {
 		mailNotificationUtil.sendPlainTextEmail(
 				String.format("Payment Issue - %s", paymentNotificationBodyModel.getClientPaymentId()),
 				String.format(
 						"There was an issue with payment of %s invoice. The payment status is %s. Please login to Hyperwallet to view an resolve the payment issue.",
 						paymentNotificationBodyModel.getClientPaymentId(), paymentNotificationBodyModel.getStatus()));
-		return Optional.empty();
+		return null;
 	}
 
 	/**

@@ -23,7 +23,7 @@ class AbstractSellerModelToHyperwalletBankAccountConverterTest {
 
 	private static final String SECOND_NAME = "Doe";
 
-	private static final String ADDRES_LINE_ONE = "Elmo Street";
+	private static final String ADDRESS_LINE_ONE = "Elmo Street";
 
 	private static final String ADDRESS_LINE_TWO = "Door 1";
 
@@ -55,7 +55,7 @@ class AbstractSellerModelToHyperwalletBankAccountConverterTest {
 	@Test
 	void convert_shouldAddIndividualAttributes_whenIndividualModelIsReceived() {
 		when(sellerModelMock.getBankAccountDetails()).thenReturn(IBANBankAccountModelMock);
-		when(IBANBankAccountModelMock.getAddressLine1()).thenReturn(ADDRES_LINE_ONE);
+		when(IBANBankAccountModelMock.getAddressLine1()).thenReturn(ADDRESS_LINE_ONE);
 		when(IBANBankAccountModelMock.getAddressLine2()).thenReturn(ADDRESS_LINE_TWO);
 		when(IBANBankAccountModelMock.getBankAccountNumber()).thenReturn(IBAN_ACCOUNT);
 		when(IBANBankAccountModelMock.getTransferMethodCountry()).thenReturn(COUNTRY);
@@ -71,7 +71,7 @@ class AbstractSellerModelToHyperwalletBankAccountConverterTest {
 
 		final HyperwalletBankAccount result = testObj.execute(sellerModelMock);
 
-		assertThat(result.getAddressLine1()).isEqualTo(ADDRES_LINE_ONE);
+		assertThat(result.getAddressLine1()).isEqualTo(ADDRESS_LINE_ONE);
 		assertThat(result.getAddressLine2()).isEqualTo(ADDRESS_LINE_TWO);
 		assertThat(result.getBankAccountId()).isEqualTo(IBAN_ACCOUNT);
 		assertThat(result.getTransferMethodCountry()).isEqualTo(COUNTRY);
@@ -89,7 +89,7 @@ class AbstractSellerModelToHyperwalletBankAccountConverterTest {
 	@Test
 	void convert_shouldAddProfessionalAttributes_whenProfessionalModelIsReceived() {
 		when(sellerModelMock.getBankAccountDetails()).thenReturn(IBANBankAccountModelMock);
-		when(IBANBankAccountModelMock.getAddressLine1()).thenReturn(ADDRES_LINE_ONE);
+		when(IBANBankAccountModelMock.getAddressLine1()).thenReturn(ADDRESS_LINE_ONE);
 		when(IBANBankAccountModelMock.getAddressLine2()).thenReturn(ADDRESS_LINE_TWO);
 		when(IBANBankAccountModelMock.getBankAccountNumber()).thenReturn(IBAN_ACCOUNT);
 		when(IBANBankAccountModelMock.getTransferMethodCountry()).thenReturn(COUNTRY);
@@ -104,7 +104,7 @@ class AbstractSellerModelToHyperwalletBankAccountConverterTest {
 
 		final HyperwalletBankAccount result = testObj.execute(sellerModelMock);
 
-		assertThat(result.getAddressLine1()).isEqualTo(ADDRES_LINE_ONE);
+		assertThat(result.getAddressLine1()).isEqualTo(ADDRESS_LINE_ONE);
 		assertThat(result.getAddressLine2()).isEqualTo(ADDRESS_LINE_TWO);
 		assertThat(result.getBankAccountId()).isEqualTo(IBAN_ACCOUNT);
 		assertThat(result.getTransferMethodCountry()).isEqualTo(COUNTRY);
@@ -131,7 +131,7 @@ class AbstractSellerModelToHyperwalletBankAccountConverterTest {
 	void execute_shouldReturnNull_whenNullPaymentInformationIsReceived() {
 		when(sellerModelMock.getBankAccountDetails()).thenReturn(null);
 
-		final var result = testObj.execute(sellerModelMock);
+		final HyperwalletBankAccount result = testObj.execute(sellerModelMock);
 
 		assertThat(result).isNull();
 	}

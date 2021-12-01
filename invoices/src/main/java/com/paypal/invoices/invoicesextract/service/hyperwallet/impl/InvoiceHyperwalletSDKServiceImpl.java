@@ -26,10 +26,8 @@ public class InvoiceHyperwalletSDKServiceImpl implements HyperwalletSDKService {
 	 */
 	@Override
 	public Hyperwallet getHyperwalletInstanceWithProgramToken(final String programToken) {
-		return new Hyperwallet(this.invoicesHyperwalletApiConfig.getUsername(),
-				this.invoicesHyperwalletApiConfig.getPassword(), programToken,
-				this.invoicesHyperwalletApiConfig.getServer(), null);
-
+		return new Hyperwallet(invoicesHyperwalletApiConfig.getUsername(), invoicesHyperwalletApiConfig.getPassword(),
+				programToken, invoicesHyperwalletApiConfig.getServer(), null);
 	}
 
 	/**
@@ -39,9 +37,8 @@ public class InvoiceHyperwalletSDKServiceImpl implements HyperwalletSDKService {
 	public Hyperwallet getHyperwalletInstanceByHyperwalletProgram(final String hyperwalletProgram) {
 		final String programUserToken = getProgramTokenByHyperwalletProgram(hyperwalletProgram);
 
-		return new Hyperwallet(this.invoicesHyperwalletApiConfig.getUsername(),
-				this.invoicesHyperwalletApiConfig.getPassword(), programUserToken,
-				this.invoicesHyperwalletApiConfig.getServer(), null);
+		return new Hyperwallet(invoicesHyperwalletApiConfig.getUsername(), invoicesHyperwalletApiConfig.getPassword(),
+				programUserToken, invoicesHyperwalletApiConfig.getServer(), null);
 	}
 
 	/**
@@ -51,10 +48,10 @@ public class InvoiceHyperwalletSDKServiceImpl implements HyperwalletSDKService {
 	@Override
 	public String getProgramTokenByHyperwalletProgram(final String hyperwalletProgram) {
 		//@formatter:off
-		return Optional.ofNullable(this.invoicesHyperwalletApiConfig.getPaymentStoreTokens())
-                .map(tokens -> tokens.get(hyperwalletProgram))
-                .orElse(null);
-        //@formatter:on
+		return Optional.ofNullable(invoicesHyperwalletApiConfig.getPaymentStoreTokens())
+				.map(tokens -> tokens.get(hyperwalletProgram))
+				.orElse(null);
+		//@formatter:on
 	}
 
 }

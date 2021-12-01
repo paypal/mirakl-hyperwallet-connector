@@ -75,8 +75,8 @@ class MultipleAbstractStrategyExecutorTest {
 
 		testObj.execute(sourceMock);
 
-		verify(strategyOneMock, times(0)).execute(sourceMock);
-		verify(strategyTwoMock, times(0)).execute(sourceMock);
+		verify(strategyOneMock, never()).execute(sourceMock);
+		verify(strategyTwoMock, never()).execute(sourceMock);
 	}
 
 	private static class MyMultipleAbstractStrategyExecutor extends MultipleAbstractStrategyExecutor<Object, String> {

@@ -27,15 +27,15 @@ public class MapToBraintreeTransactionLineConverter extends AbstractMapToBraintr
 			return null;
 		}
 		//@formatter:off
-        return HmcBraintreeTransactionLine.builder()
-				.paymentTransactionId((Optional.ofNullable((String)source.get("legacyId")).orElse(StringUtils.EMPTY)))
-                .orderId(braintreeNodeGraphQLModel.getOrderId())
-                .amount(braintreeNodeGraphQLModel.getAmount().getValue())
-                .currencyIsoCode(braintreeNodeGraphQLModel.getAmount().getCurrencyCode())
-                .paymentTransactionTime(DateUtil.convertToLocalDateTime(braintreeNodeGraphQLModel.getCreatedAt()))
-                .transactionType(BraintreeTransactionTypeEnum.OPERATOR_ORDER_AMOUNT.name())
-                .build();
-        //@formatter:on
+		return HmcBraintreeTransactionLine.builder()
+				.paymentTransactionId((Optional.ofNullable((String) source.get("legacyId")).orElse(StringUtils.EMPTY)))
+				.orderId(braintreeNodeGraphQLModel.getOrderId())
+				.amount(braintreeNodeGraphQLModel.getAmount().getValue())
+				.currencyIsoCode(braintreeNodeGraphQLModel.getAmount().getCurrencyCode())
+				.paymentTransactionTime(DateUtil.convertToLocalDateTime(braintreeNodeGraphQLModel.getCreatedAt()))
+				.transactionType(BraintreeTransactionTypeEnum.OPERATOR_ORDER_AMOUNT.name())
+				.build();
+		//@formatter:on
 	}
 
 }

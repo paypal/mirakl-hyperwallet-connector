@@ -16,18 +16,18 @@ public class MiraklShopToKYCDocumentSellerInfoModelConverter
 	@Override
 	public KYCDocumentSellerInfoModel convert(@NonNull final MiraklShop source) {
 		//@formatter:off
-        return KYCDocumentSellerInfoModel.builder()
-                .clientUserId(source.getId())
-                .professional(source.isProfessional())
-                .userToken(source.getAdditionalFieldValues())
-                .requiresKYC(source.getAdditionalFieldValues())
-                .proofOfAddress(source.getAdditionalFieldValues())
-                .proofOfIdentity(source.getAdditionalFieldValues())
-                .proofOfBusiness(source.getAdditionalFieldValues())
-                .countryIsoCode(source.getAdditionalFieldValues())
+		return KYCDocumentSellerInfoModel.builder()
+				.clientUserId(source.getId())
+				.professional(source.isProfessional())
+				.userToken(source.getAdditionalFieldValues())
+				.requiresKYC(source.getAdditionalFieldValues())
+				.proofOfAddress(source.getAdditionalFieldValues())
+				.proofOfIdentity(source.getAdditionalFieldValues())
+				.proofOfBusiness(source.getAdditionalFieldValues())
+				.countryIsoCode(source.getAdditionalFieldValues())
 				.hyperwalletProgram(source.getAdditionalFieldValues())
-                .build();
-        //@formatter:on
+				.build();
+		//@formatter:on
 	}
 
 }

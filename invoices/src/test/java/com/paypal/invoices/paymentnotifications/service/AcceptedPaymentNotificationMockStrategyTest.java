@@ -39,7 +39,7 @@ class AcceptedPaymentNotificationMockStrategyTest {
 		when(testObj.getMockServerUrl()).thenReturn(MOCK_SERVER_URL);
 		when(paymentNotificationBodyModelMock.getClientPaymentId()).thenReturn(PAYMENT_ID);
 		doReturn(miraklConfirmAccountingDocumentPaymentRequestMock).when(testObj)
-				.createPaymentRequest(paymentNotificationBodyModelMock);
+				.createPaymentConfirmationRequest(paymentNotificationBodyModelMock);
 
 		testObj.execute(paymentNotificationBodyModelMock);
 

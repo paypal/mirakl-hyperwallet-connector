@@ -32,20 +32,19 @@ class InvoicesExtractJobMockControllerTest {
 	private JobService jobService;
 
 	@Mock
-	private MiraklInvoiceMockDTO miraklInvoiceMockDTOOneMock, miraklInvoiceMockDTOTwoMock,
-			miraklCreditNoteMockDTOOneMock, miraklCreditNoteMockDTOTwoMock;
+	private MiraklInvoicesMockListDTO miraklInvoicesMockListDTOMock;
 
 	@Mock
-	private MiraklInvoicesMockListDTO miraklInvoicesMockListDTOMock, miraklCreditNotesMockListDTOMock;
+	private InvoiceModel invoiceModelModelOneMock, invoiceModelModelTwoMock;
 
 	@Mock
 	private TestingInvoicesSessionDataHelper testingInvoicesSessionDataHelperMock;
 
 	@Mock
-	private MiraklInvoiceDTOToInvoiceModelConverter miraklInvoiceDTOToInvoiceModelConverterMock;
+	private MiraklInvoiceMockDTO miraklInvoiceMockDTOOneMock, miraklInvoiceMockDTOTwoMock;
 
 	@Mock
-	private InvoiceModel invoiceModelModelOneMock, invoiceModelModelTwoMock;
+	private MiraklInvoiceDTOToInvoiceModelConverter miraklInvoiceDTOToInvoiceModelConverterMock;
 
 	@Test
 	void runJob_shouldCallCreateAndRunSingleExecutionJobAndTestingInvoiceSessionDataWithTheTransformedValues()

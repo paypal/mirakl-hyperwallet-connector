@@ -29,7 +29,7 @@ class AbstractHyperwalletRetryAPIStrategyTest {
 	@Test
 	void includeIntoRetryProcess_shouldSaveShopIdWhenTrueIsReceivedAsParameter() {
 		when(failedEntityInformationService.findByShopId(SHOP_ID)).thenReturn(Collections.emptyList());
-		testObj.executeRetryProcess(SHOP_ID, Boolean.TRUE);
+		testObj.executeRetryProcess(SHOP_ID, true);
 
 		verify(failedEntityInformationService).save(SHOP_ID);
 	}
@@ -38,15 +38,14 @@ class AbstractHyperwalletRetryAPIStrategyTest {
 	void includeIntoRetryProcess_shouldNotSaveShopIdWhenTrueIsReceivedAsParameterAndShopIdExistsInRetryProcess() {
 		when(failedEntityInformationService.findByShopId(SHOP_ID))
 				.thenReturn(List.of(abstractFailedShopInformationMock));
-		testObj.executeRetryProcess(SHOP_ID, Boolean.TRUE);
+		testObj.executeRetryProcess(SHOP_ID, true);
 
 		verify(failedEntityInformationService, never()).save(SHOP_ID);
 	}
 
 	@Test
 	void includeIntoRetryProcess_shouldDeleteShopIdWhenFalseIsReceivedAsParameter() {
-
-		testObj.executeRetryProcess(SHOP_ID, Boolean.FALSE);
+		testObj.executeRetryProcess(SHOP_ID, false);
 
 		verify(failedEntityInformationService).deleteByShopId(SHOP_ID);
 	}

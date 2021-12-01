@@ -37,7 +37,7 @@ class HyperWalletUpdateSellerServiceStrategyTest {
 	private static final String PROGRAM_TOKEN_VALUE = "programTokenValue";
 
 	@Test
-	void callMiraklAPI_shouldUpdateUser() {
+	void createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl_shouldUpdateUser() {
 		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN_VALUE))
 				.thenReturn(hyperwalletMock);
 		when(hyperWalletUserRequestMock.getProgramToken()).thenReturn(PROGRAM_TOKEN_VALUE);

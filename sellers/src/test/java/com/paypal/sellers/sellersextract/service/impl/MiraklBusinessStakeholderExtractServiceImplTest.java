@@ -7,7 +7,7 @@ import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
-import com.paypal.sellers.infrastructure.utils.MiraklLoggingErrorsUtil;
+import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -76,20 +77,19 @@ class MiraklBusinessStakeholderExtractServiceImplTest {
 		assertThat(shopToUpdate).hasFieldOrPropertyWithValue("shopId", 12345L);
 		assertThat(shopToUpdate.getAdditionalFieldValues()).hasSize(1);
 		final MiraklRequestAdditionalFieldValue additionalFieldValue = shopToUpdate.getAdditionalFieldValues().get(0);
-		assertThat(additionalFieldValue)
-				.isInstanceOf(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class);
-		final var castedAdditionalFieldValue = (MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue) additionalFieldValue;
+		assertThat(additionalFieldValue).isInstanceOf(MiraklSimpleRequestAdditionalFieldValue.class);
+		final MiraklSimpleRequestAdditionalFieldValue castedAdditionalFieldValue = (MiraklSimpleRequestAdditionalFieldValue) additionalFieldValue;
 		assertThat(castedAdditionalFieldValue.getCode()).isEqualTo("hw-stakeholder-token-1");
 		assertThat(castedAdditionalFieldValue.getValue()).isEqualTo(BUSINESS_STAKE_HOLDER_TOKEN);
-
 	}
 
 	@Test
 	void updateUserToken_shouldSendEmailNotification_whenMiraklExceptionIsThrown() {
 		when(sellerModelMock.getClientUserId()).thenReturn("12345");
 		when(sellerModelMock.getBusinessStakeHolderDetails()).thenReturn(List.of(businessStakeHolderModelMock));
-		final var miraklApliException = new MiraklApiException(new MiraklErrorResponseBean(1, "Something went wrong"));
-		doThrow(miraklApliException).when(miraklMarketplacePlatformOperatorApiClientMock)
+		final MiraklApiException miraklApiException = new MiraklApiException(
+				new MiraklErrorResponseBean(1, "Something went wrong"));
+		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
 				.updateShops(any(MiraklUpdateShopsRequest.class));
 
 		testObj.updateBusinessStakeholderToken(sellerModelMock.getClientUserId(),
@@ -97,7 +97,7 @@ class MiraklBusinessStakeholderExtractServiceImplTest {
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail("Issue detected getting shop information in Mirakl",
 				String.format(ERROR_MESSAGE_PREFIX + "Something went wrong getting information of shop [12345]%n%s",
-						MiraklLoggingErrorsUtil.stringify(miraklApliException)));
+						MiraklLoggingErrorsUtil.stringify(miraklApiException)));
 	}
 
 	@Test

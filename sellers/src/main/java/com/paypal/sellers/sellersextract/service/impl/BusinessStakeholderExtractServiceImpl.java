@@ -4,7 +4,7 @@ import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.BusinessStakeholderExtractService;
 import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
-import com.paypal.sellers.sellersextract.service.strategies.HyperWalletBusinessStakeHolderServiceStrategyExecutorExecutor;
+import com.paypal.sellers.sellersextract.service.strategies.HyperWalletBusinessStakeHolderServiceExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class BusinessStakeholderExtractServiceImpl implements BusinessStakeholderExtractService {
 
-	private final HyperWalletBusinessStakeHolderServiceStrategyExecutorExecutor hyperWalletBusinessStakeHolderServiceStrategyExecutor;
+	private final HyperWalletBusinessStakeHolderServiceExecutor hyperWalletBusinessStakeHolderServiceExecutor;
 
 	private final MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractService;
 
@@ -29,9 +29,9 @@ public class BusinessStakeholderExtractServiceImpl implements BusinessStakeholde
 			+ "information:\n";
 
 	public BusinessStakeholderExtractServiceImpl(
-			final HyperWalletBusinessStakeHolderServiceStrategyExecutorExecutor hyperWalletBusinessStakeHolderServiceStrategyExecutor,
+			final HyperWalletBusinessStakeHolderServiceExecutor hyperWalletBusinessStakeHolderServiceExecutor,
 			final MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractService) {
-		this.hyperWalletBusinessStakeHolderServiceStrategyExecutor = hyperWalletBusinessStakeHolderServiceStrategyExecutor;
+		this.hyperWalletBusinessStakeHolderServiceExecutor = hyperWalletBusinessStakeHolderServiceExecutor;
 		this.miraklBusinessStakeholderExtractService = miraklBusinessStakeholderExtractService;
 	}
 
@@ -43,7 +43,7 @@ public class BusinessStakeholderExtractServiceImpl implements BusinessStakeholde
 				.map(SellerModel::getBusinessStakeHolderDetails)
 				.flatMap(Collection::stream)
 				.filter(Predicate.not(BusinessStakeHolderModel::isEmpty))
-				.map(hyperWalletBusinessStakeHolderServiceStrategyExecutor::execute)
+				.map(hyperWalletBusinessStakeHolderServiceExecutor::execute)
 				.filter(Objects::nonNull)
 				.filter(BusinessStakeHolderModel::isJustCreated)
 				.collect(Collectors.groupingBy(BusinessStakeHolderModel::getClientUserId))

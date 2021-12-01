@@ -37,8 +37,7 @@ class TestingMiraklSellersExtractServiceImplTest {
 
 	@Test
 	void extractIndividuals_shouldReturnAnEmptyList() {
-		final List<SellerModel> superReturnResult = List.of(this.individualSellerModelOneMock,
-				individualSellerModelTwoMock);
+		final List<SellerModel> superReturnResult = List.of(individualSellerModelOneMock, individualSellerModelTwoMock);
 		doReturn(superReturnResult).when(testObj).callSuperExtractIndividuals(dateMock);
 
 		when(sellersMiraklApiConfigMock.getTestingDelay()).thenReturn(0L);
@@ -50,7 +49,7 @@ class TestingMiraklSellersExtractServiceImplTest {
 
 	@Test
 	void extractProfessionals_shouldReturnAnEmptyList() {
-		final List<SellerModel> superReturnResult = List.of(this.professionalSellerModelOneMock,
+		final List<SellerModel> superReturnResult = List.of(professionalSellerModelOneMock,
 				professionalSellerModelTwoMock);
 		doReturn(superReturnResult).when(testObj).callSuperExtractProfessionals(dateMock);
 

@@ -26,11 +26,11 @@ public class DocumentsExtractJobConfig {
 	@Bean
 	public JobDetail documentsExtractJob() {
 		//@formatter:off
-        return JobBuilder.newJob(DocumentsExtractJob.class)
-                .withIdentity(JOB_NAME)
-                .storeDurably()
-                .build();
-        //@formatter:on
+		return JobBuilder.newJob(DocumentsExtractJob.class)
+				.withIdentity(JOB_NAME)
+				.storeDurably()
+				.build();
+		//@formatter:on
 	}
 
 	/**
@@ -43,12 +43,12 @@ public class DocumentsExtractJobConfig {
 	public Trigger documentsExtractJobTrigger(@Qualifier("documentsExtractJob") final JobDetail jobDetails,
 			@Value("${kyc.documentsextract.scheduling.cronexpression}") final String cronExpression) {
 		//@formatter:off
-        return TriggerBuilder.newTrigger()
-                .forJob(jobDetails)
-                .withIdentity(TRIGGER_SUFFIX + JOB_NAME)
-                .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
-                .build();
-        //@formatter:on
+		return TriggerBuilder.newTrigger()
+				.forJob(jobDetails)
+				.withIdentity(TRIGGER_SUFFIX + JOB_NAME)
+				.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
+				.build();
+		//@formatter:on
 	}
 
 }

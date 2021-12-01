@@ -6,7 +6,8 @@ import com.paypal.sellers.sellersextract.service.SellersExtractService;
 import javax.annotation.Resource;
 
 /**
- * Abstract class that holds {@link JobExecutionInformationRepository} and
+ * Abstract class that holds
+ * {@link com.paypal.infrastructure.repository.JobExecutionInformationRepository} and
  * {@link SellersExtractService} dependencies and helps with methods for extract sellers
  * job
  */

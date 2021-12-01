@@ -28,7 +28,7 @@ class MiraklShopToIndividualSellerModelConverterTest {
 		final SellerModel.SellerModelBuilder sellerModelBuilderStub = SellerModel.builder();
 		doReturn(sellerModelBuilderStub).when(testObj).getCommonFieldsBuilder(miraklShopMock);
 
-		final var result = testObj.execute(miraklShopMock);
+		final SellerModel result = testObj.execute(miraklShopMock);
 
 		verify(testObj).getCommonFieldsBuilder(miraklShopMock);
 		assertThat(result.getProfileType()).isEqualTo(SellerProfileType.INDIVIDUAL);
@@ -38,7 +38,7 @@ class MiraklShopToIndividualSellerModelConverterTest {
 	void isApplicable_shouldReturnTrueWhenMiraklShopIsNotProfessional() {
 		when(miraklShopMock.isProfessional()).thenReturn(false);
 
-		final var result = testObj.isApplicable(miraklShopMock);
+		final boolean result = testObj.isApplicable(miraklShopMock);
 
 		assertThat(result).isTrue();
 	}
@@ -47,7 +47,7 @@ class MiraklShopToIndividualSellerModelConverterTest {
 	void isApplicable_shouldReturnFalseWhenMiraklShopIsProfessional() {
 		when(miraklShopMock.isProfessional()).thenReturn(true);
 
-		final var result = testObj.isApplicable(miraklShopMock);
+		final boolean result = testObj.isApplicable(miraklShopMock);
 
 		assertThat(result).isFalse();
 	}

@@ -1,7 +1,6 @@
 package com.paypal.reports.reportsextract.service;
 
 import com.paypal.reports.reportsextract.model.HmcBraintreeRefundLine;
-import com.paypal.reports.reportsextract.model.HmcBraintreeTransactionLine;
 
 import java.util.Date;
 import java.util.List;

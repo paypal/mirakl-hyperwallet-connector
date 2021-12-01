@@ -69,7 +69,6 @@ class FailedSellersInformationServiceImplTest {
 
 	@Test
 	void delete_deleteShopIdReceivedAsParameter() {
-
 		testObj.deleteByShopId("shop1");
 
 		verify(failedSellersInformationRepositoryMock)

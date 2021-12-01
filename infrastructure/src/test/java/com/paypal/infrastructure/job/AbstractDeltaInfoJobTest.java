@@ -7,7 +7,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.quartz.*;
+import org.quartz.Job;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
 
 import java.util.Date;
 import java.util.Map;
@@ -91,7 +94,7 @@ class AbstractDeltaInfoJobTest {
 	private static class MyAbstractDeltaInfoJob extends AbstractDeltaInfoJob {
 
 		@Override
-		public void execute(final JobExecutionContext context) throws JobExecutionException {
+		public void execute(final JobExecutionContext context) {
 
 		}
 
@@ -100,7 +103,7 @@ class AbstractDeltaInfoJobTest {
 	protected static class MyJob implements Job {
 
 		@Override
-		public void execute(final JobExecutionContext context) throws JobExecutionException {
+		public void execute(final JobExecutionContext context) {
 
 		}
 

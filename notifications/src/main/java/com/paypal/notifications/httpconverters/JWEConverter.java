@@ -49,7 +49,7 @@ public class JWEConverter extends AbstractHttpMessageConverter<Object> {
 	}
 
 	@Override
-	protected Object readInternal(final Class<? extends Object> clazz, final HttpInputMessage inputMessage)
+	protected Object readInternal(final Class<?> clazz, final HttpInputMessage inputMessage)
 			throws IOException, HttpMessageNotReadableException {
 		return this.objectMapper.readValue(decrypt(inputMessage.getBody()), clazz);
 	}

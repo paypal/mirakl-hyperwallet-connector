@@ -41,7 +41,7 @@ class HyperWalletCreateSellerServiceStrategyTest {
 	private MiraklSellersExtractService miraklSellersExtractServiceMock;
 
 	@Test
-	void callMiraklAPI() {
+	void createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl_shouldCreateUserAndUpdateToken() {
 		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN_VALUE))
 				.thenReturn(hyperwalletMock);
 		when(hyperwalletMock.createUser(hyperwalletUserRequestMock)).thenReturn(hyperwalletUserResponseMock);

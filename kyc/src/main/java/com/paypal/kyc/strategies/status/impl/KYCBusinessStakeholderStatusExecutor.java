@@ -5,22 +5,21 @@ import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.kyc.model.KYCBusinessStakeholderStatusNotificationBodyModel;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class KYCBusinessStakeholderStatusExecutor
-		extends SingleAbstractStrategyExecutor<KYCBusinessStakeholderStatusNotificationBodyModel, Optional<Void>> {
+		extends SingleAbstractStrategyExecutor<KYCBusinessStakeholderStatusNotificationBodyModel, Void> {
 
-	private final Set<Strategy<KYCBusinessStakeholderStatusNotificationBodyModel, Optional<Void>>> strategies;
+	private final Set<Strategy<KYCBusinessStakeholderStatusNotificationBodyModel, Void>> strategies;
 
 	public KYCBusinessStakeholderStatusExecutor(
-			final Set<Strategy<KYCBusinessStakeholderStatusNotificationBodyModel, Optional<Void>>> strategies) {
+			final Set<Strategy<KYCBusinessStakeholderStatusNotificationBodyModel, Void>> strategies) {
 		this.strategies = strategies;
 	}
 
 	@Override
-	protected Set<Strategy<KYCBusinessStakeholderStatusNotificationBodyModel, Optional<Void>>> getStrategies() {
+	protected Set<Strategy<KYCBusinessStakeholderStatusNotificationBodyModel, Void>> getStrategies() {
 		return strategies;
 	}
 

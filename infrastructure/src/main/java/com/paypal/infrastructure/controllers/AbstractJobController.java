@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 
 /**
- * Abstract Job class which each job class must extends
+ * Abstract Job class which each job class must extend
  */
 public abstract class AbstractJobController {
 

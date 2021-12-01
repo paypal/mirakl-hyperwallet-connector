@@ -21,6 +21,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class JwkSetControllerTest {
 
+	private static final String FILENAME = "filename.txt";
+
 	@Spy
 	@InjectMocks
 	private JwkSetController testObj;
@@ -29,40 +31,38 @@ class JwkSetControllerTest {
 	private PublicKeysHyperwalletApiConfig publicKeysHyperwalletApiConfigMock;
 
 	@Mock
+	private Resource errorSourceMock;
+
+	@Mock
 	private ObjectMapper objectMapperMock;
 
 	@Mock
 	private InputStream publicKeysFromFileMock, errorMessageMock;
 
-	@Mock
-	private Resource errorSourceMock;
-
-	private static final String FILENAME = "filename.txt";
-
 	@BeforeEach
 	void setUp() {
-		this.testObj.errorResource = this.errorSourceMock;
+		testObj.errorResource = errorSourceMock;
 	}
 
 	@Test
 	void getPublicKeys_should() throws IOException {
-		doReturn(this.publicKeysFromFileMock).when(this.testObj).getPublicKeysFromFile();
+		doReturn(publicKeysFromFileMock).when(testObj).getPublicKeysFromFile();
 
-		this.testObj.getPublicKeys();
-		verify(this.objectMapperMock).readValue(this.publicKeysFromFileMock, JSONObject.class);
+		testObj.getPublicKeys();
 
+		verify(objectMapperMock).readValue(publicKeysFromFileMock, JSONObject.class);
 	}
 
 	@Test
 	void getPublicKeys_shouldSendMessageErrorWhenFileNotFound() throws IOException {
-		when(this.publicKeysHyperwalletApiConfigMock.getHmcPublicKeyLocation()).thenReturn(FILENAME);
+		when(publicKeysHyperwalletApiConfigMock.getHmcPublicKeyLocation()).thenReturn(FILENAME);
 		final FileNotFoundException fileNotFoundException = new FileNotFoundException("Something bad happened");
-		doThrow(fileNotFoundException).when(this.testObj).getPublicKeysFromFile();
-		when(this.errorSourceMock.getInputStream()).thenReturn(this.errorMessageMock);
+		doThrow(fileNotFoundException).when(testObj).getPublicKeysFromFile();
+		when(errorSourceMock.getInputStream()).thenReturn(errorMessageMock);
 
-		this.testObj.getPublicKeys();
-		verify(this.objectMapperMock).readValue(this.errorMessageMock, JSONObject.class);
+		testObj.getPublicKeys();
 
+		verify(objectMapperMock).readValue(errorMessageMock, JSONObject.class);
 	}
 
 }

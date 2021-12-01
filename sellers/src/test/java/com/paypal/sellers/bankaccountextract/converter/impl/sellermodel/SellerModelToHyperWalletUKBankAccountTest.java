@@ -6,8 +6,8 @@ import com.paypal.sellers.bankaccountextract.model.UKBankAccountModel;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -41,7 +41,7 @@ class SellerModelToHyperWalletUKBankAccountTest {
 		when(ukBankAccountModelMock.getBankAccountId()).thenReturn(SORT_CODE);
 		doReturn(hyperwalletBankAccount).when(testObj).callSuperConvert(sellerModelMock);
 
-		final var result = testObj.execute(sellerModelMock);
+		final HyperwalletBankAccount result = testObj.execute(sellerModelMock);
 
 		assertThat(result.getBankId()).isEqualTo(SORT_CODE);
 	}
@@ -50,7 +50,7 @@ class SellerModelToHyperWalletUKBankAccountTest {
 	void isApplicable_shouldReturnTrueWhenBankAccountDetailsIsUKBankAccountType() {
 		when(sellerModelMock.getBankAccountDetails()).thenReturn(ukBankAccountModelMock);
 
-		final var result = testObj.isApplicable(sellerModelMock);
+		final boolean result = testObj.isApplicable(sellerModelMock);
 
 		assertThat(result).isTrue();
 	}
@@ -59,7 +59,7 @@ class SellerModelToHyperWalletUKBankAccountTest {
 	void isApplicable_shouldReturnTrueWhenBankAccountDetailsIsDifferentFromUKBankAccountType() {
 		when(sellerModelMock.getBankAccountDetails()).thenReturn(abaBankAccountModelMock);
 
-		final var result = testObj.isApplicable(sellerModelMock);
+		final boolean result = testObj.isApplicable(sellerModelMock);
 
 		assertThat(result).isFalse();
 	}
@@ -68,7 +68,7 @@ class SellerModelToHyperWalletUKBankAccountTest {
 	void isApplicable_shouldReturnFalse_whenNullPaymentInformationIsReceived() {
 		when(sellerModelMock.getBankAccountDetails()).thenReturn(null);
 
-		final var result = testObj.isApplicable(sellerModelMock);
+		final boolean result = testObj.isApplicable(sellerModelMock);
 
 		assertThat(result).isFalse();
 	}

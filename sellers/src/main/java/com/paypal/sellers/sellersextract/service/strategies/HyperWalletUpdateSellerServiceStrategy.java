@@ -8,6 +8,7 @@ import com.paypal.sellers.entity.FailedSellersInformation;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.service.FailedEntityInformationService;
 import com.paypal.sellers.service.HyperwalletSDKService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -15,6 +16,7 @@ import java.util.Objects;
 /**
  * Strategy class that manages sellers update in hyperwallet
  */
+@Slf4j
 @Service
 public class HyperWalletUpdateSellerServiceStrategy extends AbstractHyperwalletSellerRetryApiStrategy {
 
@@ -31,7 +33,9 @@ public class HyperWalletUpdateSellerServiceStrategy extends AbstractHyperwalletS
 			final HyperwalletUser hyperwalletUser) {
 		final Hyperwallet hyperwallet = hyperwalletSDKService
 				.getHyperwalletInstanceByProgramToken(hyperwalletUser.getProgramToken());
-		return hyperwallet.updateUser(hyperwalletUser);
+		final HyperwalletUser updatedUser = hyperwallet.updateUser(hyperwalletUser);
+		log.info("Seller updated for seller with clientUserId [{}]", hyperwalletUser.getClientUserId());
+		return updatedUser;
 	}
 
 	/**

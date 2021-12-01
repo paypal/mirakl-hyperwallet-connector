@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 /**
- * Strategy Factory class that controls strategies to insert or update sellers information
- * into Hyperwallet
+ * Executor class that controls strategies to insert or update sellers information into
+ * Hyperwallet
  */
 @Slf4j
 @Service

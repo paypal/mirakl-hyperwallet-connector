@@ -72,7 +72,6 @@ class ReportsMiraklExtractServiceImplTest {
 
 	@Test
 	void getAllTransactions_shouldReturnHMCMiraklTransactionLinesCorrespondingWithTransactionLineLog() {
-
 		when(reportsMiraklApiClientMock.getTransactionLogs(miraklGetTransactionLogsRequest.capture()))
 				.thenReturn(transactionLogsMock);
 		when(transactionLogsMock.getTotalCount()).thenReturn(Long.valueOf(2));

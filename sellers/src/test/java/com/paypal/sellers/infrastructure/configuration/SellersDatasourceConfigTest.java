@@ -86,7 +86,6 @@ class SellersDatasourceConfigTest {
 		final PlatformTransactionManager result = testObj.sellersTransactionManager(sellersTransactionManagerMock);
 
 		assertThat(result).isNotNull().isInstanceOf(PlatformTransactionManager.class);
-
 	}
 
 }

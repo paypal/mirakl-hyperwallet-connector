@@ -1,8 +1,8 @@
-package com.paypal.kyc.strategies.documents.files.mirakl.impl;
+package com.paypal.sellers.sellersextract.converter.impl;
 
+import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.paypal.infrastructure.strategy.Strategy;
-import com.paypal.kyc.model.KYCDocumentInfoModel;
-import com.paypal.kyc.model.KYCDocumentModel;
+import com.paypal.sellers.sellersextract.model.SellerModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,32 +10,29 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-class MiraklKYCSelectionDocumentMultipleStrategyExecutorTest {
+class MiraklShopToSellerConverterExecutorTest {
 
 	@InjectMocks
-	private MiraklKYCSelectionDocumentMultipleStrategyExecutor testObj;
+	private MiraklShopToSellerConverterExecutor testObj;
 
 	@Mock
-	private Strategy<KYCDocumentInfoModel, List<KYCDocumentModel>> strategyMock;
+	private Strategy<MiraklShop, SellerModel> strategyMock;
 
 	@BeforeEach
 	void setUp() {
-		testObj = new MiraklKYCSelectionDocumentMultipleStrategyExecutor(Set.of(strategyMock));
+		testObj = new MiraklShopToSellerConverterExecutor(Set.of(strategyMock));
 	}
 
 	@Test
 	void getStrategies_shouldReturnConverterStrategyMock() {
-
-		final var result = testObj.getStrategies();
+		final Set<Strategy<MiraklShop, SellerModel>> result = testObj.getStrategies();
 
 		assertThat(result).containsExactly(strategyMock);
-
 	}
 
 }

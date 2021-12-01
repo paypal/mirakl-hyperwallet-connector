@@ -11,7 +11,7 @@ public enum KYCDocumentRejectedReasonEnum {
 													"Document is invalid and rejection details are noted on the account."), DOCUMENT_TYPE_NOT_VALID(
 															"Document type does not apply.");
 
-	private String reason;
+	private final String reason;
 
 	KYCDocumentRejectedReasonEnum(final String reason) {
 		this.reason = reason;

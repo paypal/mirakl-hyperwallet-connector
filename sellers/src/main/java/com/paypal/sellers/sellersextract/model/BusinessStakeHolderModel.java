@@ -94,37 +94,37 @@ public class BusinessStakeHolderModel {
 
 	public BusinessStakeHolderModelBuilder toBuilder() {
 		//@formatter:off
-        return BusinessStakeHolderModel.builder()
-                .stkId(stkId)
-                .userToken(userToken)
-                .clientUserId(clientUserId)
-                .token(token)
-                .businessContact(businessContact)
-                .director(director)
-                .ubo(ubo)
-                .smo(smo)
-                .firstName(firstName)
-                .middleName(middleName)
-                .lastName(lastName)
+		return BusinessStakeHolderModel.builder()
+				.stkId(stkId)
+				.userToken(userToken)
+				.clientUserId(clientUserId)
+				.token(token)
+				.businessContact(businessContact)
+				.director(director)
+				.ubo(ubo)
+				.smo(smo)
+				.firstName(firstName)
+				.middleName(middleName)
+				.lastName(lastName)
 				.timeZone(timeZone)
-                .dateOfBirth(dateOfBirth)
-                .countryOfBirth(countryOfBirth)
-                .countryOfNationality(countryOfNationality)
-                .gender(gender)
-                .phoneNumber(phoneNumber)
-                .mobileNumber(mobileNumber)
-                .email(email)
-                .governmentId(governmentId)
-                .governmentIdType(governmentIdType)
-                .driversLicenseId(driversLicenseId)
-                .addressLine1(addressLine1)
-                .addressLine2(addressLine2)
-                .city(city)
-                .stateProvince(stateProvince)
-                .country(country)
-                .postalCode(postalCode)
-                .hyperwalletProgram(hyperwalletProgram);
-        //@formatter:on
+				.dateOfBirth(dateOfBirth)
+				.countryOfBirth(countryOfBirth)
+				.countryOfNationality(countryOfNationality)
+				.gender(gender)
+				.phoneNumber(phoneNumber)
+				.mobileNumber(mobileNumber)
+				.email(email)
+				.governmentId(governmentId)
+				.governmentIdType(governmentIdType)
+				.driversLicenseId(driversLicenseId)
+				.addressLine1(addressLine1)
+				.addressLine2(addressLine2)
+				.city(city)
+				.stateProvince(stateProvince)
+				.country(country)
+				.postalCode(postalCode)
+				.hyperwalletProgram(hyperwalletProgram);
+		//@formatter:on
 	}
 
 	public boolean isEmpty() {
@@ -469,23 +469,23 @@ public class BusinessStakeHolderModel {
 		private Optional<String> getMiraklSingleValueListCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
 				final String customFieldCode) {
 			//@formatter:off
-            return fields.stream()
-                    .filter(field -> field.getCode().equals(customFieldCode))
-                    .filter(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::isInstance)
-                    .map(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::cast).findAny()
-                    .map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
-            //@formatter:on
+			return fields.stream()
+					.filter(field -> field.getCode().equals(customFieldCode))
+					.filter(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::isInstance)
+					.map(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::cast).findAny()
+					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+			//@formatter:on
 		}
 
 		private Optional<String> getMiraklStringCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
 				final String customFieldCode) {
 			//@formatter:off
-            return fields.stream().filter(field -> field.getCode().equals(customFieldCode))
-                    .filter(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::isInstance)
-                    .map(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::cast)
-                    .findAny()
-                    .map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
-            //@formatter:on
+			return fields.stream().filter(field -> field.getCode().equals(customFieldCode))
+					.filter(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::isInstance)
+					.map(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::cast)
+					.findAny()
+					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+			//@formatter:on
 		}
 
 		private Optional<String> getMiraklBooleanCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
@@ -677,9 +677,9 @@ public class BusinessStakeHolderModel {
 			return false;
 		}
 		//@formatter:off
-        final BusinessStakeHolderModel that = (BusinessStakeHolderModel) o;
-        return EqualsBuilder.reflectionEquals(this, that);
-        //@formatter:on
+		final BusinessStakeHolderModel that = (BusinessStakeHolderModel) o;
+		return EqualsBuilder.reflectionEquals(this, that);
+		//@formatter:on
 	}
 
 	@Override

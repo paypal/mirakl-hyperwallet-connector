@@ -6,7 +6,7 @@ import com.paypal.sellers.infrastructure.utils.CountriesUtil;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -57,8 +57,6 @@ public class SellerModel {
 
 	private final String driversLicenseId;
 
-	private final String employerId;
-
 	private final String addressLine1;
 
 	private final String addressLine2;
@@ -104,42 +102,41 @@ public class SellerModel {
 	public SellerModelBuilder toBuilder() {
 		//@formatter:off
 		return SellerModel.builder()
-						.clientUserId(clientUserId)
-						.firstName(firstName)
-						.lastName(lastName)
-						.timeZone(timeZone)
-						.dateOfBirth(dateOfBirth)
-						.countryOfBirth(countryOfBirth)
-						.countryOfNationality(countryOfNationality)
-						.gender(gender)
-						.phoneNumber(phoneNumber)
-						.mobilePhone(mobilePhone)
-						.email(email)
-						.governmentId(governmentId)
-						.governmentIdType(governmentIdType)
-						.passportId(passportId)
-						.driversLicenseId(driversLicenseId)
-						.employerId(employerId)
-						.addressLine1(addressLine1)
-						.addressLine2(addressLine2)
-						.city(city)
-						.stateProvince(stateProvince)
-						.internalBusinessRegistrationStateProvince(businessRegistrationStateProvince)
-						.internalCountry(country)
-						.internalCompanyRegistrationCountry(companyRegistrationCountry)
-						.postalCode(postalCode)
-						.language(language)
-						.programToken(programToken)
-						.businessType(businessType)
-						.businessName(businessName)
-						.token(token)
-						.bankAccountDetails(bankAccountDetails)
-						.profileType(profileType)
-						.companyName(companyName)
-						.companyRegistrationNumber(companyRegistrationNumber)
-						.vatNumber(vatNumber)
-						.businessStakeHolderDetails(businessStakeHolderDetails)
-						.hyperwalletProgram(hyperwalletProgram);
+				.clientUserId(clientUserId)
+				.firstName(firstName)
+				.lastName(lastName)
+				.timeZone(timeZone)
+				.dateOfBirth(dateOfBirth)
+				.countryOfBirth(countryOfBirth)
+				.countryOfNationality(countryOfNationality)
+				.gender(gender)
+				.phoneNumber(phoneNumber)
+				.mobilePhone(mobilePhone)
+				.email(email)
+				.governmentId(governmentId)
+				.governmentIdType(governmentIdType)
+				.passportId(passportId)
+				.driversLicenseId(driversLicenseId)
+				.addressLine1(addressLine1)
+				.addressLine2(addressLine2)
+				.city(city)
+				.stateProvince(stateProvince)
+				.internalBusinessRegistrationStateProvince(businessRegistrationStateProvince)
+				.internalCountry(country)
+				.internalCompanyRegistrationCountry(companyRegistrationCountry)
+				.postalCode(postalCode)
+				.language(language)
+				.programToken(programToken)
+				.businessType(businessType)
+				.businessName(businessName)
+				.token(token)
+				.bankAccountDetails(bankAccountDetails)
+				.profileType(profileType)
+				.companyName(companyName)
+				.companyRegistrationNumber(companyRegistrationNumber)
+				.vatNumber(vatNumber)
+				.businessStakeHolderDetails(businessStakeHolderDetails)
+				.hyperwalletProgram(hyperwalletProgram);
 		//@formatter:on
 	}
 
@@ -160,7 +157,6 @@ public class SellerModel {
 		return EqualsBuilder.reflectionEquals(this, that, "businessStakeHolderDetails") && CollectionUtils
 				.isEqualCollection(Optional.ofNullable(getBusinessStakeHolderDetails()).orElse(List.of()),
 						Optional.ofNullable(that.businessStakeHolderDetails).orElse(List.of()));
-
 	}
 
 	@Override
@@ -214,15 +210,15 @@ public class SellerModel {
 		public SellerModelBuilder dateOfBirth(final List<MiraklAdditionalFieldValue> fields) {
 			//@formatter:off
 			fields.stream().filter(field -> field.getCode().equals(DATE_OF_BIRTH))
-							.filter(MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue.class::isInstance)
-							.map(MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue.class::cast).findAny()
-							.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue)
-							.ifPresent(dateAsStringISO8601 -> {
-								final ZonedDateTime zonedDateTime = Instant.parse(dateAsStringISO8601).atZone(ZoneId.of(timeZone));
-								long offsetMillis = TimeUnit.SECONDS.toMillis(ZoneOffset.from(zonedDateTime).getTotalSeconds());
-								long isoMillis = zonedDateTime.toInstant().toEpochMilli();
-								this.dateOfBirth = new Date(isoMillis + offsetMillis);
-							});
+					.filter(MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue.class::isInstance)
+					.map(MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue.class::cast).findAny()
+					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue)
+					.ifPresent(dateAsStringISO8601 -> {
+						final ZonedDateTime zonedDateTime = Instant.parse(dateAsStringISO8601).atZone(ZoneId.of(timeZone));
+						long offsetMillis = TimeUnit.SECONDS.toMillis(ZoneOffset.from(zonedDateTime).getTotalSeconds());
+						long isoMillis = zonedDateTime.toInstant().toEpochMilli();
+						this.dateOfBirth = new Date(isoMillis + offsetMillis);
+					});
 			//@formatter:on
 
 			return this;
@@ -230,7 +226,7 @@ public class SellerModel {
 
 		public SellerModelBuilder hwTermsConsent(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklBooleanCustomFieldValue(fields, HYPERWALLET_TERMS_CONSENT)
-					.ifPresent(termsConsent -> hwTermsConsent = Boolean.valueOf(termsConsent));
+					.ifPresent(termsConsent -> hwTermsConsent = Boolean.parseBoolean(termsConsent));
 			return this;
 		}
 
@@ -271,12 +267,6 @@ public class SellerModel {
 			return this;
 		}
 
-		public SellerModelBuilder employerId(final List<MiraklAdditionalFieldValue> fields) {
-			getMiraklStringCustomFieldValue(fields, EMPLOYER_ID)
-					.ifPresent(retrievedEmployerId -> employerId = retrievedEmployerId);
-			return this;
-		}
-
 		public SellerModelBuilder businessType(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklSingleValueListCustomFieldValue(fields, BUSINESS_TYPE)
 					.ifPresent(retrievedBusinessType -> businessType = EnumUtils.getEnum(SellerBusinessType.class,
@@ -306,10 +296,10 @@ public class SellerModel {
 				final String customFieldCode) {
 			//@formatter:off
 			return fields.stream()
-							.filter(field -> field.getCode().equals(customFieldCode))
-							.filter(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::isInstance)
-							.map(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::cast).findAny()
-							.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+					.filter(field -> field.getCode().equals(customFieldCode))
+					.filter(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::isInstance)
+					.map(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::cast).findAny()
+					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
 			//@formatter:on
 		}
 
@@ -374,12 +364,6 @@ public class SellerModel {
 
 		private SellerModelBuilder driversLicenseId(final String driversLicenseId) {
 			this.driversLicenseId = driversLicenseId;
-
-			return this;
-		}
-
-		private SellerModelBuilder employerId(final String employerId) {
-			this.employerId = employerId;
 
 			return this;
 		}

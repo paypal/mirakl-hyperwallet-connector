@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
+import java.util.Collections;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,17 +21,17 @@ class KYCBusinessStakeholderStatusExecutorTest {
 	private KYCBusinessStakeholderStatusExecutor testObj;
 
 	@Mock
-	private Strategy<KYCBusinessStakeholderStatusNotificationBodyModel, Optional<Void>> kycBusinessStakeholderStatusNotificationBodyModelOptionalStrategyMock;
+	private Strategy<KYCBusinessStakeholderStatusNotificationBodyModel, Void> kycBusinessStakeholderStatusNotificationBodyModelOptionalStrategyMock;
 
 	@BeforeEach
 	void setUp() {
 		testObj = new KYCBusinessStakeholderStatusExecutor(
-				Set.of(kycBusinessStakeholderStatusNotificationBodyModelOptionalStrategyMock));
+				Collections.singleton(kycBusinessStakeholderStatusNotificationBodyModelOptionalStrategyMock));
 	}
 
 	@Test
 	void getStrategies_shouldReturnConverterStrategyMock() {
-		final var result = testObj.getStrategies();
+		final Set<Strategy<KYCBusinessStakeholderStatusNotificationBodyModel, Void>> result = testObj.getStrategies();
 
 		assertThat(result).containsExactly(kycBusinessStakeholderStatusNotificationBodyModelOptionalStrategyMock);
 	}

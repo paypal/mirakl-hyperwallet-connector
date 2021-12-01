@@ -2,9 +2,9 @@ package com.paypal.sellers.service;
 
 import com.paypal.sellers.entity.AbstractFailedShopInformation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.Optional;
+import java.util.List;
 
 /**
  * Abstract class that saves or deletes id shops in retry system
@@ -21,16 +21,16 @@ public abstract class AbstractHyperwalletRetryAPIStrategy<T extends AbstractFail
 		this.failedEntityInformationService = failedEntityInformationService;
 	}
 
-	protected void executeRetryProcess(final String shopId, final Boolean includedAsFailed) {
-		//@formatter:off
-		Optional.of(includedAsFailed).filter(Boolean.FALSE::equals)
-				.ifPresent(value -> failedEntityInformationService.deleteByShopId(shopId));
-
-		Optional.of(includedAsFailed).filter(Boolean.TRUE::equals)
-				.map(value -> failedEntityInformationService.findByShopId(shopId))
-				.filter(CollectionUtils::isEmpty)
-				.ifPresent(value -> failedEntityInformationService.save(shopId));
-		//@formatter:on
+	protected void executeRetryProcess(final String shopId, final boolean includedAsFailed) {
+		if (includedAsFailed) {
+			final List<T> entityInformation = failedEntityInformationService.findByShopId(shopId);
+			if (CollectionUtils.isEmpty(entityInformation)) {
+				failedEntityInformationService.save(shopId);
+			}
+		}
+		else {
+			failedEntityInformationService.deleteByShopId(shopId);
+		}
 	}
 
 }

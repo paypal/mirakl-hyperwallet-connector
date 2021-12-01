@@ -17,7 +17,6 @@ import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.infrastructure.util.TimeMachine;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
-import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceTypeEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,6 @@ import java.util.List;
 import java.util.Set;
 
 import static com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentPaymentStatus.PENDING;
-import static com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentType.AUTO_INVOICE;
 import static com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentType.MANUAL_CREDIT;
 import static com.mirakl.client.mmp.request.payment.invoice.MiraklAccountingDocumentState.COMPLETE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -229,7 +227,8 @@ class MiraklCreditNotesExtractServiceImplTest {
 		final List<CreditNoteModel> creditNoteList = List.of(creditNoteOne);
 		doReturn(creditNoteList).when(testObj).getAccountingDocuments(nowAsDate);
 
-		final var miraklApiException = new MiraklApiException(new MiraklErrorResponseBean(1, "Something went wrong"));
+		final MiraklApiException miraklApiException = new MiraklApiException(
+				new MiraklErrorResponseBean(1, "Something went wrong"));
 		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
 				.getShops(any(MiraklGetShopsRequest.class));
 

@@ -17,7 +17,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class MiraklProofOfAddressStrategyTest {
@@ -34,48 +33,42 @@ class MiraklProofOfAddressStrategyTest {
 		testObj = new MiraklProofOfAddressStrategy(miraklMarketplacePlatformOperatorApiClientMock);
 
 		//@formatter:off
-        kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
-                .proofOfAddress(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-                        KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_ADDRESS_FIELD, "TAX_RETURN")))
-                .build();
-        //@formatter:on
+		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
+				.proofOfAddress(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_ADDRESS_FIELD, "TAX_RETURN")))
+				.build();
+		//@formatter:on
 	}
 
 	@Test
 	void isApplicable_shouldReturnTrueWhenIsProofOfAddressAndObjectReceivedAsParameterIsKYCDocumentSellerInfoModel() {
-
 		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModel);
 
 		assertThat(result).isTrue();
-
 	}
 
 	@Test
 	void isApplicable_shouldReturnFalseWhenIsProofOfBusinessAndObjectReceivedAsParameterIsNotKYCDocumentSellerInfoModel() {
-
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
 				.builder().build();
 
 		final boolean result = testObj.isApplicable(kycDocumentBusinessStakeHolderInfoModel);
 
 		assertThat(result).isFalse();
-
 	}
 
 	@Test
 	void isApplicable_shouldReturnFalseWhenIsNotProofOfAddressAndObjectReceivedAsParameterIsKYCDocumentSellerInfoModel() {
-
 		//@formatter:off
-        kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
-                .proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-                        KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD, "PASSPORT")))
-                .build();
+		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
+				.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD, "PASSPORT")))
+				.build();
 		//@formatter:on
 
 		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModel);
 
 		assertThat(result).isFalse();
-
 	}
 
 	@Test

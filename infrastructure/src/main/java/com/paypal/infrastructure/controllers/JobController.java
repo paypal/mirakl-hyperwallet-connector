@@ -30,11 +30,11 @@ public class JobController extends AbstractJobController {
 	@GetMapping
 	public ResponseEntity<List<JobExecutionInformationEntity>> status() throws SchedulerException {
 		//@formatter:off
-        final List<JobExecutionInformationEntity> jobs = jobService.getJobs().stream()
-				.map(jobDetail -> (JobExecutionInformationEntity)jobDetail.getJobDataMap().get(JobExecutionInformationListener.RUNNING_JOB_ENTITY))
+		final List<JobExecutionInformationEntity> jobs = jobService.getJobs().stream()
+				.map(jobDetail -> (JobExecutionInformationEntity) jobDetail.getJobDataMap().get(JobExecutionInformationListener.RUNNING_JOB_ENTITY))
 				.filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        //@formatter:on
+				.collect(Collectors.toList());
+		//@formatter:on
 
 		return ResponseEntity.accepted().body(jobs);
 	}

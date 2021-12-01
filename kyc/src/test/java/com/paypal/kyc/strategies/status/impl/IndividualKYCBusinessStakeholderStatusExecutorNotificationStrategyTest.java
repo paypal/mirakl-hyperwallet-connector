@@ -3,6 +3,7 @@ package com.paypal.kyc.strategies.status.impl;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
+import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
@@ -48,7 +49,7 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 
 	private static final String CLIENT_ID = "0229";
 
-	private static Map<String, String> USER_STORE_TOKENS = Map.of("DEFAULT", DEFAULT_TOKEN, "UK", UK_TOKEN);
+	private static final Map<String, String> USER_STORE_TOKENS = Map.of("DEFAULT", DEFAULT_TOKEN, "UK", UK_TOKEN);
 
 	@InjectMocks
 	private IndividualKYCBusinessStakeholderStatusNotificationStrategy testObj;
@@ -81,7 +82,24 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	private ArgumentCaptor<MiraklUpdateShopsRequest> miraklUpdateShopsRequestArgumentCaptor;
 
 	@Test
-	void isApplicable_shouldReturnTrue_whenBusinessStakeholderTypeIsIndividualAndNotificationTypeIsVerificationStatus() {
+	void isApplicable_whenBusinessStakeholderTypeIsNull_shouldReturnFalse() {
+		final boolean result = testObj.isApplicable(kycBusinessStakeholderStatusNotificationBodyModelMock);
+
+		assertThat(result).isFalse();
+	}
+
+	@Test
+	void isApplicable_whenBusinessStakeholderTypeIsNotIndividual_shouldReturnFalse() {
+		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getProfileType())
+				.thenReturn(HyperwalletUser.ProfileType.BUSINESS);
+
+		final boolean result = testObj.isApplicable(kycBusinessStakeholderStatusNotificationBodyModelMock);
+
+		assertThat(result).isFalse();
+	}
+
+	@Test
+	void isApplicable_whenBusinessStakeholderTypeIsIndividualAndNotificationTypeIsVerificationStatus_shouldReturnTrue() {
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getProfileType())
 				.thenReturn(HyperwalletUser.ProfileType.INDIVIDUAL);
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getHyperwalletWebhookNotificationType()).thenReturn(
@@ -93,7 +111,7 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	}
 
 	@Test
-	void isApplicable_shouldReturnTrue_whenBusinessStakeholderTypeIsIndividualAndNotificationTypeIsNotVerificationStatus() {
+	void isApplicable_whenBusinessStakeholderTypeIsIndividualAndNotificationTypeIsNotVerificationStatus_shouldReturnTrue() {
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getProfileType())
 				.thenReturn(HyperwalletUser.ProfileType.INDIVIDUAL);
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getHyperwalletWebhookNotificationType())
@@ -114,7 +132,7 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	}
 
 	@Test
-	void callHyperwalletSDKCatchingException_shouldReturnNull_whenExceptionIsThrown() {
+	void callHyperwalletSDKCatchingException_whenExceptionIsThrown_shouldReturnNull() {
 		when(hyperwalletMock.getUser(USER_TOKEN)).thenThrow(HyperwalletException.class);
 
 		final HyperwalletUser hyperwalletUser = testObj.callHyperwalletSDKCatchingException(hyperwalletMock,
@@ -138,7 +156,7 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	}
 
 	@Test
-	void getHyperWalletUser_shouldReturnNull_whenTheUserDoesNotExitInHyperWallet() {
+	void getHyperWalletUser_whenTheUserDoesNotExitInHyperWallet_shouldReturnNull() {
 		when(kycHyperwalletApiConfigMock.getUserStoreTokens()).thenReturn(USER_STORE_TOKENS);
 		when(hyperwalletSDKService.getHyperwalletInstance(anyString())).thenReturn(hyperwalletMock);
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getUserToken()).thenReturn(USER_TOKEN);
@@ -152,7 +170,21 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	}
 
 	@Test
-	void updateMiraklProofIdentityFlagStatus_shouldUpdateMiraklWithProofOfIdentityNeeded_whenStatusIsRequired() {
+	void updateMiraklProofIdentityFlagStatus_whenCustomValuesForVerificationIsEmpty_shouldNotCallMiraklsAPI() {
+		testObj.updateMiraklProofIdentityFlagStatus(MIRAKL_SHOP_ID, "", HyperwalletUser.VerificationStatus.REQUIRED);
+
+		verifyNoInteractions(miraklMarketplacePlatformOperatorApiClientMock);
+	}
+
+	@Test
+	void updateMiraklProofIdentityFlagStatus_whenCustomValuesForVerificationIsNull_shouldNotCallMiraklsAPI() {
+		testObj.updateMiraklProofIdentityFlagStatus(MIRAKL_SHOP_ID, null, HyperwalletUser.VerificationStatus.REQUIRED);
+
+		verifyNoInteractions(miraklMarketplacePlatformOperatorApiClientMock);
+	}
+
+	@Test
+	void updateMiraklProofIdentityFlagStatus_whenStatusIsRequired_shouldUpdateMiraklWithProofOfIdentityNeeded() {
 		when(miraklMarketplacePlatformOperatorApiClientMock
 				.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenReturn(miraklUpdatedShopsMock);
 
@@ -171,7 +203,7 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	}
 
 	@Test
-	void updateMiraklProofIdentityFlagStatus_shouldUpdateMiraklWithProofOfIdentityNotNeeded_whenStatusIsNotRequired() {
+	void updateMiraklProofIdentityFlagStatus_whenStatusIsNotRequired_shouldUpdateMiraklWithProofOfIdentityNotNeeded() {
 		when(miraklMarketplacePlatformOperatorApiClientMock
 				.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenReturn(miraklUpdatedShopsMock);
 
@@ -190,7 +222,26 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	}
 
 	@Test
-	void execute_shouldDoNothing_whenTheUserDoesNotExistOnHyperwallet() {
+	void updateMiraklProofIdentityFlagStatus_whenAPICallThrowsException_shouldFinishWithoutExceptions() {
+		when(miraklMarketplacePlatformOperatorApiClientMock
+				.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenThrow(MiraklException.class);
+
+		testObj.updateMiraklProofIdentityFlagStatus(MIRAKL_SHOP_ID, BSTK_PROOF_IDENTITY_FIELD,
+				HyperwalletUser.VerificationStatus.REQUIRED);
+
+		final MiraklUpdateShopsRequest result = miraklUpdateShopsRequestArgumentCaptor.getValue();
+		final List<MiraklRequestAdditionalFieldValue> additionalFieldValuesToBeChanged = result.getShops().get(0)
+				.getAdditionalFieldValues();
+
+		assertThat(additionalFieldValuesToBeChanged).hasSize(1);
+		final MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue miraklSimpleRequestAdditionalFieldValue = (MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue) additionalFieldValuesToBeChanged
+				.get(0);
+		assertThat(miraklSimpleRequestAdditionalFieldValue.getCode()).isEqualTo(BSTK_PROOF_IDENTITY_FIELD);
+		assertThat(miraklSimpleRequestAdditionalFieldValue.getValue()).isEqualTo("true");
+	}
+
+	@Test
+	void execute_whenTheUserDoesNotExistOnHyperwallet_shouldDoNothing() {
 		when(kycHyperwalletApiConfigMock.getUserStoreTokens()).thenReturn(USER_STORE_TOKENS);
 		when(hyperwalletSDKService.getHyperwalletInstance(anyString())).thenReturn(hyperwalletMock);
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getUserToken()).thenReturn(USER_TOKEN);
@@ -203,7 +254,7 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	}
 
 	@Test
-	void execute_shouldNotCallMiraklToUpdate_whenTheUserExistOnHyperwalletButThereAreNoCustomFields() {
+	void execute_whenTheUserExistOnHyperwalletButThereAreNoCustomFields_shouldNotCallMiraklToUpdate() {
 		when(kycHyperwalletApiConfigMock.getUserStoreTokens()).thenReturn(USER_STORE_TOKENS);
 		when(hyperwalletSDKService.getHyperwalletInstance(anyString())).thenReturn(hyperwalletMock);
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getUserToken()).thenReturn(USER_TOKEN);
@@ -223,7 +274,7 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	}
 
 	@Test
-	void execute_shouldCallMiraklToUpdate_whenTheUserExistOnHyperwalletButThereAreCustomFields() {
+	void execute_whenTheUserExistOnHyperwalletButThereAreCustomFields_shouldCallMiraklToUpdate() {
 		when(kycHyperwalletApiConfigMock.getUserStoreTokens()).thenReturn(USER_STORE_TOKENS);
 		when(hyperwalletSDKService.getHyperwalletInstance(anyString())).thenReturn(hyperwalletMock);
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getUserToken()).thenReturn(USER_TOKEN);

@@ -24,7 +24,6 @@ class InvoicesOperatorCommissionsConfigTest {
 
 	@Test
 	void loadBankAccountTokensMapConfiguration_shouldCallSuperLoad() throws InvalidConfigurationException {
-
 		testObj.loadBankAccountTokensMapConfiguration();
 
 		verify(testObj).callSuperLoad(BANK_ACCOUNT_TOKENS_PREFIX);
@@ -32,7 +31,6 @@ class InvoicesOperatorCommissionsConfigTest {
 
 	@Test
 	void getBankAccountToken_shouldReturnNullWhenNoTokenIsDefined() {
-
 		final String result = testObj.getBankAccountToken("invalidToken");
 
 		assertThat(result).isNull();
@@ -40,7 +38,6 @@ class InvoicesOperatorCommissionsConfigTest {
 
 	@Test
 	void getBankAccountToken_shouldReturnTokenValueIfTokenKeyIsDefined() {
-
 		testObj.setBankAccountTokens(Map.of("tokenKey", "tokenValue"));
 		final String result = testObj.getBankAccountToken("tokenKey");
 
@@ -49,7 +46,6 @@ class InvoicesOperatorCommissionsConfigTest {
 
 	@Test
 	void getBankAccountToken_shouldReturnNullIfTokenKeyIsNoyDefined() {
-
 		testObj.setBankAccountTokens(Map.of("tokenKey", "tokenValue"));
 		final String result = testObj.getBankAccountToken("invalidTokenKey");
 

@@ -31,8 +31,8 @@ public class BusinessStakeholderTestHelperImpl implements BusinessStakeholderTes
 
 		//@formatter:off
 		final List<String> tokens = tokensMap.get(clientUserId).stream()
-											 .flatMap(Collection::stream)
-											 .collect(Collectors.toList());
+				.flatMap(Collection::stream)
+				.collect(Collectors.toList());
 		//@formatter:on
 
 		tokensMap.removeAll(clientUserId);

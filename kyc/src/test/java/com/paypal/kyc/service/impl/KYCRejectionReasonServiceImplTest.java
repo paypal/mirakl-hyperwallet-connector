@@ -22,24 +22,21 @@ class KYCRejectionReasonServiceImplTest {
 	private KYCRejectionReasonServiceImpl testObj;
 
 	@RegisterExtension
-	LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.WARN)
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.WARN)
 			.recordForType(KYCRejectionReasonServiceImpl.class);
 
 	@Test
 	void getReasonTypes_shouldReturnVERIFICATIONSTATUS_IND_REQUIRED_WhenVerificationStatusIsREQUIREDAndUserIsINDIVIDUAL() {
-
-		Map<String, String> object = Map.of("verificationStatus", "REQUIRED", "profileType", "INDIVIDUAL");
+		final Map<String, String> object = Map.of("verificationStatus", "REQUIRED", "profileType", "INDIVIDUAL");
 
 		final List<KYCRejectionReasonTypeEnum> result = testObj.getReasonTypes(object);
 
 		assertThat(result).containsExactlyInAnyOrder(KYCRejectionReasonTypeEnum.VERIFICATIONSTATUS_IND_REQUIRED);
-
 	}
 
 	@Test
 	void getReasonTypes_shouldReturnVERIFICATIONSTATUS_PROF_REQUIRED_WhenVerificationStatusIsREQUIREDAndUserIsBUSINESS() {
-
-		Map<String, String> object = Map.of("verificationStatus", "REQUIRED", "profileType", "BUSINESS");
+		final Map<String, String> object = Map.of("verificationStatus", "REQUIRED", "profileType", "BUSINESS");
 
 		final List<KYCRejectionReasonTypeEnum> result = testObj.getReasonTypes(object);
 
@@ -47,9 +44,8 @@ class KYCRejectionReasonServiceImplTest {
 	}
 
 	@Test
-	void getReasonTypes_shouldReturnBUSINESS_STAKEHOLDER_REQUIRED_WhenbusinessStakeholderVerificationStatusIsREQUIRED() {
-
-		Map<String, String> object = Map.of("businessStakeholderVerificationStatus", "REQUIRED");
+	void getReasonTypes_shouldReturnBUSINESS_STAKEHOLDER_REQUIRED_WhenBusinessStakeholderVerificationStatusIsREQUIRED() {
+		final Map<String, String> object = Map.of("businessStakeholderVerificationStatus", "REQUIRED");
 
 		final List<KYCRejectionReasonTypeEnum> result = testObj.getReasonTypes(object);
 
@@ -58,8 +54,7 @@ class KYCRejectionReasonServiceImplTest {
 
 	@Test
 	void getReasonTypes_shouldReturnLETTER_OF_AUTHORIZATION_REQUIRED_WhenLetterOfAuthorizationStatusIsREQUIRED() {
-
-		Map<String, String> object = Map.of("letterOfAuthorizationStatus", "REQUIRED");
+		final Map<String, String> object = Map.of("letterOfAuthorizationStatus", "REQUIRED");
 
 		final List<KYCRejectionReasonTypeEnum> result = testObj.getReasonTypes(object);
 
@@ -67,9 +62,8 @@ class KYCRejectionReasonServiceImplTest {
 	}
 
 	@Test
-	void getReasonTypes_shouldReturnLETTER_OF_AUTHORIZATION_REQUIREDAndBUSINESS_STAKEHOLDER_REQUIRED_WhenLetterOfAuthorizationStatusAndbusinessStakeholderVerificationStatusAreREQUIRED() {
-
-		Map<String, String> object = Map.of("letterOfAuthorizationStatus", "REQUIRED",
+	void getReasonTypes_shouldReturnLETTER_OF_AUTHORIZATION_REQUIREDAndBUSINESS_STAKEHOLDER_REQUIRED_WhenLetterOfAuthorizationStatusAndBusinessStakeholderVerificationStatusAreREQUIRED() {
+		final Map<String, String> object = Map.of("letterOfAuthorizationStatus", "REQUIRED",
 				"businessStakeholderVerificationStatus", "REQUIRED");
 
 		final List<KYCRejectionReasonTypeEnum> result = testObj.getReasonTypes(object);
@@ -86,7 +80,6 @@ class KYCRejectionReasonServiceImplTest {
 		final List<KYCRejectionReasonTypeEnum> result = testObj.getReasonTypes(object);
 
 		assertThat(result).isEmpty();
-
 	}
 
 	@Test
@@ -99,7 +92,6 @@ class KYCRejectionReasonServiceImplTest {
 		assertThat(logTrackerStub.contains("The notification object received is not a Map instance.")).isTrue();
 
 		assertThat(result).isEmpty();
-
 	}
 
 }

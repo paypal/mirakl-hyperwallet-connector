@@ -8,17 +8,17 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 /**
- * Strategy Factory class that controls strategies to insert or update business stake
- * holders information for a certain seller into Hyperwallet
+ * Executor class that controls strategies to insert or update business stake holders
+ * information for a certain seller into Hyperwallet
  */
 
 @Service
-public class HyperWalletBusinessStakeHolderServiceStrategyExecutorExecutor
+public class HyperWalletBusinessStakeHolderServiceExecutor
 		extends SingleAbstractStrategyExecutor<BusinessStakeHolderModel, BusinessStakeHolderModel> {
 
 	private final Set<Strategy<BusinessStakeHolderModel, BusinessStakeHolderModel>> strategies;
 
-	public HyperWalletBusinessStakeHolderServiceStrategyExecutorExecutor(
+	public HyperWalletBusinessStakeHolderServiceExecutor(
 			final Set<Strategy<BusinessStakeHolderModel, BusinessStakeHolderModel>> strategies) {
 		this.strategies = strategies;
 	}

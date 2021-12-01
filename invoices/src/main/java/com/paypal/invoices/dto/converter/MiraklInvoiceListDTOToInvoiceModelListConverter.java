@@ -23,7 +23,7 @@ public class MiraklInvoiceListDTOToInvoiceModelListConverter
 		//@formatter:off
 		final MiraklInvoicesMockListDTO defaultResult = new MiraklInvoicesMockListDTO();
 		defaultResult.setInvoices(Collections.emptyList());
-		
+
 		return Optional.ofNullable(source)
 				.orElse(defaultResult)
 				.getInvoices().stream()

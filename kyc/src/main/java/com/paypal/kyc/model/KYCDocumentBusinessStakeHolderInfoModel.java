@@ -4,7 +4,7 @@ import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -155,7 +155,6 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 						Optional.ofNullable(that.getMiraklShopDocuments()).orElse(List.of()))
 				&& CollectionUtils.isEqualCollection(Optional.ofNullable(getDocuments()).orElse(List.of()),
 						Optional.ofNullable(that.getDocuments()).orElse(List.of()));
-
 	}
 
 	@Override
@@ -171,7 +170,6 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 		}
 
 		return proofOfIdentityFilled && letterOfAuthorizationRequired;
-
 	}
 
 	@Override
@@ -229,7 +227,7 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 				getMiraklBooleanCustomFieldValue(fields,
 						getCustomFieldCode(HYPERWALLET_PREFIX + STAKEHOLDER_PREFIX + REQUIRED_PROOF_IDENTITY,
 								businessStakeHolderNumber))
-										.ifPresent(termsConsent -> requiresKYC = Boolean.valueOf(termsConsent));
+										.ifPresent(termsConsent -> requiresKYC = Boolean.parseBoolean(termsConsent));
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);

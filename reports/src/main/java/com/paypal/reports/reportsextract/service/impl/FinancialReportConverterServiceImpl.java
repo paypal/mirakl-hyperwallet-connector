@@ -21,15 +21,15 @@ public class FinancialReportConverterServiceImpl implements FinancialReportConve
 
 	private final Converter<HmcMiraklTransactionLine, HmcFinancialReportLine> miraklTransactionLineFinancialReportServiceConverter;
 
-	private final Converter<Pair<HmcBraintreeTransactionLine, HmcMiraklTransactionLine>, HmcFinancialReportLine> braintreeAndMiraklTransacionLineFinancialReportLineConverter;
+	private final Converter<Pair<HmcBraintreeTransactionLine, HmcMiraklTransactionLine>, HmcFinancialReportLine> braintreeAndMiraklTransactionLineFinancialReportLineConverter;
 
 	public FinancialReportConverterServiceImpl(
 			final Converter<HmcBraintreeTransactionLine, HmcFinancialReportLine> braintreeTransactionLineFinancialReportLineConverter,
 			final Converter<HmcMiraklTransactionLine, HmcFinancialReportLine> miraklTransactionLineFinancialReportServiceConverter,
-			final Converter<Pair<HmcBraintreeTransactionLine, HmcMiraklTransactionLine>, HmcFinancialReportLine> braintreeAndMiraklTransacionLineFinancialReportLineConverter) {
+			final Converter<Pair<HmcBraintreeTransactionLine, HmcMiraklTransactionLine>, HmcFinancialReportLine> braintreeAndMiraklTransactionLineFinancialReportLineConverter) {
 		this.braintreeTransactionLineFinancialReportLineConverter = braintreeTransactionLineFinancialReportLineConverter;
 		this.miraklTransactionLineFinancialReportServiceConverter = miraklTransactionLineFinancialReportServiceConverter;
-		this.braintreeAndMiraklTransacionLineFinancialReportLineConverter = braintreeAndMiraklTransacionLineFinancialReportLineConverter;
+		this.braintreeAndMiraklTransactionLineFinancialReportLineConverter = braintreeAndMiraklTransactionLineFinancialReportLineConverter;
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class FinancialReportConverterServiceImpl implements FinancialReportConve
 	public HmcFinancialReportLine convertBrainTreeAndMiraklTransactionLineIntoFinancialReportLine(
 			final HmcBraintreeTransactionLine hmcBraintreeTransactionLine,
 			final HmcMiraklTransactionLine hmcMiraklTransactionLine) {
-		return braintreeAndMiraklTransacionLineFinancialReportLineConverter
+		return braintreeAndMiraklTransactionLineFinancialReportLineConverter
 				.convert(Pair.of(hmcBraintreeTransactionLine, hmcMiraklTransactionLine));
 	}
 

@@ -8,7 +8,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=${PAYPAL_SPRING_PROFILE_ACTIVE:-dev}
+      - SPRING_PROFILES_ACTIVE=${PAYPAL_SPRING_PROFILE_ACTIVE:-prod}
       - PWD=/workspace
     volumes:
       - ${PWD}/keys:/home/keys

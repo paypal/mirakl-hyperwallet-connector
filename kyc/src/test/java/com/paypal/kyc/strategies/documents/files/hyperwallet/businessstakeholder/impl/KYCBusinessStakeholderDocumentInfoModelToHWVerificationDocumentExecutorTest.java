@@ -9,31 +9,31 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-class KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutorTest {
+class KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutorTest {
 
-	private KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor testObj;
+	private KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor testObj;
 
 	@Mock
 	private Strategy<KYCDocumentBusinessStakeHolderInfoModel, HyperwalletVerificationDocument> strategyMock;
 
 	@BeforeEach
 	void setUp() {
-		testObj = new KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor(
-				Set.of(strategyMock));
+		testObj = new KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor(
+				Collections.singleton(strategyMock));
 	}
 
 	@Test
 	void getStrategies_shouldReturnConverterStrategyMock() {
-
-		final var result = testObj.getStrategies();
+		final Set<Strategy<KYCDocumentBusinessStakeHolderInfoModel, HyperwalletVerificationDocument>> result = testObj
+				.getStrategies();
 
 		assertThat(result).containsExactly(strategyMock);
-
 	}
 
 }

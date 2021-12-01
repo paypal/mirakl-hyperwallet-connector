@@ -119,100 +119,100 @@ class FinancialReportServiceImplTest {
 
 	private HmcBraintreeTransactionLine getUnjoinableBraintreeTransactionLine(final LocalDateTime date) {
 		//@formatter:off
-        return HmcBraintreeTransactionLine.builder()
-                .orderId("20001")
-                .amount(BigDecimal.valueOf(120))
-                .currencyIsoCode("EUR")
-                .paymentTransactionTime(date)
-                .paymentTransactionId("6jkals83")
-                .build();
-        //@formatter:on
+		return HmcBraintreeTransactionLine.builder()
+				.orderId("20001")
+				.amount(BigDecimal.valueOf(120))
+				.currencyIsoCode("EUR")
+				.paymentTransactionTime(date)
+				.paymentTransactionId("6jkals83")
+				.build();
+		//@formatter:on
 	}
 
 	private HmcFinancialReportLine getUnjoinableBraintreeFinancialLine(final LocalDateTime date) {
 		//@formatter:off
-        return HmcFinancialReportLine.builder()
-                .braintreeCommerceOrderId("20001")
-                .braintreeAmount(BigDecimal.valueOf(120))
-                .currencyIsoCode("EUR")
-                .braintreeTransactionTime(date)
-                .braintreeTransactionId("6jkals83")
-                .build();
-        //@formatter:on
+		return HmcFinancialReportLine.builder()
+				.braintreeCommerceOrderId("20001")
+				.braintreeAmount(BigDecimal.valueOf(120))
+				.currencyIsoCode("EUR")
+				.braintreeTransactionTime(date)
+				.braintreeTransactionId("6jkals83")
+				.build();
+		//@formatter:on
 	}
 
 	private HmcBraintreeTransactionLine getBraintreeCommonTransactionLine(final LocalDateTime date) {
 		//@formatter:off
-        return HmcBraintreeTransactionLine.builder()
-                .orderId("20000")
-                .amount(BigDecimal.valueOf(100))
-                .currencyIsoCode("USD")
-                .paymentTransactionTime(date)
-                .paymentTransactionId("5jkals83")
-                .build();
-        //@formatter:on
+		return HmcBraintreeTransactionLine.builder()
+				.orderId("20000")
+				.amount(BigDecimal.valueOf(100))
+				.currencyIsoCode("USD")
+				.paymentTransactionTime(date)
+				.paymentTransactionId("5jkals83")
+				.build();
+		//@formatter:on
 	}
 
 	private HmcMiraklTransactionLine getUnjoinableMiraklTransactionLine(final LocalDateTime date) {
 		//@formatter:off
-        return HmcMiraklTransactionLine.builder()
-                .orderId("000000009-B")
-                .sellerId("2003")
-                .transactionLineId("abcd-12345-2145-bb")
-                .transactionType("ORDER_CANCELATION")
-                .transactionTime(date)
-                .debitAmount(BigDecimal.valueOf(99.0))
-                .currencyIsoCode("GBP")
-                .build();
-        //@formatter:on
+		return HmcMiraklTransactionLine.builder()
+				.orderId("000000009-B")
+				.sellerId("2003")
+				.transactionLineId("abcd-12345-2145-bb")
+				.transactionType("ORDER_CANCELATION")
+				.transactionTime(date)
+				.debitAmount(BigDecimal.valueOf(99.0))
+				.currencyIsoCode("GBP")
+				.build();
+		//@formatter:on
 	}
 
 	private HmcFinancialReportLine getUnjoinableMiraklFinancialLine(final LocalDateTime date) {
 		//@formatter:off
-        return HmcFinancialReportLine.builder()
-                .miraklOrderId("000000009-B")
-                .miraklSellerId("2003")
-                .miraklTransactionLineId("abcd-12345-2145-bb")
-                .miraklTransactionType("ORDER_CANCELATION")
-                .miraklTransactionTime(date)
-                .miraklDebitAmount(BigDecimal.valueOf(99.0))
-                .currencyIsoCode("GBP")
-                .braintreeTransactionId("7jkals83")
-                .build();
-        //@formatter:on
+		return HmcFinancialReportLine.builder()
+				.miraklOrderId("000000009-B")
+				.miraklSellerId("2003")
+				.miraklTransactionLineId("abcd-12345-2145-bb")
+				.miraklTransactionType("ORDER_CANCELATION")
+				.miraklTransactionTime(date)
+				.miraklDebitAmount(BigDecimal.valueOf(99.0))
+				.currencyIsoCode("GBP")
+				.braintreeTransactionId("7jkals83")
+				.build();
+		//@formatter:on
 	}
 
 	private HmcFinancialReportLine getCommonBraintreeAndMiraklFinancialLine(final LocalDateTime date) {
 		//@formatter:off
-        return HmcFinancialReportLine.builder()
-                .braintreeCommerceOrderId("20000")
-                .miraklOrderId("000000009-A")
-                .miraklSellerId("2002")
-                .miraklTransactionLineId("abcd-12345-2145-aa")
-                .miraklTransactionType("ORDER_AMOUNT")
-                .miraklTransactionTime(date)
-                .braintreeAmount(BigDecimal.valueOf(100))
-                .miraklDebitAmount(BigDecimal.valueOf(93.0))
-                .currencyIsoCode("USD")
-                .braintreeTransactionId("5jkals83")
-                .braintreeTransactionTime(date)
-                .build();
-        //@formatter:on
+		return HmcFinancialReportLine.builder()
+				.braintreeCommerceOrderId("20000")
+				.miraklOrderId("000000009-A")
+				.miraklSellerId("2002")
+				.miraklTransactionLineId("abcd-12345-2145-aa")
+				.miraklTransactionType("ORDER_AMOUNT")
+				.miraklTransactionTime(date)
+				.braintreeAmount(BigDecimal.valueOf(100))
+				.miraklDebitAmount(BigDecimal.valueOf(93.0))
+				.currencyIsoCode("USD")
+				.braintreeTransactionId("5jkals83")
+				.braintreeTransactionTime(date)
+				.build();
+		//@formatter:on
 	}
 
 	private HmcMiraklTransactionLine getMiraklCommonTransactionLine(final LocalDateTime date) {
 		//@formatter:off
-        return HmcMiraklTransactionLine.builder()
-                .orderId("000000009-A")
-                .sellerId("2002")
-                .transactionLineId("abcd-12345-2145-aa")
-                .transactionType("ORDER_AMOUNT")
-                .transactionTime(date)
-                .debitAmount(BigDecimal.valueOf(93.0))
-                .currencyIsoCode("USD")
-                .transactionNumber("5jkals83")
-                .build();
-        //@formatter:on
+		return HmcMiraklTransactionLine.builder()
+				.orderId("000000009-A")
+				.sellerId("2002")
+				.transactionLineId("abcd-12345-2145-aa")
+				.transactionType("ORDER_AMOUNT")
+				.transactionTime(date)
+				.debitAmount(BigDecimal.valueOf(93.0))
+				.currencyIsoCode("USD")
+				.transactionNumber("5jkals83")
+				.build();
+		//@formatter:on
 	}
 
 }

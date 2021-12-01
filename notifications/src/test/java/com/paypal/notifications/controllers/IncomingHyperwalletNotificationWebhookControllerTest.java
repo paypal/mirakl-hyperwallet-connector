@@ -24,11 +24,9 @@ class IncomingHyperwalletNotificationWebhookControllerTest {
 
 	@Test
 	void receiveIncomingNotification_shouldProcessIncomingNotificationAndReturnsOK() {
-
 		testObj.receiveIncomingNotification(hyperwalletWebhookNotificationMock);
 
 		verify(notificationServiceMock).processNotification(hyperwalletWebhookNotificationMock);
-
 	}
 
 }

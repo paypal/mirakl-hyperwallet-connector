@@ -9,6 +9,7 @@ import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.MiraklSellersExtractService;
 import com.paypal.sellers.service.FailedEntityInformationService;
 import com.paypal.sellers.service.HyperwalletSDKService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -16,6 +17,7 @@ import java.util.Objects;
 /**
  * Strategy class that manages sellers creation in hyperwallet and token update in Mirakl
  */
+@Slf4j
 @Service
 public class HyperWalletCreateSellerServiceStrategy extends AbstractHyperwalletSellerRetryApiStrategy {
 
@@ -44,6 +46,7 @@ public class HyperWalletCreateSellerServiceStrategy extends AbstractHyperwalletS
 				.getHyperwalletInstanceByProgramToken(hyperwalletUser.getProgramToken());
 		final HyperwalletUser hwUser = hyperwallet.createUser(hyperwalletUser);
 		miraklSellersExtractService.updateUserToken(hwUser);
+		log.info("Seller created for seller with clientUserId [{}]", hyperwalletUser.getClientUserId());
 		return hwUser;
 	}
 

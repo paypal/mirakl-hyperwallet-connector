@@ -9,12 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-public class MiraklShopToSellerConverterStrategyExecutor
-		extends SingleAbstractStrategyExecutor<MiraklShop, SellerModel> {
+public class MiraklShopToSellerConverterExecutor extends SingleAbstractStrategyExecutor<MiraklShop, SellerModel> {
 
 	private final Set<Strategy<MiraklShop, SellerModel>> strategies;
 
-	public MiraklShopToSellerConverterStrategyExecutor(final Set<Strategy<MiraklShop, SellerModel>> strategies) {
+	public MiraklShopToSellerConverterExecutor(final Set<Strategy<MiraklShop, SellerModel>> strategies) {
 		this.strategies = strategies;
 	}
 

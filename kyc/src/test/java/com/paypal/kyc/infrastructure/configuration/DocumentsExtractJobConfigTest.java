@@ -19,11 +19,11 @@ class DocumentsExtractJobConfigTest {
 	@InjectMocks
 	private DocumentsExtractJobConfig testObj;
 
-	private static final String CRON_EXPRESSION = "0 0 0 1/1 * ? *";
-
-	private static final String TRIGGER_PREXIX = "Trigger";
+	private static final String TRIGGER_PREFIX = "Trigger";
 
 	private static final String JOB_NAME = "DocumentsExtractJob";
+
+	private static final String CRON_EXPRESSION = "0 0 0 1/1 * ? *";
 
 	@Test
 	void documentsExtractJob_createsJobDetailWithNameDocumentsExtractJobAndTypeDocumentsExtractJob() {
@@ -40,7 +40,7 @@ class DocumentsExtractJobConfigTest {
 		final Trigger result = testObj.documentsExtractJobTrigger(jobDetail, CRON_EXPRESSION);
 
 		assertThat(result.getJobKey()).isEqualTo(jobDetail.getKey());
-		assertThat(result.getKey()).isEqualTo(TriggerKey.triggerKey(TRIGGER_PREXIX + JOB_NAME));
+		assertThat(result.getKey()).isEqualTo(TriggerKey.triggerKey(TRIGGER_PREFIX + JOB_NAME));
 		assertThat(result).isInstanceOf(CronTriggerImpl.class);
 		assertThat(((CronTriggerImpl) result).getCronExpression()).isEqualTo(CRON_EXPRESSION);
 	}

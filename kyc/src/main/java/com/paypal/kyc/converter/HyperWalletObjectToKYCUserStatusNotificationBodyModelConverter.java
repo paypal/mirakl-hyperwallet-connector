@@ -43,23 +43,23 @@ public class HyperWalletObjectToKYCUserStatusNotificationBodyModelConverter
 
 			//@formatter:off
 			return KYCUserStatusNotificationBodyModel.builder()
-							.profileType(EnumUtils.getEnum(HyperwalletUser.ProfileType.class,
-											Optional.ofNullable((String) notificationDetails.get("profileType")).
-															orElse(null)))
-							.clientUserId(Optional.ofNullable((String) notificationDetails.get("clientUserId"))
-											.orElse(null))
-							.verificationStatus(EnumUtils.getEnum(HyperwalletUser.VerificationStatus.class,
-											Optional.ofNullable((String) notificationDetails.get("verificationStatus"))
-															.orElse(null)))
-							.businessStakeholderVerificationStatus(EnumUtils.getEnum(HyperwalletUser.BusinessStakeholderVerificationStatus.class,
-											Optional.ofNullable((String) notificationDetails.get("businessStakeholderVerificationStatus"))
-															.orElse(null)))
-							.letterOfAuthorizationStatus(EnumUtils.getEnum(HyperwalletUser.LetterOfAuthorizationStatus.class,
-											Optional.ofNullable((String) notificationDetails.get("letterOfAuthorizationStatus"))
-															.orElse(null)))
-							.reasonsType(kycRejectionReasonService.getReasonTypes(source))
-							.documents(objectKYCDocumentNotificationModelListConverter.convert(source))
-							.build();
+					.profileType(EnumUtils.getEnum(HyperwalletUser.ProfileType.class,
+							Optional.ofNullable((String) notificationDetails.get("profileType")).
+									orElse(null)))
+					.clientUserId(Optional.ofNullable((String) notificationDetails.get("clientUserId"))
+							.orElse(null))
+					.verificationStatus(EnumUtils.getEnum(HyperwalletUser.VerificationStatus.class,
+							Optional.ofNullable((String) notificationDetails.get("verificationStatus"))
+									.orElse(null)))
+					.businessStakeholderVerificationStatus(EnumUtils.getEnum(HyperwalletUser.BusinessStakeholderVerificationStatus.class,
+							Optional.ofNullable((String) notificationDetails.get("businessStakeholderVerificationStatus"))
+									.orElse(null)))
+					.letterOfAuthorizationStatus(EnumUtils.getEnum(HyperwalletUser.LetterOfAuthorizationStatus.class,
+							Optional.ofNullable((String) notificationDetails.get("letterOfAuthorizationStatus"))
+									.orElse(null)))
+					.reasonsType(kycRejectionReasonService.getReasonTypes(source))
+					.documents(objectKYCDocumentNotificationModelListConverter.convert(source))
+					.build();
 			//@formatter:on
 
 		}

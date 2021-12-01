@@ -97,20 +97,20 @@ class AbstractInvoiceExtractServiceImplTest {
 
 	private static class MyInvoiceExtractService extends AbstractInvoiceExtractService {
 
-		final List<HyperwalletPayment> operatorInvoces;
+		final List<HyperwalletPayment> operatorInvoices;
 
 		protected MyInvoiceExtractService(
 				final MiraklAccountingDocumentExtractService<InvoiceModel> miraklInvoiceExtractService,
 				final MiraklAccountingDocumentExtractService<CreditNoteModel> miraklCreditNotesExtractService,
 				final HyperWalletPaymentExtractService hyperWalletPaymentExtractService,
-				final List<HyperwalletPayment> operatorInvoces) {
+				final List<HyperwalletPayment> operatorInvoices) {
 			super(miraklInvoiceExtractService, miraklCreditNotesExtractService, hyperWalletPaymentExtractService);
-			this.operatorInvoces = operatorInvoces;
+			this.operatorInvoices = operatorInvoices;
 		}
 
 		@Override
 		protected List<HyperwalletPayment> payOperator(final List<InvoiceModel> invoices) {
-			return operatorInvoces;
+			return operatorInvoices;
 		}
 
 	}

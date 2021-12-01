@@ -2,7 +2,10 @@ package com.paypal.sellers.sellersextract.model;
 
 import com.callibrity.logging.test.LogTracker;
 import com.callibrity.logging.test.LogTrackerStub;
-import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
+import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue;
+import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue;
+import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue;
+import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -23,7 +26,7 @@ class BusinessStakeHolderModelTest {
 	private static final String UTC = "UTC";
 
 	@RegisterExtension
-	LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.WARN)
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.WARN)
 			.recordForType(BusinessStakeHolderModel.class);
 
 	private static final Integer BUSINESS_STAKE_HOLDER_NUMBER = 1;
@@ -86,11 +89,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void token_whenMiraklTokenBusinessStakeHolderFieldValueHasAValue_shouldSetToken() {
-		final var tokenBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue tokenBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		tokenBusinessStakeHolderField.setCode(TOKEN);
 		tokenBusinessStakeHolderField.setValue("token");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.token(List.of(tokenBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -100,7 +103,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void token_whenMiraklTokenBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetToken() {
-		final var tokenBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue tokenBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		tokenBusinessStakeHolderField.setCode(TOKEN);
 		tokenBusinessStakeHolderField.setValue("token");
 		//@formatter:off
@@ -116,11 +119,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void businessContact_whenMiraklBusinessContactBusinessStakeHolderFieldValueHasAValue_shouldSetBusinessContact() {
-		final var businessContactBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue businessContactBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		businessContactBusinessStakeHolderField.setCode(BUSINESS);
 		businessContactBusinessStakeHolderField.setValue("true");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.businessContact(List.of(businessContactBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -130,7 +133,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void businessContact_whenMiraklBusinessContactBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetBusinessContact() {
-		final var businessContactBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue businessContactBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		businessContactBusinessStakeHolderField.setCode(BUSINESS);
 		businessContactBusinessStakeHolderField.setValue("true");
 		//@formatter:off
@@ -146,11 +149,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void director_whenMiraklDirectorBusinessStakeHolderFieldValueHasAValue_shouldSetDirector() {
-		final var directorBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue directorBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		directorBusinessStakeHolderField.setCode(DIRECTOR);
 		directorBusinessStakeHolderField.setValue("true");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.director(List.of(directorBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -160,7 +163,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void director_whenMiraklDirectorBusinessStakeHolderFieldValueHasAValueHasAValueButHolderNumberIsNotValid_shouldNotSetDirector() {
-		final var directorBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue directorBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		directorBusinessStakeHolderField.setCode(DIRECTOR);
 		directorBusinessStakeHolderField.setValue("true");
 		//@formatter:off
@@ -176,11 +179,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void ubo_whenMiraklUboBusinessStakeHolderFieldValueHasAValue_shouldSetUbo() {
-		final var uboBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue uboBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		uboBusinessStakeHolderField.setCode(UBO);
 		uboBusinessStakeHolderField.setValue("true");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.ubo(List.of(uboBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -190,7 +193,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void ubo_whenMiraklUboBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetUbo() {
-		final var uboBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue uboBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		uboBusinessStakeHolderField.setCode(UBO);
 		uboBusinessStakeHolderField.setValue("true");
 		//@formatter:off
@@ -206,11 +209,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void smo_whenMiraklSmoBusinessStakeHolderFieldValueHasAValue_shouldSetSmo() {
-		final var smoBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue smoBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		smoBusinessStakeHolderField.setCode(SMO);
 		smoBusinessStakeHolderField.setValue("true");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.smo(List.of(smoBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -220,7 +223,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void smo_whenMiraklSmoBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetSmo() {
-		final var smoBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue smoBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		smoBusinessStakeHolderField.setCode(SMO);
 		smoBusinessStakeHolderField.setValue("true");
 		//@formatter:off
@@ -236,11 +239,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void firstName_whenMiraklFirstNameBusinessStakeHolderFieldValueHasAValue_shouldSetFirstName() {
-		final var firstNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue firstNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		firstNameBusinessStakeHolderField.setCode(FIRST_NAME);
 		firstNameBusinessStakeHolderField.setValue("firstName");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.firstName(List.of(firstNameBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -250,7 +253,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void firstName_whenMiraklFirstNameBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetFirstName() {
-		final var firstNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue firstNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		firstNameBusinessStakeHolderField.setCode(FIRST_NAME);
 		firstNameBusinessStakeHolderField.setValue("firstName");
 		//@formatter:off
@@ -266,11 +269,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void middleName_whenMiraklMiddleNameBusinessStakeHolderFieldValueHasAValue_shouldSetMiddleName() {
-		final var middleNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue middleNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		middleNameBusinessStakeHolderField.setCode(MIDDLE_NAME);
 		middleNameBusinessStakeHolderField.setValue("middleName");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.middleName(List.of(middleNameBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -280,7 +283,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void middleName_whenMiraklMiddleNameBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetMiddleName() {
-		final var middleNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue middleNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		middleNameBusinessStakeHolderField.setCode(MIDDLE_NAME);
 		middleNameBusinessStakeHolderField.setValue("middleName");
 		//@formatter:off
@@ -296,11 +299,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void lastName_whenMiraklLastNameBusinessStakeHolderFieldValueHasAValue_shouldSetLastName() {
-		final var lastNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue lastNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		lastNameBusinessStakeHolderField.setCode(LAST_NAME);
 		lastNameBusinessStakeHolderField.setValue("lastName");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.lastName(List.of(lastNameBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -310,7 +313,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void lastName_whenMiraklLastNameBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetLastName() {
-		final var lastNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue lastNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		lastNameBusinessStakeHolderField.setCode(LAST_NAME);
 		lastNameBusinessStakeHolderField.setValue("lastName");
 		//@formatter:off
@@ -326,11 +329,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void dateOfBirth_whenMiraklDateOfBirthBusinessStakeHolderFieldValueHasAValue_shouldSetDateOfBirth() {
-		final var dateOfBirthBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		final MiraklDateAdditionalFieldValue dateOfBirthBusinessStakeHolderField = new MiraklDateAdditionalFieldValue();
 		dateOfBirthBusinessStakeHolderField.setCode(DOB);
 		dateOfBirthBusinessStakeHolderField.setValue(DATE_OF_BIRTH);
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.timeZone(UTC)
 				.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
@@ -341,14 +344,14 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void dateOfBirth_whenMiraklDateOfBirthBusinessStakeHolderFieldValueHasAValueAndTimeZoneIsUTCPlusTwo_shouldSetDateOfBirthNextDay() {
-		final var dateOfBirthBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		final MiraklDateAdditionalFieldValue dateOfBirthBusinessStakeHolderField = new MiraklDateAdditionalFieldValue();
 		dateOfBirthBusinessStakeHolderField.setCode(DOB);
 		dateOfBirthBusinessStakeHolderField.setValue("1970-10-10T23:00:00Z");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
-						.timeZone("UTC+2")
-						.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
-						.build();
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
+				.timeZone("UTC+2")
+				.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
+				.build();
 		//@formatter:on
 
 		assertThat(result.getDateOfBirth()).hasYear(1970).hasMonth(10).hasDayOfMonth(11);
@@ -356,14 +359,14 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void dateOfBirth_whenMiraklDateOfBirthBusinessStakeHolderFieldValueHasAValueAndTimeZoneIsUTCMinusThree_shouldSetDateOfBirthSameDay() {
-		final var dateOfBirthBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		final MiraklDateAdditionalFieldValue dateOfBirthBusinessStakeHolderField = new MiraklDateAdditionalFieldValue();
 		dateOfBirthBusinessStakeHolderField.setCode(DOB);
 		dateOfBirthBusinessStakeHolderField.setValue("1970-10-10T23:00:00Z");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
-						.timeZone("UTC-3")
-						.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
-						.build();
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
+				.timeZone("UTC-3")
+				.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
+				.build();
 		//@formatter:on
 
 		assertThat(result.getDateOfBirth()).hasYear(1970).hasMonth(10).hasDayOfMonth(10);
@@ -371,7 +374,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void dateOfBirth_whenMiraklDateOfBirthBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetDateOfBirth() {
-		final var dateOfBirthBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		final MiraklDateAdditionalFieldValue dateOfBirthBusinessStakeHolderField = new MiraklDateAdditionalFieldValue();
 		dateOfBirthBusinessStakeHolderField.setCode(DOB);
 		dateOfBirthBusinessStakeHolderField.setValue(DATE_OF_BIRTH);
 		//@formatter:off
@@ -388,11 +391,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void countryOfBirth_whenMiraklCountryOfBirthBusinessStakeHolderFieldValueHasAValue_shouldSetCountryOfBirth() {
-		final var countryOfBirthBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue countryOfBirthBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		countryOfBirthBusinessStakeHolderField.setCode(COUNTRY_OF_BIRTH);
 		countryOfBirthBusinessStakeHolderField.setValue(US);
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.countryOfBirth(List.of(countryOfBirthBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -402,7 +405,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void countryOfBirth_whenMiraklCountryOfBirthBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetCountryOfBirth() {
-		final var countryOfBirthBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue countryOfBirthBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		countryOfBirthBusinessStakeHolderField.setCode(COUNTRY_OF_BIRTH);
 		countryOfBirthBusinessStakeHolderField.setValue(US);
 		//@formatter:off
@@ -417,13 +420,13 @@ class BusinessStakeHolderModelTest {
 	}
 
 	@Test
-	void countryOfNacionality_whenMiraklCountryOfNationalityBusinessStakeHolderFieldValueHasAValue_shouldSetCountryOfNationality() {
-		final var countryOfNacionalityBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
-		countryOfNacionalityBusinessStakeHolderField.setCode(NATIONALITY);
-		countryOfNacionalityBusinessStakeHolderField.setValue(US);
+	void countryOfNationality_whenMiraklCountryOfNationalityBusinessStakeHolderFieldValueHasAValue_shouldSetCountryOfNationality() {
+		final MiraklStringAdditionalFieldValue countryOfNationalityBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
+		countryOfNationalityBusinessStakeHolderField.setCode(NATIONALITY);
+		countryOfNationalityBusinessStakeHolderField.setValue(US);
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
-				.countryOfNationality(List.of(countryOfNacionalityBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
+				.countryOfNationality(List.of(countryOfNationalityBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
 
@@ -431,13 +434,13 @@ class BusinessStakeHolderModelTest {
 	}
 
 	@Test
-	void countryOfNacionality_whenMiraklCountryOfNationalityBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetCountryOfNationality() {
-		final var countryOfNacionalityBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
-		countryOfNacionalityBusinessStakeHolderField.setCode(NATIONALITY);
-		countryOfNacionalityBusinessStakeHolderField.setValue(US);
+	void countryOfNationality_whenMiraklCountryOfNationalityBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetCountryOfNationality() {
+		final MiraklStringAdditionalFieldValue countryOfNationalityBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
+		countryOfNationalityBusinessStakeHolderField.setCode(NATIONALITY);
+		countryOfNationalityBusinessStakeHolderField.setValue(US);
 		//@formatter:off
 		BusinessStakeHolderModel.builder()
-				.countryOfNationality(List.of(countryOfNacionalityBusinessStakeHolderField), INVALID_BUSINESS_STAKE_HOLDER_NUMBER)
+				.countryOfNationality(List.of(countryOfNationalityBusinessStakeHolderField), INVALID_BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
 
@@ -448,11 +451,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void gender_whenMiraklGenderBusinessStakeHolderFieldValueHasAValue_shouldSetGender() {
-		final var genderBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklValueListAdditionalFieldValue genderBusinessStakeHolderField = new MiraklValueListAdditionalFieldValue();
 		genderBusinessStakeHolderField.setCode(GENDER);
 		genderBusinessStakeHolderField.setValue("MALE");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.gender(List.of(genderBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -462,7 +465,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void gender_whenMiraklGenderBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetGender() {
-		final var genderBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklValueListAdditionalFieldValue genderBusinessStakeHolderField = new MiraklValueListAdditionalFieldValue();
 		genderBusinessStakeHolderField.setCode(GENDER);
 		genderBusinessStakeHolderField.setValue("MALE");
 		//@formatter:off
@@ -478,11 +481,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void phoneNumber_whenMiraklPhoneNumberBusinessStakeHolderFieldValueHasAValue_shouldSetPhoneNumber() {
-		final var phoneNumberBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue phoneNumberBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		phoneNumberBusinessStakeHolderField.setCode(PHONE_NUMBER);
 		phoneNumberBusinessStakeHolderField.setValue("phoneNumber");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.phoneNumber(List.of(phoneNumberBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -492,7 +495,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void phoneNumber_whenMiraklPhoneNumberBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetPhoneNumber() {
-		final var phoneNumberBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue phoneNumberBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		phoneNumberBusinessStakeHolderField.setCode(PHONE_NUMBER);
 		phoneNumberBusinessStakeHolderField.setValue("phoneNumber");
 		//@formatter:off
@@ -508,11 +511,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void mobileNumber_whenMiraklMobileNumberBusinessStakeHolderFieldValueHasAValue_shouldSetMobileNumber() {
-		final var mobileNumberBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue mobileNumberBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		mobileNumberBusinessStakeHolderField.setCode(MOBILE_NUMBER);
 		mobileNumberBusinessStakeHolderField.setValue("mobileNumber");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.mobileNumber(List.of(mobileNumberBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -522,7 +525,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void mobileNumber_whenMiraklMobileNumberBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetMobileNumber() {
-		final var mobileNumberBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue mobileNumberBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		mobileNumberBusinessStakeHolderField.setCode(MOBILE_NUMBER);
 		mobileNumberBusinessStakeHolderField.setValue("mobileNumber");
 		//@formatter:off
@@ -538,11 +541,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void email_whenMiraklEmailBusinessStakeHolderFieldValueHasAValue_shouldSetEmail() {
-		final var emailBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue emailBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		emailBusinessStakeHolderField.setCode(EMAIL);
 		emailBusinessStakeHolderField.setValue("email");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.email(List.of(emailBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -552,7 +555,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void email_whenMiraklEmailBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetEmail() {
-		final var emailBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue emailBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		emailBusinessStakeHolderField.setCode(EMAIL);
 		emailBusinessStakeHolderField.setValue("email");
 		//@formatter:off
@@ -568,7 +571,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void governmentId_whenMiraklGovernmentIdBusinessStakeHolderFieldValueHasAValue_shouldSetGovernmentId() {
-		final var governmentIdBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue governmentIdBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		governmentIdBusinessStakeHolderField.setCode(GOVERNMENT_ID_NUM);
 		governmentIdBusinessStakeHolderField.setValue("governmentId");
 		//@formatter:off
@@ -584,11 +587,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void governmentIdType_whenMiraklGovernmentIdTypeBusinessStakeHolderFieldValueHasAValue_shouldSetGovernmentIdType() {
-		final var governmentIdTypeBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklValueListAdditionalFieldValue governmentIdTypeBusinessStakeHolderField = new MiraklValueListAdditionalFieldValue();
 		governmentIdTypeBusinessStakeHolderField.setCode(GOVERNMENT_ID_TYPE);
 		governmentIdTypeBusinessStakeHolderField.setValue("PASSPORT");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.governmentIdType(List.of(governmentIdTypeBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -598,7 +601,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void governmentIdType_whenMiraklGovernmentIdTypeBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetGovernmentIdType() {
-		final var governmentIdTypeBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklValueListAdditionalFieldValue governmentIdTypeBusinessStakeHolderField = new MiraklValueListAdditionalFieldValue();
 		governmentIdTypeBusinessStakeHolderField.setCode(GOVERNMENT_ID_TYPE);
 		governmentIdTypeBusinessStakeHolderField.setValue("PASSPORT");
 		//@formatter:off
@@ -614,11 +617,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void driversLicenseId_whenMiraklDriversLicenseIdBusinessStakeHolderFieldValueHasAValue_shouldSetDriversLicenseId() {
-		final var driversLicenseIdBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue driversLicenseIdBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		driversLicenseIdBusinessStakeHolderField.setCode(DRIVERS_LICENSE_NUM);
 		driversLicenseIdBusinessStakeHolderField.setValue("driversLicenseId");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.driversLicenseId(List.of(driversLicenseIdBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -628,7 +631,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void driversLicenseId_whenMiraklDriversLicenseIdBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetDriversLicenseId() {
-		final var driversLicenseIdBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue driversLicenseIdBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		driversLicenseIdBusinessStakeHolderField.setCode(DRIVERS_LICENSE_NUM);
 		driversLicenseIdBusinessStakeHolderField.setValue("driversLicenseId");
 		//@formatter:off
@@ -644,11 +647,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void addressLine1_whenMiraklAddressLine1BusinessStakeHolderFieldValueHasAValue_shouldSetAddressLine1() {
-		final var addressLine1BusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue addressLine1BusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		addressLine1BusinessStakeHolderField.setCode(ADDRESS_LINE_1);
 		addressLine1BusinessStakeHolderField.setValue("addressLine1");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.addressLine1(List.of(addressLine1BusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -658,7 +661,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void addressLine1_whenMiraklAddressLine1BusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetAddressLine1() {
-		final var addressLine1BusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue addressLine1BusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		addressLine1BusinessStakeHolderField.setCode(ADDRESS_LINE_1);
 		addressLine1BusinessStakeHolderField.setValue("addressLine1");
 		//@formatter:off
@@ -674,11 +677,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void addressLine2_whenMiraklAddressLine2BusinessStakeHolderFieldValueHasAValue_shouldSetAddressLine2() {
-		final var addressLine2BusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue addressLine2BusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		addressLine2BusinessStakeHolderField.setCode(ADDRESS_LINE_2);
 		addressLine2BusinessStakeHolderField.setValue("addressLine2");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.addressLine2(List.of(addressLine2BusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -688,7 +691,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void addressLine2_whenMiraklAddressLine2BusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetAddressLine2() {
-		final var addressLine2BusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue addressLine2BusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		addressLine2BusinessStakeHolderField.setCode(ADDRESS_LINE_2);
 		addressLine2BusinessStakeHolderField.setValue("addressLine2");
 		//@formatter:off
@@ -704,11 +707,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void city_whenMiraklCityBusinessStakeHolderFieldValueHasAValue_shouldSetCity() {
-		final var cityBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue cityBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		cityBusinessStakeHolderField.setCode(CITY);
 		cityBusinessStakeHolderField.setValue("city");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.city(List.of(cityBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -718,7 +721,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void city_whenMiraklCityBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetCity() {
-		final var cityBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue cityBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		cityBusinessStakeHolderField.setCode(CITY);
 		cityBusinessStakeHolderField.setValue("city");
 		//@formatter:off
@@ -734,11 +737,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void stateProvince_whenMiraklStateProvinceBusinessStakeHolderFieldValueHasAValue_shouldStateProvince() {
-		final var stateProvinceBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue stateProvinceBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		stateProvinceBusinessStakeHolderField.setCode(STATE);
 		stateProvinceBusinessStakeHolderField.setValue("stateProvince");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.stateProvince(List.of(stateProvinceBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -748,7 +751,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void stateProvince_whenMiraklStateProvinceBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetStateProvince() {
-		final var stateProvinceBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue stateProvinceBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		stateProvinceBusinessStakeHolderField.setCode(STATE);
 		stateProvinceBusinessStakeHolderField.setValue("stateProvince");
 		//@formatter:off
@@ -764,11 +767,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void country_whenMiraklCountryBusinessStakeHolderFieldValueHasAValue_shouldSetCountry() {
-		final var countryBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue countryBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		countryBusinessStakeHolderField.setCode(COUNTRY);
 		countryBusinessStakeHolderField.setValue(US);
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.country(List.of(countryBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -778,7 +781,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void country_whenMiraklCountryBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetCountry() {
-		final var countryBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue countryBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		countryBusinessStakeHolderField.setCode(COUNTRY);
 		countryBusinessStakeHolderField.setValue(US);
 		//@formatter:off
@@ -794,11 +797,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void postalCode_whenMiraklPostalCodeBusinessStakeHolderFieldValueHasAValue_shouldSetPostalCode() {
-		final var postalCodeBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue postalCodeBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		postalCodeBusinessStakeHolderField.setCode(POST_CODE);
 		postalCodeBusinessStakeHolderField.setValue("postalCode");
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.postalCode(List.of(postalCodeBusinessStakeHolderField), BUSINESS_STAKE_HOLDER_NUMBER)
 				.build();
 		//@formatter:on
@@ -808,7 +811,7 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void postalCode_whenMiraklPostalCodeBusinessStakeHolderFieldValueHasAValueButHolderNumberIsNotValid_shouldNotSetPostalCode() {
-		final var postalCodeBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue postalCodeBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		postalCodeBusinessStakeHolderField.setCode(POST_CODE);
 		postalCodeBusinessStakeHolderField.setValue("postalCode");
 		//@formatter:off
@@ -824,100 +827,99 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void toBuilder() {
-
-		final var tokenBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue tokenBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		tokenBusinessStakeHolderField.setCode(TOKEN);
 		tokenBusinessStakeHolderField.setValue("token");
 
-		final var businessContactBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue businessContactBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		businessContactBusinessStakeHolderField.setCode(BUSINESS);
 		businessContactBusinessStakeHolderField.setValue("true");
 
-		final var directorBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue directorBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		directorBusinessStakeHolderField.setCode(DIRECTOR);
 		directorBusinessStakeHolderField.setValue("true");
 
-		final var uboBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue uboBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		uboBusinessStakeHolderField.setCode(UBO);
 		uboBusinessStakeHolderField.setValue("true");
 
-		final var smoBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue smoBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		smoBusinessStakeHolderField.setCode(SMO);
 		smoBusinessStakeHolderField.setValue("true");
 
-		final var firstNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue firstNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		firstNameBusinessStakeHolderField.setCode(FIRST_NAME);
 		firstNameBusinessStakeHolderField.setValue("firstName");
 
-		final var middleNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue middleNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		middleNameBusinessStakeHolderField.setCode(MIDDLE_NAME);
 		middleNameBusinessStakeHolderField.setValue("middleName");
 
-		final var lastNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue lastNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		lastNameBusinessStakeHolderField.setCode(LAST_NAME);
 		lastNameBusinessStakeHolderField.setValue("lastName");
 
-		final var dateOfBirthBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		final MiraklDateAdditionalFieldValue dateOfBirthBusinessStakeHolderField = new MiraklDateAdditionalFieldValue();
 		dateOfBirthBusinessStakeHolderField.setCode(DOB);
 		dateOfBirthBusinessStakeHolderField.setValue(DATE_OF_BIRTH);
 
-		final var countryOfBirthBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue countryOfBirthBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		countryOfBirthBusinessStakeHolderField.setCode(COUNTRY_OF_BIRTH);
 		countryOfBirthBusinessStakeHolderField.setValue(US);
 
-		final var countryOfNacionalityBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
-		countryOfNacionalityBusinessStakeHolderField.setCode(NATIONALITY);
-		countryOfNacionalityBusinessStakeHolderField.setValue(US);
+		final MiraklStringAdditionalFieldValue countryOfNationalityBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
+		countryOfNationalityBusinessStakeHolderField.setCode(NATIONALITY);
+		countryOfNationalityBusinessStakeHolderField.setValue(US);
 
-		final var genderBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklValueListAdditionalFieldValue genderBusinessStakeHolderField = new MiraklValueListAdditionalFieldValue();
 		genderBusinessStakeHolderField.setCode(GENDER);
 		genderBusinessStakeHolderField.setValue("MALE");
 
-		final var phoneNumberBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue phoneNumberBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		phoneNumberBusinessStakeHolderField.setCode(PHONE_NUMBER);
 		phoneNumberBusinessStakeHolderField.setValue("phoneNumber");
 
-		final var mobileNumberBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue mobileNumberBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		mobileNumberBusinessStakeHolderField.setCode(MOBILE_NUMBER);
 		mobileNumberBusinessStakeHolderField.setValue("mobileNumber");
 
-		final var emailBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue emailBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		emailBusinessStakeHolderField.setCode(EMAIL);
 		emailBusinessStakeHolderField.setValue("email");
 
-		final var governmentIdBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue governmentIdBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		governmentIdBusinessStakeHolderField.setCode(GOVERNMENT_ID_NUM);
 		governmentIdBusinessStakeHolderField.setValue("governmentId");
 
-		final var governmentIdTypeBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklValueListAdditionalFieldValue governmentIdTypeBusinessStakeHolderField = new MiraklValueListAdditionalFieldValue();
 		governmentIdTypeBusinessStakeHolderField.setCode(GOVERNMENT_ID_TYPE);
 		governmentIdTypeBusinessStakeHolderField.setValue("PASSPORT");
 
-		final var driversLicenseIdBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue driversLicenseIdBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		driversLicenseIdBusinessStakeHolderField.setCode(DRIVERS_LICENSE_NUM);
 		driversLicenseIdBusinessStakeHolderField.setValue("driversLicenseId");
 
-		final var addressLine1BusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue addressLine1BusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		addressLine1BusinessStakeHolderField.setCode(ADDRESS_LINE_1);
 		addressLine1BusinessStakeHolderField.setValue("addressLine1");
 
-		final var addressLine2BusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue addressLine2BusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		addressLine2BusinessStakeHolderField.setCode(ADDRESS_LINE_2);
 		addressLine2BusinessStakeHolderField.setValue("addressLine2");
 
-		final var cityBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue cityBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		cityBusinessStakeHolderField.setCode(CITY);
 		cityBusinessStakeHolderField.setValue("city");
 
-		final var stateProvinceBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue stateProvinceBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		stateProvinceBusinessStakeHolderField.setCode(STATE);
 		stateProvinceBusinessStakeHolderField.setValue("stateProvince");
 
-		final var countryBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue countryBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		countryBusinessStakeHolderField.setCode(COUNTRY);
 		countryBusinessStakeHolderField.setValue(US);
 
-		final var postalCodeBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue postalCodeBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		postalCodeBusinessStakeHolderField.setCode(POST_CODE);
 		postalCodeBusinessStakeHolderField.setValue("postalCode");
 
@@ -937,7 +939,7 @@ class BusinessStakeHolderModelTest {
 				.timeZone(UTC)
 				.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), STK_ID)
 				.countryOfBirth(List.of(countryOfBirthBusinessStakeHolderField), STK_ID)
-				.countryOfNationality(List.of(countryOfNacionalityBusinessStakeHolderField), STK_ID)
+				.countryOfNationality(List.of(countryOfNationalityBusinessStakeHolderField), STK_ID)
 				.gender(List.of(genderBusinessStakeHolderField), STK_ID)
 				.phoneNumber(List.of(phoneNumberBusinessStakeHolderField), STK_ID)
 				.mobileNumber(List.of(mobileNumberBusinessStakeHolderField), STK_ID)
@@ -1002,100 +1004,99 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void isEmpty_shouldReturnFalseWhenAllAttributesAreFilledIn() {
-
-		final var tokenBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue tokenBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		tokenBusinessStakeHolderField.setCode(TOKEN);
 		tokenBusinessStakeHolderField.setValue("token");
 
-		final var businessContactBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue businessContactBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		businessContactBusinessStakeHolderField.setCode(BUSINESS);
 		businessContactBusinessStakeHolderField.setValue("true");
 
-		final var directorBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue directorBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		directorBusinessStakeHolderField.setCode(DIRECTOR);
 		directorBusinessStakeHolderField.setValue("true");
 
-		final var uboBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue uboBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		uboBusinessStakeHolderField.setCode(UBO);
 		uboBusinessStakeHolderField.setValue("true");
 
-		final var smoBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue smoBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		smoBusinessStakeHolderField.setCode(SMO);
 		smoBusinessStakeHolderField.setValue("true");
 
-		final var firstNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue firstNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		firstNameBusinessStakeHolderField.setCode(FIRST_NAME);
 		firstNameBusinessStakeHolderField.setValue("firstName");
 
-		final var middleNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue middleNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		middleNameBusinessStakeHolderField.setCode(MIDDLE_NAME);
 		middleNameBusinessStakeHolderField.setValue("middleName");
 
-		final var lastNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue lastNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		lastNameBusinessStakeHolderField.setCode(LAST_NAME);
 		lastNameBusinessStakeHolderField.setValue("lastName");
 
-		final var dateOfBirthBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		final MiraklDateAdditionalFieldValue dateOfBirthBusinessStakeHolderField = new MiraklDateAdditionalFieldValue();
 		dateOfBirthBusinessStakeHolderField.setCode(DOB);
 		dateOfBirthBusinessStakeHolderField.setValue(DATE_OF_BIRTH);
 
-		final var countryOfBirthBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue countryOfBirthBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		countryOfBirthBusinessStakeHolderField.setCode(COUNTRY_OF_BIRTH);
 		countryOfBirthBusinessStakeHolderField.setValue(US);
 
-		final var countryOfNacionalityBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
-		countryOfNacionalityBusinessStakeHolderField.setCode(NATIONALITY);
-		countryOfNacionalityBusinessStakeHolderField.setValue(US);
+		final MiraklStringAdditionalFieldValue countryOfNationalityBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
+		countryOfNationalityBusinessStakeHolderField.setCode(NATIONALITY);
+		countryOfNationalityBusinessStakeHolderField.setValue(US);
 
-		final var genderBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklValueListAdditionalFieldValue genderBusinessStakeHolderField = new MiraklValueListAdditionalFieldValue();
 		genderBusinessStakeHolderField.setCode(GENDER);
 		genderBusinessStakeHolderField.setValue("MALE");
 
-		final var phoneNumberBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue phoneNumberBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		phoneNumberBusinessStakeHolderField.setCode(PHONE_NUMBER);
 		phoneNumberBusinessStakeHolderField.setValue("phoneNumber");
 
-		final var mobileNumberBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue mobileNumberBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		mobileNumberBusinessStakeHolderField.setCode(MOBILE_NUMBER);
 		mobileNumberBusinessStakeHolderField.setValue("mobileNumber");
 
-		final var emailBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue emailBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		emailBusinessStakeHolderField.setCode(EMAIL);
 		emailBusinessStakeHolderField.setValue("email");
 
-		final var governmentIdBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue governmentIdBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		governmentIdBusinessStakeHolderField.setCode(GOVERNMENT_ID_NUM);
 		governmentIdBusinessStakeHolderField.setValue("governmentId");
 
-		final var governmentIdTypeBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklValueListAdditionalFieldValue governmentIdTypeBusinessStakeHolderField = new MiraklValueListAdditionalFieldValue();
 		governmentIdTypeBusinessStakeHolderField.setCode(GOVERNMENT_ID_TYPE);
 		governmentIdTypeBusinessStakeHolderField.setValue("PASSPORT");
 
-		final var driversLicenseIdBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue driversLicenseIdBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		driversLicenseIdBusinessStakeHolderField.setCode(DRIVERS_LICENSE_NUM);
 		driversLicenseIdBusinessStakeHolderField.setValue("driversLicenseId");
 
-		final var addressLine1BusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue addressLine1BusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		addressLine1BusinessStakeHolderField.setCode(ADDRESS_LINE_1);
 		addressLine1BusinessStakeHolderField.setValue("addressLine1");
 
-		final var addressLine2BusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue addressLine2BusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		addressLine2BusinessStakeHolderField.setCode(ADDRESS_LINE_2);
 		addressLine2BusinessStakeHolderField.setValue("addressLine2");
 
-		final var cityBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue cityBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		cityBusinessStakeHolderField.setCode(CITY);
 		cityBusinessStakeHolderField.setValue("city");
 
-		final var stateProvinceBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue stateProvinceBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		stateProvinceBusinessStakeHolderField.setCode(STATE);
 		stateProvinceBusinessStakeHolderField.setValue("stateProvince");
 
-		final var countryBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue countryBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		countryBusinessStakeHolderField.setCode(COUNTRY);
 		countryBusinessStakeHolderField.setValue(US);
 
-		final var postalCodeBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue postalCodeBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		postalCodeBusinessStakeHolderField.setCode(POST_CODE);
 		postalCodeBusinessStakeHolderField.setValue("postalCode");
 
@@ -1115,7 +1116,7 @@ class BusinessStakeHolderModelTest {
 				.timeZone(UTC)
 				.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), STK_ID)
 				.countryOfBirth(List.of(countryOfBirthBusinessStakeHolderField), STK_ID)
-				.countryOfNationality(List.of(countryOfNacionalityBusinessStakeHolderField), STK_ID)
+				.countryOfNationality(List.of(countryOfNationalityBusinessStakeHolderField), STK_ID)
 				.gender(List.of(genderBusinessStakeHolderField), STK_ID)
 				.phoneNumber(List.of(phoneNumberBusinessStakeHolderField), STK_ID)
 				.mobileNumber(List.of(mobileNumberBusinessStakeHolderField), STK_ID)
@@ -1138,7 +1139,6 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void isJustCreated_shouldReturnTrueWhenSetToFalse() {
-
 		final BusinessStakeHolderModel businessStakeHolderModelStub = BusinessStakeHolderModel.builder().justCreated(false).build();
 
 		final boolean result = businessStakeHolderModelStub.isJustCreated();
@@ -1148,7 +1148,6 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void isJustCreated_shouldReturnTrueWhenSetToTrue() {
-
 		final BusinessStakeHolderModel businessStakeHolderModelStub = BusinessStakeHolderModel.builder().justCreated(true).build();
 
 		final boolean result = businessStakeHolderModelStub.isJustCreated();
@@ -1158,7 +1157,6 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenBothAreEquals() {
-
 		final BusinessStakeHolderModel businessStakeHolderModelOne = createBusinessStakeHolderModelObject();
 		final BusinessStakeHolderModel businessStakeHolderModelTwo = businessStakeHolderModelOne.toBuilder().build();
 
@@ -1169,7 +1167,6 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenBothAreNotEquals() {
-
 		final BusinessStakeHolderModel businessStakeHolderModelOne = createBusinessStakeHolderModelObject();
 		final BusinessStakeHolderModel businessStakeHolderModelTwo = businessStakeHolderModelOne.toBuilder().token("newToken").build();
 
@@ -1180,7 +1177,6 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenSameObjectIsCompared() {
-
 		final BusinessStakeHolderModel businessStakeHolderModelOne = createBusinessStakeHolderModelObject();
 
 		final boolean result = businessStakeHolderModelOne.equals(businessStakeHolderModelOne);
@@ -1190,7 +1186,6 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenComparedWithAnotherInstanceObject() {
-
 		final BusinessStakeHolderModel businessStakeHolderModelOne = createBusinessStakeHolderModelObject();
 
 		final Object o = new Object();
@@ -1202,11 +1197,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void userToken_whenMiraklUserTokenBusinessStakeHolderFieldValueHasAValue_shouldSetUserToken() {
-		final var userTokenBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue userTokenBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		userTokenBusinessStakeHolderField.setCode(HYPERWALLET_USER_TOKEN);
 		userTokenBusinessStakeHolderField.setValue(USER_TOKEN);
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.userToken(List.of(userTokenBusinessStakeHolderField))
 				.build();
 		//@formatter:on
@@ -1216,11 +1211,11 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void hyperwalletProgram_whenMiraklHyperwalletProgramBusinessStakeHolderFieldValueHasAValue_shouldSetHyperwalletProgram() {
-		final var hyperwalletProgramBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklValueListAdditionalFieldValue hyperwalletProgramBusinessStakeHolderField = new MiraklValueListAdditionalFieldValue();
 		hyperwalletProgramBusinessStakeHolderField.setCode(SellerModelConstants.HYPERWALLET_PROGRAM);
 		hyperwalletProgramBusinessStakeHolderField.setValue(HYPERWALLET_PROGRAM);
 		//@formatter:off
-		final var result = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel result = BusinessStakeHolderModel.builder()
 				.hyperwalletProgram(List.of(hyperwalletProgramBusinessStakeHolderField))
 				.build();
 		//@formatter:on
@@ -1229,103 +1224,103 @@ class BusinessStakeHolderModelTest {
 	}
 
 	private BusinessStakeHolderModel createBusinessStakeHolderModelObject() {
-		final var tokenBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue tokenBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		tokenBusinessStakeHolderField.setCode(TOKEN);
 		tokenBusinessStakeHolderField.setValue("token");
 
-		final var businessContactBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue businessContactBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		businessContactBusinessStakeHolderField.setCode(BUSINESS);
 		businessContactBusinessStakeHolderField.setValue("true");
 
-		final var directorBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue directorBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		directorBusinessStakeHolderField.setCode(DIRECTOR);
 		directorBusinessStakeHolderField.setValue("true");
 
-		final var uboBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue uboBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		uboBusinessStakeHolderField.setCode(UBO);
 		uboBusinessStakeHolderField.setValue("true");
 
-		final var smoBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklBooleanAdditionalFieldValue smoBusinessStakeHolderField = new MiraklBooleanAdditionalFieldValue();
 		smoBusinessStakeHolderField.setCode(SMO);
 		smoBusinessStakeHolderField.setValue("true");
 
-		final var firstNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue firstNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		firstNameBusinessStakeHolderField.setCode(FIRST_NAME);
 		firstNameBusinessStakeHolderField.setValue("firstName");
 
-		final var middleNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue middleNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		middleNameBusinessStakeHolderField.setCode(MIDDLE_NAME);
 		middleNameBusinessStakeHolderField.setValue("middleName");
 
-		final var lastNameBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue lastNameBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		lastNameBusinessStakeHolderField.setCode(LAST_NAME);
 		lastNameBusinessStakeHolderField.setValue("lastName");
 
-		final var dateOfBirthBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		final MiraklDateAdditionalFieldValue dateOfBirthBusinessStakeHolderField = new MiraklDateAdditionalFieldValue();
 		dateOfBirthBusinessStakeHolderField.setCode(DOB);
 		dateOfBirthBusinessStakeHolderField.setValue(DATE_OF_BIRTH);
 
-		final var countryOfBirthBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue countryOfBirthBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		countryOfBirthBusinessStakeHolderField.setCode(COUNTRY_OF_BIRTH);
 		countryOfBirthBusinessStakeHolderField.setValue(US);
 
-		final var countryOfNacionalityBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
-		countryOfNacionalityBusinessStakeHolderField.setCode(NATIONALITY);
-		countryOfNacionalityBusinessStakeHolderField.setValue(US);
+		final MiraklStringAdditionalFieldValue countryOfNationalityBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
+		countryOfNationalityBusinessStakeHolderField.setCode(NATIONALITY);
+		countryOfNationalityBusinessStakeHolderField.setValue(US);
 
-		final var genderBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklValueListAdditionalFieldValue genderBusinessStakeHolderField = new MiraklValueListAdditionalFieldValue();
 		genderBusinessStakeHolderField.setCode(GENDER);
 		genderBusinessStakeHolderField.setValue("MALE");
 
-		final var phoneNumberBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue phoneNumberBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		phoneNumberBusinessStakeHolderField.setCode(PHONE_NUMBER);
 		phoneNumberBusinessStakeHolderField.setValue("phoneNumber");
 
-		final var mobileNumberBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue mobileNumberBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		mobileNumberBusinessStakeHolderField.setCode(MOBILE_NUMBER);
 		mobileNumberBusinessStakeHolderField.setValue("mobileNumber");
 
-		final var emailBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue emailBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		emailBusinessStakeHolderField.setCode(EMAIL);
 		emailBusinessStakeHolderField.setValue("email");
 
-		final var governmentIdBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue governmentIdBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		governmentIdBusinessStakeHolderField.setCode(GOVERNMENT_ID_NUM);
 		governmentIdBusinessStakeHolderField.setValue("governmentId");
 
-		final var governmentIdTypeBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklValueListAdditionalFieldValue governmentIdTypeBusinessStakeHolderField = new MiraklValueListAdditionalFieldValue();
 		governmentIdTypeBusinessStakeHolderField.setCode(GOVERNMENT_ID_TYPE);
 		governmentIdTypeBusinessStakeHolderField.setValue("PASSPORT");
 
-		final var driversLicenseIdBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue driversLicenseIdBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		driversLicenseIdBusinessStakeHolderField.setCode(DRIVERS_LICENSE_NUM);
 		driversLicenseIdBusinessStakeHolderField.setValue("driversLicenseId");
 
-		final var addressLine1BusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue addressLine1BusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		addressLine1BusinessStakeHolderField.setCode(ADDRESS_LINE_1);
 		addressLine1BusinessStakeHolderField.setValue("addressLine1");
 
-		final var addressLine2BusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue addressLine2BusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		addressLine2BusinessStakeHolderField.setCode(ADDRESS_LINE_2);
 		addressLine2BusinessStakeHolderField.setValue("addressLine2");
 
-		final var cityBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue cityBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		cityBusinessStakeHolderField.setCode(CITY);
 		cityBusinessStakeHolderField.setValue("city");
 
-		final var stateProvinceBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue stateProvinceBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		stateProvinceBusinessStakeHolderField.setCode(STATE);
 		stateProvinceBusinessStakeHolderField.setValue("stateProvince");
 
-		final var countryBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue countryBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		countryBusinessStakeHolderField.setCode(COUNTRY);
 		countryBusinessStakeHolderField.setValue(US);
 
-		final var postalCodeBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue postalCodeBusinessStakeHolderField = new MiraklStringAdditionalFieldValue();
 		postalCodeBusinessStakeHolderField.setCode(POST_CODE);
 		postalCodeBusinessStakeHolderField.setValue("postalCode");
 
-		final var hyperwalletProgramBusinessStakeHolderFiled = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklValueListAdditionalFieldValue hyperwalletProgramBusinessStakeHolderFiled = new MiraklValueListAdditionalFieldValue();
 		hyperwalletProgramBusinessStakeHolderFiled.setCode(SellerModelConstants.HYPERWALLET_PROGRAM);
 		hyperwalletProgramBusinessStakeHolderFiled.setValue(HYPERWALLET_PROGRAM);
 
@@ -1343,7 +1338,7 @@ class BusinessStakeHolderModelTest {
 				.timeZone(UTC)
 				.dateOfBirth(List.of(dateOfBirthBusinessStakeHolderField), STK_ID)
 				.countryOfBirth(List.of(countryOfBirthBusinessStakeHolderField), STK_ID)
-				.countryOfNationality(List.of(countryOfNacionalityBusinessStakeHolderField), STK_ID)
+				.countryOfNationality(List.of(countryOfNationalityBusinessStakeHolderField), STK_ID)
 				.gender(List.of(genderBusinessStakeHolderField), STK_ID)
 				.phoneNumber(List.of(phoneNumberBusinessStakeHolderField), STK_ID)
 				.mobileNumber(List.of(mobileNumberBusinessStakeHolderField), STK_ID)

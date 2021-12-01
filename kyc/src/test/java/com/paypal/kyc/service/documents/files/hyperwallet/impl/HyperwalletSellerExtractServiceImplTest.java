@@ -10,7 +10,7 @@ import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCConstants;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.service.HyperwalletSDKService;
-import com.paypal.kyc.strategies.documents.files.hyperwallet.seller.impl.KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor;
+import com.paypal.kyc.strategies.documents.files.hyperwallet.seller.impl.KYCDocumentInfoToHWVerificationDocumentExecutor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,22 +43,21 @@ class HyperwalletSellerExtractServiceImplTest {
 	private Hyperwallet hyperwalletClientMock;
 
 	@Mock
+	private MailNotificationUtil mailNotificationUtilMock;
+
+	@Mock
 	private HyperwalletSDKService hyperwalletSDKServiceMock;
 
 	@Mock
 	private HyperwalletVerificationDocument uploadDataOneMock, uploadDataTwoMock;
 
 	@Mock
-	private KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorMock;
-
-	@Mock
-	private MailNotificationUtil mailNotificationUtilMock;
+	private KYCDocumentInfoToHWVerificationDocumentExecutor kycDocumentInfoToHWVerificationDocumentExecutorMock;
 
 	@Test
 	void pushDocuments_shouldReturnAllKYCDocumentInfoModelWhenAllMiraklAPICallsAreSuccessful() {
-
-		final KYCDocumentSellerInfoModel kycDocumentSellerInfoModelOneStub = Mockito
-				.spy(KYCDocumentSellerInfoModel.builder().clientUserId(CLIENT_USER_ID_ONE)
+		final KYCDocumentSellerInfoModel kycDocumentSellerInfoModelOneStub = spy(
+				KYCDocumentSellerInfoModel.builder().clientUserId(CLIENT_USER_ID_ONE)
 						.userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
 								KYCConstants.HYPERWALLET_USER_TOKEN_FIELD, USR_TOKEN_ONE)))
 						.hyperwalletProgram(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
@@ -75,10 +74,10 @@ class HyperwalletSellerExtractServiceImplTest {
 
 		when(kycDocumentSellerInfoModelOneStub.areDocumentsFilled()).thenReturn(true);
 		when(kycDocumentSellerInfoModelTwoStub.areDocumentsFilled()).thenReturn(true);
-		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorMock
-				.execute(kycDocumentSellerInfoModelOneStub)).thenReturn(List.of(uploadDataOneMock));
-		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorMock
-				.execute(kycDocumentSellerInfoModelTwoStub)).thenReturn(List.of(uploadDataTwoMock));
+		when(kycDocumentInfoToHWVerificationDocumentExecutorMock.execute(kycDocumentSellerInfoModelOneStub))
+				.thenReturn(List.of(uploadDataOneMock));
+		when(kycDocumentInfoToHWVerificationDocumentExecutorMock.execute(kycDocumentSellerInfoModelTwoStub))
+				.thenReturn(List.of(uploadDataTwoMock));
 
 		when(hyperwalletSDKServiceMock.getHyperwalletInstance(Mockito.anyString())).thenReturn(hyperwalletClientMock);
 
@@ -88,13 +87,12 @@ class HyperwalletSellerExtractServiceImplTest {
 		verify(hyperwalletClientMock).uploadUserDocuments(USR_TOKEN_ONE, List.of(uploadDataOneMock));
 		verify(hyperwalletClientMock).uploadUserDocuments(USR_TOKEN_TWO, List.of(uploadDataTwoMock));
 
-		assertThat(result).containsExactlyInAnyOrder(kycDocumentSellerInfoModelOneStub,
-				kycDocumentSellerInfoModelTwoStub);
+		assertThat(result).containsExactlyInAnyOrder(markInfoAsSentToHyperwallet(kycDocumentSellerInfoModelOneStub),
+				markInfoAsSentToHyperwallet(kycDocumentSellerInfoModelTwoStub));
 	}
 
 	@Test
 	void pushDocuments_shouldDoNothingForKYCDocumentsInfoWithDocumentsNonFilled() {
-
 		final KYCDocumentSellerInfoModel kycDocumentSellerInfoModelOneStub = Mockito
 				.spy(KYCDocumentSellerInfoModel.builder().clientUserId(CLIENT_USER_ID_ONE)
 						.userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
@@ -113,8 +111,8 @@ class HyperwalletSellerExtractServiceImplTest {
 
 		when(kycDocumentSellerInfoModelOneStub.areDocumentsFilled()).thenReturn(true);
 		when(kycDocumentSellerInfoModelTwoStub.areDocumentsFilled()).thenReturn(false);
-		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorMock
-				.execute(kycDocumentSellerInfoModelOneStub)).thenReturn(List.of(uploadDataOneMock));
+		when(kycDocumentInfoToHWVerificationDocumentExecutorMock.execute(kycDocumentSellerInfoModelOneStub))
+				.thenReturn(List.of(uploadDataOneMock));
 
 		when(hyperwalletSDKServiceMock.getHyperwalletInstance(Mockito.anyString())).thenReturn(hyperwalletClientMock);
 
@@ -124,7 +122,7 @@ class HyperwalletSellerExtractServiceImplTest {
 		verify(hyperwalletClientMock).uploadUserDocuments(USR_TOKEN_ONE, List.of(uploadDataOneMock));
 		verify(hyperwalletClientMock, never()).uploadUserDocuments(USR_TOKEN_TWO, List.of(uploadDataTwoMock));
 
-		assertThat(result).containsExactlyInAnyOrder(kycDocumentSellerInfoModelOneStub);
+		assertThat(result).containsExactly(markInfoAsSentToHyperwallet(kycDocumentSellerInfoModelOneStub));
 	}
 
 	@Test
@@ -148,10 +146,10 @@ class HyperwalletSellerExtractServiceImplTest {
 		when(kycDocumentSellerInfoModelOKStub.areDocumentsFilled()).thenReturn(true);
 		when(kycDocumentSellerInfoModelKOStub.areDocumentsFilled()).thenReturn(true);
 
-		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorMock
-				.execute(kycDocumentSellerInfoModelOKStub)).thenReturn(List.of(uploadDataOneMock));
-		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorMock
-				.execute(kycDocumentSellerInfoModelKOStub)).thenReturn(List.of(uploadDataTwoMock));
+		when(kycDocumentInfoToHWVerificationDocumentExecutorMock.execute(kycDocumentSellerInfoModelOKStub))
+				.thenReturn(List.of(uploadDataOneMock));
+		when(kycDocumentInfoToHWVerificationDocumentExecutorMock.execute(kycDocumentSellerInfoModelKOStub))
+				.thenReturn(List.of(uploadDataTwoMock));
 
 		when(hyperwalletSDKServiceMock.getHyperwalletInstance(Mockito.anyString())).thenReturn(hyperwalletClientMock);
 
@@ -166,8 +164,7 @@ class HyperwalletSellerExtractServiceImplTest {
 		verify(hyperwalletClientMock).uploadUserDocuments(USR_TOKEN_ONE, List.of(uploadDataOneMock));
 		verify(hyperwalletClientMock).uploadUserDocuments(USR_TOKEN_TWO, List.of(uploadDataTwoMock));
 
-		assertThat(result).containsExactlyInAnyOrder(kycDocumentSellerInfoModelOKStub);
-
+		assertThat(result).containsExactly(markInfoAsSentToHyperwallet(kycDocumentSellerInfoModelOKStub));
 	}
 
 	@Test
@@ -181,8 +178,8 @@ class HyperwalletSellerExtractServiceImplTest {
 						.build());
 
 		when(kycDocumentSellerInfoModelKOStub.areDocumentsFilled()).thenReturn(true);
-		when(kycDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorMock
-				.execute(kycDocumentSellerInfoModelKOStub)).thenReturn(List.of(uploadDataTwoMock));
+		when(kycDocumentInfoToHWVerificationDocumentExecutorMock.execute(kycDocumentSellerInfoModelKOStub))
+				.thenReturn(List.of(uploadDataTwoMock));
 
 		when(hyperwalletSDKServiceMock.getHyperwalletInstance(Mockito.anyString())).thenReturn(hyperwalletClientMock);
 
@@ -196,7 +193,10 @@ class HyperwalletSellerExtractServiceImplTest {
 				String.format("Something went wrong pushing documents to Hyperwallet for shop Id [%s]%n%s",
 						String.join(",", kycDocumentSellerInfoModelKOStub.getClientUserId()),
 						HyperwalletLoggingErrorsUtil.stringify(hyperwalletException)));
+	}
 
+	private KYCDocumentSellerInfoModel markInfoAsSentToHyperwallet(final KYCDocumentSellerInfoModel sellerInfo) {
+		return sellerInfo.toBuilder().sentToHyperwallet(true).build();
 	}
 
 }

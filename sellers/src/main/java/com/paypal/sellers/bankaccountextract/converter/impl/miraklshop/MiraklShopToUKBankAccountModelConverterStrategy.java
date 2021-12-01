@@ -32,28 +32,28 @@ public class MiraklShopToUKBankAccountModelConverterStrategy implements Strategy
 		final MiraklContactInformation contactInformation = source.getContactInformation();
 
 		//@formatter:off
-        return UKBankAccountModel.builder()
-                .transferMethodCountry(contactInformation.getCountry())
-                .transferMethodCurrency(source.getCurrencyIsoCode().name())
-                .transferType(TransferType.BANK_ACCOUNT)
-                .type(BankAccountType.UK)
-                .bankAccountNumber(miraklUkBankAccountInformation.getBankAccountNumber())
-                .bankAccountId(miraklUkBankAccountInformation.getBankSortCode())
-                .businessName(Optional.ofNullable(source.getProfessionalInformation())
-                        .map(MiraklProfessionalInformation::getCorporateName)
-                        .orElse(null))
-                .firstName(contactInformation.getFirstname())
-                .lastName(contactInformation.getLastname())
-                .country(contactInformation.getCountry())
-                .addressLine1(contactInformation.getStreet1())
-                .addressLine2(Optional.ofNullable(contactInformation.getStreet2())
-                        .orElse(StringUtils.EMPTY))
-                .city(miraklUkBankAccountInformation.getBankCity())
-                .stateProvince(source.getAdditionalFieldValues())
-                .token(source.getAdditionalFieldValues())
-                .hyperwalletProgram(source.getAdditionalFieldValues())
-                .build();
-        //@formatter:on
+		return UKBankAccountModel.builder()
+				.transferMethodCountry(contactInformation.getCountry())
+				.transferMethodCurrency(source.getCurrencyIsoCode().name())
+				.transferType(TransferType.BANK_ACCOUNT)
+				.type(BankAccountType.UK)
+				.bankAccountNumber(miraklUkBankAccountInformation.getBankAccountNumber())
+				.bankAccountId(miraklUkBankAccountInformation.getBankSortCode())
+				.businessName(Optional.ofNullable(source.getProfessionalInformation())
+						.map(MiraklProfessionalInformation::getCorporateName)
+						.orElse(null))
+				.firstName(contactInformation.getFirstname())
+				.lastName(contactInformation.getLastname())
+				.country(contactInformation.getCountry())
+				.addressLine1(contactInformation.getStreet1())
+				.addressLine2(Optional.ofNullable(contactInformation.getStreet2())
+						.orElse(StringUtils.EMPTY))
+				.city(miraklUkBankAccountInformation.getBankCity())
+				.stateProvince(source.getAdditionalFieldValues())
+				.token(source.getAdditionalFieldValues())
+				.hyperwalletProgram(source.getAdditionalFieldValues())
+				.build();
+		//@formatter:on
 	}
 
 	/**

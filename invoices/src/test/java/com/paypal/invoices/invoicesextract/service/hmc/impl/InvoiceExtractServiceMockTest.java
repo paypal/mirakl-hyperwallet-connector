@@ -30,7 +30,6 @@ class InvoiceExtractServiceMockTest {
 
 	@Test
 	void payOperator_shouldSendOperatorInvoicesWhenOperatorCommissionsIsEnabled() {
-
 		when(testingInvoicesSessionDataHelperMock.isOperatorCommissionsEnabled()).thenReturn(true);
 		testObj.payOperator(List.of(invoiceModelOneMock, invoiceModelTwoMock));
 		verify(hyperWalletPaymentExtractServiceMock)
@@ -39,9 +38,10 @@ class InvoiceExtractServiceMockTest {
 
 	@Test
 	void payOperator_shouldNotSendOperatorInvoicesWhenOperatorCommissionsIsDisabled() {
-
 		when(testingInvoicesSessionDataHelperMock.isOperatorCommissionsEnabled()).thenReturn(false);
+
 		testObj.payOperator(List.of(invoiceModelOneMock, invoiceModelTwoMock));
+
 		verifyNoInteractions(hyperWalletPaymentExtractServiceMock);
 	}
 

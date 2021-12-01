@@ -6,7 +6,6 @@ package com.paypal.infrastructure.util;
 public final class LoggingConstantsUtil {
 
 	private LoggingConstantsUtil() {
-
 	}
 
 	public static final String LIST_LOGGING_SEPARATOR = ",";

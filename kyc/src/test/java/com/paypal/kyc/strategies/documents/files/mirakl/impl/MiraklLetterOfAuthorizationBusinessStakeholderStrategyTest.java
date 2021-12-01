@@ -2,12 +2,10 @@ package com.paypal.kyc.strategies.documents.files.mirakl.impl;
 
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -30,7 +28,7 @@ class MiraklLetterOfAuthorizationBusinessStakeholderStrategyTest {
 	private KYCDocumentSellerInfoModel kycDocumentSellerInfoModelMock;
 
 	@Test
-	void isApplicable_shouldReturnTrueWhensourceIsInstanceOfKYCDocumentBusinessStakeHolderInfoModelAndIsContactIsTrueAndRequiresLetterOfAuthorizationIsTrue() {
+	void isApplicable_shouldReturnTrueWhenSourceIsInstanceOfKYCDocumentBusinessStakeHolderInfoModelAndIsContactIsTrueAndRequiresLetterOfAuthorizationIsTrue() {
 		when(kycDocumentBusinessStakeHolderInfoModelMock.isContact()).thenReturn(Boolean.TRUE);
 		when(kycDocumentBusinessStakeHolderInfoModelMock.isRequiresLetterOfAuthorization()).thenReturn(Boolean.TRUE);
 
@@ -40,15 +38,14 @@ class MiraklLetterOfAuthorizationBusinessStakeholderStrategyTest {
 	}
 
 	@Test
-	void isApplicable_shouldReturnFalseWhensourceIsNotInstanceOfKYCDocumentBusinessStakeHolderInfoModel() {
-
+	void isApplicable_shouldReturnFalseWhenSourceIsNotInstanceOfKYCDocumentBusinessStakeHolderInfoModel() {
 		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModelMock);
 
 		assertThat(result).isFalse();
 	}
 
 	@Test
-	void isApplicable_shouldReturnFalseWhensourceIsInstanceOfKYCDocumentBusinessStakeHolderInfoModelAndIsContactIsFalseAndRequiresLetterOfAuthorizationIsTrue() {
+	void isApplicable_shouldReturnFalseWhenSourceIsInstanceOfKYCDocumentBusinessStakeHolderInfoModelAndIsContactIsFalseAndRequiresLetterOfAuthorizationIsTrue() {
 		when(kycDocumentBusinessStakeHolderInfoModelMock.isContact()).thenReturn(Boolean.FALSE);
 
 		final boolean result = testObj.isApplicable(kycDocumentBusinessStakeHolderInfoModelMock);
@@ -57,7 +54,7 @@ class MiraklLetterOfAuthorizationBusinessStakeholderStrategyTest {
 	}
 
 	@Test
-	void isApplicable_shouldReturnFalseWhensourceIsInstanceOfKYCDocumentBusinessStakeHolderInfoModelAndIsContactIsTrueAndRequiresLetterOfAuthorizationIsFalse() {
+	void isApplicable_shouldReturnFalseWhenSourceIsInstanceOfKYCDocumentBusinessStakeHolderInfoModelAndIsContactIsTrueAndRequiresLetterOfAuthorizationIsFalse() {
 		when(kycDocumentBusinessStakeHolderInfoModelMock.isContact()).thenReturn(Boolean.TRUE);
 		when(kycDocumentBusinessStakeHolderInfoModelMock.isRequiresLetterOfAuthorization()).thenReturn(Boolean.FALSE);
 
@@ -68,7 +65,6 @@ class MiraklLetterOfAuthorizationBusinessStakeholderStrategyTest {
 
 	@Test
 	void getMiraklFieldNames_shouldReturnListOfProofOfAuthorization() {
-
 		final List<String> result = testObj.getMiraklFieldNames(kycDocumentBusinessStakeHolderInfoModelMock);
 
 		assertThat(result).containsExactly(PROOF_OF_AUTHORIZATION);

@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Map;
@@ -30,7 +29,6 @@ class InvoiceHyperwalletSDKServiceImplTest {
 
 	private static final String API_CLIENT_HYPERWALLET_ENCRYPTION = "apiClient.hyperwalletEncryption";
 
-	@Spy
 	@InjectMocks
 	private InvoiceHyperwalletSDKServiceImpl testObj;
 
@@ -39,52 +37,49 @@ class InvoiceHyperwalletSDKServiceImplTest {
 
 	@Test
 	void getHyperwalletInstanceWithProgramToken_shouldReturnAnHyperwalletInstance() {
-		when(this.invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(this.invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(this.invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final var result = this.testObj.getHyperwalletInstanceWithProgramToken(PROGRAM_TOKEN);
+		final Hyperwallet result = testObj.getHyperwalletInstanceWithProgramToken(PROGRAM_TOKEN);
 
 		assertThat(result).hasFieldOrPropertyWithValue("programToken", PROGRAM_TOKEN)
 				.hasFieldOrPropertyWithValue("apiClient.username", USER_NAME)
 				.hasFieldOrPropertyWithValue("url", SERVER + "/rest/v4");
-
 	}
 
 	@Test
 	void getHyperwalletInstanceByHyperwalletProgram_shouldReturnAnHyperwalletInstance() {
-		when(this.invoicesHyperwalletApiConfigMock.getPaymentStoreTokens())
+		when(invoicesHyperwalletApiConfigMock.getPaymentStoreTokens())
 				.thenReturn(Map.of(HYPERWALLET_PROGRAM, PROGRAM_TOKEN));
-		when(this.invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(this.invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(this.invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final var result = this.testObj.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
+		final Hyperwallet result = testObj.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
 
 		assertThat(result).hasFieldOrPropertyWithValue("programToken", PROGRAM_TOKEN)
 				.hasFieldOrPropertyWithValue("apiClient.username", USER_NAME)
 				.hasFieldOrPropertyWithValue("url", SERVER + "/rest/v4");
-
 	}
 
 	@Test
 	void getProgramTokenByHyperwalletProgram_shouldReturnAnHyperwalletInstance() {
-		when(this.invoicesHyperwalletApiConfigMock.getPaymentStoreTokens())
+		when(invoicesHyperwalletApiConfigMock.getPaymentStoreTokens())
 				.thenReturn(Map.of(HYPERWALLET_PROGRAM, PROGRAM_TOKEN));
 
-		final var result = this.testObj.getProgramTokenByHyperwalletProgram(HYPERWALLET_PROGRAM);
+		final String result = testObj.getProgramTokenByHyperwalletProgram(HYPERWALLET_PROGRAM);
 
 		assertThat(result).isEqualTo(PROGRAM_TOKEN);
-
 	}
 
 	@Test
 	void getHyperwalletInstanceWithProgramToken_shouldReturnAnHyperwalletInstanceWithNOTEncryptedOption() {
-		when(this.invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(this.invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(this.invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final Hyperwallet result = this.testObj.getHyperwalletInstanceWithProgramToken(PROGRAM_TOKEN);
+		final Hyperwallet result = testObj.getHyperwalletInstanceWithProgramToken(PROGRAM_TOKEN);
 
 		assertThat(result).hasFieldOrPropertyWithValue(API_CLIENT_HYPERWALLET_ENCRYPTION, null);
 	}

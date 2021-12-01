@@ -43,13 +43,13 @@ public class MiraklInvoicesExtractServiceImpl extends AbstractAccountingDocument
 		final List<InvoiceModel> filteredInvoices = filterOnlyMappableDocuments(invoices,
 				mapShopDestinationToken.keySet());
 		//@formatter:off
-        return filteredInvoices.stream()
-                .map(invoiceModel -> invoiceModel.toBuilder()
-                        .destinationToken(mapShopDestinationToken.get(invoiceModel.getShopId()).getLeft())
-                        .hyperwalletProgram(mapShopDestinationToken.get(invoiceModel.getShopId()).getRight())
-                        .build())
-                .collect(Collectors.toList());
-        //@formatter:on
+		return filteredInvoices.stream()
+				.map(invoiceModel -> invoiceModel.toBuilder()
+						.destinationToken(mapShopDestinationToken.get(invoiceModel.getShopId()).getLeft())
+						.hyperwalletProgram(mapShopDestinationToken.get(invoiceModel.getShopId()).getRight())
+						.build())
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 	@Override
@@ -57,10 +57,10 @@ public class MiraklInvoicesExtractServiceImpl extends AbstractAccountingDocument
 		final List<HMCMiraklInvoice> invoices = getInvoicesForDateAndType(delta, InvoiceTypeEnum.AUTO_INVOICE);
 
 		//@formatter:off
-        return invoices.stream()
-                .map(miraklInvoiceToInvoiceModelConverter::convert)
-                .collect(Collectors.toList());
-        //@formatter:on
+		return invoices.stream()
+				.map(miraklInvoiceToInvoiceModelConverter::convert)
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 }

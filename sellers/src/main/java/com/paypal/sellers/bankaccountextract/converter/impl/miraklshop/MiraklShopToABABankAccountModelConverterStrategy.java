@@ -33,31 +33,30 @@ public class MiraklShopToABABankAccountModelConverterStrategy implements Strateg
 		final MiraklContactInformation contactInformation = source.getContactInformation();
 
 		//@formatter:off
-        return ABABankAccountModel.builder()
-                .transferMethodCountry(contactInformation.getCountry())
-                .branchId(miraklAbaBankAccountInformation.getRoutingNumber())
-                .bankAccountPurpose(BankAccountPurposeType.CHECKING.name())
-                .transferMethodCurrency(source.getCurrencyIsoCode().name())
-                .transferType(TransferType.BANK_ACCOUNT)
-                .type(BankAccountType.ABA)
-                .bankAccountNumber(miraklAbaBankAccountInformation.getBankAccountNumber())
-                .businessName(Optional.ofNullable(source.getProfessionalInformation())
-                        .map(MiraklProfessionalInformation::getCorporateName)
-                        .orElse(null))
-                .firstName(contactInformation.getFirstname())
-                .lastName(contactInformation.getLastname())
-                .country(contactInformation.getCountry())
-                .city(miraklAbaBankAccountInformation.getBankCity())
-                .stateProvince(source.getAdditionalFieldValues())
-                .postalCode(miraklAbaBankAccountInformation.getBankZip())
-                .addressLine1(contactInformation.getStreet1())
-                .addressLine2(Optional.ofNullable(contactInformation.getStreet2())
-                        .orElse(StringUtils.EMPTY))
-                .token(source.getAdditionalFieldValues())
-                .hyperwalletProgram(source.getAdditionalFieldValues())
-                .build();
-        //@formatter:on
-
+		return ABABankAccountModel.builder()
+				.transferMethodCountry(contactInformation.getCountry())
+				.branchId(miraklAbaBankAccountInformation.getRoutingNumber())
+				.bankAccountPurpose(BankAccountPurposeType.CHECKING.name())
+				.transferMethodCurrency(source.getCurrencyIsoCode().name())
+				.transferType(TransferType.BANK_ACCOUNT)
+				.type(BankAccountType.ABA)
+				.bankAccountNumber(miraklAbaBankAccountInformation.getBankAccountNumber())
+				.businessName(Optional.ofNullable(source.getProfessionalInformation())
+						.map(MiraklProfessionalInformation::getCorporateName)
+						.orElse(null))
+				.firstName(contactInformation.getFirstname())
+				.lastName(contactInformation.getLastname())
+				.country(contactInformation.getCountry())
+				.city(miraklAbaBankAccountInformation.getBankCity())
+				.stateProvince(source.getAdditionalFieldValues())
+				.postalCode(miraklAbaBankAccountInformation.getBankZip())
+				.addressLine1(contactInformation.getStreet1())
+				.addressLine2(Optional.ofNullable(contactInformation.getStreet2())
+						.orElse(StringUtils.EMPTY))
+				.token(source.getAdditionalFieldValues())
+				.hyperwalletProgram(source.getAdditionalFieldValues())
+				.build();
+		//@formatter:on
 	}
 
 	/**

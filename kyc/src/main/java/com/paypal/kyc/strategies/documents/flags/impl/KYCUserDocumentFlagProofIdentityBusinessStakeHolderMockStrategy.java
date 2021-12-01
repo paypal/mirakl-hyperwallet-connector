@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service("kycUserDocumentFlagProofIdentityBusinessStakeHolderStrategy")
@@ -33,7 +32,7 @@ public class KYCUserDocumentFlagProofIdentityBusinessStakeHolderMockStrategy
 	}
 
 	@Override
-	public Optional<Void> execute(final KYCUserDocumentFlagsNotificationBodyModel source) {
+	public Void execute(final KYCUserDocumentFlagsNotificationBodyModel source) {
 		final List<String> businessStakeholdersPendingToBeVerified = businessStakeholderTestHelper
 				.getRequiresVerificationBstk(source.getClientUserId());
 
@@ -44,8 +43,8 @@ public class KYCUserDocumentFlagProofIdentityBusinessStakeHolderMockStrategy
 				.getKYCCustomValuesRequiredVerificationBusinessStakeholders(source.getClientUserId(),
 						businessStakeholdersPendingToBeVerified);
 
-		return fillMiraklProofIdentityOrBusinessFlagStatus(source,
-				kycCustomValuesRequiredVerificationBusinessStakeholders);
+		fillMiraklProofIdentityOrBusinessFlagStatus(source, kycCustomValuesRequiredVerificationBusinessStakeholders);
+		return null;
 	}
 
 }

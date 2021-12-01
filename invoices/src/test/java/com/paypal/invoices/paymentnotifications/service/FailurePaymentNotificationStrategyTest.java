@@ -35,7 +35,7 @@ class FailurePaymentNotificationStrategyTest {
 	private MailNotificationUtil mailNotificationUtilMock;
 
 	@Test
-	void executeprocessPaymentNotification_shouldSendEmailNotificationWhenPaymentNotificationIsInAFailureStatus() {
+	void executeProcessPaymentNotification_shouldSendEmailNotificationWhenPaymentNotificationIsInAFailureStatus() {
 		when(paymentNotificationBodyModelMock.getStatus()).thenReturn("FAILED");
 		when(paymentNotificationBodyModelMock.getClientPaymentId()).thenReturn("ClientPaymentID");
 
@@ -50,7 +50,7 @@ class FailurePaymentNotificationStrategyTest {
 		when(paymentNotificationConfigMock.getFailureStatuses()).thenReturn(List.of(FAILED));
 		when(paymentNotificationBodyModelMock.getStatus()).thenReturn(FAILED);
 
-		final var result = testObj.isApplicable(paymentNotificationBodyModelMock);
+		final boolean result = testObj.isApplicable(paymentNotificationBodyModelMock);
 
 		assertThat(result).isTrue();
 	}
@@ -60,14 +60,14 @@ class FailurePaymentNotificationStrategyTest {
 		when(paymentNotificationConfigMock.getFailureStatuses()).thenReturn(List.of(FAILED));
 		when(paymentNotificationBodyModelMock.getStatus()).thenReturn(NOT_FAILED);
 
-		final var result = testObj.isApplicable(paymentNotificationBodyModelMock);
+		final boolean result = testObj.isApplicable(paymentNotificationBodyModelMock);
 
 		assertThat(result).isFalse();
 	}
 
 	@Test
 	void isApplicable_shouldReturnFalse_whenPaymentNotificationBodyModelIsNull() {
-		final var result = testObj.isApplicable(null);
+		final boolean result = testObj.isApplicable(null);
 
 		assertThat(result).isFalse();
 	}

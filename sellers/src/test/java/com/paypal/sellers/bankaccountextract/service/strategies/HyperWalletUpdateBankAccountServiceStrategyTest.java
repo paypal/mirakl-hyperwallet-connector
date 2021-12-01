@@ -41,13 +41,13 @@ class HyperWalletUpdateBankAccountServiceStrategyTest {
 	private static final String TOKEN = "token";
 
 	@Test
-	void callMiraklAPI_shouldCreateBankAccount() {
+	void callHyperwalletAPI_shouldCreateBankAccount() {
 		when(hyperwalletMock.updateBankAccount(hyperwalletBankAccountRequestMock))
 				.thenReturn(hyperwalletBankAccountResultMock);
 		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletMock);
 
-		final HyperwalletBankAccount result = testObj.callMiraklAPI(HYPERWALLET_PROGRAM,
+		final HyperwalletBankAccount result = testObj.callHyperwalletAPI(HYPERWALLET_PROGRAM,
 				hyperwalletBankAccountRequestMock);
 
 		verify(hyperwalletSDKServiceMock).getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);

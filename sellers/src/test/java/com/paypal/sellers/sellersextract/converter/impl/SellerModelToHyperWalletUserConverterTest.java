@@ -33,7 +33,7 @@ class SellerModelToHyperWalletUserConverterTest {
 
 	private static final String SECOND_NAME = "Doe";
 
-	private static final String ADDRES_LINE_ONE = "Elmo Street";
+	private static final String ADDRESS_LINE_ONE = "Elmo Street";
 
 	private static final String ADDRESS_LINE_TWO = "Door 1";
 
@@ -52,8 +52,6 @@ class SellerModelToHyperWalletUserConverterTest {
 	private static final String DRIVERS_LICENSE = "489663020J";
 
 	private static final String EMAIL = "mysuperstore@paypal.com";
-
-	private static final String EMPLOYER_ID = "employerId";
 
 	private static final String GOVERNMENT_ID = "JKL20";
 
@@ -99,7 +97,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		when(sellerModelMock.getClientUserId()).thenReturn(CLIENT_USER_ID);
 		when(sellerModelMock.getFirstName()).thenReturn(FIRST_NAME);
 		when(sellerModelMock.getLastName()).thenReturn(SECOND_NAME);
-		when(sellerModelMock.getAddressLine1()).thenReturn(ADDRES_LINE_ONE);
+		when(sellerModelMock.getAddressLine1()).thenReturn(ADDRESS_LINE_ONE);
 		when(sellerModelMock.getAddressLine2()).thenReturn(ADDRESS_LINE_TWO);
 		when(sellerModelMock.getBusinessName()).thenReturn(BUSINESS_NAME);
 		when(sellerModelMock.getBusinessType()).thenReturn(SellerBusinessType.PRIVATE_COMPANY);
@@ -110,7 +108,6 @@ class SellerModelToHyperWalletUserConverterTest {
 		when(sellerModelMock.getCountryOfNationality()).thenReturn(COUNTRY_OF_NATIONALITY);
 		when(sellerModelMock.getDriversLicenseId()).thenReturn(DRIVERS_LICENSE);
 		when(sellerModelMock.getEmail()).thenReturn(EMAIL);
-		when(sellerModelMock.getEmployerId()).thenReturn(EMPLOYER_ID);
 		when(sellerModelMock.getGovernmentIdType()).thenReturn(SellerGovernmentIdType.NATIONAL_ID_CARD);
 		when(sellerModelMock.getGovernmentId()).thenReturn(GOVERNMENT_ID);
 		when(sellerModelMock.getPassportId()).thenReturn(PASSPORT_ID);
@@ -143,8 +140,7 @@ class SellerModelToHyperWalletUserConverterTest {
 				.hasFieldOrPropertyWithValue("mobileNumber", MOBILE_PHONE).hasFieldOrPropertyWithValue("email", EMAIL)
 				.hasFieldOrPropertyWithValue("governmentId", GOVERNMENT_ID)
 				.hasFieldOrPropertyWithValue("passportId", PASSPORT_ID)
-				.hasFieldOrPropertyWithValue("employerId", EMPLOYER_ID)
-				.hasFieldOrPropertyWithValue("addressLine1", ADDRES_LINE_ONE)
+				.hasFieldOrPropertyWithValue("addressLine1", ADDRESS_LINE_ONE)
 				.hasFieldOrPropertyWithValue("addressLine2", ADDRESS_LINE_TWO).hasFieldOrPropertyWithValue("city", CITY)
 				.hasFieldOrPropertyWithValue("stateProvince", STATE_PROVINCE)
 				.hasFieldOrPropertyWithValue("country", COUNTRY).hasFieldOrPropertyWithValue("postalCode", POSTAL_CODE)
@@ -176,8 +172,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		assertThat(result.getEmail()).isEqualTo(EMAIL);
 		assertThat(result.getGovernmentId()).isEqualTo(GOVERNMENT_ID);
 		assertThat(result.getPassportId()).isEqualTo(PASSPORT_ID);
-		assertThat(result.getEmployerId()).isEqualTo(EMPLOYER_ID);
-		assertThat(result.getAddressLine1()).isEqualTo(ADDRES_LINE_ONE);
+		assertThat(result.getAddressLine1()).isEqualTo(ADDRESS_LINE_ONE);
 		assertThat(result.getAddressLine2()).isEqualTo(ADDRESS_LINE_TWO);
 		assertThat(result.getCity()).isEqualTo(CITY);
 		assertThat(result.getStateProvince()).isEqualTo(STATE_PROVINCE);

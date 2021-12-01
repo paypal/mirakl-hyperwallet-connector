@@ -30,7 +30,7 @@ class HyperWalletUserServiceStrategyExecutorSingleTest {
 
 	@Test
 	void getStrategies_shouldReturnConverterStrategyMock() {
-		final var result = testObj.getStrategies();
+		final Set<Strategy<SellerModel, HyperwalletUser>> result = testObj.getStrategies();
 
 		assertThat(result).containsExactly(strategyMock);
 	}

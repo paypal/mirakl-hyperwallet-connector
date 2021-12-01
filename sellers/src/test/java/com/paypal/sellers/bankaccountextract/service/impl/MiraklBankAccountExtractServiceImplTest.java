@@ -7,8 +7,9 @@ import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiC
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
+import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
-import com.paypal.sellers.infrastructure.utils.MiraklLoggingErrorsUtil;
+import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -69,12 +70,10 @@ class MiraklBankAccountExtractServiceImplTest {
 		assertThat(shopToUpdate).hasFieldOrPropertyWithValue("shopId", 12345L);
 		assertThat(shopToUpdate.getAdditionalFieldValues()).hasSize(1);
 		final MiraklRequestAdditionalFieldValue additionalFieldValue = shopToUpdate.getAdditionalFieldValues().get(0);
-		assertThat(additionalFieldValue)
-				.isInstanceOf(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class);
-		final var castedAdditionalFieldValue = (MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue) additionalFieldValue;
+		assertThat(additionalFieldValue).isInstanceOf(MiraklSimpleRequestAdditionalFieldValue.class);
+		final MiraklSimpleRequestAdditionalFieldValue castedAdditionalFieldValue = (MiraklSimpleRequestAdditionalFieldValue) additionalFieldValue;
 		assertThat(castedAdditionalFieldValue.getCode()).isEqualTo("hw-bankaccount-token");
 		assertThat(castedAdditionalFieldValue.getValue()).isEqualTo(TOKEN_VALUE);
-
 	}
 
 	@Test
@@ -82,15 +81,16 @@ class MiraklBankAccountExtractServiceImplTest {
 		when(hyperwalletBankAccount.getToken()).thenReturn(TOKEN_VALUE);
 		when(sellerModelMock.getClientUserId()).thenReturn("12345");
 
-		final var miraklApliException = new MiraklApiException(new MiraklErrorResponseBean(1, "Something went wrong"));
-		doThrow(miraklApliException).when(miraklMarketplacePlatformOperatorApiClientMock)
+		final MiraklApiException miraklApiException = new MiraklApiException(
+				new MiraklErrorResponseBean(1, "Something went wrong"));
+		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
 				.updateShops(any(MiraklUpdateShopsRequest.class));
 
 		testObj.updateBankAccountToken(sellerModelMock, hyperwalletBankAccount);
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail(eq("Issue detected updating bank token in Mirakl"),
 				eq(String.format(ERROR_MESSAGE_PREFIX + "Something went wrong updating bank token of shop [12345]%n%s",
-						MiraklLoggingErrorsUtil.stringify(miraklApliException))));
+						MiraklLoggingErrorsUtil.stringify(miraklApiException))));
 	}
 
 }

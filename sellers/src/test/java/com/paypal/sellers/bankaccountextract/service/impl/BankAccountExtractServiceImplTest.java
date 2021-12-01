@@ -2,7 +2,7 @@ package com.paypal.sellers.bankaccountextract.service.impl;
 
 import com.paypal.infrastructure.util.DateUtil;
 import com.paypal.infrastructure.util.TimeMachine;
-import com.paypal.sellers.bankaccountextract.service.strategies.HyperWalletBankAccountServiceStrategyExecutor;
+import com.paypal.sellers.bankaccountextract.service.strategies.HyperWalletBankAccountServiceExecutor;
 import com.paypal.sellers.entity.FailedBankAccountInformation;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.MiraklSellersExtractService;
@@ -37,7 +37,7 @@ class BankAccountExtractServiceImplTest {
 	private SellerModel failedSellerModelMock, sellerModelMock;
 
 	@Mock
-	private HyperWalletBankAccountServiceStrategyExecutor hyperWalletBankAccountServiceStrategyExecutorMock;
+	private HyperWalletBankAccountServiceExecutor hyperWalletBankAccountServiceExecutorMock;
 
 	@Mock
 	private MiraklSellersExtractService miraklSellersExtractServiceMock;
@@ -56,8 +56,8 @@ class BankAccountExtractServiceImplTest {
 
 		testObj.extractBankAccounts(nowAsDate);
 
-		verify(hyperWalletBankAccountServiceStrategyExecutorMock).execute(sellerModelMock);
-		verify(hyperWalletBankAccountServiceStrategyExecutorMock).execute(failedSellerModelMock);
+		verify(hyperWalletBankAccountServiceExecutorMock).execute(sellerModelMock);
+		verify(hyperWalletBankAccountServiceExecutorMock).execute(failedSellerModelMock);
 	}
 
 }

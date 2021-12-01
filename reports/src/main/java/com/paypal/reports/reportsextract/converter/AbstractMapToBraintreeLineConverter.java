@@ -30,21 +30,21 @@ public abstract class AbstractMapToBraintreeLineConverter {
 		final String amountCurrencyCode = (String) amountMap.get("currencyCode");
 
 		//@formatter:off
-        final BraintreeGraphQLAmountModel amount = BraintreeGraphQLAmountModel.builder()
-                .value(amountValue)
-                .currencyCode(amountCurrencyCode)
-                .build();
-        //@formatter:on
+		final BraintreeGraphQLAmountModel amount = BraintreeGraphQLAmountModel.builder()
+				.value(amountValue)
+				.currencyCode(amountCurrencyCode)
+				.build();
+		//@formatter:on
 
 		//@formatter:off
-        return BraintreeNodeGraphQLModel.builder()
-                .createdAt(DateUtil.convertToDate(createdAt, DATE_FORMATTER, TimeZone.getDefault()))
-                .orderId(orderId)
-                .status(status)
-                .amount(amount)
-                .customFields(customFields)
-                .build();
-        //@formatter:on
+		return BraintreeNodeGraphQLModel.builder()
+				.createdAt(DateUtil.convertToDate(createdAt, DATE_FORMATTER, TimeZone.getDefault()))
+				.orderId(orderId)
+				.status(status)
+				.amount(amount)
+				.customFields(customFields)
+				.build();
+		//@formatter:on
 	}
 
 }

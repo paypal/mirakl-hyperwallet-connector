@@ -57,7 +57,7 @@ public abstract class AbstractHmcFileService {
 	/**
 	 * Creates a CSVPrinter instance according to parameters received
 	 * @param path {@link Path} where the CSVPrinter points to
-	 * @param headers {@link String} cointains the header for the CSV
+	 * @param headers {@link String} contains the header for the CSV
 	 * @param fileName {@link String} prefix name for the file created
 	 * @return {@link CSVPrinter} object
 	 */

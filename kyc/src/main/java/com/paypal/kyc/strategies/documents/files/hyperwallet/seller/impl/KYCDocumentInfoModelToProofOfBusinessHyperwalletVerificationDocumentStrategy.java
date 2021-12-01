@@ -19,7 +19,7 @@ public class KYCDocumentInfoModelToProofOfBusinessHyperwalletVerificationDocumen
 	 */
 	@Override
 	public HyperwalletVerificationDocument execute(final KYCDocumentSellerInfoModel source) {
-	//@formatter:off
+		//@formatter:off
 		final Map<String, String> uploadFiles = source.getProofOfBusinessDocuments()
 				.stream()
 				.collect(Collectors.toMap(kycDocumentModel -> source.getProofOfBusiness()

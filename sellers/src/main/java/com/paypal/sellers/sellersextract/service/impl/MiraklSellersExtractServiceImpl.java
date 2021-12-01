@@ -6,12 +6,13 @@ import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.MiraklShops;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
+import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.infrastructure.util.LoggingConstantsUtil;
-import com.paypal.sellers.infrastructure.utils.MiraklLoggingErrorsUtil;
+import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.MiraklSellersExtractService;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +65,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 	 */
 	@Override
 	public List<SellerModel> extractIndividuals(@Nullable final Date delta) {
-		final MiraklShops shops = retrieveMiraklShopsByShopIds(delta);
+		final MiraklShops shops = retrieveMiraklShopsByDate(delta);
 		return internalExtractIndividuals(shops);
 	}
 
@@ -85,7 +86,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 	 */
 	@Override
 	public List<SellerModel> extractProfessionals(@Nullable final Date delta) {
-		final MiraklShops shops = retrieveMiraklShopsByShopIds(delta);
+		final MiraklShops shops = retrieveMiraklShopsByDate(delta);
 		return internalExtractProfessionals(shops);
 	}
 
@@ -116,13 +117,12 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 
 	@Override
 	public List<SellerModel> extractSellers(@Nullable final Date delta) {
-		final MiraklShops shops = retrieveMiraklShopsByShopIds(delta);
+		final MiraklShops shops = retrieveMiraklShopsByDate(delta);
 		//@formatter:off
 		log.info(SHOPS_RETRIEVED_MESSAGE, Stream.ofNullable(shops.getShops())
 				.flatMap(Collection::stream)
 				.map(MiraklShop::getId)
 				.collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR)));
-
 
 		return Stream.ofNullable(shops.getShops())
 				.flatMap(Collection::stream)
@@ -138,18 +138,18 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 	 */
 	@Override
 	public void updateUserToken(final HyperwalletUser hyperwalletUser) {
-		final MiraklUpdateShop mirakUpdateShop = new MiraklUpdateShop();
+		final MiraklUpdateShop miraklUpdateShop = new MiraklUpdateShop();
 		final String shopId = hyperwalletUser.getClientUserId();
-		mirakUpdateShop.setShopId(Long.valueOf(shopId));
-		final var userTokenCustomField = new MiraklSimpleRequestAdditionalFieldValue();
+		miraklUpdateShop.setShopId(Long.valueOf(shopId));
+		final MiraklSimpleRequestAdditionalFieldValue userTokenCustomField = new MiraklSimpleRequestAdditionalFieldValue();
 		userTokenCustomField.setCode(HYPERWALLET_USER_TOKEN);
 		userTokenCustomField.setValue(hyperwalletUser.getToken());
-		mirakUpdateShop.setAdditionalFieldValues(List.of(userTokenCustomField));
-		final MiraklUpdateShopsRequest request = new MiraklUpdateShopsRequest(List.of(mirakUpdateShop));
-		log.info("Updating token for shop [{}]", shopId);
+		miraklUpdateShop.setAdditionalFieldValues(List.of(userTokenCustomField));
+		final MiraklUpdateShopsRequest request = new MiraklUpdateShopsRequest(List.of(miraklUpdateShop));
+		log.info("Updating token for shop [{}] to [{}]", shopId, hyperwalletUser.getToken());
 		log.debug("Update shop request [{}]", ToStringBuilder.reflectionToString(request));
 		try {
-			final var miraklUpdatedShops = miraklOperatorClient.updateShops(request);
+			final MiraklUpdatedShops miraklUpdatedShops = miraklOperatorClient.updateShops(request);
 			Optional.ofNullable(miraklUpdatedShops).ifPresent(
 					response -> log.debug("Update shop response [{}]", ToStringBuilder.reflectionToString(response)));
 		}
@@ -195,14 +195,14 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 		//@formatter:on
 	}
 
-	private MiraklShops retrieveMiraklShopsByShopIds(@Nullable final Date delta) {
+	private MiraklShops retrieveMiraklShopsByDate(@Nullable final Date delta) {
 		final MiraklGetShopsRequest request = new MiraklGetShopsRequest();
 		request.setUpdatedSince(delta);
 		request.setPaginate(false);
 		log.info("Retrieving shops since {}", delta);
 		log.debug("Get Shops request [{}]", ToStringBuilder.reflectionToString(request));
 		try {
-			final var shops = miraklOperatorClient.getShops(request);
+			final MiraklShops shops = miraklOperatorClient.getShops(request);
 			Optional.ofNullable(shops).ifPresent(shopResponse -> log.debug("Get Shops response [{}]",
 					ToStringBuilder.reflectionToString(shopResponse)));
 
@@ -224,7 +224,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 		log.info("Retrieving shops with ids {}", shopIds);
 		log.debug("Get Shops request [{}]", ToStringBuilder.reflectionToString(request));
 		try {
-			final var shops = miraklOperatorClient.getShops(request);
+			final MiraklShops shops = miraklOperatorClient.getShops(request);
 			Optional.ofNullable(shops).ifPresent(shopResponse -> log.debug("Get Shops response [{}]",
 					ToStringBuilder.reflectionToString(shopResponse)));
 

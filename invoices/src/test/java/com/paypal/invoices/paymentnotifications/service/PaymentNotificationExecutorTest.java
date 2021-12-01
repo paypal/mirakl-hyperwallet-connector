@@ -9,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,7 +20,7 @@ class PaymentNotificationExecutorTest {
 	private PaymentNotificationExecutor testObj;
 
 	@Mock
-	private Strategy<PaymentNotificationBodyModel, Optional<Void>> strategyMock;
+	private Strategy<PaymentNotificationBodyModel, Void> strategyMock;
 
 	@BeforeEach
 	void setUp() {
@@ -30,8 +29,7 @@ class PaymentNotificationExecutorTest {
 
 	@Test
 	void getStrategies_shouldReturnConverterStrategyMock() {
-
-		final var result = testObj.getStrategies();
+		final Set<Strategy<PaymentNotificationBodyModel, Void>> result = testObj.getStrategies();
 
 		assertThat(result).containsExactly(strategyMock);
 	}

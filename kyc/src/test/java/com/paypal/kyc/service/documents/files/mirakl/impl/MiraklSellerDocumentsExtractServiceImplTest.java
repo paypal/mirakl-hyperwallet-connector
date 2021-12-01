@@ -12,7 +12,6 @@ import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
-import com.paypal.kyc.converter.KYCBusinessStakeHolderConverter;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklSellerDocumentDownloadExtractService;
@@ -34,11 +33,11 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class MiraklSellerDocumentsExtractServiceImplTest {
 
-	private static final String HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_BUSINESS_FIELD = "hw-kyc-req-proof-identity-business";
+	private static final String SHOP_ID = "shopId";
 
 	private static final String USER_TOKEN = "usr-12345547";
 
-	private static final String SHOP_ID = "shopId";
+	private static final String HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_BUSINESS_FIELD = "hw-kyc-req-proof-identity-business";
 
 	@Spy
 	@InjectMocks
@@ -57,20 +56,20 @@ class MiraklSellerDocumentsExtractServiceImplTest {
 	private Converter<MiraklShop, KYCDocumentSellerInfoModel> miraklShopKyCDocumentInfoModelConverterMock;
 
 	@Mock
-	private KYCBusinessStakeHolderConverter kycBusinessStakeHolderConverterMock;
-
-	@Mock
 	private MiraklGetShopsRequest miraklGetShopsRequestMock;
 
 	@Mock
 	private MiraklShops miraklShopsResponseMock;
 
 	@Mock
-	private MiraklShop miraklShopRequiringKYCMock, miraklShopNonRequiringKYCMock, miraklShopMock;
+	private MiraklShop miraklShopRequiringKYCMock, miraklShopRequiringKYCWithoutTokenMock,
+			miraklShopRequiringKYCWithoutValidationMock, miraklShopNonRequiringKYCMock, miraklShopMock;
 
 	@Mock
-	private KYCDocumentSellerInfoModel kycDocumentInfoModelRequiringKYCMockSeller,
-			kycDocumentInfoModelRequiringKYCPopulatedMockSeller, kycDocumentInfoModelNonRequiringKYCMockSeller;
+	private KYCDocumentSellerInfoModel kycDocumentInfoModelRequiringKYCSellerMock,
+			kycDocumentInfoModelRequiringKYCWithoutTokenSellerMock,
+			kycDocumentInfoModelRequiringKYCWithoutValidationSellerMock,
+			kycDocumentInfoModelRequiringKYCPopulatedSellerMock, kycDocumentInfoModelNonRequiringKYCSellerMock;
 
 	@Mock
 	private Date deltaMock;
@@ -100,27 +99,41 @@ class MiraklSellerDocumentsExtractServiceImplTest {
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestMock))
 				.thenReturn(miraklShopsResponseMock);
 
-		when(kycDocumentInfoModelRequiringKYCMockSeller.isRequiresKYC()).thenReturn(true);
-		when(kycDocumentInfoModelRequiringKYCMockSeller.getUserToken()).thenReturn(USER_TOKEN);
-		when(kycDocumentInfoModelRequiringKYCMockSeller.hasSelectedDocumentControlFields()).thenReturn(true);
+		when(kycDocumentInfoModelRequiringKYCSellerMock.isRequiresKYC()).thenReturn(true);
+		when(kycDocumentInfoModelRequiringKYCSellerMock.getUserToken()).thenReturn(USER_TOKEN);
+		when(kycDocumentInfoModelRequiringKYCSellerMock.hasSelectedDocumentControlFields()).thenReturn(true);
+		when(kycDocumentInfoModelRequiringKYCWithoutTokenSellerMock.isRequiresKYC()).thenReturn(true);
+		when(kycDocumentInfoModelRequiringKYCWithoutTokenSellerMock.hasSelectedDocumentControlFields())
+				.thenReturn(true);
+		when(kycDocumentInfoModelRequiringKYCWithoutValidationSellerMock.isRequiresKYC()).thenReturn(true);
+
 		when(miraklShopsResponseMock.getShops())
-				.thenReturn(List.of(miraklShopRequiringKYCMock, miraklShopNonRequiringKYCMock));
+				.thenReturn(List.of(miraklShopRequiringKYCMock, miraklShopRequiringKYCWithoutTokenMock,
+						miraklShopRequiringKYCWithoutValidationMock, miraklShopNonRequiringKYCMock));
 		when(miraklShopKyCDocumentInfoModelConverterMock.convert(miraklShopRequiringKYCMock))
-				.thenReturn(kycDocumentInfoModelRequiringKYCMockSeller);
+				.thenReturn(kycDocumentInfoModelRequiringKYCSellerMock);
+		when(miraklShopKyCDocumentInfoModelConverterMock.convert(miraklShopRequiringKYCWithoutTokenMock))
+				.thenReturn(kycDocumentInfoModelRequiringKYCWithoutTokenSellerMock);
+		when(miraklShopKyCDocumentInfoModelConverterMock.convert(miraklShopRequiringKYCWithoutValidationMock))
+				.thenReturn(kycDocumentInfoModelRequiringKYCWithoutValidationSellerMock);
 		when(miraklShopKyCDocumentInfoModelConverterMock.convert(miraklShopNonRequiringKYCMock))
-				.thenReturn(kycDocumentInfoModelNonRequiringKYCMockSeller);
+				.thenReturn(kycDocumentInfoModelNonRequiringKYCSellerMock);
 		when(miraklSellerDocumentDownloadExtractServiceMock
-				.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCMockSeller))
-						.thenReturn(kycDocumentInfoModelRequiringKYCPopulatedMockSeller);
+				.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCSellerMock))
+						.thenReturn(kycDocumentInfoModelRequiringKYCPopulatedSellerMock);
 
 		final List<KYCDocumentSellerInfoModel> result = testObj
 				.extractProofOfIdentityAndBusinessSellerDocuments(deltaMock);
 
 		verify(miraklSellerDocumentDownloadExtractServiceMock)
-				.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCMockSeller);
+				.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCSellerMock);
 		verify(miraklSellerDocumentDownloadExtractServiceMock, never())
-				.getDocumentsSelectedBySeller(kycDocumentInfoModelNonRequiringKYCMockSeller);
-		assertThat(result).containsExactlyInAnyOrder(kycDocumentInfoModelRequiringKYCPopulatedMockSeller);
+				.getDocumentsSelectedBySeller(kycDocumentInfoModelNonRequiringKYCSellerMock);
+		verify(miraklSellerDocumentDownloadExtractServiceMock, never())
+				.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCWithoutTokenSellerMock);
+		verify(miraklSellerDocumentDownloadExtractServiceMock, never())
+				.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCWithoutValidationSellerMock);
+		assertThat(result).containsExactlyInAnyOrder(kycDocumentInfoModelRequiringKYCPopulatedSellerMock);
 	}
 
 	@Test
@@ -148,7 +161,7 @@ class MiraklSellerDocumentsExtractServiceImplTest {
 		when(miraklMarketplacePlatformOperatorApiClientMock.updateShops(any(MiraklUpdateShopsRequest.class)))
 				.thenReturn(miraklUpdateShopsMock);
 
-		final var result = testObj
+		final Optional<MiraklUpdatedShops> result = testObj
 				.setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(successfullyPushedDocumentsList);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock).updateShops(miraklUpdateShopArgumentCaptor.capture());
@@ -224,13 +237,13 @@ class MiraklSellerDocumentsExtractServiceImplTest {
 		when(miraklShopsMock.getShops()).thenReturn(List.of(miraklShopMock));
 		when(miraklShopMock.getId()).thenReturn(SHOP_ID);
 		when(miraklShopKyCDocumentInfoModelConverterMock.convert(miraklShopMock))
-				.thenReturn(kycDocumentInfoModelNonRequiringKYCMockSeller);
+				.thenReturn(kycDocumentInfoModelNonRequiringKYCSellerMock);
 
 		testObj.extractKYCSellerDocuments(SHOP_ID);
 
 		verify(miraklShopKyCDocumentInfoModelConverterMock).convert(miraklShopMock);
 		verify(miraklSellerDocumentDownloadExtractServiceMock)
-				.populateMiraklShopDocuments(kycDocumentInfoModelNonRequiringKYCMockSeller);
+				.populateMiraklShopDocuments(kycDocumentInfoModelNonRequiringKYCSellerMock);
 	}
 
 	@Test

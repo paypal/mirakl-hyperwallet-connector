@@ -17,7 +17,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Class to operate with quartz jobs
+ * Class to operate with Quartz jobs
  */
 @Slf4j
 @Service
@@ -38,7 +38,6 @@ public class JobService {
 				.filter(Objects::nonNull)
 				.collect(Collectors.toSet());
 		//@formatter:on*/
-
 	}
 
 	/**
@@ -51,10 +50,11 @@ public class JobService {
 		//@formatter:off
 		return getJobs().stream()
 				.filter(jd -> name.equals(jd.getKey().getName()))
-				.filter(jd -> Objects.nonNull(jd.getJobDataMap()))
 				.map(JobDetail::getJobDataMap)
-				.filter(jobDataMap -> Objects.nonNull(jobDataMap.get("status")))
-				.map(jobDataMap -> (JobStatus)jobDataMap.get("status"))
+				.filter(jobDataMap -> Objects.nonNull(jobDataMap) && jobDataMap.containsKey("status"))
+				.map(jobDataMap -> jobDataMap.get("status"))
+				.filter(JobStatus.class::isInstance)
+				.map(JobStatus.class::cast)
 				.findAny()
 				.orElse(JobStatus.UNKNOWN);
 		//@formatter:on
@@ -72,21 +72,21 @@ public class JobService {
 			final JobDataMap jobDataMap, @Nullable final Date schedule) throws SchedulerException {
 		//@formatter:off
 		final Date scheduling = Optional.ofNullable(schedule)
-				.orElse(DateUtil.convertToDate(TimeMachine.now(),ZoneId.systemDefault()));
+				.orElse(DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault()));
 
-		final JobDetail extractSellersJobSingleExecution = JobBuilder.newJob(clazz)
+		final JobDetail jobExecution = JobBuilder.newJob(clazz)
 				.withIdentity(name)
 				.usingJobData(jobDataMap)
 				.storeDurably()
 				.build();
 
-		final Trigger triggerForExtractSellersJobSingleExecution = TriggerBuilder.newTrigger()
-				.forJob(extractSellersJobSingleExecution)
+		final Trigger singleJobExecutionTrigger = TriggerBuilder.newTrigger()
+				.forJob(jobExecution)
 				.startAt(scheduling)
 				.build();
 		//@formatter:on
-		scheduler.addJob(extractSellersJobSingleExecution, true);
-		scheduler.scheduleJob(triggerForExtractSellersJobSingleExecution);
+		scheduler.addJob(jobExecution, true);
+		scheduler.scheduleJob(singleJobExecutionTrigger);
 	}
 
 	protected Function<JobKey, JobDetail> getJobKeyJobDetailFunction() {

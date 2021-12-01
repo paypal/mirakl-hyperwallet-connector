@@ -35,19 +35,19 @@ public abstract class AbstractMiraklSelectedDocumentsStrategy
 		final Map<String, String> fieldNameAnDocumentIdList = getDocumentIds(source.getMiraklShopDocuments(),
 				miraklFields);
 
-		final var miraklDownloadShopRequests = fieldNameAnDocumentIdList.entrySet().stream()
-				.map(fieldNameAndDocumentIdPair -> {
+		final List<Pair<String, MiraklDownloadShopsDocumentsRequest>> miraklDownloadShopRequests = fieldNameAnDocumentIdList
+				.entrySet().stream().map(fieldNameAndDocumentIdPair -> {
 					final MiraklDownloadShopsDocumentsRequest miraklDownloadDocumentRequest = new MiraklDownloadShopsDocumentsRequest();
 					miraklDownloadDocumentRequest.setDocumentIds(List.of(fieldNameAndDocumentIdPair.getKey()));
 					return Pair.of(fieldNameAndDocumentIdPair.getValue(), miraklDownloadDocumentRequest);
 				}).collect(Collectors.toList());
 
 		// @formatter:off
-        return miraklDownloadShopRequests.stream()
-                .map(this::downloadDocument)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        // @formatter:on
+		return miraklDownloadShopRequests.stream()
+				.map(this::downloadDocument)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
+		// @formatter:on
 	}
 
 	protected abstract List<String> getMiraklFieldNames(KYCDocumentInfoModel source);
@@ -58,14 +58,13 @@ public abstract class AbstractMiraklSelectedDocumentsStrategy
 				.collect(Collectors.toMap(MiraklShopDocument::getTypeCode, MiraklShopDocument::getId));
 
 		//@formatter:off
-        return miraklFields.stream()
-                .collect(Collectors.toMap(existingDocuments::get, Function.identity()))
-                .entrySet()
-                .stream()
-                .filter(miraklField -> Objects.nonNull(miraklField.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        //@formatter:on
-
+		return miraklFields.stream()
+				.collect(Collectors.toMap(existingDocuments::get, Function.identity()))
+				.entrySet()
+				.stream()
+				.filter(miraklField -> Objects.nonNull(miraklField.getKey()))
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		//@formatter:on
 	}
 
 	private KYCDocumentModel downloadDocument(

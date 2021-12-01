@@ -28,19 +28,19 @@ class AbstractHyperwalletSellerRetryApiStrategyTest {
 	private MyAbstractHyperwalletSellerRetryApiStrategy testObj;
 
 	@Mock
+	private Converter<SellerModel, HyperwalletUser> sellerModelHyperwalletUserConverterMock;
+
+	@Mock
 	private SellerModel sellerModelMock;
+
+	@Mock
+	private IOException ioExceptionMock;
 
 	@Mock
 	private HyperwalletUser hyperwalletUserMock;
 
 	@Mock
-	private Converter<SellerModel, HyperwalletUser> sellerModelHyperwalletUserConverterMock;
-
-	@Mock
 	private MailNotificationUtil mailNotificationUtilMock;
-
-	@Mock
-	private IOException ioExceptionMock;
 
 	@Mock
 	private HyperwalletException hyperwalletExceptionMock;
@@ -49,19 +49,19 @@ class AbstractHyperwalletSellerRetryApiStrategyTest {
 			+ "information:\n";
 
 	@Test
-	void execute_shouldcallMiraklAPI() {
+	void execute_shouldCallMiraklAPI() {
 		when(sellerModelHyperwalletUserConverterMock.convert(sellerModelMock)).thenReturn(hyperwalletUserMock);
 		doNothing().when(testObj).callToIncludeIntoRetryProcess(sellerModelMock, Boolean.FALSE);
+
 		testObj.execute(sellerModelMock);
 
 		verify(sellerModelHyperwalletUserConverterMock).convert(sellerModelMock);
 		verify(testObj).createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl(hyperwalletUserMock);
-
 	}
 
 	@Test
 	void execute_shouldSendEmailNotificationHyperwalletExceptionIsThrown() {
-		final var hyperwalletException = new HyperwalletException("Something went wrong");
+		final HyperwalletException hyperwalletException = new HyperwalletException("Something went wrong");
 		when(sellerModelMock.getClientUserId()).thenReturn("2001");
 		when(sellerModelHyperwalletUserConverterMock.convert(sellerModelMock)).thenReturn(hyperwalletUserMock);
 		doNothing().when(testObj).callToIncludeIntoRetryProcess(sellerModelMock, Boolean.FALSE);

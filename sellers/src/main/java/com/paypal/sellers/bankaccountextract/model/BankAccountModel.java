@@ -82,22 +82,22 @@ public class BankAccountModel {
 		}
 		final BankAccountModel that = (BankAccountModel) o;
 		//@formatter:off
-        return Objects.equals(getTransferMethodCountry(), that.getTransferMethodCountry())
-                && Objects.equals(getTransferMethodCurrency(), that.getTransferMethodCurrency())
-                && getTransferType() == that.getTransferType() && getType() == that.getType()
-                && Objects.equals(getBankAccountNumber(), that.getBankAccountNumber())
-                && Objects.equals(getBusinessName(), that.getBusinessName())
-                && Objects.equals(getFirstName(), that.getFirstName())
-                && Objects.equals(getLastName(), that.getLastName())
-                && Objects.equals(getCountry(), that.getCountry())
-                && Objects.equals(getAddressLine1(), that.getAddressLine1())
-                && Objects.equals(getAddressLine2(), that.getAddressLine2())
-                && Objects.equals(getCity(), that.getCity())
-                && Objects.equals(getStateProvince(), that.getStateProvince())
-                && Objects.equals(getPostalCode(), that.getPostalCode())
-                && Objects.equals(getToken(), that.getToken())
-                && Objects.equals(getHyperwalletProgram(), that.getHyperwalletProgram());
-        //@formatter:on
+		return Objects.equals(getTransferMethodCountry(), that.getTransferMethodCountry())
+				&& Objects.equals(getTransferMethodCurrency(), that.getTransferMethodCurrency())
+				&& getTransferType() == that.getTransferType() && getType() == that.getType()
+				&& Objects.equals(getBankAccountNumber(), that.getBankAccountNumber())
+				&& Objects.equals(getBusinessName(), that.getBusinessName())
+				&& Objects.equals(getFirstName(), that.getFirstName())
+				&& Objects.equals(getLastName(), that.getLastName())
+				&& Objects.equals(getCountry(), that.getCountry())
+				&& Objects.equals(getAddressLine1(), that.getAddressLine1())
+				&& Objects.equals(getAddressLine2(), that.getAddressLine2())
+				&& Objects.equals(getCity(), that.getCity())
+				&& Objects.equals(getStateProvince(), that.getStateProvince())
+				&& Objects.equals(getPostalCode(), that.getPostalCode())
+				&& Objects.equals(getToken(), that.getToken())
+				&& Objects.equals(getHyperwalletProgram(), that.getHyperwalletProgram());
+		//@formatter:on
 	}
 
 	@Override
@@ -263,23 +263,23 @@ public class BankAccountModel {
 		private Optional<String> getMiraklStringCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
 				final String customFieldCode) {
 			//@formatter:off
-            return fields.stream().filter(field -> field.getCode().equals(customFieldCode))
-                    .filter(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::isInstance)
-                    .map(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::cast)
-                    .findAny()
-                    .map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
-            //@formatter:on
+			return fields.stream().filter(field -> field.getCode().equals(customFieldCode))
+					.filter(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::isInstance)
+					.map(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::cast)
+					.findAny()
+					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+			//@formatter:on
 		}
 
 		private Optional<String> getMiraklSingleValueListCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
 				final String customFieldCode) {
 			//@formatter:off
-            return fields.stream()
-                    .filter(field -> field.getCode().equals(customFieldCode))
-                    .filter(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::isInstance)
-                    .map(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::cast).findAny()
-                    .map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
-            //@formatter:on
+			return fields.stream()
+					.filter(field -> field.getCode().equals(customFieldCode))
+					.filter(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::isInstance)
+					.map(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class::cast).findAny()
+					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+			//@formatter:on
 		}
 
 	}

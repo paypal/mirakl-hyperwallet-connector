@@ -35,13 +35,12 @@ class KycBusinessStakeHolderSenderTest {
 	private HyperwalletWebhookNotification hyperwalletWebhookNotificationMock;
 
 	@Test
-	void execute_shouldPublishEvent_andReturnNull() {
+	void execute_shouldPublishEvent() {
 		doReturn(kycBusinessStakeholderEventMock).when(testObj).getEvent(hyperwalletWebhookNotificationMock);
 
-		final Void result = testObj.execute(hyperwalletWebhookNotificationMock);
+		testObj.execute(hyperwalletWebhookNotificationMock);
 
 		verify(applicationEventPublisherMock).publishEvent(kycBusinessStakeholderEventMock);
-		assertThat(result).isNull();
 	}
 
 	@Test

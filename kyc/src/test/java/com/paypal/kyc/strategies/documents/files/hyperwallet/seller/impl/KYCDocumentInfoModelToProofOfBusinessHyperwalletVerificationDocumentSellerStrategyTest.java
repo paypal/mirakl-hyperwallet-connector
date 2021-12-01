@@ -32,26 +32,26 @@ class KYCDocumentInfoModelToProofOfBusinessHyperwalletVerificationDocumentSeller
 	@Mock
 	private File proofOfBusinessFileFrontMock;
 
-	private static String CLIENT_USER_ID = "2000";
+	private static final String CLIENT_USER_ID = "2000";
 
-	private static String USR_TOKEN = "usrToken";
+	private static final String USR_TOKEN = "usrToken";
 
 	@BeforeEach
 	void setUp() {
 		//@formatter:off
-        documentProofOfBusinessFront = KYCDocumentModel.builder()
-                .documentFieldName(KYCConstants.HwDocuments.PROOF_OF_BUSINESS).file(proofOfBusinessFileFrontMock)
-                .build();
+		documentProofOfBusinessFront = KYCDocumentModel.builder()
+				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_BUSINESS).file(proofOfBusinessFileFrontMock)
+				.build();
 
-        kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder().clientUserId(CLIENT_USER_ID)
-                .userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
-                        KYCConstants.HYPERWALLET_USER_TOKEN_FIELD, USR_TOKEN)))
-                .professional(true)
-                .proofOfBusiness(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-                        KYCConstants.HYPERWALLET_KYC_PROF_PROOF_OF_BUSINESS_FIELD, "INCORPORATION")))
-                .documents(List.of(documentProofOfBusinessFront))
-                .build();
-        //@formatter:on
+		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder().clientUserId(CLIENT_USER_ID)
+				.userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
+						KYCConstants.HYPERWALLET_USER_TOKEN_FIELD, USR_TOKEN)))
+				.professional(true)
+				.proofOfBusiness(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+						KYCConstants.HYPERWALLET_KYC_PROF_PROOF_OF_BUSINESS_FIELD, "INCORPORATION")))
+				.documents(List.of(documentProofOfBusinessFront))
+				.build();
+		//@formatter:on
 	}
 
 	@Test
@@ -70,7 +70,6 @@ class KYCDocumentInfoModelToProofOfBusinessHyperwalletVerificationDocumentSeller
 
 	@Test
 	void isApplicable_shouldReturnTrueWhenShopIsProfessionalAndProofOfBusinessIsNotNullAndDocumentsAreNotNull() {
-
 		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModel);
 
 		assertThat(result).isTrue();
@@ -100,7 +99,7 @@ class KYCDocumentInfoModelToProofOfBusinessHyperwalletVerificationDocumentSeller
 				.professional(true).documents(List.of(documentProofOfBusinessFront))
 				.build();
 		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModel);
-	//@formatter:on
+		//@formatter:on
 		assertThat(result).isFalse();
 	}
 

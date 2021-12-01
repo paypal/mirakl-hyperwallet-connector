@@ -20,7 +20,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static com.paypal.sellers.sellersextract.model.SellerModelConstants.*;
+import static com.paypal.sellers.sellersextract.model.SellerModelConstants.HYPERWALLET_BANK_ACCOUNT_STATE;
+import static com.paypal.sellers.sellersextract.model.SellerModelConstants.HYPERWALLET_BANK_ACCOUNT_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -110,24 +111,23 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 		final ABABankAccountModel result = testObj.execute(miraklShopMock);
 
 		//@formatter:off
-        assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", USA_COUNTRY_ISO)
-                .hasFieldOrPropertyWithValue("transferMethodCurrency", USD_CURRENCY)
-                .hasFieldOrPropertyWithValue("transferType", TransferType.BANK_ACCOUNT)
-                .hasFieldOrPropertyWithValue("type", BankAccountType.ABA)
-                .hasFieldOrPropertyWithValue("bankAccountNumber", ABA_ACCOUNT)
-                .hasFieldOrPropertyWithValue("businessName", BUSINESS_NAME)
-                .hasFieldOrPropertyWithValue("firstName", FIRST_NAME)
-                .hasFieldOrPropertyWithValue("lastName", LAST_NAME)
-                .hasFieldOrPropertyWithValue("country", USA_COUNTRY_ISO)
-                .hasFieldOrPropertyWithValue("addressLine1", STREET_1)
-                .hasFieldOrPropertyWithValue("addressLine2", STREET_2)
-                .hasFieldOrPropertyWithValue("city", CITY_NAME)
-                .hasFieldOrPropertyWithValue("stateProvince", STATE)
-                .hasFieldOrPropertyWithValue("postalCode", BANK_ZIP)
-                .hasFieldOrPropertyWithValue("token", TOKEN)
-                .hasFieldOrPropertyWithValue("hyperwalletProgram", HYPERWALLET_PROGRAM);
-        //@formatter:on
-
+		assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", USA_COUNTRY_ISO)
+				.hasFieldOrPropertyWithValue("transferMethodCurrency", USD_CURRENCY)
+				.hasFieldOrPropertyWithValue("transferType", TransferType.BANK_ACCOUNT)
+				.hasFieldOrPropertyWithValue("type", BankAccountType.ABA)
+				.hasFieldOrPropertyWithValue("bankAccountNumber", ABA_ACCOUNT)
+				.hasFieldOrPropertyWithValue("businessName", BUSINESS_NAME)
+				.hasFieldOrPropertyWithValue("firstName", FIRST_NAME)
+				.hasFieldOrPropertyWithValue("lastName", LAST_NAME)
+				.hasFieldOrPropertyWithValue("country", USA_COUNTRY_ISO)
+				.hasFieldOrPropertyWithValue("addressLine1", STREET_1)
+				.hasFieldOrPropertyWithValue("addressLine2", STREET_2)
+				.hasFieldOrPropertyWithValue("city", CITY_NAME)
+				.hasFieldOrPropertyWithValue("stateProvince", STATE)
+				.hasFieldOrPropertyWithValue("postalCode", BANK_ZIP)
+				.hasFieldOrPropertyWithValue("token", TOKEN)
+				.hasFieldOrPropertyWithValue("hyperwalletProgram", HYPERWALLET_PROGRAM);
+		//@formatter:on
 	}
 
 	@Test
@@ -157,33 +157,32 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 
 		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
 
-		final var result = testObj.execute(miraklShopMock);
+		final ABABankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off
-        assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", USA_COUNTRY_ISO)
-                .hasFieldOrPropertyWithValue("transferMethodCurrency", USD_CURRENCY)
-                .hasFieldOrPropertyWithValue("transferType", TransferType.BANK_ACCOUNT)
-                .hasFieldOrPropertyWithValue("type", BankAccountType.ABA)
-                .hasFieldOrPropertyWithValue("bankAccountNumber", ABA_ACCOUNT)
-                .hasFieldOrPropertyWithValue("businessName", BUSINESS_NAME)
-                .hasFieldOrPropertyWithValue("firstName", FIRST_NAME)
-                .hasFieldOrPropertyWithValue("lastName", LAST_NAME)
-                .hasFieldOrPropertyWithValue("country", USA_COUNTRY_ISO)
-                .hasFieldOrPropertyWithValue("addressLine1", STREET_1)
-                .hasFieldOrPropertyWithValue("addressLine2", StringUtils.EMPTY)
-                .hasFieldOrPropertyWithValue("city", CITY_NAME)
-                .hasFieldOrPropertyWithValue("stateProvince", STATE)
-                .hasFieldOrPropertyWithValue("postalCode", BANK_ZIP)
-                .hasFieldOrPropertyWithValue("token", TOKEN)
-                .hasFieldOrPropertyWithValue("hyperwalletProgram", HYPERWALLET_PROGRAM);
-        //@formatter:on
-
+		assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", USA_COUNTRY_ISO)
+				.hasFieldOrPropertyWithValue("transferMethodCurrency", USD_CURRENCY)
+				.hasFieldOrPropertyWithValue("transferType", TransferType.BANK_ACCOUNT)
+				.hasFieldOrPropertyWithValue("type", BankAccountType.ABA)
+				.hasFieldOrPropertyWithValue("bankAccountNumber", ABA_ACCOUNT)
+				.hasFieldOrPropertyWithValue("businessName", BUSINESS_NAME)
+				.hasFieldOrPropertyWithValue("firstName", FIRST_NAME)
+				.hasFieldOrPropertyWithValue("lastName", LAST_NAME)
+				.hasFieldOrPropertyWithValue("country", USA_COUNTRY_ISO)
+				.hasFieldOrPropertyWithValue("addressLine1", STREET_1)
+				.hasFieldOrPropertyWithValue("addressLine2", StringUtils.EMPTY)
+				.hasFieldOrPropertyWithValue("city", CITY_NAME)
+				.hasFieldOrPropertyWithValue("stateProvince", STATE)
+				.hasFieldOrPropertyWithValue("postalCode", BANK_ZIP)
+				.hasFieldOrPropertyWithValue("token", TOKEN)
+				.hasFieldOrPropertyWithValue("hyperwalletProgram", HYPERWALLET_PROGRAM);
+		//@formatter:on
 	}
 
 	@Test
 	void isApplicable_shouldReturnTrue_whenPaymentInformationIsABA() {
 		when(miraklShopMock.getPaymentInformation()).thenReturn(miraklABABankAccountInformationMock);
 
-		final var result = testObj.isApplicable(miraklShopMock);
+		final boolean result = testObj.isApplicable(miraklShopMock);
 
 		assertThat(result).isTrue();
 	}
@@ -192,7 +191,7 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 	void isApplicable_shouldReturnFalse_whenPaymentInformationIsNotABA() {
 		when(miraklShopMock.getPaymentInformation()).thenReturn(miraklIBANBankAccountInformationMock);
 
-		final var result = testObj.isApplicable(miraklShopMock);
+		final boolean result = testObj.isApplicable(miraklShopMock);
 
 		assertThat(result).isFalse();
 	}
@@ -201,7 +200,7 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 	void isApplicable_shouldReturnFalse_whenNullPaymentInformationIsReceived() {
 		when(miraklShopMock.getPaymentInformation()).thenReturn(null);
 
-		final var result = testObj.isApplicable(miraklShopMock);
+		final boolean result = testObj.isApplicable(miraklShopMock);
 
 		assertThat(result).isFalse();
 	}

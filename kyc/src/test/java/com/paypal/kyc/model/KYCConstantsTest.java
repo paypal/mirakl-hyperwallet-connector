@@ -1,6 +1,5 @@
 package com.paypal.kyc.model;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -18,7 +17,6 @@ class KYCConstantsTest {
 		final List<String> result = KYCConstants.HwDocuments.getAllDocumentsTypes();
 
 		assertThat(result).containsExactlyInAnyOrder(PROOF_OF_IDENTITY_FRONT, PROOF_OF_IDENTITY_BACK, PROOF_OF_ADDRESS);
-
 	}
 
 }

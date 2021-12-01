@@ -19,7 +19,6 @@ class KYCDocumentInfoModelTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenBothAreEquals() {
-
 		final KYCDocumentInfoModel kycDocumentInfoModelOne = createKYCDocumentInfoModelObject();
 		final KYCDocumentInfoModel kycDocumentInfoModelTwo = createKYCDocumentInfoModelObject();
 
@@ -30,7 +29,6 @@ class KYCDocumentInfoModelTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenBothAreNotEquals() {
-
 		final KYCDocumentInfoModel kycDocumentBusinessStakeHolderInfoModelOne = createKYCDocumentInfoModelObject();
 		final KYCDocumentInfoModel kycDocumentBusinessStakeHolderInfoModelTwo = createAnotherKYCDocumentInfoModelObject();
 
@@ -42,7 +40,6 @@ class KYCDocumentInfoModelTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenSameObjectIsCompared() {
-
 		final KYCDocumentInfoModel kycDocumentBusinessStakeHolderInfoModelOne = createKYCDocumentInfoModelObject();
 
 		final boolean result = kycDocumentBusinessStakeHolderInfoModelOne
@@ -53,7 +50,6 @@ class KYCDocumentInfoModelTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenComparedWithAnotherInstanceObject() {
-
 		final KYCDocumentInfoModel kycDocumentBusinessStakeHolderInfoModelOne = createKYCDocumentInfoModelObject();
 
 		final Object o = new Object();
@@ -65,27 +61,26 @@ class KYCDocumentInfoModelTest {
 
 	private KYCDocumentInfoModel createKYCDocumentInfoModelObject() {
 		//@formatter:off
-        return KYCDocumentInfoModel.builder()
-                .userToken(USER_TOKEN)
-                .clientUserId(SHOP_ID_2001)
-                .requiresKYC(Boolean.TRUE)
+		return KYCDocumentInfoModel.builder()
+				.userToken(USER_TOKEN)
+				.clientUserId(SHOP_ID_2001)
+				.requiresKYC(Boolean.TRUE)
 				.hyperwalletProgram(EUROPE)
-                .proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
-                .build();
-        //@formatter:on
+				.proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
+				.build();
+		//@formatter:on
 	}
 
 	private KYCDocumentInfoModel createAnotherKYCDocumentInfoModelObject() {
-
 		//@formatter:off
-        return KYCDocumentInfoModel.builder()
-                .userToken(USER_TOKEN)
-                .clientUserId(SHOP_ID_2000)
-                .requiresKYC(Boolean.TRUE)
+		return KYCDocumentInfoModel.builder()
+				.userToken(USER_TOKEN)
+				.clientUserId(SHOP_ID_2000)
+				.requiresKYC(Boolean.TRUE)
 				.hyperwalletProgram(EUROPE)
-                .proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
-                .build();
-        //@formatter:on
+				.proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
+				.build();
+		//@formatter:on
 	}
 
 }

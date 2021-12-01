@@ -71,7 +71,6 @@ class KYCUserNotificationServiceImplTest {
 		testObj.updateUserDocumentsFlags(hyperwalletWebhookNotificationMock);
 
 		verify(kycUserDocumentFlagsExecutorMock).execute(kycUserDocumentFlagsNotificationBodyModelMock);
-
 	}
 
 }

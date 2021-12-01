@@ -50,14 +50,21 @@ class AbstractUserDocumentFlagsStrategyTest {
 	}
 
 	@Test
+	void execute_shouldReturnNull() {
+		final Void result = testObj.execute(null);
+
+		assertThat(result).isNull();
+	}
+
+	@Test
 	void fillMiraklProofIdentityOrBusinessFlagStatus_shouldSetFlagProofIdentificationToTrueInMirakl() {
 		//@formatter:off
-        final KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
-                .builder()
-                .clientUserId(SHOP_ID)
-                .profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
-                .verificationStatus(HyperwalletUser.VerificationStatus.REQUIRED).build();
-        //@formatter:on
+		final KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
+				.builder()
+				.clientUserId(SHOP_ID)
+				.profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
+				.verificationStatus(HyperwalletUser.VerificationStatus.REQUIRED).build();
+		//@formatter:on
 		testObj.fillMiraklProofIdentityOrBusinessFlagStatus(kycUserDocumentFlagsNotificationBodyModel);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock)
@@ -84,16 +91,16 @@ class AbstractUserDocumentFlagsStrategyTest {
 	@Test
 	void fillMiraklProofIdentityOrBusinessFlagStatus_shouldSendAnEmailWhenMiraklConnectionFails() {
 		//@formatter:off
-        final KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
-                .builder()
-                .clientUserId(SHOP_ID)
-                .profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
-                .verificationStatus(HyperwalletUser.VerificationStatus.REQUIRED).build();
+		final KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
+				.builder()
+				.clientUserId(SHOP_ID)
+				.profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
+				.verificationStatus(HyperwalletUser.VerificationStatus.REQUIRED).build();
 
-        final MiraklException miraklException = new MiraklException("Something bad happened");
+		final MiraklException miraklException = new MiraklException("Something bad happened");
 
-        doThrow(miraklException).when(miraklMarketplacePlatformOperatorApiClientMock).updateShops(any(MiraklUpdateShopsRequest.class));
-        //@formatter:on
+		doThrow(miraklException).when(miraklMarketplacePlatformOperatorApiClientMock).updateShops(any(MiraklUpdateShopsRequest.class));
+		//@formatter:on
 		testObj.fillMiraklProofIdentityOrBusinessFlagStatus(kycUserDocumentFlagsNotificationBodyModel);
 
 		verify(mailNotificationMock).sendPlainTextEmail("Issue detected updating KYC information in Mirakl",

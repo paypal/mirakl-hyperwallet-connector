@@ -90,7 +90,7 @@ class HyperWalletCreateBusinessStakeHolderServiceStrategyTest {
 		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletClientMock);
 
-		final var hyperwalletException = new HyperwalletException("Something went wrong");
+		final HyperwalletException hyperwalletException = new HyperwalletException("Something went wrong");
 		doThrow(hyperwalletException).when(hyperwalletClientMock).createBusinessStakeholder(TOKEN,
 				hyperwalletBusinessStakeholderMock);
 
@@ -104,7 +104,6 @@ class HyperWalletCreateBusinessStakeHolderServiceStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnTrueWhenBusinessStakeHolderHasAnEmptyToken() {
-
 		final boolean result = testObj.isApplicable(businessStakeHolderMock);
 
 		assertThat(result).isTrue();

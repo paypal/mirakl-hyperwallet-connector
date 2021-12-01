@@ -11,7 +11,6 @@ public enum BraintreeTypeEnum {
 
 	BraintreeTypeEnum(final String type) {
 		this.typeName = type;
-
 	}
 
 }
