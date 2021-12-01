@@ -53,7 +53,6 @@ class AbstractProgramHierarchyHyperwalletApiConfigTest {
 
 		assertThat(result).containsOnly(entry(TEST_1, TOKEN_TEST_1), entry(TEST_2, TOKEN_TEST_2),
 				entry(TEST_3, TOKEN_TEST_3));
-
 	}
 
 	@Test
@@ -63,12 +62,10 @@ class AbstractProgramHierarchyHyperwalletApiConfigTest {
 		final Map<String, String> result = testObj.loadTokenMapConfiguration(PREFIX_TOKEN);
 
 		assertThat(result).isEmpty();
-
 	}
 
 	@Test
 	void equals_shouldReturnTrueWhenBothAreEquals() {
-
 		final MyAbstractProgramHierarchyHyperwalletApiConfig apiConfigOne = createApiConfig();
 		final MyAbstractProgramHierarchyHyperwalletApiConfig apiConfigTwo = createApiConfig();
 
@@ -79,7 +76,6 @@ class AbstractProgramHierarchyHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenBothAreNotEquals() {
-
 		final MyAbstractProgramHierarchyHyperwalletApiConfig apiConfigOne = createApiConfig();
 		final MyAbstractProgramHierarchyHyperwalletApiConfig apiConfigTwo = createAnotherApiConfig();
 
@@ -90,7 +86,6 @@ class AbstractProgramHierarchyHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenSameObjectIsCompared() {
-
 		final MyAbstractProgramHierarchyHyperwalletApiConfig apiConfigOne = createApiConfig();
 
 		final boolean result = apiConfigOne.equals(apiConfigOne);
@@ -100,7 +95,6 @@ class AbstractProgramHierarchyHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenComparedWithAnotherInstanceObject() {
-
 		final MyAbstractProgramHierarchyHyperwalletApiConfig apiConfigOne = createApiConfig();
 
 		final Object o = new Object();

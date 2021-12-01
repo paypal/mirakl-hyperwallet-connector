@@ -27,15 +27,15 @@ public class MapToBraintreeRefundLineConverter extends AbstractMapToBraintreeLin
 		}
 
 		//@formatter:off
-        return HmcBraintreeRefundLine.builder()
-                .paymentTransactionId((Optional.ofNullable((String)source.get("legacyId")).orElse(StringUtils.EMPTY)))
-                .orderId(braintreeNodeGraphQLModel.getOrderId())
-                .amount(braintreeNodeGraphQLModel.getAmount().getValue().negate())
-                .currencyIsoCode(braintreeNodeGraphQLModel.getAmount().getCurrencyCode())
-                .paymentTransactionTime(DateUtil.convertToLocalDateTime(braintreeNodeGraphQLModel.getCreatedAt()))
-                .transactionType(BraintreeTransactionTypeEnum.REFUND_OPERATOR_ORDER_AMOUNT.name())
-                .build();
-        //@formatter:on
+		return HmcBraintreeRefundLine.builder()
+				.paymentTransactionId((Optional.ofNullable((String) source.get("legacyId")).orElse(StringUtils.EMPTY)))
+				.orderId(braintreeNodeGraphQLModel.getOrderId())
+				.amount(braintreeNodeGraphQLModel.getAmount().getValue().negate())
+				.currencyIsoCode(braintreeNodeGraphQLModel.getAmount().getCurrencyCode())
+				.paymentTransactionTime(DateUtil.convertToLocalDateTime(braintreeNodeGraphQLModel.getCreatedAt()))
+				.transactionType(BraintreeTransactionTypeEnum.REFUND_OPERATOR_ORDER_AMOUNT.name())
+				.build();
+		//@formatter:on
 	}
 
 }

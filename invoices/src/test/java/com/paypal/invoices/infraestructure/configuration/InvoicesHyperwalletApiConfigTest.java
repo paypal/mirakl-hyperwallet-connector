@@ -32,13 +32,11 @@ class InvoicesHyperwalletApiConfigTest {
 		testObj.loadInvoicesTokenMapConfiguration();
 
 		verify(testObj).callSuperLoad(PREFIX);
-
 	}
 
 	@Test
 	void loadTokenMapConfiguration_whenConfigurationIsNotAvailableForTokensArchitecture()
 			throws InvalidConfigurationException {
-
 		testObj.loadInvoicesTokenMapConfiguration();
 
 		assertThat(testObj.getPaymentStoreTokens()).isEmpty();
@@ -46,7 +44,6 @@ class InvoicesHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenBothAreEquals() {
-
 		final InvoicesHyperwalletApiConfig invoiceApiConfigOne = createInvoiceApiConfig();
 		final InvoicesHyperwalletApiConfig invoiceApiConfigTwo = createInvoiceApiConfig();
 
@@ -57,7 +54,6 @@ class InvoicesHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenBothAreNotEquals() {
-
 		final InvoicesHyperwalletApiConfig invoiceApiConfigOne = createInvoiceApiConfig();
 		final InvoicesHyperwalletApiConfig invoiceApiConfigTwo = createAnotherInvoiceApiConfig();
 
@@ -68,7 +64,6 @@ class InvoicesHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenSameObjectIsCompared() {
-
 		final InvoicesHyperwalletApiConfig invoiceApiConfigOne = createInvoiceApiConfig();
 
 		final boolean result = invoiceApiConfigOne.equals(invoiceApiConfigOne);
@@ -78,7 +73,6 @@ class InvoicesHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenComparedWithAnotherInstanceObject() {
-
 		final InvoicesHyperwalletApiConfig invoiceApiConfigOne = createInvoiceApiConfig();
 
 		final Object o = new Object();

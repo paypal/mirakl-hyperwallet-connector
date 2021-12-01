@@ -15,7 +15,6 @@ class BankAccountModelTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenBothAreEquals() {
-
 		final BankAccountModel bankAccountModelOne = createBankAccountModelObject();
 		final BankAccountModel bankAccountModelTwo = createBankAccountModelObject();
 
@@ -26,7 +25,6 @@ class BankAccountModelTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenBothAreNotEquals() {
-
 		final BankAccountModel bankAccountModelOne = createBankAccountModelObject();
 		final BankAccountModel bankAccountModelTwo = createAnotherBankAccountModelObject();
 
@@ -37,7 +35,6 @@ class BankAccountModelTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenSameObjectIsCompared() {
-
 		final BankAccountModel bankAccountModelOne = createBankAccountModelObject();
 
 		final boolean result = bankAccountModelOne.equals(bankAccountModelOne);
@@ -47,7 +44,6 @@ class BankAccountModelTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenComparedWithAnotherInstanceObject() {
-
 		final BankAccountModel bankAccountModelOne = createBankAccountModelObject();
 
 		final Object o = new Object();
@@ -58,16 +54,15 @@ class BankAccountModelTest {
 	}
 
 	private BankAccountModel createBankAccountModelObject() {
-
-		final var tokenBankAccountField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue tokenBankAccountField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		tokenBankAccountField.setCode(HYPERWALLET_BANK_ACCOUNT_TOKEN);
 		tokenBankAccountField.setValue("token");
 
-		final var stateProvinceBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue stateProvinceBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		stateProvinceBusinessStakeHolderField.setCode(HYPERWALLET_BANK_ACCOUNT_STATE);
 		stateProvinceBusinessStakeHolderField.setValue("stateProvince");
 
-		final var hyperwalletProgramAccountField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue hyperwalletProgramAccountField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
 		hyperwalletProgramAccountField.setCode(HYPERWALLET_PROGRAM);
 		hyperwalletProgramAccountField.setValue("hyperwalletProgram");
 
@@ -83,7 +78,7 @@ class BankAccountModelTest {
 				.lastName("lastName")
 				.country("USA")
 				.addressLine1("addressLine1")
-				.addressLine2("addresLine2")
+				.addressLine2("addressLine2")
 				.city("city")
 				.stateProvince(List.of(stateProvinceBusinessStakeHolderField))
 				.postalCode("2222")
@@ -94,16 +89,15 @@ class BankAccountModelTest {
 	}
 
 	private BankAccountModel createAnotherBankAccountModelObject() {
-
-		final var tokenBankAccountField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue tokenBankAccountField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		tokenBankAccountField.setCode(HYPERWALLET_BANK_ACCOUNT_TOKEN);
 		tokenBankAccountField.setValue("token");
 
-		final var stateProvinceBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue stateProvinceBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		stateProvinceBusinessStakeHolderField.setCode(HYPERWALLET_BANK_ACCOUNT_STATE);
 		stateProvinceBusinessStakeHolderField.setValue("stateProvince");
 
-		final var hyperwalletProgramAccountField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue hyperwalletProgramAccountField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
 		hyperwalletProgramAccountField.setCode(HYPERWALLET_PROGRAM);
 		hyperwalletProgramAccountField.setValue("hyperwalletProgram");
 
@@ -119,7 +113,7 @@ class BankAccountModelTest {
 				.lastName("lastName")
 				.country("USA")
 				.addressLine1("addressLine1")
-				.addressLine2("addresLine2")
+				.addressLine2("addressLine2")
 				.city("city")
 				.stateProvince(List.of(stateProvinceBusinessStakeHolderField))
 				.postalCode("2222")

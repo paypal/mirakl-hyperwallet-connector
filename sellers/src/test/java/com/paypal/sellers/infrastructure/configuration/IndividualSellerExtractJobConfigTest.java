@@ -16,8 +16,6 @@ class IndividualSellersExtractJobConfigTest {
 
 	private static final String CRON_EXPRESSION = "0 0 0 1/1 * ? *";
 
-	private static final String TRIGGER_PREXIX = "Trigger";
-
 	private static final String JOB_NAME = "IndividualSellersExtractJob";
 
 	@InjectMocks

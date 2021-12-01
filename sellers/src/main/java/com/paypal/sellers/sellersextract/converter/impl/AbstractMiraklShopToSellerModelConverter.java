@@ -51,7 +51,6 @@ public abstract class AbstractMiraklShopToSellerModelConverter implements Strate
 				.governmentId(additionalFieldValues)
 				.governmentIdType(additionalFieldValues)
 				.driversLicenseId(additionalFieldValues)
-				.employerId(additionalFieldValues)
 				.businessType(additionalFieldValues)
 				.token(additionalFieldValues)
 				.bankAccountDetails(bankAccountModel)

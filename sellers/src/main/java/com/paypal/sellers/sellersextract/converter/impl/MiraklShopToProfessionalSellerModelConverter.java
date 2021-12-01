@@ -46,32 +46,26 @@ public class MiraklShopToProfessionalSellerModelConverter extends AbstractMirakl
 //@formatter:off
 		final List<BusinessStakeHolderModel> businessStakeHolderList = IntStream.range(1, 6).mapToObj(
 						i -> pairBusinessStakeHolderModelConverter.convert(Triple.of(source.getAdditionalFieldValues(), i, source.getId())))
-						.filter(Objects::nonNull)
-						.filter(Predicate.not(BusinessStakeHolderModel::isEmpty))
-						.collect(Collectors.toCollection(ArrayList::new));
+				.filter(Objects::nonNull)
+				.filter(Predicate.not(BusinessStakeHolderModel::isEmpty))
+				.collect(Collectors.toCollection(ArrayList::new));
 
 		final List<MiraklAdditionalFieldValue> additionalFieldValues = source.getAdditionalFieldValues();
 
 		return sellerModelBuilder.profileType(SellerProfileType.BUSINESS)
-						.companyRegistrationCountry(additionalFieldValues)
-						.businessRegistrationStateProvince(additionalFieldValues)
-						.companyName(source.getProfessionalInformation().getCorporateName())
-						.companyRegistrationNumber(source.getProfessionalInformation().getIdentificationNumber())
-						.vatNumber(source.getProfessionalInformation().getTaxIdentificationNumber())
-						.businessStakeHolderDetails(businessStakeHolderList)
-						.build();
+				.companyRegistrationCountry(additionalFieldValues)
+				.businessRegistrationStateProvince(additionalFieldValues)
+				.companyName(source.getProfessionalInformation().getCorporateName())
+				.companyRegistrationNumber(source.getProfessionalInformation().getIdentificationNumber())
+				.vatNumber(source.getProfessionalInformation().getTaxIdentificationNumber())
+				.businessStakeHolderDetails(businessStakeHolderList)
+				.build();
 		//@formatter:on
 	}
 
 	@Override
 	public boolean isApplicable(final MiraklShop source) {
 		return source.isProfessional();
-	}
-
-	protected MiraklAdditionalFieldValue refactorBusinessStakeHolderAttribute(
-			final MiraklAdditionalFieldValue additionalField) {
-
-		return additionalField;
 	}
 
 }

@@ -38,7 +38,7 @@ public class HyperWalletUpdateBankAccountServiceStrategyBankAccount
 	}
 
 	@Override
-	protected HyperwalletBankAccount callMiraklAPI(final String hyperwalletProgram,
+	protected HyperwalletBankAccount callHyperwalletAPI(final String hyperwalletProgram,
 			final HyperwalletBankAccount hyperwalletBankAccount) {
 		final Hyperwallet hyperwallet = hyperwalletSDKService
 				.getHyperwalletInstanceByHyperwalletProgram(hyperwalletProgram);

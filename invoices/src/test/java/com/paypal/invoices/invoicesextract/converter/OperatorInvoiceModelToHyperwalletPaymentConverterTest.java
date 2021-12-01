@@ -29,7 +29,7 @@ class OperatorInvoiceModelToHyperwalletPaymentConverterTest {
 
 	private static final String PROGRAM_TOKEN = "programToken";
 
-	private static final String OPERATOR_BANK_ACOUNT_TOKEN = "operatorBankAccountToken";
+	private static final String OPERATOR_BANK_ACCOUNT_TOKEN = "operatorBankAccountToken";
 
 	@InjectMocks
 	private OperatorInvoiceModelToHyperwalletPaymentConverter testObj;
@@ -46,22 +46,22 @@ class OperatorInvoiceModelToHyperwalletPaymentConverterTest {
 		when(hyperwalletSDKServiceMock.getProgramTokenByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(PROGRAM_TOKEN);
 		when(invoicesOperatorCommissionsConfigMock.getBankAccountToken(HYPERWALLET_PROGRAM))
-				.thenReturn(OPERATOR_BANK_ACOUNT_TOKEN);
+				.thenReturn(OPERATOR_BANK_ACCOUNT_TOKEN);
 
 		//@formatter:off
 		final InvoiceModel invoice = InvoiceModel.builder()
-												 .hyperwalletProgram(HYPERWALLET_PROGRAM)
-												 .destinationToken(DESTINATION_TOKEN)
-												 .shopId(SHOP_ID)
-												 .invoiceNumber(INVOICE_NUMBER)
-												 .transferAmountToOperator(transferAmountToOperator)
-												 .currencyIsoCode(CURRENCY_ISO_CODE)
-												 .build();
+				.hyperwalletProgram(HYPERWALLET_PROGRAM)
+				.destinationToken(DESTINATION_TOKEN)
+				.shopId(SHOP_ID)
+				.invoiceNumber(INVOICE_NUMBER)
+				.transferAmountToOperator(transferAmountToOperator)
+				.currencyIsoCode(CURRENCY_ISO_CODE)
+				.build();
 		//@formatter:on
 
 		final HyperwalletPayment result = testObj.convert(invoice);
 
-		assertThat(result.getDestinationToken()).isEqualTo(OPERATOR_BANK_ACOUNT_TOKEN);
+		assertThat(result.getDestinationToken()).isEqualTo(OPERATOR_BANK_ACCOUNT_TOKEN);
 		assertThat(result.getClientPaymentId()).isEqualTo(INVOICE_NUMBER + PAYMENT_OPERATOR_SUFFIX);
 		assertThat(result.getAmount()).isEqualTo(transferAmountToOperator);
 		assertThat(result.getCurrency()).isEqualTo(CURRENCY_ISO_CODE);

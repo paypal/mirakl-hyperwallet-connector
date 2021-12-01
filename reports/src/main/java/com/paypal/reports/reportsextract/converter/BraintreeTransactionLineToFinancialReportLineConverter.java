@@ -23,15 +23,15 @@ public class BraintreeTransactionLineToFinancialReportLineConverter
 			return null;
 		}
 		//@formatter:off
-        return HmcFinancialReportLine.builder()
-                .braintreeCommerceOrderId(source.getOrderId())
-                .braintreeAmount(source.getAmount())
+		return HmcFinancialReportLine.builder()
+				.braintreeCommerceOrderId(source.getOrderId())
+				.braintreeAmount(source.getAmount())
 				.currencyIsoCode(source.getCurrencyIsoCode())
 				.miraklTransactionType(source.getTransactionType())
-                .braintreeTransactionId(source.getPaymentTransactionId())
-                .braintreeTransactionTime(source.getPaymentTransactionTime())
-                .build();
-        //@formatter:on
+				.braintreeTransactionId(source.getPaymentTransactionId())
+				.braintreeTransactionTime(source.getPaymentTransactionTime())
+				.build();
+		//@formatter:on
 	}
 
 }

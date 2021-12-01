@@ -3,7 +3,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-quartz'
-    implementation 'commons-collections:commons-collections:3.2.2'
+    implementation 'org.apache.commons:commons-collections4:4.4'
 
     //Database config
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

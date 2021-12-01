@@ -50,11 +50,11 @@ class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategyTest {
 	@Test
 	void isApplicable_shouldReturnFalseWhenSellerIsIndividual() {
 		//@formatter:off
-        KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
-                .builder()
-                .profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
-                .build();
-        //@formatter:on
+		KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
+				.builder()
+				.profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
+				.build();
+		//@formatter:on
 
 		final boolean result = testObj.isApplicable(kycUserDocumentFlagsNotificationBodyModel);
 
@@ -62,14 +62,14 @@ class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategyTest {
 	}
 
 	@Test
-	void isApplicable_shouldReturnFalseWhenSellerIsBusinessAndBusinessStakeHolderVerificationIsNotRequred() {
+	void isApplicable_shouldReturnFalseWhenSellerIsBusinessAndBusinessStakeHolderVerificationIsNotRequired() {
 		//@formatter:off
-        KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
-                .builder()
-                .profileType(HyperwalletUser.ProfileType.BUSINESS)
-                .businessStakeholderVerificationStatus(HyperwalletUser.BusinessStakeholderVerificationStatus.VERIFIED)
-                .build();
-        //@formatter:on
+		KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
+				.builder()
+				.profileType(HyperwalletUser.ProfileType.BUSINESS)
+				.businessStakeholderVerificationStatus(HyperwalletUser.BusinessStakeholderVerificationStatus.VERIFIED)
+				.build();
+		//@formatter:on
 
 		final boolean result = testObj.isApplicable(kycUserDocumentFlagsNotificationBodyModel);
 
@@ -79,11 +79,11 @@ class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategyTest {
 	@Test
 	void isApplicable_shouldReturnFalseWhenSellerIsBusinessAndBusinessStakeHolderVerificationIsEmpty() {
 		//@formatter:off
-        KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
-                .builder()
-                .profileType(HyperwalletUser.ProfileType.BUSINESS)
-                .build();
-        //@formatter:on
+		KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
+				.builder()
+				.profileType(HyperwalletUser.ProfileType.BUSINESS)
+				.build();
+		//@formatter:on
 
 		final boolean result = testObj.isApplicable(kycUserDocumentFlagsNotificationBodyModel);
 
@@ -93,12 +93,12 @@ class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategyTest {
 	@Test
 	void isApplicable_shouldReturnTrueWhenSellerIsBusinessAndProofOfIdentityForBusinessStakeHolderIsRequired() {
 		//@formatter:off
-        KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
-                .builder()
-                .profileType(HyperwalletUser.ProfileType.BUSINESS)
-                .businessStakeholderVerificationStatus(HyperwalletUser.BusinessStakeholderVerificationStatus.REQUIRED)
-                .build();
-        //@formatter:on
+		KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
+				.builder()
+				.profileType(HyperwalletUser.ProfileType.BUSINESS)
+				.businessStakeholderVerificationStatus(HyperwalletUser.BusinessStakeholderVerificationStatus.REQUIRED)
+				.build();
+		//@formatter:on
 
 		final boolean result = testObj.isApplicable(kycUserDocumentFlagsNotificationBodyModel);
 
@@ -108,15 +108,15 @@ class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategyTest {
 	@Test
 	void execute_shouldCallUpdateShopWithBusinessStakeHolderCustomValueFlags() {
 		//@formatter:off
-        KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
-                .builder()
+		KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
+				.builder()
 				.hyperwalletProgram(HYPERWALLET_PROGRAM)
-                .userToken(USER_TOKEN)
-                .clientUserId(SHOP_ID)
-                .profileType(HyperwalletUser.ProfileType.BUSINESS)
-                .businessStakeholderVerificationStatus(HyperwalletUser.BusinessStakeholderVerificationStatus.REQUIRED)
-                .build();
-        //@formatter:on
+				.userToken(USER_TOKEN)
+				.clientUserId(SHOP_ID)
+				.profileType(HyperwalletUser.ProfileType.BUSINESS)
+				.businessStakeholderVerificationStatus(HyperwalletUser.BusinessStakeholderVerificationStatus.REQUIRED)
+				.build();
+		//@formatter:on
 
 		when(hyperwalletBusinessStakeholderExtractServiceMock
 				.getKYCRequiredVerificationBusinessStakeHolders(HYPERWALLET_PROGRAM, USER_TOKEN))
@@ -143,21 +143,20 @@ class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategyTest {
 				.isInstanceOf(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class);
 		assertThat(((MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue) additionalFieldValue)
 				.getValue()).isEqualTo(Boolean.TRUE.toString());
-
 	}
 
 	@Test
 	void execute_shouldNotCallUpdateShopWhenNoBusinessStakeHoldersRequiresVerification() {
 		//@formatter:off
-        KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
-                .builder()
+		KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
+				.builder()
 				.hyperwalletProgram(HYPERWALLET_PROGRAM)
-                .userToken(USER_TOKEN)
-                .clientUserId(SHOP_ID)
-                .profileType(HyperwalletUser.ProfileType.BUSINESS)
-                .businessStakeholderVerificationStatus(HyperwalletUser.BusinessStakeholderVerificationStatus.REQUIRED)
-                .build();
-        //@formatter:on
+				.userToken(USER_TOKEN)
+				.clientUserId(SHOP_ID)
+				.profileType(HyperwalletUser.ProfileType.BUSINESS)
+				.businessStakeholderVerificationStatus(HyperwalletUser.BusinessStakeholderVerificationStatus.REQUIRED)
+				.build();
+		//@formatter:on
 
 		when(hyperwalletBusinessStakeholderExtractServiceMock
 				.getKYCRequiredVerificationBusinessStakeHolders(HYPERWALLET_PROGRAM, USER_TOKEN)).thenReturn(List.of());

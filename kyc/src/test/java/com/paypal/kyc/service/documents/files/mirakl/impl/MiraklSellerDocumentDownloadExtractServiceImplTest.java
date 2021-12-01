@@ -7,7 +7,7 @@ import com.mirakl.client.mmp.request.shop.document.MiraklGetShopDocumentsRequest
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.*;
-import com.paypal.kyc.strategies.documents.files.mirakl.impl.MiraklKYCSelectionDocumentMultipleStrategyExecutor;
+import com.paypal.kyc.strategies.documents.files.mirakl.impl.MiraklKYCSelectionDocumentExecutor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,7 +31,7 @@ class MiraklSellerDocumentDownloadExtractServiceImplTest {
 	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
 
 	@Mock
-	private MiraklKYCSelectionDocumentMultipleStrategyExecutor proofOfIdentityStrategyExecutorMock;
+	private MiraklKYCSelectionDocumentExecutor proofOfIdentityStrategyExecutorMock;
 
 	@Mock
 	private MailNotificationUtil kycMailNotificationUtilMock;

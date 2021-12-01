@@ -3,6 +3,7 @@ package com.paypal.invoices.dto.converter;
 import com.paypal.infrastructure.util.DateUtil;
 import com.paypal.infrastructure.util.TimeMachine;
 import com.paypal.invoices.paymentnotifications.converter.HyperWalletObjectToPaymentNotificationBodyModelConverter;
+import com.paypal.invoices.paymentnotifications.model.PaymentNotificationBodyModel;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,11 +53,11 @@ class HyperWalletObjectToPaymentNotificationBodyModelConverterTest {
 		final LinkedHashMap<String, String> hyperwalletPaymentBodyNotification = createHyperWalletPaymentBodyNotification(
 				nowAsDate);
 
-		final var result = testObj.convert(hyperwalletPaymentBodyNotification);
+		final PaymentNotificationBodyModel result = testObj.convert(hyperwalletPaymentBodyNotification);
 
 		//@formatter:off
-        assertThat(result).hasFieldOrPropertyWithValue("token", TOKEN)
-                .hasFieldOrPropertyWithValue("status", STATUS)
+		assertThat(result).hasFieldOrPropertyWithValue("token", TOKEN)
+				.hasFieldOrPropertyWithValue("status", STATUS)
 				.hasFieldOrPropertyWithValue("createdOn", nowAsDate.toString())
 				.hasFieldOrPropertyWithValue("amount", AMOUNT)
 				.hasFieldOrPropertyWithValue("currency", CURRENCY)
@@ -66,7 +67,7 @@ class HyperWalletObjectToPaymentNotificationBodyModelConverterTest {
 				.hasFieldOrPropertyWithValue("releaseOn", RELEASE_ON)
 				.hasFieldOrPropertyWithValue("expiresOn", EXPIRES_ON)
 				.hasFieldOrPropertyWithValue("destinationToken", DESTINATION_TOKEN);
-        //@formatter:on
+		//@formatter:on
 	}
 
 	@Test
@@ -79,10 +80,10 @@ class HyperWalletObjectToPaymentNotificationBodyModelConverterTest {
 		final LinkedHashMap<String, String> hyperwalletPaymentIncompleteNotification = createIncompleteJsonObject(
 				nowAsDate);
 
-		final var result = testObj.convert(hyperwalletPaymentIncompleteNotification);
+		final PaymentNotificationBodyModel result = testObj.convert(hyperwalletPaymentIncompleteNotification);
 
 		//@formatter:off
-        assertThat(result).hasFieldOrPropertyWithValue("status", STATUS)
+		assertThat(result).hasFieldOrPropertyWithValue("status", STATUS)
 				.hasFieldOrPropertyWithValue("createdOn", nowAsDate.toString())
 				.hasFieldOrPropertyWithValue("amount", AMOUNT)
 				.hasFieldOrPropertyWithValue("clientPaymentId", CLIENT_PAYMENT_ID)
@@ -90,14 +91,13 @@ class HyperWalletObjectToPaymentNotificationBodyModelConverterTest {
 				.hasFieldOrPropertyWithValue("purpose", PURPOSE)
 				.hasFieldOrPropertyWithValue("releaseOn", RELEASE_ON)
 				.hasFieldOrPropertyWithValue("expiresOn", EXPIRES_ON);
-        //@formatter:on
+		//@formatter:on
 	}
 
 	@Test
 	void convert_shouldTransformHyperWalletWebhookNotificationToInvoiceNotificationModel_whenObjectIsNotJSonObject()
 			throws JSONException {
-
-		final var result = testObj.convert(new Object());
+		final PaymentNotificationBodyModel result = testObj.convert(new Object());
 		assertThat(result).isNull();
 	}
 

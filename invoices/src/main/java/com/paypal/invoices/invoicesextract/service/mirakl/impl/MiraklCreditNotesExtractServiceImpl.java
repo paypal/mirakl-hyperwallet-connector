@@ -42,13 +42,13 @@ public class MiraklCreditNotesExtractServiceImpl
 		final List<CreditNoteModel> creditNotesFiltered = filterOnlyMappableDocuments(invoices,
 				mapShopDestinationToken.keySet());
 		//@formatter:off
-        return creditNotesFiltered.stream()
-                .map(invoiceModel -> invoiceModel.toBuilder()
-                        .destinationToken(mapShopDestinationToken.get(invoiceModel.getShopId()).getLeft())
-                        .hyperwalletProgram(mapShopDestinationToken.get(invoiceModel.getShopId()).getRight())
-                        .build())
-                .collect(Collectors.toList());
-        //@formatter:on
+		return creditNotesFiltered.stream()
+				.map(invoiceModel -> invoiceModel.toBuilder()
+						.destinationToken(mapShopDestinationToken.get(invoiceModel.getShopId()).getLeft())
+						.hyperwalletProgram(mapShopDestinationToken.get(invoiceModel.getShopId()).getRight())
+						.build())
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 	@Override
@@ -56,10 +56,10 @@ public class MiraklCreditNotesExtractServiceImpl
 		final List<HMCMiraklInvoice> invoices = getInvoicesForDateAndType(delta, InvoiceTypeEnum.MANUAL_CREDIT);
 
 		//@formatter:off
-        return invoices.stream()
-                .map(miraklInvoiceToCreditNoteModelConverter::convert)
-                .collect(Collectors.toList());
-        //@formatter:on
+		return invoices.stream()
+				.map(miraklInvoiceToCreditNoteModelConverter::convert)
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 }

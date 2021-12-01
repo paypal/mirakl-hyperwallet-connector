@@ -22,19 +22,18 @@ class HmcBraintreeTransactionLineTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 45));
 		final LocalDateTime now = TimeMachine.now();
 		//@formatter:off
-        final HmcBraintreeTransactionLine result = HmcBraintreeTransactionLine.builder()
-                .orderId(BRAIN_TREE_ORDER_ID)
-                .amount(BigDecimal.ONE)
-                .paymentTransactionTime(now)
-                .paymentTransactionId(PAYMENT_TRANSACTION_ID)
-                .build();
-        //@formatter:on
+		final HmcBraintreeTransactionLine result = HmcBraintreeTransactionLine.builder()
+				.orderId(BRAIN_TREE_ORDER_ID)
+				.amount(BigDecimal.ONE)
+				.paymentTransactionTime(now)
+				.paymentTransactionId(PAYMENT_TRANSACTION_ID)
+				.build();
+		//@formatter:on
 
 		assertThat(result.getAmount()).isEqualTo(BigDecimal.ONE);
 		assertThat(result.getOrderId()).isEqualTo(BRAIN_TREE_ORDER_ID);
 		assertThat(result.getPaymentTransactionTime()).isEqualTo(now);
 		assertThat(result.getPaymentTransactionId()).isEqualTo(PAYMENT_TRANSACTION_ID);
-
 	}
 
 }

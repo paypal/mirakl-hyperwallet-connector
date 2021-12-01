@@ -47,14 +47,14 @@ class SellerModelTest {
 
 	@Test
 	void dateOfBirth_whenMiraklDateOfBirthCustomFieldValueHasAValue_shouldSetDateOfBirthNextDayGivenTimeZoneUTCPlusTwo() {
-		final var dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
 		dateOfBirthMiraklCustomField.setCode("hw-date-of-birth");
 		dateOfBirthMiraklCustomField.setValue("2020-10-29T22:00:00Z");
 		//@formatter:off
-		final var result = SellerModel.builder().timeZone(("UTC+2"))
-						.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
-						.profileType(SellerProfileType.INDIVIDUAL)
-						.build();
+		final SellerModel result = SellerModel.builder().timeZone(("UTC+2"))
+				.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
+				.profileType(SellerProfileType.INDIVIDUAL)
+				.build();
 		//@formatter:on
 
 		assertThat(result.getDateOfBirth()).hasYear(2020).hasMonth(10).hasDayOfMonth(30);
@@ -62,14 +62,14 @@ class SellerModelTest {
 
 	@Test
 	void dateOfBirth_whenMiraklDateOfBirthCustomFieldValueHasAValue_shouldSetDateOfBirthSameDayGivenTimeZoneUTCMinusOne() {
-		final var dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
 		dateOfBirthMiraklCustomField.setCode("hw-date-of-birth");
 		dateOfBirthMiraklCustomField.setValue("2020-10-29T22:00:00Z");
 		//@formatter:off
-		final var result = SellerModel.builder().timeZone(("UTC-1"))
-						.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
-						.profileType(SellerProfileType.INDIVIDUAL)
-						.build();
+		final SellerModel result = SellerModel.builder().timeZone(("UTC-1"))
+				.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
+				.profileType(SellerProfileType.INDIVIDUAL)
+				.build();
 		//@formatter:on
 
 		assertThat(result.getDateOfBirth()).hasYear(2020).hasMonth(10).hasDayOfMonth(29);
@@ -77,14 +77,14 @@ class SellerModelTest {
 
 	@Test
 	void dateOfBirth_whenMiraklDateOfBirthCustomFieldValueHasAValue_shouldSetDateOfBirth() {
-		final var dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
 		dateOfBirthMiraklCustomField.setCode("hw-date-of-birth");
 		dateOfBirthMiraklCustomField.setValue("2020-10-29T13:34:35Z");
 		//@formatter:off
-		final var result = SellerModel.builder().timeZone(("UTC+2"))
-						.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
-						.profileType(SellerProfileType.INDIVIDUAL)
-						.build();
+		final SellerModel result = SellerModel.builder().timeZone(("UTC+2"))
+				.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
+				.profileType(SellerProfileType.INDIVIDUAL)
+				.build();
 		//@formatter:on
 
 		assertThat(result.getDateOfBirth()).hasYear(2020).hasMonth(10).hasDayOfMonth(29);
@@ -93,7 +93,7 @@ class SellerModelTest {
 	@Test
 	void dateOfBirth_whenMiraklDateOfBirthCustomFieldValueHasNoValue_shouldNotSetDateOfBirth() {
 		//@formatter:off
-		final var result = SellerModel.builder()
+		final SellerModel result = SellerModel.builder()
 				.dateOfBirth(Collections.emptyList())
 				.profileType(SellerProfileType.INDIVIDUAL)
 				.build();
@@ -104,9 +104,8 @@ class SellerModelTest {
 
 	@Test
 	void hwTermsConsent_whenMiraklHyperWalletTermsConditionsIsNull_shouldSethWTermsConsentToFalse() {
-
 		//@formatter:off
-		final var result = SellerModel.builder()
+		final SellerModel result = SellerModel.builder()
 				.hwTermsConsent(Collections.emptyList())
 				.profileType(SellerProfileType.INDIVIDUAL)
 				.build();
@@ -117,11 +116,11 @@ class SellerModelTest {
 
 	@Test
 	void hwTermsConsent_whenMiraklHyperWalletTermsConditionsHasAccepted_shouldSethWTermsConsentToTrue() {
-		final var hwTermsConsentMiraklCustomField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue hwTermsConsentMiraklCustomField = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
 		hwTermsConsentMiraklCustomField.setCode("hw-terms-consent");
 		hwTermsConsentMiraklCustomField.setValue("true");
 		//@formatter:off
-		final var result = SellerModel.builder()
+		final SellerModel result = SellerModel.builder()
 				.hwTermsConsent(List.of(hwTermsConsentMiraklCustomField))
 				.profileType(SellerProfileType.INDIVIDUAL)
 				.build();
@@ -132,11 +131,11 @@ class SellerModelTest {
 
 	@Test
 	void dateOfBirth_whenMiraklDateOfBirthCustomFieldValueHasInvalidDateFormat_shouldNotSetDateOfBirth() {
-		final var dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
 		dateOfBirthMiraklCustomField.setCode("date-of-birth");
 		dateOfBirthMiraklCustomField.setValue("InvalidDateFormat");
 		//@formatter:off
-		final var result = SellerModel.builder()
+		final SellerModel result = SellerModel.builder()
 				.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
 				.profileType(SellerProfileType.INDIVIDUAL)
 				.build();
@@ -151,7 +150,7 @@ class SellerModelTest {
 			final SellerModel.SellerModelBuilder sellerModelBuilder, final String property,
 			final String expectedValue) {
 		//@formatter:off
-		final var result = sellerModelBuilder
+		final SellerModel result = sellerModelBuilder
 				.profileType(SellerProfileType.INDIVIDUAL)
 				.build();
 		//@formatter:on
@@ -164,7 +163,7 @@ class SellerModelTest {
 	void test_ShouldSetStringValuesFromSingleValueListCustomFieldValues(
 			final SellerModel.SellerModelBuilder sellerModelBuilder, final String property, final Enum expectedValue) {
 		//@formatter:off
-		final var result = sellerModelBuilder
+		final SellerModel result = sellerModelBuilder
 				.profileType(SellerProfileType.INDIVIDUAL)
 				.build();
 		//@formatter:on
@@ -176,7 +175,7 @@ class SellerModelTest {
 	@MethodSource("termsAndConditionsTokenValues")
 	void hasAcceptedTermsAndConditions_shouldReturnTrueWhenTermsAndConditionsOrUserTokenIsSet(
 			final boolean termsAndConditions, final String userToken, final boolean expectedResult) {
-		final var sellerModel = SellerModel.builder().profileType(SellerProfileType.INDIVIDUAL)
+		final SellerModel sellerModel = SellerModel.builder().profileType(SellerProfileType.INDIVIDUAL)
 				.token(List.of(populateTextAreaCustomFieldValue(HYPERWALLET_USER_TOKEN, userToken)))
 				.hwTermsConsent(List.of(populateBooleanAdditionalFieldValues(HYPERWALLET_TERMS_CONSENT,
 						String.valueOf(expectedResult))))
@@ -187,48 +186,43 @@ class SellerModelTest {
 
 	@Test
 	void toBuilder_shouldReturnCopyOfSellerModel() {
-
-		final var dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
 		dateOfBirthMiraklCustomField.setCode("hw-date-of-birth");
 		dateOfBirthMiraklCustomField.setValue("2020-10-29T13:34:35Z");
 
-		final var countryOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue countryOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		countryOfBirthMiraklCustomField.setCode("hw-country-of-birth");
 		countryOfBirthMiraklCustomField.setValue("USA");
 
-		final var countryOfNationalityMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue countryOfNationalityMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		countryOfNationalityMiraklCustomField.setCode("hw-country-of-nationality");
 		countryOfNationalityMiraklCustomField.setValue("USA");
 
-		final var governmentIdMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue governmentIdMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		governmentIdMiraklCustomField.setCode("hw-government-id");
 		governmentIdMiraklCustomField.setValue("governmentId");
 
-		final var governmentIdTypeMiraklCustomField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue governmentIdTypeMiraklCustomField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
 		governmentIdTypeMiraklCustomField.setCode("hw-government-id-type");
 		governmentIdTypeMiraklCustomField.setValue("PASSPORT");
 
-		final var passwordMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue passwordMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		passwordMiraklCustomField.setCode("hw-passport-id");
 		passwordMiraklCustomField.setValue("passportId");
 
-		final var driversLisenceMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue driversLisenceMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		driversLisenceMiraklCustomField.setCode("hw-drivers-license-id");
 		driversLisenceMiraklCustomField.setValue("driversLicenseId");
 
-		final var employerIdLisenceMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
-		employerIdLisenceMiraklCustomField.setCode("hw-employer-id");
-		employerIdLisenceMiraklCustomField.setValue("employerId");
-
-		final var businessTypeMiraklCustomField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue businessTypeMiraklCustomField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
 		businessTypeMiraklCustomField.setCode("hw-business-type");
 		businessTypeMiraklCustomField.setValue("CORPORATION");
 
-		final var businessRegistrationStateProvinceMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue businessRegistrationStateProvinceMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		businessRegistrationStateProvinceMiraklCustomField.setCode("hw-business-reg-state-province");
 		businessRegistrationStateProvinceMiraklCustomField.setValue("stateProvince");
 
-		final var businessRegistrationCountryMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue businessRegistrationCountryMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		businessRegistrationCountryMiraklCustomField.setCode("hw-business-reg-country");
 		businessRegistrationCountryMiraklCustomField.setValue("US");
 
@@ -236,75 +230,72 @@ class SellerModelTest {
 
 		//@formatter:off
 		final SellerModel result = testObj.toBuilder().clientUserId("clientUserId")
-						.firstName("firstName")
-						.lastName("lastName")
-						.timeZone("UTC")
-						.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
-						.countryOfBirth(List.of(countryOfBirthMiraklCustomField))
-						.countryOfNationality(List.of(countryOfNationalityMiraklCustomField))
-						.gender("MALE")
-						.phoneNumber("phoneNumber")
-						.mobilePhone("mobilePhone")
-						.email("email")
-						.governmentId(List.of(governmentIdMiraklCustomField))
-						.governmentIdType(List.of(governmentIdTypeMiraklCustomField))
-						.passportId(List.of(passwordMiraklCustomField))
-						.driversLicenseId(List.of(driversLisenceMiraklCustomField))
-						.employerId(List.of(employerIdLisenceMiraklCustomField))
-						.addressLine1("addressLine1")
-						.addressLine2("addressLine2")
-						.city("city")
-						.stateProvince("stateProvince")
-						.country("USA")
-						.postalCode("postalCode")
-						.language("language")
-						.programToken("programToken")
-						.businessType(List.of(businessTypeMiraklCustomField))
-						.businessName("businessName").token("token")
-						.profileType(SellerProfileType.INDIVIDUAL)
-						.companyName("companyName")
-						.companyRegistrationNumber("companyRegistrationNumber")
-						.vatNumber("vatNumber")
-						.businessRegistrationStateProvince(List.of(businessRegistrationStateProvinceMiraklCustomField))
-						.companyRegistrationCountry(List.of(businessRegistrationCountryMiraklCustomField))
-						.build();
+				.firstName("firstName")
+				.lastName("lastName")
+				.timeZone("UTC")
+				.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
+				.countryOfBirth(List.of(countryOfBirthMiraklCustomField))
+				.countryOfNationality(List.of(countryOfNationalityMiraklCustomField))
+				.gender("MALE")
+				.phoneNumber("phoneNumber")
+				.mobilePhone("mobilePhone")
+				.email("email")
+				.governmentId(List.of(governmentIdMiraklCustomField))
+				.governmentIdType(List.of(governmentIdTypeMiraklCustomField))
+				.passportId(List.of(passwordMiraklCustomField))
+				.driversLicenseId(List.of(driversLisenceMiraklCustomField))
+				.addressLine1("addressLine1")
+				.addressLine2("addressLine2")
+				.city("city")
+				.stateProvince("stateProvince")
+				.country("USA")
+				.postalCode("postalCode")
+				.language("language")
+				.programToken("programToken")
+				.businessType(List.of(businessTypeMiraklCustomField))
+				.businessName("businessName").token("token")
+				.profileType(SellerProfileType.INDIVIDUAL)
+				.companyName("companyName")
+				.companyRegistrationNumber("companyRegistrationNumber")
+				.vatNumber("vatNumber")
+				.businessRegistrationStateProvince(List.of(businessRegistrationStateProvinceMiraklCustomField))
+				.companyRegistrationCountry(List.of(businessRegistrationCountryMiraklCustomField))
+				.build();
 
 		assertThat(result.getDateOfBirth()).hasYear(2020).hasMonth(10).hasDayOfMonth(29);
 		assertThat(result).hasFieldOrPropertyWithValue("clientUserId", "clientUserId")
-						.hasFieldOrPropertyWithValue("firstName", "firstName")
-						.hasFieldOrPropertyWithValue("lastName", "lastName")
-						.hasFieldOrPropertyWithValue("countryOfBirth", "USA")
-						.hasFieldOrPropertyWithValue("countryOfNationality", "USA")
-						.hasFieldOrPropertyWithValue("gender", "MALE")
-						.hasFieldOrPropertyWithValue("phoneNumber", "phoneNumber")
-						.hasFieldOrPropertyWithValue("mobilePhone", "mobilePhone")
-						.hasFieldOrPropertyWithValue("email", "email")
-						.hasFieldOrPropertyWithValue("governmentId", "governmentId")
-						.hasFieldOrPropertyWithValue("governmentIdType", SellerGovernmentIdType.PASSPORT)
-						.hasFieldOrPropertyWithValue("passportId", "passportId")
-						.hasFieldOrPropertyWithValue("driversLicenseId", "driversLicenseId")
-						.hasFieldOrPropertyWithValue("employerId", "employerId")
-						.hasFieldOrPropertyWithValue("addressLine1", "addressLine1")
-						.hasFieldOrPropertyWithValue("addressLine2", "addressLine2")
-						.hasFieldOrPropertyWithValue("city", "city")
-						.hasFieldOrPropertyWithValue("stateProvince", "stateProvince")
-						.hasFieldOrPropertyWithValue("country", "US")
-						.hasFieldOrPropertyWithValue("postalCode", "postalCode")
-						.hasFieldOrPropertyWithValue("language", "language")
-						.hasFieldOrPropertyWithValue("programToken", "programToken")
-						.hasFieldOrPropertyWithValue("businessType", SellerBusinessType.CORPORATION)
-						.hasFieldOrPropertyWithValue("profileType", SellerProfileType.INDIVIDUAL)
-						.hasFieldOrPropertyWithValue("companyName", "companyName")
-						.hasFieldOrPropertyWithValue("companyRegistrationNumber", "companyRegistrationNumber")
-						.hasFieldOrPropertyWithValue("vatNumber", "vatNumber")
-						.hasFieldOrPropertyWithValue("companyRegistrationCountry", "US")
-						.hasFieldOrPropertyWithValue("businessRegistrationStateProvince", "stateProvince");
+				.hasFieldOrPropertyWithValue("firstName", "firstName")
+				.hasFieldOrPropertyWithValue("lastName", "lastName")
+				.hasFieldOrPropertyWithValue("countryOfBirth", "USA")
+				.hasFieldOrPropertyWithValue("countryOfNationality", "USA")
+				.hasFieldOrPropertyWithValue("gender", "MALE")
+				.hasFieldOrPropertyWithValue("phoneNumber", "phoneNumber")
+				.hasFieldOrPropertyWithValue("mobilePhone", "mobilePhone")
+				.hasFieldOrPropertyWithValue("email", "email")
+				.hasFieldOrPropertyWithValue("governmentId", "governmentId")
+				.hasFieldOrPropertyWithValue("governmentIdType", SellerGovernmentIdType.PASSPORT)
+				.hasFieldOrPropertyWithValue("passportId", "passportId")
+				.hasFieldOrPropertyWithValue("driversLicenseId", "driversLicenseId")
+				.hasFieldOrPropertyWithValue("addressLine1", "addressLine1")
+				.hasFieldOrPropertyWithValue("addressLine2", "addressLine2")
+				.hasFieldOrPropertyWithValue("city", "city")
+				.hasFieldOrPropertyWithValue("stateProvince", "stateProvince")
+				.hasFieldOrPropertyWithValue("country", "US")
+				.hasFieldOrPropertyWithValue("postalCode", "postalCode")
+				.hasFieldOrPropertyWithValue("language", "language")
+				.hasFieldOrPropertyWithValue("programToken", "programToken")
+				.hasFieldOrPropertyWithValue("businessType", SellerBusinessType.CORPORATION)
+				.hasFieldOrPropertyWithValue("profileType", SellerProfileType.INDIVIDUAL)
+				.hasFieldOrPropertyWithValue("companyName", "companyName")
+				.hasFieldOrPropertyWithValue("companyRegistrationNumber", "companyRegistrationNumber")
+				.hasFieldOrPropertyWithValue("vatNumber", "vatNumber")
+				.hasFieldOrPropertyWithValue("companyRegistrationCountry", "US")
+				.hasFieldOrPropertyWithValue("businessRegistrationStateProvince", "stateProvince");
 		//@formatter:on
 	}
 
 	@Test
 	void equals_shouldReturnTrueWhenBothAreEquals() {
-
 		final SellerModel sellerModelOne = createSellerModelObject();
 		final SellerModel sellerModelTwo = sellerModelOne.toBuilder().build();
 
@@ -315,7 +306,6 @@ class SellerModelTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenBothAreNotEquals() {
-
 		final SellerModel sellerModelOne = createSellerModelObject();
 		final SellerModel sellerModelTwo = sellerModelOne.toBuilder().token("tokenNew").build();
 
@@ -326,7 +316,6 @@ class SellerModelTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenSameObjectIsCompared() {
-
 		final SellerModel sellerModelOne = createSellerModelObject();
 
 		final boolean result = sellerModelOne.equals(sellerModelOne);
@@ -336,7 +325,6 @@ class SellerModelTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenComparedWithAnotherInstanceObject() {
-
 		final SellerModel sellerModelOne = createSellerModelObject();
 
 		final Object o = new Object();
@@ -428,16 +416,6 @@ class SellerModelTest {
 						"driversLicenseId", "1234567"),
 				Arguments.of(SellerModel.builder().driversLicenseId(Collections.emptyList()), "driversLicenseId", null),
 				Arguments.of(
-						SellerModel.builder()
-								.employerId(List.of(populateTextAreaCustomFieldValue("hw-employer-id", "12345678"))),
-						"employerId", "12345678"),
-				Arguments.of(SellerModel.builder().employerId(Collections.emptyList()), "employerId", null),
-				Arguments.of(
-						SellerModel.builder()
-								.employerId(List.of(populateTextAreaCustomFieldValue("hw-employer-id", "12345678"))),
-						"employerId", "12345678"),
-				Arguments.of(SellerModel.builder().employerId(Collections.emptyList()), "employerId", null),
-				Arguments.of(
 						SellerModel.builder().hyperwalletProgram(
 								List.of(populateSingleValueListCustomFieldValue("hw-program", HYPERWALLET_PROGRAM))),
 						"hyperwalletProgram", HYPERWALLET_PROGRAM));
@@ -445,7 +423,7 @@ class SellerModelTest {
 
 	private static MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue populateTextAreaCustomFieldValue(
 			final String code, final String value) {
-		final var miraklStringAdditionalFieldValue = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue miraklStringAdditionalFieldValue = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		miraklStringAdditionalFieldValue.setCode(code);
 		miraklStringAdditionalFieldValue.setValue(value);
 		return miraklStringAdditionalFieldValue;
@@ -453,7 +431,7 @@ class SellerModelTest {
 
 	private static MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue populateSingleValueListCustomFieldValue(
 			final String code, final String value) {
-		final var miraklValueListAdditionalFieldValue = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue miraklValueListAdditionalFieldValue = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
 		miraklValueListAdditionalFieldValue.setCode(code);
 		miraklValueListAdditionalFieldValue.setValue(value);
 		return miraklValueListAdditionalFieldValue;
@@ -461,91 +439,86 @@ class SellerModelTest {
 
 	private static MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue populateBooleanAdditionalFieldValues(
 			final String code, final String value) {
-		final var miraklValueListAdditionalFieldValue = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue miraklValueListAdditionalFieldValue = new MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue();
 		miraklValueListAdditionalFieldValue.setCode(code);
 		miraklValueListAdditionalFieldValue.setValue(value);
 		return miraklValueListAdditionalFieldValue;
 	}
 
 	private SellerModel createSellerModelObject() {
-		final var dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue dateOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue();
 		dateOfBirthMiraklCustomField.setCode("hw-date-of-birth");
 		dateOfBirthMiraklCustomField.setValue("2020-10-29T13:34:35Z");
 
-		final var countryOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue countryOfBirthMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		countryOfBirthMiraklCustomField.setCode("hw-country-of-birth");
 		countryOfBirthMiraklCustomField.setValue("USA");
 
-		final var countryOfNationalityMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue countryOfNationalityMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		countryOfNationalityMiraklCustomField.setCode("hw-country-of-nationality");
 		countryOfNationalityMiraklCustomField.setValue("USA");
 
-		final var governmentIdMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue governmentIdMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		governmentIdMiraklCustomField.setCode("hw-government-id");
 		governmentIdMiraklCustomField.setValue("governmentId");
 
-		final var governmentIdTypeMiraklCustomField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue governmentIdTypeMiraklCustomField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
 		governmentIdTypeMiraklCustomField.setCode("hw-government-id-type");
 		governmentIdTypeMiraklCustomField.setValue("PASSPORT");
 
-		final var passwordMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue passwordMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		passwordMiraklCustomField.setCode("hw-passport-id");
 		passwordMiraklCustomField.setValue("passportId");
 
-		final var driversLisenceMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
-		driversLisenceMiraklCustomField.setCode("hw-drivers-license-id");
-		driversLisenceMiraklCustomField.setValue("driversLicenseId");
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue driversLicenseMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		driversLicenseMiraklCustomField.setCode("hw-drivers-license-id");
+		driversLicenseMiraklCustomField.setValue("driversLicenseId");
 
-		final var employerIdLisenceMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
-		employerIdLisenceMiraklCustomField.setCode("hw-employer-id");
-		employerIdLisenceMiraklCustomField.setValue("employerId");
-
-		final var businessTypeMiraklCustomField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue businessTypeMiraklCustomField = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
 		businessTypeMiraklCustomField.setCode("hw-business-type");
 		businessTypeMiraklCustomField.setValue("CORPORATION");
 
-		final var businessRegistrationStateProvinceMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue businessRegistrationStateProvinceMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		businessRegistrationStateProvinceMiraklCustomField.setCode("hw-business-reg-state-province");
 		businessRegistrationStateProvinceMiraklCustomField.setValue("stateProvince");
 
-		final var businessRegistrationCountryMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue businessRegistrationCountryMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		businessRegistrationCountryMiraklCustomField.setCode("hw-business-reg-country");
 		businessRegistrationCountryMiraklCustomField.setValue("US");
 
 		//@formatter:off
 		return SellerModel.builder().clientUserId("clientUserId")
-						.firstName("firstName")
-						.lastName("lastName")
-						.timeZone("UTC")
-						.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
-						.countryOfBirth(List.of(countryOfBirthMiraklCustomField))
-						.countryOfNationality(List.of(countryOfNationalityMiraklCustomField))
-						.gender("MALE")
-						.phoneNumber("phoneNumber")
-						.mobilePhone("mobilePhone")
-						.email("email")
-						.governmentId(List.of(governmentIdMiraklCustomField))
-						.governmentIdType(List.of(governmentIdTypeMiraklCustomField))
-						.passportId(List.of(passwordMiraklCustomField))
-						.driversLicenseId(List.of(driversLisenceMiraklCustomField))
-						.employerId(List.of(employerIdLisenceMiraklCustomField))
-						.addressLine1("addressLine1")
-						.addressLine2("addressLine2")
-						.city("city")
-						.stateProvince("stateProvince")
-						.country("USA")
-						.postalCode("postalCode")
-						.language("language")
-						.programToken("programToken")
-						.businessType(List.of(businessTypeMiraklCustomField))
-						.businessName("businessName").token("token")
-						.profileType(SellerProfileType.INDIVIDUAL)
-						.companyName("companyName")
-						.companyRegistrationNumber("companyRegistrationNumber")
-						.vatNumber("vatNumber")
-						.businessRegistrationStateProvince(List.of(businessRegistrationStateProvinceMiraklCustomField))
-						.companyRegistrationCountry(List.of(businessRegistrationCountryMiraklCustomField))
-						.build();
+				.firstName("firstName")
+				.lastName("lastName")
+				.timeZone("UTC")
+				.dateOfBirth(List.of(dateOfBirthMiraklCustomField))
+				.countryOfBirth(List.of(countryOfBirthMiraklCustomField))
+				.countryOfNationality(List.of(countryOfNationalityMiraklCustomField))
+				.gender("MALE")
+				.phoneNumber("phoneNumber")
+				.mobilePhone("mobilePhone")
+				.email("email")
+				.governmentId(List.of(governmentIdMiraklCustomField))
+				.governmentIdType(List.of(governmentIdTypeMiraklCustomField))
+				.passportId(List.of(passwordMiraklCustomField))
+				.driversLicenseId(List.of(driversLicenseMiraklCustomField))
+				.addressLine1("addressLine1")
+				.addressLine2("addressLine2")
+				.city("city")
+				.stateProvince("stateProvince")
+				.country("USA")
+				.postalCode("postalCode")
+				.language("language")
+				.programToken("programToken")
+				.businessType(List.of(businessTypeMiraklCustomField))
+				.businessName("businessName").token("token")
+				.profileType(SellerProfileType.INDIVIDUAL)
+				.companyName("companyName")
+				.companyRegistrationNumber("companyRegistrationNumber")
+				.vatNumber("vatNumber")
+				.businessRegistrationStateProvince(List.of(businessRegistrationStateProvinceMiraklCustomField))
+				.companyRegistrationCountry(List.of(businessRegistrationCountryMiraklCustomField))
+				.build();
 	}
 
 }

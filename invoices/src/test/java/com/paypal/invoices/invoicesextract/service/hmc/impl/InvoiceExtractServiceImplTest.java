@@ -35,12 +35,13 @@ class InvoiceExtractServiceImplTest {
 
 	@Test
 	void payOperator_shouldSendOperatorInvoicesWhenOperatorCommissionsIsEnabled() {
-		final var invoices = List.of(this.invoiceModelOneMock, invoiceModelTwoMock);
+		final List<InvoiceModel> invoices = List.of(invoiceModelOneMock, invoiceModelTwoMock);
 		when(invoicesOperatorCommissionsConfigMock.isEnabled()).thenReturn(true);
-		final var createdPayments = List.of(this.hyperwalletPaymentOneMock, hyperwalletPaymentTwoMock);
+		final List<HyperwalletPayment> createdPayments = List.of(hyperwalletPaymentOneMock, hyperwalletPaymentTwoMock);
 		when(hyperWalletPaymentExtractServiceMock.payInvoiceOperator(invoices)).thenReturn(createdPayments);
 
-		final var result = testObj.payOperator(invoices);
+		final List<HyperwalletPayment> result = testObj.payOperator(invoices);
+
 		verify(hyperWalletPaymentExtractServiceMock).payInvoiceOperator(invoices);
 		assertThat(result).isEqualTo(createdPayments);
 	}
@@ -49,7 +50,7 @@ class InvoiceExtractServiceImplTest {
 	void payOperator_shouldNotSendOperatorInvoicesWhenOperatorCommissionsIsDisabled() {
 		when(invoicesOperatorCommissionsConfigMock.isEnabled()).thenReturn(false);
 
-		final var result = testObj.payOperator(List.of(invoiceModelOneMock, invoiceModelTwoMock));
+		final List<HyperwalletPayment> result = testObj.payOperator(List.of(invoiceModelOneMock, invoiceModelTwoMock));
 
 		verifyNoInteractions(hyperWalletPaymentExtractServiceMock);
 		assertThat(result).isEmpty();

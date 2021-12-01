@@ -37,7 +37,6 @@ class KYCDocumentNotificationModelToMiraklFieldTypeCodesConverterTest {
 		final List<String> result = testObj.convert(kycDocumentNotificationModelMock);
 
 		assertThat(result).isNotEmpty().contains(INDIVIDUAL_PROOF_IDENTITY_BACK, INDIVIDUAL_PROOF_IDENTITY_FRONT);
-		;
 	}
 
 	@Test
@@ -56,7 +55,6 @@ class KYCDocumentNotificationModelToMiraklFieldTypeCodesConverterTest {
 		final List<String> result = testObj.convert(kycDocumentNotificationModelMock);
 
 		assertThat(result).isNotEmpty().contains(INDIVIDUAL_PROOF_ADDRESS);
-		;
 	}
 
 	@Test

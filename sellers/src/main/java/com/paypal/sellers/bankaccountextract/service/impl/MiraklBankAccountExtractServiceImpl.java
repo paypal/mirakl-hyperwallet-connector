@@ -6,10 +6,10 @@ import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiC
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
-import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
+import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.bankaccountextract.service.MiraklBankAccountExtractService;
-import com.paypal.sellers.infrastructure.utils.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -46,7 +46,7 @@ public class MiraklBankAccountExtractServiceImpl implements MiraklBankAccountExt
 		final MiraklUpdateShop miraklUpdateShop = new MiraklUpdateShop();
 		final String shopId = sellerModel.getClientUserId();
 		miraklUpdateShop.setShopId(Long.valueOf(shopId));
-		final var userTokenCustomField = new MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue();
+		final MiraklSimpleRequestAdditionalFieldValue userTokenCustomField = new MiraklSimpleRequestAdditionalFieldValue();
 		userTokenCustomField.setCode(HYPERWALLET_BANK_ACCOUNT_TOKEN);
 		userTokenCustomField.setValue(hyperwalletBankAccount.getToken());
 		miraklUpdateShop.setAdditionalFieldValues(List.of(userTokenCustomField));

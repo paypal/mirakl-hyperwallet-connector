@@ -219,15 +219,16 @@ class MiraklInvoicesExtractServiceImplTest {
 		final List<InvoiceModel> invoiceList = List.of(invoiceOne);
 		doReturn(invoiceList).when(testObj).getAccountingDocuments(nowAsDate);
 
-		final var miraklApliException = new MiraklApiException(new MiraklErrorResponseBean(1, "Something went wrong"));
-		doThrow(miraklApliException).when(miraklMarketplacePlatformOperatorApiClientMock)
+		final MiraklApiException miraklApiException = new MiraklApiException(
+				new MiraklErrorResponseBean(1, "Something went wrong"));
+		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
 				.getShops(any(MiraklGetShopsRequest.class));
 
 		testObj.extractAccountingDocument(nowAsDate);
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail("Issue detected getting shops in Mirakl",
 				String.format("Something went wrong getting information of " + "shops" + " [2000]%n%s",
-						MiraklLoggingErrorsUtil.stringify(miraklApliException)));
+						MiraklLoggingErrorsUtil.stringify(miraklApiException)));
 	}
 
 	@Test

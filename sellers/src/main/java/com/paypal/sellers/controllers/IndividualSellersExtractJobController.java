@@ -2,7 +2,6 @@ package com.paypal.sellers.controllers;
 
 import com.paypal.infrastructure.controllers.AbstractJobController;
 import com.paypal.sellers.jobs.IndividualSellersExtractJob;
-import com.paypal.sellers.repository.FailedSellersInformationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.SchedulerException;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.Date;
 
 /**
@@ -24,9 +22,6 @@ import java.util.Date;
 public class IndividualSellersExtractJobController extends AbstractJobController {
 
 	private static final String DEFAULT_SELLERS_EXTRACT_JOB_NAME = "SellersExtractJobSingleExecution";
-
-	@Resource
-	private FailedSellersInformationRepository failedSellersInformationRepository;
 
 	/**
 	 * Triggers the {@link IndividualSellersExtractJob} with the {@code delta} time to

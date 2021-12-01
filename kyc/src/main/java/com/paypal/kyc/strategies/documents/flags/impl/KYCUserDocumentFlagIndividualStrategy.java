@@ -8,8 +8,6 @@ import com.paypal.kyc.strategies.documents.flags.AbstractUserDocumentFlagsStrate
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Slf4j
 @Service
 public class KYCUserDocumentFlagIndividualStrategy extends AbstractUserDocumentFlagsStrategy {
@@ -24,8 +22,9 @@ public class KYCUserDocumentFlagIndividualStrategy extends AbstractUserDocumentF
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Optional<Void> execute(final KYCUserDocumentFlagsNotificationBodyModel source) {
-		return superFillMiraklProofIdentityOrBusinessFlagStatus(source);
+	public Void execute(final KYCUserDocumentFlagsNotificationBodyModel source) {
+		superFillMiraklProofIdentityOrBusinessFlagStatus(source);
+		return null;
 	}
 
 	/**
@@ -37,9 +36,9 @@ public class KYCUserDocumentFlagIndividualStrategy extends AbstractUserDocumentF
 				&& HyperwalletUser.VerificationStatus.REQUIRED.equals(source.getVerificationStatus());
 	}
 
-	protected Optional<Void> superFillMiraklProofIdentityOrBusinessFlagStatus(
-			KYCUserDocumentFlagsNotificationBodyModel notification) {
-		return fillMiraklProofIdentityOrBusinessFlagStatus(notification);
+	protected void superFillMiraklProofIdentityOrBusinessFlagStatus(
+			final KYCUserDocumentFlagsNotificationBodyModel notification) {
+		super.fillMiraklProofIdentityOrBusinessFlagStatus(notification);
 	}
 
 }

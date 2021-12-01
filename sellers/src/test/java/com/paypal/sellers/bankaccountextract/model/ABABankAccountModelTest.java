@@ -10,8 +10,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @ExtendWith(MockitoExtension.class)
 class ABABankAccountModelTest {
 
-	private ABABankAccountModel testObj;
-
 	@Test
 	void setCountry_shouldConvertTo2LettersWhenCountry3IsocodeExists() {
 		final ABABankAccountModel testObj = ABABankAccountModel.builder().country("USA").build();

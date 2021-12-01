@@ -40,7 +40,7 @@ class BusinessKYCUserLOAStatusNotificationStrategyTest {
 
 	private static final String UK_TOKEN = "ukToken";
 
-	private static Map<String, String> USER_STORE_TOKENS = Map.of("DEFAULT", DEFAULT_TOKEN, "UK", UK_TOKEN);
+	private static final Map<String, String> USER_STORE_TOKENS = Map.of("DEFAULT", DEFAULT_TOKEN, "UK", UK_TOKEN);
 
 	@InjectMocks
 	private BusinessKYCUserLOAStatusNotificationStrategy testObj;

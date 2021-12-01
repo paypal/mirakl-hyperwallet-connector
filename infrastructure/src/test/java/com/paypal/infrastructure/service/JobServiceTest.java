@@ -16,6 +16,7 @@ import org.quartz.impl.matchers.GroupMatcher;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -41,6 +42,12 @@ class JobServiceTest {
 
 	private final JobDetail noStatusJobDetail = JobBuilder.newJob(Job.class).withIdentity("noStatusJobDetail").build();
 
+	@Mock
+	private JobKey jobKeyMock;
+
+	@Mock
+	private JobDetail jobDetailMock;
+
 	@Captor
 	private ArgumentCaptor<JobDetail> jobDetailArgumentCaptor;
 
@@ -61,7 +68,7 @@ class JobServiceTest {
 	}
 
 	@Test
-	void getJobs_shouldNotRetrieveJobsWhenExceptionIsThrownByScheduler() throws SchedulerException {
+	void getJobs_whenExceptionIsThrownByScheduler_shouldNotRetrieveJobs() throws SchedulerException {
 		when(schedulerMock.getJobKeys(GroupMatcher.anyJobGroup()))
 				.thenReturn(Set.of(runningJobDetail.getKey(), noStatusJobDetail.getKey()));
 
@@ -74,7 +81,7 @@ class JobServiceTest {
 	}
 
 	@Test
-	void getJobStatus_shouldReturnRunningWhenStatusInsideJobDataMapIsInRunningState() throws SchedulerException {
+	void getJobStatus_whenStatusInsideJobDataMapIsInRunningState_shouldReturnRunning() throws SchedulerException {
 		when(schedulerMock.getJobKeys(GroupMatcher.anyJobGroup()))
 				.thenReturn(Set.of(runningJobDetail.getKey(), noStatusJobDetail.getKey()));
 
@@ -87,7 +94,32 @@ class JobServiceTest {
 	}
 
 	@Test
-	void getJobStatus_shouldReturnUnknownWhenJobIsNotFound() throws SchedulerException {
+	void getJobStatus_whenJobDataMapIsNull_shouldReturnUnknown() throws SchedulerException {
+		when(schedulerMock.getJobKeys(GroupMatcher.anyJobGroup())).thenReturn(Collections.singleton(jobKeyMock));
+		when(schedulerMock.getJobDetail(jobKeyMock)).thenReturn(jobDetailMock);
+		when(jobKeyMock.getName()).thenReturn("mockedJob");
+		when(jobDetailMock.getKey()).thenReturn(jobKeyMock);
+
+		final JobStatus result = testObj.getJobStatus("mockedJob");
+
+		assertThat(result).isEqualTo(JobStatus.UNKNOWN);
+	}
+
+	@Test
+	void getJobStatus_whenJobDataMapDoesNotContainStatusKey_shouldReturnUnknown() throws SchedulerException {
+		when(schedulerMock.getJobKeys(GroupMatcher.anyJobGroup())).thenReturn(Collections.singleton(jobKeyMock));
+		when(schedulerMock.getJobDetail(jobKeyMock)).thenReturn(jobDetailMock);
+		when(jobKeyMock.getName()).thenReturn("mockedJob");
+		when(jobDetailMock.getKey()).thenReturn(jobKeyMock);
+		when(jobDetailMock.getJobDataMap()).thenReturn(new JobDataMap());
+
+		final JobStatus result = testObj.getJobStatus("mockedJob");
+
+		assertThat(result).isEqualTo(JobStatus.UNKNOWN);
+	}
+
+	@Test
+	void getJobStatus_whenJobIsNotFound_shouldReturnUnknown() throws SchedulerException {
 		when(schedulerMock.getJobKeys(GroupMatcher.anyJobGroup()))
 				.thenReturn(Set.of(runningJobDetail.getKey(), noStatusJobDetail.getKey()));
 
@@ -100,7 +132,7 @@ class JobServiceTest {
 	}
 
 	@Test
-	void getJobStatus_shouldReturnUnknownWhenJobDataMapIsEmpty() throws SchedulerException {
+	void getJobStatus_whenJobDataMapIsEmpty_shouldReturnUnknown() throws SchedulerException {
 		when(schedulerMock.getJobKeys(GroupMatcher.anyJobGroup()))
 				.thenReturn(Set.of(runningJobDetail.getKey(), noStatusJobDetail.getKey()));
 
@@ -113,7 +145,8 @@ class JobServiceTest {
 	}
 
 	@Test
-	void createAndRunSingleExecutionJob_shouldScheduleNewJobToBeExecutedNowWhenDateIsEmpty() throws SchedulerException {
+	void createAndRunSingleExecutionJob_whenDateIsEmpty_shouldScheduleNewJobToBeExecutedNow()
+			throws SchedulerException {
 		TimeMachine.useFixedClockAt(LocalDateTime.now());
 		testObj.createAndRunSingleExecutionJob(NEW_JOB, TestJobClass.class,
 				JobDataMapSupport.newJobDataMap(Map.of("param1Key", "param1")), null);
@@ -132,18 +165,17 @@ class JobServiceTest {
 
 		verify(schedulerMock).addJob(jobDetailArgumentCaptor.capture(), eq(true));
 		verify(schedulerMock).scheduleJob(expectTriggerArgumentCaptor.capture());
-		assertThat(jobDetailArgumentCaptor.getValue()).isEqualToComparingFieldByField(expectedJobDetail);
-		assertThat(expectTriggerArgumentCaptor.getValue()).isEqualToComparingOnlyGivenFields(expectedTrigger,
-				"startTime", "group", "jobKey");
-
+		assertThat(jobDetailArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(expectedJobDetail);
+		final Trigger capturedTrigger = expectTriggerArgumentCaptor.getValue();
+		assertThat(capturedTrigger.getStartTime()).isEqualTo(expectedTrigger.getStartTime());
+		assertThat(capturedTrigger.getJobKey()).isEqualTo(expectedTrigger.getJobKey());
 	}
 
 	@Test
 	void createAndRunSingleExecutionJob_shouldScheduleNewJobToBeExecutedInDateProvided() throws SchedulerException {
 		final Date schedule = new Date();
 		testObj.createAndRunSingleExecutionJob(NEW_JOB, TestJobClass.class,
-											   JobDataMapSupport.newJobDataMap(Map.of("param1Key", "param1")), schedule);
-
+				JobDataMapSupport.newJobDataMap(Map.of("param1Key", "param1")), schedule);
 
 		//@formatter:off
 		final JobDetail expectedJobDetail = JobBuilder.newJob(TestJobClass.class)
@@ -172,7 +204,7 @@ class JobServiceTest {
 	private static class TestJobClass implements Job {
 
 		@Override
-		public void execute(final JobExecutionContext context) throws JobExecutionException {
+		public void execute(final JobExecutionContext context) {
 			// doNothing
 		}
 

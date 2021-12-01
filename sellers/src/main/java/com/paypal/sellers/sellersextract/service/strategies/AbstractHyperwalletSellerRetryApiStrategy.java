@@ -79,7 +79,7 @@ public abstract class AbstractHyperwalletSellerRetryApiStrategy
 	protected abstract HyperwalletUser createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl(
 			HyperwalletUser hyperwalletUser);
 
-	protected void callToIncludeIntoRetryProcess(final SellerModel sellerModel, final Boolean include) {
+	protected void callToIncludeIntoRetryProcess(final SellerModel sellerModel, final boolean include) {
 		executeRetryProcess(sellerModel.getClientUserId(), include);
 	}
 

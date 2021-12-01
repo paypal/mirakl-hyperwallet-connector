@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-public class SellerModelToHyperwalletBankAccountStrategyExecutor
+public class SellerModelToHyperwalletBankAccountExecutor
 		extends SingleAbstractStrategyExecutor<SellerModel, HyperwalletBankAccount> {
 
 	private final Set<Strategy<SellerModel, HyperwalletBankAccount>> strategies;
 
-	public SellerModelToHyperwalletBankAccountStrategyExecutor(
+	public SellerModelToHyperwalletBankAccountExecutor(
 			final Set<Strategy<SellerModel, HyperwalletBankAccount>> strategies) {
 		this.strategies = strategies;
 	}

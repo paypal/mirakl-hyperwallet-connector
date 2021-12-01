@@ -54,8 +54,6 @@ class JWEConverterTest {
 	@Mock
 	private OutputStream outputStreamMock;
 
-	private byte[] outputByteStub;
-
 	@Test
 	void supports_shouldReturnTrueWhenIncomingClassIsHyperwalletWebhookNotification() {
 		final boolean result = testObj.supports(HyperwalletWebhookNotification.class);
@@ -84,7 +82,7 @@ class JWEConverterTest {
 
 	@Test
 	void writeInternal_shouldWriteInOutputStreamResultOfObjectMapperWritingValuesAsBytes() throws IOException {
-		outputByteStub = "anyString".getBytes();
+		byte[] outputByteStub = "anyString".getBytes();
 		when(outputMessageMock.getBody()).thenReturn(outputStreamMock);
 		when(objectMapper.writeValueAsBytes(objectMock)).thenReturn(outputByteStub);
 

@@ -51,7 +51,7 @@ class AbstractHyperwalletBankAccountRetryApiStrategyTest {
 			+ "information:\n";
 
 	@Test
-	void execute_shouldcallMiraklAPI() {
+	void execute_shouldCallHyperwalletAPI() {
 		when(sellerModelToHyperwalletBankAccountStrategyExecutorMock.execute(sellerModelMock))
 				.thenReturn(hyperwalletBankAccountMock);
 		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
@@ -59,19 +59,18 @@ class AbstractHyperwalletBankAccountRetryApiStrategyTest {
 		testObj.execute(sellerModelMock);
 
 		verify(sellerModelToHyperwalletBankAccountStrategyExecutorMock).execute(sellerModelMock);
-		verify(testObj).callMiraklAPI(HYPERWALLET_PROGRAM, hyperwalletBankAccountMock);
-
+		verify(testObj).callHyperwalletAPI(HYPERWALLET_PROGRAM, hyperwalletBankAccountMock);
 	}
 
 	@Test
 	void execute_shouldSendEmailNotificationHyperwalletExceptionIsThrown() {
-		final var hyperwalletException = new HyperwalletException("Something went wrong");
+		final HyperwalletException hyperwalletException = new HyperwalletException("Something went wrong");
 		when(sellerModelMock.getClientUserId()).thenReturn("2001");
 		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 		when(sellerModelToHyperwalletBankAccountStrategyExecutorMock.execute(sellerModelMock))
 				.thenReturn(hyperwalletBankAccountMock);
 		doNothing().when(testObj).callToIncludeIntoRetryProcess(sellerModelMock, Boolean.FALSE);
-		doThrow(hyperwalletException).when(testObj).callMiraklAPI(HYPERWALLET_PROGRAM, hyperwalletBankAccountMock);
+		doThrow(hyperwalletException).when(testObj).callHyperwalletAPI(HYPERWALLET_PROGRAM, hyperwalletBankAccountMock);
 
 		testObj.execute(sellerModelMock);
 
@@ -90,7 +89,8 @@ class AbstractHyperwalletBankAccountRetryApiStrategyTest {
 		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 		when(sellerModelToHyperwalletBankAccountStrategyExecutorMock.execute(sellerModelMock))
 				.thenReturn(hyperwalletBankAccountMock);
-		doThrow(hyperwalletExceptionMock).when(testObj).callMiraklAPI(HYPERWALLET_PROGRAM, hyperwalletBankAccountMock);
+		doThrow(hyperwalletExceptionMock).when(testObj).callHyperwalletAPI(HYPERWALLET_PROGRAM,
+				hyperwalletBankAccountMock);
 		doNothing().when(testObj).callToIncludeIntoRetryProcess(sellerModelMock, Boolean.TRUE);
 
 		testObj.execute(sellerModelMock);
@@ -110,7 +110,7 @@ class AbstractHyperwalletBankAccountRetryApiStrategyTest {
 		}
 
 		@Override
-		protected HyperwalletBankAccount callMiraklAPI(final String hyperwalletProgram,
+		protected HyperwalletBankAccount callHyperwalletAPI(final String hyperwalletProgram,
 				final HyperwalletBankAccount hyperwalletBankAccount) {
 			return null;
 		}

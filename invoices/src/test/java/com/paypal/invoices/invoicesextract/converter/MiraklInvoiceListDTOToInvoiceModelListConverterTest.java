@@ -5,7 +5,6 @@ import com.paypal.invoices.dto.MiraklInvoicesMockListDTO;
 import com.paypal.invoices.dto.converter.MiraklInvoiceDTOToInvoiceModelConverter;
 import com.paypal.invoices.dto.converter.MiraklInvoiceListDTOToInvoiceModelListConverter;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -53,7 +52,6 @@ class MiraklInvoiceListDTOToInvoiceModelListConverterTest {
 
 	@Test
 	void convert_shouldReturnEmptyListWhenNullParameterIsReceived() {
-
 		final List<InvoiceModel> result = testObj.convert(null);
 
 		assertThat(result).isEqualTo(Collections.emptyList());

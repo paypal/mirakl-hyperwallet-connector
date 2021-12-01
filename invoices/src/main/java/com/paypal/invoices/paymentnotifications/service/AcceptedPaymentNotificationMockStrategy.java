@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Optional;
-
 /**
  * Class to help testing concurrent executions of
  * {@link AcceptedPaymentNotificationStrategy#execute(PaymentNotificationBodyModel)}
@@ -19,7 +17,7 @@ import java.util.Optional;
 @Slf4j
 @Service("acceptedPaymentNotificationStrategy")
 public class AcceptedPaymentNotificationMockStrategy extends AcceptedPaymentNotificationStrategy
-		implements Strategy<PaymentNotificationBodyModel, Optional<Void>> {
+		implements Strategy<PaymentNotificationBodyModel, Void> {
 
 	private final String mockServerUrl;
 
@@ -37,15 +35,14 @@ public class AcceptedPaymentNotificationMockStrategy extends AcceptedPaymentNoti
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Optional<Void> execute(final PaymentNotificationBodyModel paymentNotificationBodyModel) {
-
+	public Void execute(final PaymentNotificationBodyModel paymentNotificationBodyModel) {
 		restTemplate.postForObject(
 				getMockServerUrl() + MIRAKL_API_INVOICES_CONFIRM + "/"
 						+ paymentNotificationBodyModel.getClientPaymentId(),
-				createPaymentRequest(paymentNotificationBodyModel),
+				createPaymentConfirmationRequest(paymentNotificationBodyModel),
 				MiraklConfirmAccountingDocumentPaymentRequest.class);
 
-		return Optional.empty();
+		return null;
 	}
 
 	protected String getMockServerUrl() {

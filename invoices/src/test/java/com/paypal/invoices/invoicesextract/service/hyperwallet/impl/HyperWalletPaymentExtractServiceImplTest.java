@@ -138,10 +138,10 @@ class HyperWalletPaymentExtractServiceImplTest {
 	@Test
 	void payPayee_shouldCallPayInvoiceWithTheProperConverter() {
 		final List<InvoiceModel> invoices = List.of(invoiceModelOneMock, invoiceModelTwoMock);
-		final var createdPayments = List.of(this.paymentOneMock, paymentTwoMock);
+		final List<HyperwalletPayment> createdPayments = List.of(paymentOneMock, paymentTwoMock);
 		doReturn(createdPayments).when(testObj).payInvoice(invoices, invoiceModelToHyperwalletPaymentConverterMock);
 
-		final var result = testObj.payPayeeInvoice(invoices);
+		final List<HyperwalletPayment> result = testObj.payPayeeInvoice(invoices);
 
 		verify(testObj).payInvoice(invoices, invoiceModelToHyperwalletPaymentConverterMock);
 		assertThat(result).isEqualTo(createdPayments);
@@ -150,10 +150,10 @@ class HyperWalletPaymentExtractServiceImplTest {
 	@Test
 	void payOperator_shouldCallPayInvoiceWithTheProperConverter() {
 		final List<InvoiceModel> invoices = List.of(invoiceModelOneMock, invoiceModelTwoMock);
-		final var createdPayments = List.of(this.paymentOneMock, paymentTwoMock);
+		final List<HyperwalletPayment> createdPayments = List.of(paymentOneMock, paymentTwoMock);
 		doReturn(createdPayments).when(testObj).payInvoice(invoices, invoiceModelToHyperwalletPaymentConverterMock);
 
-		final var result = testObj.payInvoiceOperator(invoices);
+		final List<HyperwalletPayment> result = testObj.payInvoiceOperator(invoices);
 
 		verify(testObj).payInvoice(invoices, invoiceModelToHyperwalletPaymentConverterMock);
 		assertThat(result).isEqualTo(createdPayments);
@@ -161,7 +161,7 @@ class HyperWalletPaymentExtractServiceImplTest {
 
 	@Test
 	void createPayment_shouldSendAnEmailWhenAnExceptionIsThrown() {
-		final var hyperwalletException = new HyperwalletException("Something went wrong");
+		final HyperwalletException hyperwalletException = new HyperwalletException("Something went wrong");
 		doThrow(hyperwalletException).when(hyperwalletMock).createPayment(paymentOneMock);
 		when(paymentOneMock.getClientPaymentId()).thenReturn("000001234");
 		when(paymentOneMock.getProgramToken()).thenReturn(PROGRAM_TOKEN);

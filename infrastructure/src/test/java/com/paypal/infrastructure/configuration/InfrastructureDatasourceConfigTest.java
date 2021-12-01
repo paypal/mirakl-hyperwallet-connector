@@ -83,7 +83,6 @@ class InfrastructureDatasourceConfigTest {
 				.applicationTransactionManager(applicationTransactionManagerMock);
 
 		assertThat(result).isNotNull().isInstanceOf(PlatformTransactionManager.class);
-
 	}
 
 }

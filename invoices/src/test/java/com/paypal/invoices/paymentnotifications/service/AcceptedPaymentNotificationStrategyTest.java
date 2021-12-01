@@ -80,8 +80,7 @@ class AcceptedPaymentNotificationStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnFalse_whenPaymentNotificationBodyModelIsNull() {
-
-		final var result = testObj.isApplicable(null);
+		final boolean result = testObj.isApplicable(null);
 
 		assertThat(result).isFalse();
 	}
@@ -92,7 +91,7 @@ class AcceptedPaymentNotificationStrategyTest {
 		when(paymentNotificationBodyModelMock.getStatus()).thenReturn(COMPLETED);
 		when(paymentNotificationBodyModelMock.getClientPaymentId()).thenReturn("290320");
 
-		final var result = testObj.isApplicable(paymentNotificationBodyModelMock);
+		final boolean result = testObj.isApplicable(paymentNotificationBodyModelMock);
 
 		assertThat(result).isTrue();
 	}
@@ -103,7 +102,7 @@ class AcceptedPaymentNotificationStrategyTest {
 		when(paymentNotificationBodyModelMock.getStatus()).thenReturn(COMPLETED);
 		when(paymentNotificationBodyModelMock.getClientPaymentId()).thenReturn("290320-operatorFee");
 
-		final var result = testObj.isApplicable(paymentNotificationBodyModelMock);
+		final boolean result = testObj.isApplicable(paymentNotificationBodyModelMock);
 
 		assertThat(result).isFalse();
 	}
@@ -113,7 +112,7 @@ class AcceptedPaymentNotificationStrategyTest {
 		when(paymentNotificationConfigMock.getAcceptedStatuses()).thenReturn(List.of(COMPLETED));
 		when(paymentNotificationBodyModelMock.getStatus()).thenReturn(NOT_COMPLETED);
 
-		final var result = testObj.isApplicable(paymentNotificationBodyModelMock);
+		final boolean result = testObj.isApplicable(paymentNotificationBodyModelMock);
 
 		assertThat(result).isFalse();
 	}

@@ -41,7 +41,6 @@ public class SellerModelToHyperWalletUserConverter implements Converter<SellerMo
 		hyperwalletUser.setEmail(sellerModel.getEmail());
 		hyperwalletUser.setGovernmentId(sellerModel.getGovernmentId());
 		hyperwalletUser.setPassportId(sellerModel.getPassportId());
-		hyperwalletUser.setEmployerId(sellerModel.getEmployerId());
 		hyperwalletUser.setAddressLine1(sellerModel.getAddressLine1());
 		hyperwalletUser.setAddressLine2(sellerModel.getAddressLine2());
 		hyperwalletUser.setCity(sellerModel.getCity());
@@ -57,14 +56,14 @@ public class SellerModelToHyperWalletUserConverter implements Converter<SellerMo
 		hyperwalletUser.setBusinessRegistrationStateProvince(Optional.ofNullable(sellerModel.getBusinessRegistrationStateProvince()).orElse(null));
 
 		Optional.ofNullable(sellerModel.getBusinessType())
-                .map(Enum::name)
-                .map(HyperwalletUser.BusinessType::valueOf)
-                .ifPresent(hyperwalletUser::setBusinessType);
-        Optional.ofNullable(sellerModel.getGovernmentIdType())
-                .map(Enum::name)
-                .map(HyperwalletUser.GovernmentIdType::valueOf)
-                .ifPresent(hyperwalletUser::setGovernmentIdType);
-        //@formatter:on
+				.map(Enum::name)
+				.map(HyperwalletUser.BusinessType::valueOf)
+				.ifPresent(hyperwalletUser::setBusinessType);
+		Optional.ofNullable(sellerModel.getGovernmentIdType())
+				.map(Enum::name)
+				.map(HyperwalletUser.GovernmentIdType::valueOf)
+				.ifPresent(hyperwalletUser::setGovernmentIdType);
+		//@formatter:on
 
 		return hyperwalletUser;
 	}

@@ -12,7 +12,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -45,16 +47,16 @@ class KYCDocumentInfoModelToProofOfIdentityHyperwalletVerificationDocumentSeller
 	void setUp() {
 		//@formatter:off
 		documentProofOfIdentityFront = KYCDocumentModel.builder()
-																			  .documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_FRONT)
-																			  .file(proofOfIdentityFileFrontMock)
-																			  .build();
+				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_FRONT)
+				.file(proofOfIdentityFileFrontMock)
+				.build();
 		//@formatter:on
 
 		//@formatter:off
-		 documentProofOfIdentityBack = KYCDocumentModel.builder()
-																			 .documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_BACK)
-																			 .file(proofOfIdentityFileBackMock)
-																			 .build();
+		documentProofOfIdentityBack = KYCDocumentModel.builder()
+				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_BACK)
+				.file(proofOfIdentityFileBackMock)
+				.build();
 		//@formatter:on
 		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder().clientUserId(CLIENT_USER_ID)
 				.userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
@@ -89,7 +91,7 @@ class KYCDocumentInfoModelToProofOfIdentityHyperwalletVerificationDocumentSeller
 	@Test
 	void isApplicable_shouldReturnTrueWhenIdentityDocumentsIsNotEmptyAndProofOfIdentityIsFilled() {
 		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModel);
-		
+
 		assertThat(result).isTrue();
 	}
 

@@ -18,11 +18,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class MiraklToBankAccountModelStrategyExecutorTest {
+class MiraklToBankAccountModelExecutorTest {
 
 	@Spy
 	@InjectMocks
-	private MiraklToBankAccountModelStrategyExecutor testObj;
+	private MiraklToBankAccountModelExecutor testObj;
 
 	@Mock
 	private Strategy<MiraklShop, BankAccountModel> strategyMock;
@@ -37,23 +37,20 @@ class MiraklToBankAccountModelStrategyExecutorTest {
 	void getStrategies_shouldReturnConverterStrategyMock() {
 		when(testObj.getStrategies()).thenReturn(Set.of(strategyMock));
 
-		final var result = testObj.getStrategies();
+		final Set<Strategy<MiraklShop, BankAccountModel>> result = testObj.getStrategies();
 
 		assertThat(result).containsExactly(strategyMock);
-
 	}
 
 	@Test
 	void execute_shouldReturnNullWhenNoPaymentDetailsIsDefined() {
-
-		final var result = testObj.execute(miraklShopMock);
+		final BankAccountModel result = testObj.execute(miraklShopMock);
 
 		assertThat(result).isNull();
-
 	}
 
 	@Test
-	void execute_shouldcallSuperExecuteMethodWhenPaymentDetailsIsDefined() {
+	void execute_shouldCallSuperExecuteMethodWhenPaymentDetailsIsDefined() {
 		when(miraklShopMock.getPaymentInformation()).thenReturn(miraklPaymentInformationMock);
 
 		testObj.execute(miraklShopMock);

@@ -28,7 +28,6 @@ public abstract class AbstractHyperwalletApiConfig extends AbstractProgramHierar
 		final AbstractHyperwalletApiConfig that = (AbstractHyperwalletApiConfig) o;
 
 		return EqualsBuilder.reflectionEquals(this, that);
-
 	}
 
 	@Override

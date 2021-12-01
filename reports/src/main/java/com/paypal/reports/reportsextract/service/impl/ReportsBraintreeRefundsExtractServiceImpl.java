@@ -66,11 +66,11 @@ public class ReportsBraintreeRefundsExtractServiceImpl
 				.get(DATA)).get(SEARCH)).get(braintreeType.getTypeName())).get(EDGES);
 
 		//@formatter:off
-        return edges.stream()
-                .map(value -> (Map<String, Object>) value.get(NODE))
-                .map(mapToBraintreeRefundLineConverter::convert)
-                .collect(Collectors.toList());
-        //@formatter:on
+		return edges.stream()
+				.map(value -> (Map<String, Object>) value.get(NODE))
+				.map(mapToBraintreeRefundLineConverter::convert)
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 	protected String getSearchQuery() {

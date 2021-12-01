@@ -15,15 +15,13 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class KYCHyperwalletSDKEncryptedServiceImplTest {
 
-	private static final String PROGRAM_TOKEN = "programToken";
-
-	private static final String USER_NAME = "userName";
+	private static final String SERVER = "server";
 
 	private static final String PASSWORD = "password";
 
-	private static final String SERVER = "server";
+	private static final String USER_NAME = "userName";
 
-	private static final String ISSUING_STORE = "issuingStore";
+	private static final String PROGRAM_TOKEN = "programToken";
 
 	@InjectMocks
 	private KYCHyperwalletSDKEncryptedServiceImpl testObj;
@@ -36,15 +34,13 @@ class KYCHyperwalletSDKEncryptedServiceImplTest {
 
 	@Test
 	void getHyperwalletInstance_shouldReturnAnHyperwalletInstanceWithEncryptedOption() {
-		when(this.kycHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(this.kycHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(this.kycHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(kycHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(kycHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(kycHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final Hyperwallet result = this.testObj.getHyperwalletInstance(PROGRAM_TOKEN);
+		final Hyperwallet result = testObj.getHyperwalletInstance(PROGRAM_TOKEN);
 
-		assertThat(result).hasFieldOrPropertyWithValue("apiClient.hyperwalletEncryption",
-				this.hyperwalletEncryptionMock);
-
+		assertThat(result).hasFieldOrPropertyWithValue("apiClient.hyperwalletEncryption", hyperwalletEncryptionMock);
 	}
 
 }

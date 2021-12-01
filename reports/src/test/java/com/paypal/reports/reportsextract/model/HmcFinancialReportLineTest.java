@@ -30,19 +30,19 @@ class HmcFinancialReportLineTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 45));
 		final LocalDateTime now = TimeMachine.now();
 		//@formatter:off
-        final HmcFinancialReportLine result = HmcFinancialReportLine.builder()
-                .braintreeCommerceOrderId(BRAIN_TREE_ORDER_ID)
-                .miraklOrderId(ORDER_ID)
-                .miraklSellerId(SELLER_ID)
-                .miraklTransactionLineId(MIRAKL_TRANSACTION_LINE_ID)
-                .miraklTransactionTime(now)
-                .miraklTransactionType(MIRAKL_TRANSACTION_TYPE)
-                .braintreeAmount(BigDecimal.ONE)
+		final HmcFinancialReportLine result = HmcFinancialReportLine.builder()
+				.braintreeCommerceOrderId(BRAIN_TREE_ORDER_ID)
+				.miraklOrderId(ORDER_ID)
+				.miraklSellerId(SELLER_ID)
+				.miraklTransactionLineId(MIRAKL_TRANSACTION_LINE_ID)
+				.miraklTransactionTime(now)
+				.miraklTransactionType(MIRAKL_TRANSACTION_TYPE)
+				.braintreeAmount(BigDecimal.ONE)
 				.currencyIsoCode("EUR")
-                .braintreeTransactionId(PAYMENT_TRANSACTION_ID)
-                .braintreeTransactionTime(now)
-                .build();
-        //@formatter:on
+				.braintreeTransactionId(PAYMENT_TRANSACTION_ID)
+				.braintreeTransactionTime(now)
+				.build();
+		//@formatter:on
 
 		assertThat(result.getBraintreeCommerceOrderId()).isEqualTo(BRAIN_TREE_ORDER_ID);
 		assertThat(result.getMiraklOrderId()).isEqualTo(ORDER_ID);

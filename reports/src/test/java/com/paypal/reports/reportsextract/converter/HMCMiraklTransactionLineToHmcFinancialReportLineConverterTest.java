@@ -1,6 +1,7 @@
 package com.paypal.reports.reportsextract.converter;
 
 import com.paypal.infrastructure.util.TimeMachine;
+import com.paypal.reports.reportsextract.model.HmcFinancialReportLine;
 import com.paypal.reports.reportsextract.model.HmcMiraklTransactionLine;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,11 +20,11 @@ class HMCMiraklTransactionLineToHmcFinancialReportLineConverterTest {
 
 	private static final String SELLER_ID = "sellerId";
 
-	private static final String MIRAKL_TRANSACTION_LINE_ID = "miraklTransactionLineId";
-
 	private static final String TRANSACTION_TYPE = "transactionType";
 
-	private static final String PAYAMENT_TRANSACTION_ID = "payamentTransactionId";
+	private static final String PAYMENT_TRANSACTION_ID = "payamentTransactionId";
+
+	private static final String MIRAKL_TRANSACTION_LINE_ID = "miraklTransactionLineId";
 
 	@InjectMocks
 	private MiraklTransactionLineToFinancialReportLineConverter testObj;
@@ -33,20 +34,20 @@ class HMCMiraklTransactionLineToHmcFinancialReportLineConverterTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 45));
 		final LocalDateTime now = TimeMachine.now();
 		//@formatter:off
-        final HmcMiraklTransactionLine HmcMiraklTransactionLineStub = HmcMiraklTransactionLine.builder()
-                .orderId(ORDER_ID)
-                .sellerId(SELLER_ID)
-                .transactionLineId(MIRAKL_TRANSACTION_LINE_ID)
-                .transactionTime(now)
-                .transactionType(TRANSACTION_TYPE)
+		final HmcMiraklTransactionLine HmcMiraklTransactionLineStub = HmcMiraklTransactionLine.builder()
+				.orderId(ORDER_ID)
+				.sellerId(SELLER_ID)
+				.transactionLineId(MIRAKL_TRANSACTION_LINE_ID)
+				.transactionTime(now)
+				.transactionType(TRANSACTION_TYPE)
 				.amount(BigDecimal.ONE)
-                .creditAmount(BigDecimal.TEN)
+				.creditAmount(BigDecimal.TEN)
 				.debitAmount(BigDecimal.ZERO)
-                .transactionNumber(PAYAMENT_TRANSACTION_ID)
-                .build();
-        //@formatter:on
+				.transactionNumber(PAYMENT_TRANSACTION_ID)
+				.build();
+		//@formatter:on
 
-		final var result = testObj.convert(HmcMiraklTransactionLineStub);
+		final HmcFinancialReportLine result = testObj.convert(HmcMiraklTransactionLineStub);
 		assertThat(result.getMiraklOrderId()).isEqualTo(ORDER_ID);
 		assertThat(result.getMiraklSellerId()).isEqualTo(SELLER_ID);
 		assertThat(result.getMiraklTransactionLineId()).isEqualTo(MIRAKL_TRANSACTION_LINE_ID);
@@ -58,10 +59,9 @@ class HMCMiraklTransactionLineToHmcFinancialReportLineConverterTest {
 
 	@Test
 	void convert_shouldReturnNullWhenMiraklTransactionLineIsNull() {
+		final HmcFinancialReportLine result = testObj.convert(null);
 
-		final var result = testObj.convert(null);
 		assertThat(result).isNull();
-
 	}
 
 }

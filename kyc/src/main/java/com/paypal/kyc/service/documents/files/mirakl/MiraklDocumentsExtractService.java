@@ -13,8 +13,8 @@ public interface MiraklDocumentsExtractService {
 
 	/**
 	 * Deletes all Mirakl documents from the seller
-	 * @param successFullPushedListOfDocuments {@link List<
-	 * KYCDocumentBusinessStakeHolderInfoModel >}
+	 * @param successFullPushedListOfDocuments
+	 * {@link List<KYCDocumentBusinessStakeHolderInfoModel>}
 	 */
 	void deleteAllDocumentsFromSeller(List<KYCDocumentInfoModel> successFullPushedListOfDocuments);
 

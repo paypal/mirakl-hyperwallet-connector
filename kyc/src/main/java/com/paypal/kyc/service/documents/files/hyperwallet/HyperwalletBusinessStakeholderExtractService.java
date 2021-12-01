@@ -13,7 +13,8 @@ public interface HyperwalletBusinessStakeholderExtractService {
 	/**
 	 * Obtains List of required verification business stakeholders based on a user token
 	 * and an hyperwalletProgram
-	 * @param hyperwalletProgram, userToken
+	 * @param hyperwalletProgram Program for which the verification will be obtained
+	 * @param userToken Token of the user
 	 * @return List of {@link String} with required verification business stakeholders
 	 * tokens
 	 */
@@ -22,14 +23,11 @@ public interface HyperwalletBusinessStakeholderExtractService {
 	/**
 	 * Pushes the documents into HW and returns the list of
 	 * KYCDocumentBusinessStakeHolderInfoModel that were correctly uploaded to HW
-	 * @param kycBusinesStakeHolderInfoModels
+	 * @param kycBusinessStakeHolderInfoModels List of stakeholder documents to push
 	 * @return the correct list of {@link KYCDocumentBusinessStakeHolderInfoModel} pushed
 	 * to hyperwallet
 	 */
 	List<KYCDocumentBusinessStakeHolderInfoModel> pushBusinessStakeholderDocuments(
-			List<KYCDocumentBusinessStakeHolderInfoModel> kycBusinesStakeHolderInfoModels);
-
-	List<KYCDocumentBusinessStakeHolderInfoModel> notifyAllDocumentsSentForBstk(
-			List<KYCDocumentBusinessStakeHolderInfoModel> documentsTriedToBeSent);
+			List<KYCDocumentBusinessStakeHolderInfoModel> kycBusinessStakeHolderInfoModels);
 
 }

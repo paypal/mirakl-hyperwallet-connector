@@ -39,7 +39,6 @@ class ReportsExtractServiceImplTest {
 
 	@Test
 	void extractFinancialReport_shouldCallToFinancialReportServiceInOrderToGenerateTheFinancialReport() {
-
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 45));
 		final LocalDateTime startLocalDate = TimeMachine.now();
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 12, 10, 20, 45));

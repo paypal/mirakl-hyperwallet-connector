@@ -28,9 +28,9 @@ public class KYCHyperwalletSDKServiceImpl implements HyperwalletSDKService {
 	public Hyperwallet getHyperwalletInstance(final String hyperwalletProgram) {
 		//@formatter:off
 		final String programUserToken = Optional.ofNullable(this.kycHyperwalletApiConfig.getUserStoreTokens())
-                .map(tokens -> tokens.get(hyperwalletProgram))
-                .orElse(null);
-        //@formatter:on
+				.map(tokens -> tokens.get(hyperwalletProgram))
+				.orElse(null);
+		//@formatter:on
 		return new Hyperwallet(this.kycHyperwalletApiConfig.getUsername(), this.kycHyperwalletApiConfig.getPassword(),
 				programUserToken, this.kycHyperwalletApiConfig.getServer(), null);
 	}

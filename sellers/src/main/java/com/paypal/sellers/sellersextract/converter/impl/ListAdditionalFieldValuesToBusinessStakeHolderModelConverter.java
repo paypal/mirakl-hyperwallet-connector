@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Converst from a pair of a list of {@link MiraklAdditionalFieldValue} and
+ * Converts from a pair of a list of {@link MiraklAdditionalFieldValue} and
  * {@link Integer} into {@link BusinessStakeHolderModel}
  */
 @Service
@@ -36,7 +36,7 @@ public class ListAdditionalFieldValuesToBusinessStakeHolderModelConverter
 		final Integer businessStakeHolderNumber = source.getMiddle();
 		final String clientId = source.getRight();
 		//@formatter:off
-        return getBuilder()
+		return getBuilder()
 				.stkId(businessStakeHolderNumber)
 				.token(additionalFieldValues, businessStakeHolderNumber)
 				.userToken(additionalFieldValues)
@@ -66,8 +66,8 @@ public class ListAdditionalFieldValuesToBusinessStakeHolderModelConverter
 				.country(additionalFieldValues, businessStakeHolderNumber)
 				.postalCode(additionalFieldValues, businessStakeHolderNumber)
 				.hyperwalletProgram(additionalFieldValues)
-                .build();
-        //@formatter:on
+				.build();
+		//@formatter:on
 	}
 
 	protected BusinessStakeHolderModel.BusinessStakeHolderModelBuilder getBuilder() {

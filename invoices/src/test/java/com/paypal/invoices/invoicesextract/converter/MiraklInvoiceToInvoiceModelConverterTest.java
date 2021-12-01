@@ -41,16 +41,16 @@ class MiraklInvoiceToInvoiceModelConverterTest {
 
 	@Test
 	void convert_shouldConvertMiraklInvoiceIntoInvoiceModel() {
-		when(this.miraklInvoiceMock.getId()).thenReturn(INV_NUMBER);
-		when(this.miraklInvoiceMock.getShopId()).thenReturn(SHOP_ID);
-		when(this.miraklInvoiceMock.getCurrencyIsoCode()).thenReturn(MiraklIsoCurrencyCode.EUR);
-		when(this.miraklInvoiceMock.getSummary()).thenReturn(this.miraklInvoiceSummaryMock);
-		when(this.miraklInvoiceSummaryMock.getAmountTransferred()).thenReturn(TRANSFER_AMOUNT);
-		when(this.miraklInvoiceSummaryMock.getTotalCommissionsIT()).thenReturn(TOTAL_COMMISSION);
-		when(this.miraklInvoiceSummaryMock.getTotalSubscriptionIT()).thenReturn(TOTAL_SUBSCRIPTIONS);
-		when(this.miraklInvoiceSummaryMock.getAmountTransferredToOperator()).thenReturn(BigDecimal.TEN);
+		when(miraklInvoiceMock.getId()).thenReturn(INV_NUMBER);
+		when(miraklInvoiceMock.getShopId()).thenReturn(SHOP_ID);
+		when(miraklInvoiceMock.getCurrencyIsoCode()).thenReturn(MiraklIsoCurrencyCode.EUR);
+		when(miraklInvoiceMock.getSummary()).thenReturn(miraklInvoiceSummaryMock);
+		when(miraklInvoiceSummaryMock.getAmountTransferred()).thenReturn(TRANSFER_AMOUNT);
+		when(miraklInvoiceSummaryMock.getTotalCommissionsIT()).thenReturn(TOTAL_COMMISSION);
+		when(miraklInvoiceSummaryMock.getTotalSubscriptionIT()).thenReturn(TOTAL_SUBSCRIPTIONS);
+		when(miraklInvoiceSummaryMock.getAmountTransferredToOperator()).thenReturn(BigDecimal.TEN);
 
-		final InvoiceModel result = this.testObj.convert(this.miraklInvoiceMock);
+		final InvoiceModel result = testObj.convert(miraklInvoiceMock);
 
 		assertThat(result.getInvoiceNumber()).isEqualTo(INV_NUMBER);
 		assertThat(result.getCurrencyIsoCode()).isEqualTo(EUR);
@@ -63,7 +63,7 @@ class MiraklInvoiceToInvoiceModelConverterTest {
 
 	@Test
 	void convert_shouldReturnNullWhenNullParameterIsReceived() {
-		final InvoiceModel result = this.testObj.convert(null);
+		final InvoiceModel result = testObj.convert(null);
 
 		assertThat(result).isNull();
 	}

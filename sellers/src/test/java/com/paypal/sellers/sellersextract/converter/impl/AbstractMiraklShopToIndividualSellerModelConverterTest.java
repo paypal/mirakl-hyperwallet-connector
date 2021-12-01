@@ -7,6 +7,7 @@ import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextract.model.IBANBankAccountModel;
 import com.paypal.sellers.infrastructure.configuration.SellersMiraklApiConfig;
 import com.paypal.sellers.sellersextract.model.SellerModel;
+import com.paypal.sellers.sellersextract.model.SellerModel.SellerModelBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -62,24 +63,24 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 
 		when(miraklShopBankAccountModelStrategyExecutor.execute(miraklShopMock)).thenReturn(IBANBankAccountModelMock);
 
-		final var result = testObj.getCommonFieldsBuilder(miraklShopMock);
+		final SellerModelBuilder result = testObj.getCommonFieldsBuilder(miraklShopMock);
 
 		//@formatter:off
-        assertThat(result).hasFieldOrPropertyWithValue("clientUserId", "shopId")
-                .hasFieldOrPropertyWithValue("businessName", "shopName")
-                .hasFieldOrPropertyWithValue("firstName", "firstName")
-                .hasFieldOrPropertyWithValue("lastName", "lastName")
-                .hasFieldOrPropertyWithValue("phoneNumber", "phone")
-                .hasFieldOrPropertyWithValue("mobilePhone", "secondaryPhone")
-                .hasFieldOrPropertyWithValue("email", "email@example.com")
-                .hasFieldOrPropertyWithValue("addressLine1", "street1")
-                .hasFieldOrPropertyWithValue("addressLine2", "street2")
-                .hasFieldOrPropertyWithValue("city", "city")
-                .hasFieldOrPropertyWithValue("postalCode", "zipcode")
-                .hasFieldOrPropertyWithValue("stateProvince", "state")
-                .hasFieldOrPropertyWithValue("country", "US")
-                .hasFieldOrPropertyWithValue("bankAccountDetails", IBANBankAccountModelMock);
-        //@formatter:on
+		assertThat(result).hasFieldOrPropertyWithValue("clientUserId", "shopId")
+				.hasFieldOrPropertyWithValue("businessName", "shopName")
+				.hasFieldOrPropertyWithValue("firstName", "firstName")
+				.hasFieldOrPropertyWithValue("lastName", "lastName")
+				.hasFieldOrPropertyWithValue("phoneNumber", "phone")
+				.hasFieldOrPropertyWithValue("mobilePhone", "secondaryPhone")
+				.hasFieldOrPropertyWithValue("email", "email@example.com")
+				.hasFieldOrPropertyWithValue("addressLine1", "street1")
+				.hasFieldOrPropertyWithValue("addressLine2", "street2")
+				.hasFieldOrPropertyWithValue("city", "city")
+				.hasFieldOrPropertyWithValue("postalCode", "zipcode")
+				.hasFieldOrPropertyWithValue("stateProvince", "state")
+				.hasFieldOrPropertyWithValue("country", "US")
+				.hasFieldOrPropertyWithValue("bankAccountDetails", IBANBankAccountModelMock);
+		//@formatter:on
 	}
 
 	@Test
@@ -103,7 +104,7 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 		// mirakl custom fields
 		when(miraklShopMock.getAdditionalFieldValues()).thenReturn(Collections.emptyList());
 
-		final var result = testObj.getCommonFieldsBuilder(miraklShopMock);
+		final SellerModelBuilder result = testObj.getCommonFieldsBuilder(miraklShopMock);
 		//@formatter:off
 		assertThat(result).hasFieldOrPropertyWithValue("clientUserId", "shopId")
 				.hasFieldOrPropertyWithValue("businessName", "shopName")

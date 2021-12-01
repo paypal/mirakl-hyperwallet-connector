@@ -12,12 +12,11 @@ import java.util.Set;
 
 @Slf4j
 @Service
-public class MiraklToBankAccountModelStrategyExecutor
-		extends SingleAbstractStrategyExecutor<MiraklShop, BankAccountModel> {
+public class MiraklToBankAccountModelExecutor extends SingleAbstractStrategyExecutor<MiraklShop, BankAccountModel> {
 
 	private final Set<Strategy<MiraklShop, BankAccountModel>> strategies;
 
-	public MiraklToBankAccountModelStrategyExecutor(final Set<Strategy<MiraklShop, BankAccountModel>> strategies) {
+	public MiraklToBankAccountModelExecutor(final Set<Strategy<MiraklShop, BankAccountModel>> strategies) {
 		this.strategies = strategies;
 	}
 
@@ -36,7 +35,7 @@ public class MiraklToBankAccountModelStrategyExecutor
 	@Override
 	public BankAccountModel execute(final MiraklShop source) {
 		if (Objects.isNull(source.getPaymentInformation())) {
-			log.warn("No bank account info for shop code:  [{}]", source.getId());
+			log.warn("No bank account info for shop code: [{}]", source.getId());
 			return null;
 		}
 		return callSuperExecute(source);

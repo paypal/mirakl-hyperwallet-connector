@@ -9,10 +9,9 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class KYCUserDocumentFlagIndividualStrategyTest {
@@ -26,14 +25,13 @@ class KYCUserDocumentFlagIndividualStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnTrueWhenUserReceivedIsIndividualAndVerificationStatusIsRequired() {
-
 		//@formatter:off
-        KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
-                .builder()
-                .profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
-                .verificationStatus(HyperwalletUser.VerificationStatus.REQUIRED)
-                .build();
-        //@formatter:on
+		KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
+				.builder()
+				.profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
+				.verificationStatus(HyperwalletUser.VerificationStatus.REQUIRED)
+				.build();
+		//@formatter:on
 		final boolean result = testObj.isApplicable(kycUserDocumentFlagsNotificationBodyModel);
 
 		assertThat(result).isTrue();
@@ -42,12 +40,12 @@ class KYCUserDocumentFlagIndividualStrategyTest {
 	@Test
 	void isApplicable_shouldReturnFalseWhenUserReceivedIndividualButVerificationStatusIsNotRequired() {
 		//@formatter:off
-        KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
-                .builder()
-                .profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
-                .verificationStatus(HyperwalletUser.VerificationStatus.FAILED)
-                .build();
-        //@formatter:on
+		KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
+				.builder()
+				.profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
+				.verificationStatus(HyperwalletUser.VerificationStatus.FAILED)
+				.build();
+		//@formatter:on
 		final boolean result = testObj.isApplicable(kycUserDocumentFlagsNotificationBodyModel);
 
 		assertThat(result).isFalse();
@@ -55,7 +53,6 @@ class KYCUserDocumentFlagIndividualStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnFalseWhenUserReceivedIsProfessionalAndVerificationStatusIsRequired() {
-
 		//@formatter:off
 		KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = KYCUserDocumentFlagsNotificationBodyModel
 				.builder()
@@ -70,7 +67,7 @@ class KYCUserDocumentFlagIndividualStrategyTest {
 
 	@Test
 	void execute_verifyCallsParentFillMiraklProofIdentityOrBusinessFlagStatus() {
-		doReturn(Optional.empty()).when(testObj).superFillMiraklProofIdentityOrBusinessFlagStatus(notificationMock);
+		doNothing().when(testObj).superFillMiraklProofIdentityOrBusinessFlagStatus(notificationMock);
 
 		testObj.execute(notificationMock);
 

@@ -9,6 +9,7 @@ import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.infrastructure.util.DateUtil;
 import com.paypal.invoices.infraestructure.configuration.PaymentNotificationConfig;
 import com.paypal.invoices.paymentnotifications.model.PaymentNotificationBodyModel;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -17,16 +18,16 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import static com.paypal.infrastructure.constants.HyperWalletConstants.PAYMENT_OPERATOR_SUFFIX;
 
 /**
  * Strategy to update the status of an accepted payment in Mirakl
  */
-@Profile({ "!qa" })
+@Slf4j
 @Service
-public class AcceptedPaymentNotificationStrategy implements Strategy<PaymentNotificationBodyModel, Optional<Void>> {
+@Profile({ "!qa" })
+public class AcceptedPaymentNotificationStrategy implements Strategy<PaymentNotificationBodyModel, Void> {
 
 	@Resource
 	private PaymentNotificationConfig paymentNotificationConfig;
@@ -43,14 +44,13 @@ public class AcceptedPaymentNotificationStrategy implements Strategy<PaymentNoti
 	 * @return the converted object of type {@link Void}
 	 */
 	@Override
-	public Optional<Void> execute(final PaymentNotificationBodyModel paymentNotificationBodyModel) {
+	public Void execute(final PaymentNotificationBodyModel paymentNotificationBodyModel) {
 		miraklMarketplacePlatformFrontOperatorApi
-				.confirmAccountingDocumentPayment(createPaymentRequest(paymentNotificationBodyModel));
-
-		return Optional.empty();
+				.confirmAccountingDocumentPayment(createPaymentConfirmationRequest(paymentNotificationBodyModel));
+		return null;
 	}
 
-	protected MiraklConfirmAccountingDocumentPaymentRequest createPaymentRequest(
+	protected MiraklConfirmAccountingDocumentPaymentRequest createPaymentConfirmationRequest(
 			final PaymentNotificationBodyModel paymentNotificationBodyModel) {
 		final MiraklAccountingDocumentPaymentConfirmation miraklAccountingDocumentPaymentConfirmation = new MiraklAccountingDocumentPaymentConfirmation();
 		miraklAccountingDocumentPaymentConfirmation.setAmount(new BigDecimal(paymentNotificationBodyModel.getAmount()));
@@ -60,6 +60,10 @@ public class AcceptedPaymentNotificationStrategy implements Strategy<PaymentNoti
 		miraklAccountingDocumentPaymentConfirmation
 				.setTransactionDate(DateUtil.convertToDate(paymentNotificationBodyModel.getCreatedOn(),
 						HyperWalletConstants.HYPERWALLET_DATE_FORMAT, DateUtil.TIME_UTC));
+
+		log.info("Creating payment confirmation request for invoice ID {} and amount {}",
+				miraklAccountingDocumentPaymentConfirmation.getInvoiceId(),
+				miraklAccountingDocumentPaymentConfirmation.getAmount());
 
 		return new MiraklConfirmAccountingDocumentPaymentRequest(List.of(miraklAccountingDocumentPaymentConfirmation));
 	}

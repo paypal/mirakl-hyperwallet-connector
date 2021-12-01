@@ -4,24 +4,21 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletBusinessStakeholder;
 import com.hyperwallet.clientsdk.model.HyperwalletList;
-import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.infrastructure.util.LoggingConstantsUtil;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
-import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.service.HyperwalletSDKService;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletBusinessStakeholderExtractService;
-import com.paypal.kyc.strategies.documents.files.hyperwallet.businessstakeholder.impl.KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor;
+import com.paypal.kyc.strategies.documents.files.hyperwallet.businessstakeholder.impl.KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -41,15 +38,15 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 
 	private final HyperwalletSDKService hyperwalletSDKService;
 
-	private final KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor;
+	private final KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor;
 
 	private final MailNotificationUtil kycMailNotificationUtil;
 
 	protected HyperwalletBusinessStakeholderExtractServiceImpl(final HyperwalletSDKService hyperwalletSDKService,
-			final KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor,
+			final KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor,
 			final MailNotificationUtil kycMailNotificationUtil) {
 		this.hyperwalletSDKService = hyperwalletSDKService;
-		this.kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor = kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor;
+		this.kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor = kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor;
 		this.kycMailNotificationUtil = kycMailNotificationUtil;
 	}
 
@@ -60,13 +57,22 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 	public List<String> getKYCRequiredVerificationBusinessStakeHolders(final String hyperwalletProgram,
 			final String userToken) {
 		final Hyperwallet hyperwallet = hyperwalletSDKService.getHyperwalletInstance(hyperwalletProgram);
-		final HyperwalletList<HyperwalletBusinessStakeholder> businessStakeHolders = hyperwallet
-				.listBusinessStakeholders(userToken);
+		final List<HyperwalletBusinessStakeholder> businessStakeholders = getBusinessStakeholders(userToken,
+				hyperwallet);
 
-		return Optional.ofNullable(businessStakeHolders).orElse(new HyperwalletList<>()).getData().stream()
+		return businessStakeholders.stream()
 				.filter(hyperwalletBusinessStakeholder -> REQUIRED
 						.equals(hyperwalletBusinessStakeholder.getVerificationStatus()))
 				.map(HyperwalletBusinessStakeholder::getToken).collect(Collectors.toList());
+	}
+
+	private List<HyperwalletBusinessStakeholder> getBusinessStakeholders(final String userToken,
+			final Hyperwallet hyperwallet) {
+		final HyperwalletList<HyperwalletBusinessStakeholder> businessStakeHolders = hyperwallet
+				.listBusinessStakeholders(userToken);
+
+		return Optional.ofNullable(businessStakeHolders).map(HyperwalletList::getData)
+				.filter(CollectionUtils::isNotEmpty).orElse(Collections.emptyList());
 	}
 
 	/**
@@ -74,13 +80,13 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 	 */
 	@Override
 	public List<KYCDocumentBusinessStakeHolderInfoModel> pushBusinessStakeholderDocuments(
-			final List<KYCDocumentBusinessStakeHolderInfoModel> kycBusinesStakeHolderInfoModels) {
+			final List<KYCDocumentBusinessStakeHolderInfoModel> kycBusinessStakeHolderInfoModels) {
 		//@formatter:off
-		if (CollectionUtils.isEmpty(kycBusinesStakeHolderInfoModels)) {
+		if (CollectionUtils.isEmpty(kycBusinessStakeHolderInfoModels)) {
 			return List.of();
 		}
 
-		final Map<String, List<KYCDocumentBusinessStakeHolderInfoModel>> businessStakeholdersGroupedByShops = kycBusinesStakeHolderInfoModels
+		final Map<String, List<KYCDocumentBusinessStakeHolderInfoModel>> businessStakeholdersGroupedByShops = kycBusinessStakeHolderInfoModels
 				.stream()
 				.collect(Collectors.groupingBy(KYCDocumentBusinessStakeHolderInfoModel::getClientUserId));
 
@@ -98,7 +104,7 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 		final Map<KYCDocumentBusinessStakeHolderInfoModel, List<HyperwalletVerificationDocument>> hyperwalletVerificationDocumentsToBePushed = businessStakeholderToBePushed
 				.stream()
 				.map(businessStakeHolderElement -> Pair.of(businessStakeHolderElement,
-						kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentMultipleStrategyExecutor
+						kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor
 								.execute(businessStakeHolderElement)))
 				.collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
 		//@formatter:off
@@ -113,77 +119,12 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 		//@formatter:on
 	}
 
-	@Override
-	public List<KYCDocumentBusinessStakeHolderInfoModel> notifyAllDocumentsSentForBstk(
-			final List<KYCDocumentBusinessStakeHolderInfoModel> documentsTriedToBeSent) {
-		final Map<String, List<KYCDocumentBusinessStakeHolderInfoModel>> bstkGroupedByClientId = documentsTriedToBeSent
-				.stream().collect(Collectors.groupingBy(KYCDocumentInfoModel::getUserToken));
-
-		final Map<String, List<KYCDocumentBusinessStakeHolderInfoModel>> userWithBstkToBeNotified = bstkGroupedByClientId
-				.entrySet().stream()
-				.filter(entry -> entry.getValue().stream()
-						.allMatch(KYCDocumentBusinessStakeHolderInfoModel::isSentToHyperwallet))
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-		//@formatter:off
-		return userWithBstkToBeNotified.entrySet()
-				.stream()
-				.map(this::notifyBstk)
-				.flatMap(Collection::stream)
-				.filter(Objects::nonNull)
-				.collect(Collectors.toList());
-		//@formatter:on
-
-	}
-
-	protected List<KYCDocumentBusinessStakeHolderInfoModel> notifyBstk(
-			final Map.Entry<String, List<KYCDocumentBusinessStakeHolderInfoModel>> entry) {
-		final String token = entry.getKey();
-		final HyperwalletUser user = new HyperwalletUser();
-		user.setToken(token);
-		user.setBusinessStakeholderVerificationStatus(
-				HyperwalletUser.BusinessStakeholderVerificationStatus.READY_FOR_REVIEW);
-
-		try {
-			final Optional<String> hyperwalletProgramOptional = getHyperwalletProgram(entry.getValue());
-			if (hyperwalletProgramOptional.isPresent()) {
-				final String hyperwalletProgram = hyperwalletProgramOptional.get();
-				final Hyperwallet hyperwallet = hyperwalletSDKService.getHyperwalletInstance(hyperwalletProgram);
-				final HyperwalletUser hyperwalletUser = hyperwallet.updateUser(user);
-				log.info("Set as ready for review seller with id [{}]", hyperwalletUser.getClientUserId());
-				return entry.getValue().stream()
-						.map(bstk -> bstk.toBuilder().notifiedDocumentsReadyForReview(true).build())
-						.collect(Collectors.toList());
-			}
-			else {
-				log.error("Seller with shop Id [{}] has no Hyperwallet Program", getCliendId(entry.getValue()));
-				return entry.getValue();
-			}
-
-		}
-		catch (final HyperwalletException e) {
-			//@formatter:off
-			final String clientUserId = Optional.ofNullable(entry.getValue()).orElse(List.of())
-					.stream()
-					.map(KYCDocumentInfoModel::getClientUserId)
-					.findAny()
-					.orElse("undefined");
-			//@formatter:on
-			log.error("Error notifying to Hyperwallet that all documents were sent: [{}]",
-					HyperwalletLoggingErrorsUtil.stringify(e));
-			kycMailNotificationUtil.sendPlainTextEmail("Issue in Hyperwallet status notification", String.format(
-					"There was an error notifying Hyperwallet all documents were sent for shop Id [%s], so Hyperwallet will not be notified about this new situation%n%s",
-					clientUserId, HyperwalletLoggingErrorsUtil.stringify(e)));
-			return entry.getValue();
-		}
-	}
-
 	/**
 	 * Manages the way to push KYC documents to another system
-	 * @param entry cointains {@link KYCDocumentBusinessStakeHolderInfoModel} and its
+	 * @param entry contains {@link KYCDocumentBusinessStakeHolderInfoModel} and its
 	 * {@link List<HyperwalletVerificationDocument>} associated
 	 * @return {@link KYCDocumentBusinessStakeHolderInfoModel} object when it has been
-	 * processed succesfully. Null when it fails
+	 * processed successfully. Null when it fails
 	 */
 	protected KYCDocumentBusinessStakeHolderInfoModel callHyperwalletAPI(
 			final Map.Entry<KYCDocumentBusinessStakeHolderInfoModel, List<HyperwalletVerificationDocument>> entry) {
@@ -233,30 +174,6 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 			final List<KYCDocumentBusinessStakeHolderInfoModel> businessStakeHolderInfoModelList) {
 		return Stream.ofNullable(businessStakeHolderInfoModelList).flatMap(Collection::stream)
 				.anyMatch(Predicate.not(KYCDocumentBusinessStakeHolderInfoModel::areDocumentsFilled));
-	}
-
-	private Optional<String> getHyperwalletProgram(
-			final List<KYCDocumentBusinessStakeHolderInfoModel> kYCDocumentBusinessStakeHolderInfoModelList) {
-		//@formatter:off
-		return Optional.ofNullable(kYCDocumentBusinessStakeHolderInfoModelList).orElse(List.of())
-				.stream()
-				.filter(Objects::nonNull)
-				.map(KYCDocumentInfoModel::getHyperwalletProgram)
-				.filter(StringUtils::isNotEmpty)
-				.findAny();
-		//@formatter:off
-	}
-
-	private String getCliendId(
-			final List<KYCDocumentBusinessStakeHolderInfoModel> kYCDocumentBusinessStakeHolderInfoModelList) {
-		//@formatter:off
-		return Optional.ofNullable(kYCDocumentBusinessStakeHolderInfoModelList).orElse(List.of())
-				.stream()
-				.filter(Objects::nonNull)
-				.map(KYCDocumentInfoModel::getClientUserId)
-				.findAny()
-				.orElse(null);
-		//@formatter:on
 	}
 
 }

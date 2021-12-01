@@ -99,7 +99,7 @@ public class MiraklInvoiceMockDTO {
 	private Double orderCommissionAmount;
 
 	@JsonProperty("order-commission-amount-vat")
-	private Double orderCommisionAmountVat;
+	private Double orderCommissionAmountVat;
 
 	@JsonProperty("refund-amount")
 	private Double refundAmount;
@@ -111,7 +111,7 @@ public class MiraklInvoiceMockDTO {
 	private Double refundCommssionAmount;
 
 	@JsonProperty("refund-commission-amount-vat")
-	private Double refundCommisionAmountVat;
+	private Double refundCommissionAmountVat;
 
 	@JsonProperty("subscription-amount")
 	private Double subscriptionAmount;
@@ -126,7 +126,7 @@ public class MiraklInvoiceMockDTO {
 	private Double totalChargedAmountVat;
 
 	@JsonProperty("transfer-amount")
-	private Double transterAmount;
+	private Double transferAmount;
 
 	@JsonProperty("shop-operator-internal-id")
 	private String shopOperatorInternalId;

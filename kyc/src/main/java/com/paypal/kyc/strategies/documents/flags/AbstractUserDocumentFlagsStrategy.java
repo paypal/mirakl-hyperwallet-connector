@@ -13,11 +13,10 @@ import com.paypal.kyc.model.KYCUserDocumentFlagsNotificationBodyModel;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 public abstract class AbstractUserDocumentFlagsStrategy
-		implements Strategy<KYCUserDocumentFlagsNotificationBodyModel, Optional<Void>> {
+		implements Strategy<KYCUserDocumentFlagsNotificationBodyModel, Void> {
 
 	protected final MailNotificationUtil mailNotificationUtil;
 
@@ -35,8 +34,8 @@ public abstract class AbstractUserDocumentFlagsStrategy
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Optional<Void> execute(final KYCUserDocumentFlagsNotificationBodyModel source) {
-		return Optional.empty();
+	public Void execute(final KYCUserDocumentFlagsNotificationBodyModel source) {
+		return null;
 	}
 
 	/**
@@ -47,8 +46,7 @@ public abstract class AbstractUserDocumentFlagsStrategy
 		return false;
 	}
 
-	protected Optional<Void> fillMiraklProofIdentityOrBusinessFlagStatus(
-			final KYCUserDocumentFlagsNotificationBodyModel source) {
+	protected void fillMiraklProofIdentityOrBusinessFlagStatus(final KYCUserDocumentFlagsNotificationBodyModel source) {
 		final MiraklUpdateShop updateShop = new MiraklUpdateShop();
 
 		final MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue additionalValue = new MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue(
@@ -71,7 +69,6 @@ public abstract class AbstractUserDocumentFlagsStrategy
 							ERROR_MESSAGE_PREFIX + "Something went wrong updating KYC information of shop [%s]%n%s",
 							source.getClientUserId(), MiraklLoggingErrorsUtil.stringify(ex)));
 		}
-		return Optional.empty();
 	}
 
 }

@@ -13,12 +13,11 @@ import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletBusinessSta
 import com.paypal.kyc.service.documents.files.mirakl.MiraklBusinessStakeholderDocumentsExtractService;
 import com.paypal.kyc.strategies.documents.flags.AbstractUserDocumentFlagsStrategy;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -44,7 +43,7 @@ public class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Optional<Void> execute(final KYCUserDocumentFlagsNotificationBodyModel source) {
+	public Void execute(final KYCUserDocumentFlagsNotificationBodyModel source) {
 
 		final List<String> businessStakeholdersPendingToBeVerified = hyperwalletBusinessStakeholderExtractService
 				.getKYCRequiredVerificationBusinessStakeHolders(source.getHyperwalletProgram(), source.getUserToken());
@@ -53,8 +52,8 @@ public class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy extends
 				.getKYCCustomValuesRequiredVerificationBusinessStakeholders(source.getClientUserId(),
 						businessStakeholdersPendingToBeVerified);
 
-		return fillMiraklProofIdentityOrBusinessFlagStatus(source,
-				kycCustomValuesRequiredVerificationBusinessStakeholders);
+		fillMiraklProofIdentityOrBusinessFlagStatus(source, kycCustomValuesRequiredVerificationBusinessStakeholders);
+		return null;
 	}
 
 	/**
@@ -65,18 +64,16 @@ public class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy extends
 		return HyperwalletUser.ProfileType.BUSINESS.equals(source.getProfileType())
 				&& HyperwalletUser.BusinessStakeholderVerificationStatus.REQUIRED
 						.equals(source.getBusinessStakeholderVerificationStatus());
-
 	}
 
-	protected Optional<Void> fillMiraklProofIdentityOrBusinessFlagStatus(
-			final KYCUserDocumentFlagsNotificationBodyModel source,
-			final List<String> kycCustomValuesRequiredVerificationBussinessStakeholders) {
+	protected void fillMiraklProofIdentityOrBusinessFlagStatus(final KYCUserDocumentFlagsNotificationBodyModel source,
+			final List<String> kycCustomValuesRequiredVerificationBusinessStakeholders) {
 
-		if (CollectionUtils.isNotEmpty(kycCustomValuesRequiredVerificationBussinessStakeholders)) {
+		if (CollectionUtils.isNotEmpty(kycCustomValuesRequiredVerificationBusinessStakeholders)) {
 			final MiraklUpdateShop updateShop = new MiraklUpdateShop();
 
-			final List<MiraklRequestAdditionalFieldValue> additionalFieldValues = Optional
-					.ofNullable(kycCustomValuesRequiredVerificationBussinessStakeholders).orElse(List.of()).stream()
+			final List<MiraklRequestAdditionalFieldValue> additionalFieldValues = kycCustomValuesRequiredVerificationBusinessStakeholders
+					.stream()
 					.map(kycCustomValueRequiredVerification -> new MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue(
 							kycCustomValueRequiredVerification, Boolean.TRUE.toString()))
 					.collect(Collectors.toList());
@@ -104,7 +101,6 @@ public class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy extends
 								source.getClientUserId(), MiraklLoggingErrorsUtil.stringify(ex)));
 			}
 		}
-		return Optional.empty();
 	}
 
 }

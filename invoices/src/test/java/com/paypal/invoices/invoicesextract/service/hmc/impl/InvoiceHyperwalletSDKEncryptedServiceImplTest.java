@@ -43,36 +43,31 @@ class InvoiceHyperwalletSDKEncryptedServiceImplTest {
 
 	@Test
 	void getHyperwalletInstanceWithProgramToken_shouldReturnAnHyperwalletInstanceWithEncryptedOption() {
-		when(this.invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(this.invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(this.invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final Hyperwallet result = this.testObj.getHyperwalletInstanceWithProgramToken(PROGRAM_TOKEN);
+		final Hyperwallet result = testObj.getHyperwalletInstanceWithProgramToken(PROGRAM_TOKEN);
 
-		assertThat(result).hasFieldOrPropertyWithValue(API_CLIENT_HYPERWALLET_ENCRYPTION,
-				this.hyperwalletEncryptionMock);
-
+		assertThat(result).hasFieldOrPropertyWithValue(API_CLIENT_HYPERWALLET_ENCRYPTION, hyperwalletEncryptionMock);
 	}
 
 	@Test
 	void getHyperwalletInstanceByIssuingStore_shouldReturnAnHyperwalletInstance() {
-		when(this.invoicesHyperwalletApiConfigMock.getPaymentStoreTokens())
-				.thenReturn(Map.of(ISSUING_STORE, PROGRAM_TOKEN));
-		when(this.invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(this.invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(this.invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
-		when(this.invoicesHyperwalletApiConfigMock.getPaymentStoreTokens())
-				.thenReturn(Map.of(ISSUING_STORE, PROGRAM_TOKEN));
-		when(this.invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(this.invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(this.invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(invoicesHyperwalletApiConfigMock.getPaymentStoreTokens()).thenReturn(Map.of(ISSUING_STORE, PROGRAM_TOKEN));
+		when(invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(invoicesHyperwalletApiConfigMock.getPaymentStoreTokens()).thenReturn(Map.of(ISSUING_STORE, PROGRAM_TOKEN));
+		when(invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final var result = this.testObj.getHyperwalletInstanceByHyperwalletProgram(ISSUING_STORE);
+		final Hyperwallet result = testObj.getHyperwalletInstanceByHyperwalletProgram(ISSUING_STORE);
 
 		assertThat(result).hasFieldOrPropertyWithValue("programToken", PROGRAM_TOKEN)
 				.hasFieldOrPropertyWithValue("apiClient.username", USER_NAME)
 				.hasFieldOrPropertyWithValue("url", SERVER + "/rest/v4");
-
 	}
 
 }

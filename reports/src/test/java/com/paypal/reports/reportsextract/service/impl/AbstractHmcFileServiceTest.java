@@ -2,7 +2,6 @@ package com.paypal.reports.reportsextract.service.impl;
 
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang3.StringUtils;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 
@@ -36,26 +36,24 @@ class AbstractHmcFileServiceTest {
 
 	@Test
 	void printCSVFile_shouldCallToApacheCSVToSaveCSVFile() throws IOException {
-		final String path = this.getClass().getResource("").getPath();
+		final String path = getClass().getResource("").getPath();
 		doReturn(csvPrinterMock).when(testObj).getCSVPrinter(Paths.get(path), HEADERS, FILE_NAME);
 		doNothing().when(csvPrinterMock).printRecords(CONTENT_LINES);
 		doNothing().when(csvPrinterMock).flush();
 
-		final var resultFileName = testObj.printCSVFile(Paths.get(path), HEADERS, FILE_NAME, CONTENT_LINES);
+		final String resultFileName = testObj.printCSVFile(Paths.get(path), HEADERS, FILE_NAME, CONTENT_LINES);
 
-		Assertions.assertThat(resultFileName).isEqualTo(FILE_NAME);
-
+		assertThat(resultFileName).isEqualTo(FILE_NAME);
 	}
 
 	@Test
 	void printCSVFile_shouldReturnEmptyStringWhenCSVPrinterCouldNotBeCreated() throws IOException {
-		final String path = this.getClass().getResource("").getPath();
+		final String path = getClass().getResource("").getPath();
 		doReturn(null).when(testObj).getCSVPrinter(Paths.get(path), HEADERS, FILE_NAME);
 
-		final var resultFileName = testObj.printCSVFile(Paths.get(path), HEADERS, FILE_NAME, CONTENT_LINES);
+		final String resultFileName = testObj.printCSVFile(Paths.get(path), HEADERS, FILE_NAME, CONTENT_LINES);
 
-		Assertions.assertThat(resultFileName).isEqualTo(StringUtils.EMPTY);
-
+		assertThat(resultFileName).isEqualTo(StringUtils.EMPTY);
 	}
 
 	private static class MyAbstractHmcFileService extends AbstractHmcFileService {

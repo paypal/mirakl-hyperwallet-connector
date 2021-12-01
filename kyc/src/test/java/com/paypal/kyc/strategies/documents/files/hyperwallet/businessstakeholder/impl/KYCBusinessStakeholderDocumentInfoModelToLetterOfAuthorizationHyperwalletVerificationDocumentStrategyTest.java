@@ -2,14 +2,11 @@ package com.paypal.kyc.strategies.documents.files.hyperwallet.businessstakeholde
 
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
-import com.paypal.kyc.model.KYCDocumentCategoryEnum;
 import com.paypal.kyc.model.KYCDocumentModel;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;

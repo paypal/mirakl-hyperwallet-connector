@@ -7,6 +7,8 @@ import com.mirakl.client.core.exception.MiraklException;
  */
 public class MiraklLoggingErrorsUtil {
 
+	private static final String MESSAGE_FORMAT = "{exceptionMessage=%s,}";
+
 	private MiraklLoggingErrorsUtil() {
 	}
 
@@ -16,12 +18,7 @@ public class MiraklLoggingErrorsUtil {
 	 * @return the stringified version of {@link MiraklException}
 	 */
 	public static String stringify(final MiraklException exception) {
-		final StringBuilder stringifyError = new StringBuilder();
-		stringifyError.append("{");
-		stringifyError.append("exceptionMessage=").append(exception.getMessage()).append(",");
-		stringifyError.append("}");
-
-		return stringifyError.toString();
+		return String.format(MESSAGE_FORMAT, exception.getMessage());
 	}
 
 }

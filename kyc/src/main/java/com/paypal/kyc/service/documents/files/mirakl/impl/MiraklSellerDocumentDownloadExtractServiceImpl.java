@@ -9,7 +9,7 @@ import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCDocumentModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklSellerDocumentDownloadExtractService;
-import com.paypal.kyc.strategies.documents.files.mirakl.impl.MiraklKYCSelectionDocumentMultipleStrategyExecutor;
+import com.paypal.kyc.strategies.documents.files.mirakl.impl.MiraklKYCSelectionDocumentExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +25,13 @@ public class MiraklSellerDocumentDownloadExtractServiceImpl implements MiraklSel
 
 	private final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient;
 
-	private final MiraklKYCSelectionDocumentMultipleStrategyExecutor miraklKYCSelectionDocumentStrategyExecutor;
+	private final MiraklKYCSelectionDocumentExecutor miraklKYCSelectionDocumentStrategyExecutor;
 
 	private final MailNotificationUtil kycMailNotificationUtil;
 
 	public MiraklSellerDocumentDownloadExtractServiceImpl(
 			final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient,
-			final MiraklKYCSelectionDocumentMultipleStrategyExecutor miraklKYCSelectionDocumentStrategyExecutor,
+			final MiraklKYCSelectionDocumentExecutor miraklKYCSelectionDocumentStrategyExecutor,
 			final MailNotificationUtil kycMailNotificationUtil) {
 		this.miraklMarketplacePlatformOperatorApiClient = miraklMarketplacePlatformOperatorApiClient;
 		this.miraklKYCSelectionDocumentStrategyExecutor = miraklKYCSelectionDocumentStrategyExecutor;

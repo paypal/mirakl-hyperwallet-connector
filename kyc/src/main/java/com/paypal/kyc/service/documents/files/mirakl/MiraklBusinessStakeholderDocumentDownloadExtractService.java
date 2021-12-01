@@ -10,11 +10,11 @@ public interface MiraklBusinessStakeholderDocumentDownloadExtractService {
 	/**
 	 * Populates all KYC documents at business stakeholder lever attached in Mirakl to
 	 * object received as parameter
-	 * @param kycBusinesStakeHolderInfoModel
+	 * @param kycBusinessStakeHolderInfoModel
 	 * @return {@link KYCDocumentBusinessStakeHolderInfoModel} that contains all documents
 	 * attached in Mirakl for an specific business stakeholder
 	 */
 	KYCDocumentBusinessStakeHolderInfoModel getBusinessStakeholderDocumentsSelectedBySeller(
-			KYCDocumentBusinessStakeHolderInfoModel kycBusinesStakeHolderInfoModel);
+			KYCDocumentBusinessStakeHolderInfoModel kycBusinessStakeHolderInfoModel);
 
 }

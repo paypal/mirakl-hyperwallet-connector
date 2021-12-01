@@ -10,7 +10,6 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.quartz.SchedulerException;
 
 import java.util.Date;
@@ -45,7 +44,7 @@ class AbstractJobControllerTest {
 	private static class MyInfoJob extends AbstractDeltaInfoJob {
 
 		@Override
-		public void execute(final JobExecutionContext context) throws JobExecutionException {
+		public void execute(final JobExecutionContext context) {
 
 		}
 

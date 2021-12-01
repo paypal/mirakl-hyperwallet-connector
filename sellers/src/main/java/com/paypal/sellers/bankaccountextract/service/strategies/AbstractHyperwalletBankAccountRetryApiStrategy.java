@@ -55,7 +55,7 @@ public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
 			log.debug("Hyperwallet API bank account request: [{}]",
 					ToStringBuilder.reflectionToString(hwBankAccountRequest));
 			try {
-				hwCreatedBankAccount = callMiraklAPI(seller.getHyperwalletProgram(), hwBankAccountRequest);
+				hwCreatedBankAccount = callHyperwalletAPI(seller.getHyperwalletProgram(), hwBankAccountRequest);
 				log.info("Bank account created or updated for seller with clientId [{}]", seller.getClientUserId());
 				log.debug("Hyperwallet create or updated bank account response: [{}]",
 						ToStringBuilder.reflectionToString(hwBankAccountRequest));
@@ -80,10 +80,10 @@ public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
 		return Optional.ofNullable(hwCreatedBankAccount);
 	}
 
-	protected abstract HyperwalletBankAccount callMiraklAPI(final String hyperwalletProgram,
+	protected abstract HyperwalletBankAccount callHyperwalletAPI(final String hyperwalletProgram,
 			HyperwalletBankAccount hyperwalletBankAccount);
 
-	protected void callToIncludeIntoRetryProcess(final SellerModel sellerModel, final Boolean include) {
+	protected void callToIncludeIntoRetryProcess(final SellerModel sellerModel, final boolean include) {
 		executeRetryProcess(sellerModel.getClientUserId(), include);
 	}
 

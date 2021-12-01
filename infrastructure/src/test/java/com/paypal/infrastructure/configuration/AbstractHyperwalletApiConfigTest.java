@@ -1,24 +1,16 @@
 package com.paypal.infrastructure.configuration;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.env.Environment;
 
-import java.util.Map;
-
-import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenBothAreEquals() {
-
 		final MyAbstractHyperwalletApiConfig apiConfigOne = createApiConfig();
 		final MyAbstractHyperwalletApiConfig apiConfigTwo = createApiConfig();
 
@@ -29,7 +21,6 @@ class AbstractHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenBothAreNotEquals() {
-
 		final MyAbstractHyperwalletApiConfig apiConfigOne = createApiConfig();
 		final MyAbstractHyperwalletApiConfig apiConfigTwo = createAnotherApiConfig();
 
@@ -40,7 +31,6 @@ class AbstractHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenSameObjectIsCompared() {
-
 		final MyAbstractHyperwalletApiConfig apiConfigOne = createApiConfig();
 
 		final boolean result = apiConfigOne.equals(apiConfigOne);
@@ -50,7 +40,6 @@ class AbstractHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenComparedWithAnotherInstanceObject() {
-
 		final MyAbstractHyperwalletApiConfig apiConfigOne = createApiConfig();
 
 		final Object o = new Object();

@@ -76,7 +76,6 @@ public class DateUtil {
 			log.error(ex.getMessage(), ex);
 			return null;
 		}
-
 	}
 
 	/**
@@ -91,7 +90,6 @@ public class DateUtil {
 			return localDateTime.format(dateFormat);
 		}
 		return StringUtils.EMPTY;
-
 	}
 
 }

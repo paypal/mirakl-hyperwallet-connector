@@ -24,7 +24,6 @@ public interface KYCMiraklFields {
 		case "PASSPORT" -> List.of(prefixFieldName + KYCConstants.PROOF_IDENTITY_SIDE_FRONT);
 		default -> List.of();
 		};
-
 	}
 
 }

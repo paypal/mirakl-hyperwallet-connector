@@ -1,5 +1,6 @@
 package com.paypal.sellers.sellersextract.converter.impl;
 
+import com.hyperwallet.clientsdk.model.HyperwalletBusinessStakeholder;
 import com.hyperwallet.clientsdk.model.HyperwalletUser.Gender;
 import com.paypal.infrastructure.constants.HyperWalletConstants;
 import com.paypal.infrastructure.util.DateUtil;
@@ -65,7 +66,6 @@ class BusinessStakeHolderModelToHyperWalletBusinessStakeHolderConverterTest {
 
 	@Test
 	void convert_shouldReturnHyperWalletBusinessStakeHolder() {
-
 		when(businessStakeHolderModelMock.getBusinessContact()).thenReturn(Boolean.TRUE);
 		when(businessStakeHolderModelMock.getDirector()).thenReturn(Boolean.FALSE);
 		when(businessStakeHolderModelMock.getUbo()).thenReturn(Boolean.FALSE);
@@ -92,7 +92,7 @@ class BusinessStakeHolderModelToHyperWalletBusinessStakeHolderConverterTest {
 		when(businessStakeHolderModelMock.getPostalCode()).thenReturn(POSTAL_CODE);
 		when(businessStakeHolderModelMock.getToken()).thenReturn(TOKEN);
 
-		final var result = testObj.convert(businessStakeHolderModelMock);
+		final HyperwalletBusinessStakeholder result = testObj.convert(businessStakeHolderModelMock);
 
 		assertThat(result.getToken()).isEqualTo(TOKEN);
 		assertThat(result.getIsBusinessContact()).isTrue();
@@ -123,7 +123,6 @@ class BusinessStakeHolderModelToHyperWalletBusinessStakeHolderConverterTest {
 
 	@Test
 	void convert_shouldReturnHyperWalletBusinessStakeHolder_whenStringValueIsNull() {
-
 		when(businessStakeHolderModelMock.getFirstName()).thenReturn(null);
 		when(businessStakeHolderModelMock.getBusinessContact()).thenReturn(Boolean.TRUE);
 		when(businessStakeHolderModelMock.getDirector()).thenReturn(Boolean.FALSE);
@@ -149,7 +148,7 @@ class BusinessStakeHolderModelToHyperWalletBusinessStakeHolderConverterTest {
 		when(businessStakeHolderModelMock.getCountry()).thenReturn(COUNTRY);
 		when(businessStakeHolderModelMock.getPostalCode()).thenReturn(POSTAL_CODE);
 
-		final var result = testObj.convert(businessStakeHolderModelMock);
+		final HyperwalletBusinessStakeholder result = testObj.convert(businessStakeHolderModelMock);
 
 		assertThat(result.getFirstName()).isNull();
 		assertThat(result.getIsBusinessContact()).isTrue();
@@ -180,7 +179,6 @@ class BusinessStakeHolderModelToHyperWalletBusinessStakeHolderConverterTest {
 
 	@Test
 	void convert_shouldReturnHyperWalletBusinessStakeHolder_whenDateIsNull() {
-
 		when(businessStakeHolderModelMock.getDateOfBirth()).thenReturn(null);
 		when(businessStakeHolderModelMock.getBusinessContact()).thenReturn(Boolean.TRUE);
 		when(businessStakeHolderModelMock.getDirector()).thenReturn(Boolean.FALSE);
@@ -205,7 +203,7 @@ class BusinessStakeHolderModelToHyperWalletBusinessStakeHolderConverterTest {
 		when(businessStakeHolderModelMock.getCountry()).thenReturn(COUNTRY);
 		when(businessStakeHolderModelMock.getPostalCode()).thenReturn(POSTAL_CODE);
 
-		final var result = testObj.convert(businessStakeHolderModelMock);
+		final HyperwalletBusinessStakeholder result = testObj.convert(businessStakeHolderModelMock);
 
 		assertThat(result.getDateOfBirth()).isNull();
 		assertThat(result.getIsBusinessContact()).isTrue();
@@ -234,7 +232,6 @@ class BusinessStakeHolderModelToHyperWalletBusinessStakeHolderConverterTest {
 
 	@Test
 	void convert_shouldReturnHyperWalletBusinessStakeHolder_whenAnEnumIsNull() {
-
 		when(businessStakeHolderModelMock.getGender()).thenReturn(null);
 		when(businessStakeHolderModelMock.getBusinessContact()).thenReturn(Boolean.TRUE);
 		when(businessStakeHolderModelMock.getDirector()).thenReturn(Boolean.FALSE);
@@ -260,7 +257,7 @@ class BusinessStakeHolderModelToHyperWalletBusinessStakeHolderConverterTest {
 		when(businessStakeHolderModelMock.getCountry()).thenReturn(COUNTRY);
 		when(businessStakeHolderModelMock.getPostalCode()).thenReturn(POSTAL_CODE);
 
-		final var result = testObj.convert(businessStakeHolderModelMock);
+		final HyperwalletBusinessStakeholder result = testObj.convert(businessStakeHolderModelMock);
 
 		assertThat(result.getGender()).isNull();
 		assertThat(result.getIsBusinessContact()).isTrue();

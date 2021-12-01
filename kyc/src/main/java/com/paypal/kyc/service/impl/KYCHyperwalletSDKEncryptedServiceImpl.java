@@ -30,10 +30,10 @@ public class KYCHyperwalletSDKEncryptedServiceImpl extends KYCHyperwalletSDKServ
 	@Override
 	public Hyperwallet getHyperwalletInstance(final String issuingStore) {
 		//@formatter:off
-        final String programUserToken = Optional.ofNullable(this.kycHyperwalletApiConfig.getUserStoreTokens())
-                .map(tokens -> tokens.get(issuingStore))
-                .orElse(null);
-        //@formatter:on
+		final String programUserToken = Optional.ofNullable(this.kycHyperwalletApiConfig.getUserStoreTokens())
+				.map(tokens -> tokens.get(issuingStore))
+				.orElse(null);
+		//@formatter:on
 		return new Hyperwallet(this.kycHyperwalletApiConfig.getUsername(), this.kycHyperwalletApiConfig.getPassword(),
 				programUserToken, this.kycHyperwalletApiConfig.getServer(), this.hyperwalletEncryption);
 	}

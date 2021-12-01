@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -80,11 +81,11 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 		when(miraklProfessionalInformationMock.getIdentificationNumber()).thenReturn(IDENTIFICATION_NUMBER);
 		when(miraklProfessionalInformationMock.getTaxIdentificationNumber()).thenReturn(VAT_NUMBER);
 
-		final var businessRegistrationStateProvinceMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue businessRegistrationStateProvinceMiraklCustomField = new MiraklStringAdditionalFieldValue();
 		businessRegistrationStateProvinceMiraklCustomField.setCode("hw-business-reg-state-province");
 		businessRegistrationStateProvinceMiraklCustomField.setValue(STATE_PROVINCE_VALUE);
 
-		final var businessRegistrationCountryMiraklCustomField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+		final MiraklStringAdditionalFieldValue businessRegistrationCountryMiraklCustomField = new MiraklStringAdditionalFieldValue();
 		businessRegistrationCountryMiraklCustomField.setCode("hw-business-reg-country");
 		businessRegistrationCountryMiraklCustomField.setValue("US");
 		when(miraklShopMock.getAdditionalFieldValues()).thenReturn(List
@@ -93,7 +94,7 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 		final SellerModel.SellerModelBuilder sellerModelBuilderStub = SellerModel.builder();
 		doReturn(sellerModelBuilderStub).when(testObj).getCommonFieldsBuilder(miraklShopMock);
 
-		final var result = testObj.execute(miraklShopMock);
+		final SellerModel result = testObj.execute(miraklShopMock);
 
 		verify(testObj).getCommonFieldsBuilder(miraklShopMock);
 		assertThat(result.getProfileType()).isEqualTo(SellerProfileType.BUSINESS);
@@ -162,7 +163,7 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 	void isApplicable_shouldReturnTrueWhenMiraklShopIsProfessional() {
 		when(miraklShopMock.isProfessional()).thenReturn(true);
 
-		final var result = testObj.isApplicable(miraklShopMock);
+		final boolean result = testObj.isApplicable(miraklShopMock);
 
 		assertThat(result).isTrue();
 	}
@@ -171,7 +172,7 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 	void isApplicable_shouldReturnFalseWhenMiraklShopIsNotProfessional() {
 		when(miraklShopMock.isProfessional()).thenReturn(false);
 
-		final var result = testObj.isApplicable(miraklShopMock);
+		final boolean result = testObj.isApplicable(miraklShopMock);
 
 		assertThat(result).isFalse();
 	}

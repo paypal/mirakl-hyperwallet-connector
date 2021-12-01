@@ -19,11 +19,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class HyperWalletBankAccountServiceStrategyExecutorSingleTest {
+class HyperWalletBankAccountServiceExecutorSingleTest {
 
 	@Spy
 	@InjectMocks
-	private HyperWalletBankAccountServiceStrategyExecutor testObj;
+	private HyperWalletBankAccountServiceExecutor testObj;
 
 	@Mock
 	private Strategy<SellerModel, Optional<HyperwalletBankAccount>> strategyMock;
@@ -36,16 +36,15 @@ class HyperWalletBankAccountServiceStrategyExecutorSingleTest {
 
 	@Test
 	void getStrategies_shouldReturnConverterStrategyMock() {
-		testObj = new HyperWalletBankAccountServiceStrategyExecutor(Set.of(strategyMock));
-		final var result = testObj.getStrategies();
+		testObj = new HyperWalletBankAccountServiceExecutor(Set.of(strategyMock));
+		final Set<Strategy<SellerModel, Optional<HyperwalletBankAccount>>> result = testObj.getStrategies();
 
 		assertThat(result).containsExactly(strategyMock);
-
 	}
 
 	@Test
 	void execute_shouldReturnEmptyWhenEmptyBankDetailsIsReceived() {
-		testObj = new HyperWalletBankAccountServiceStrategyExecutor(Set.of(strategyMock));
+		testObj = new HyperWalletBankAccountServiceExecutor(Set.of(strategyMock));
 		when(sellerModelMock.getBankAccountDetails()).thenReturn(null);
 
 		final Optional<HyperwalletBankAccount> result = testObj.execute(sellerModelMock);

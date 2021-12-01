@@ -32,7 +32,6 @@ class InvoicesExtractJobControllerTest {
 	@Test
 	void runJob_shouldCallCreateAndRunSingleExecutionJobAndTestingInvoiceSessionDataWithTheTransformedValues()
 			throws SchedulerException {
-
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 45));
 		final LocalDateTime now = TimeMachine.now();
 		final Date delta = DateUtil.convertToDate(now, ZoneId.systemDefault());

@@ -31,7 +31,7 @@ class MiraklShopToKYCDocumentBusinessStakeholderInfoModelConverterTest {
 
 	private static final String GOVERNMENT_ID_DOC = "GOVERNMENT_ID";
 
-	private static int BUSINESS_STAKEHOLDER_NUMBER = 1;
+	private static final int BUSINESS_STAKEHOLDER_NUMBER = 1;
 
 	private static final String HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_STAKEHOLDER_FIELD = "hw-stakeholder-req-proof-identity-1";
 
@@ -46,8 +46,7 @@ class MiraklShopToKYCDocumentBusinessStakeholderInfoModelConverterTest {
 
 	@Test
 	void convert_shouldConvertFromMiraklShopToKYCDocumentBusinessStakeHolderInfoModel() {
-
-		MiraklShop miraklShopStub = createMiraklShop();
+		final MiraklShop miraklShopStub = createMiraklShop();
 		final KYCDocumentBusinessStakeHolderInfoModel result = testObj.convert(miraklShopStub,
 				BUSINESS_STAKEHOLDER_NUMBER);
 
@@ -60,7 +59,6 @@ class MiraklShopToKYCDocumentBusinessStakeholderInfoModelConverterTest {
 		assertThat(result.getProofOfIdentity()).isEqualTo(KYCProofOfIdentityEnum.GOVERNMENT_ID);
 		assertThat(result.isContact()).isTrue();
 		assertThat(result.isRequiresLetterOfAuthorization()).isTrue();
-
 	}
 
 	private MiraklShop createMiraklShop() {

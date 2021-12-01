@@ -6,14 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Class that logs that a notification is empty
  */
 @Service
 @Slf4j
-public class EmptyPaymentNotificationStrategy implements Strategy<PaymentNotificationBodyModel, Optional<Void>> {
+public class EmptyPaymentNotificationStrategy implements Strategy<PaymentNotificationBodyModel, Void> {
 
 	/**
 	 * Executes the business logic based on the content of
@@ -24,9 +23,9 @@ public class EmptyPaymentNotificationStrategy implements Strategy<PaymentNotific
 	 * @return the converted object of type {@link Void}
 	 */
 	@Override
-	public Optional<Void> execute(final PaymentNotificationBodyModel paymentNotificationBodyModel) {
+	public Void execute(final PaymentNotificationBodyModel paymentNotificationBodyModel) {
 		log.warn("Payment notification received with a null object.");
-		return Optional.empty();
+		return null;
 	}
 
 	/**

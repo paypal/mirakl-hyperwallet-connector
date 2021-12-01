@@ -42,13 +42,13 @@ class PayeeInvoiceModelToHyperwalletPaymentConverterTest {
 
 		//@formatter:off
 		final InvoiceModel invoice = InvoiceModel.builder()
-												 .destinationToken(DESTINATION_TOKEN)
-												 .shopId(SHOP_ID)
-												 .invoiceNumber(INVOICE_NUMBER)
-												 .transferAmount(TRANSFER_AMOUNT)
-												 .currencyIsoCode(CURRENCY_ISO_CODE)
-												 .hyperwalletProgram(HYPERWALLET_PROGRAM)
-												 .build();
+				.destinationToken(DESTINATION_TOKEN)
+				.shopId(SHOP_ID)
+				.invoiceNumber(INVOICE_NUMBER)
+				.transferAmount(TRANSFER_AMOUNT)
+				.currencyIsoCode(CURRENCY_ISO_CODE)
+				.hyperwalletProgram(HYPERWALLET_PROGRAM)
+				.build();
 		//@formatter:on
 
 		final HyperwalletPayment result = testObj.convert(invoice);

@@ -1,6 +1,6 @@
 package com.paypal.invoices.invoicesextract.model;
 
-import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
+import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel.Builder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue;
+import static com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,17 +33,17 @@ class AccountingDocumentModelTest {
 								"destinationToken", null));
 	}
 
-	private static MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue populateStringCustomFieldValue(
-			final String code, final String value) {
-		final var miraklStringAdditionalFieldValue = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
+	private static MiraklStringAdditionalFieldValue populateStringCustomFieldValue(final String code,
+			final String value) {
+		final MiraklStringAdditionalFieldValue miraklStringAdditionalFieldValue = new MiraklStringAdditionalFieldValue();
 		miraklStringAdditionalFieldValue.setCode(code);
 		miraklStringAdditionalFieldValue.setValue(value);
 		return miraklStringAdditionalFieldValue;
 	}
 
-	private static MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue populateMiraklValueListCustomFieldValue(
-			final String code, final String value) {
-		final var miraklValueListAdditionalFieldValue = new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue();
+	private static MiraklValueListAdditionalFieldValue populateMiraklValueListCustomFieldValue(final String code,
+			final String value) {
+		final MiraklValueListAdditionalFieldValue miraklValueListAdditionalFieldValue = new MiraklValueListAdditionalFieldValue();
 		miraklValueListAdditionalFieldValue.setCode(code);
 		miraklValueListAdditionalFieldValue.setValue(value);
 		return miraklValueListAdditionalFieldValue;
@@ -49,24 +51,23 @@ class AccountingDocumentModelTest {
 
 	@ParameterizedTest
 	@MethodSource("provideValuesForTextAreaCustomFieldValues")
-	void destinationToken_ShouldSetStringValuesFromTextAreaCustomFieldValues(
-			final AccountingDocumentModel.Builder invoiceModelBuilder, final String property,
-			final String expectedValue) {
-		final var result = invoiceModelBuilder.build();
+	void destinationToken_ShouldSetStringValuesFromTextAreaCustomFieldValues(final Builder invoiceModelBuilder,
+			final String property, final String expectedValue) {
+		final AccountingDocumentModel result = invoiceModelBuilder.build();
 
 		assertThat(result).hasFieldOrPropertyWithValue(property, expectedValue);
 	}
 
 	@Test
 	void destinationToken_shouldSetAttributeValueInPlainText() {
-		final var result = AccountingDocumentModel.builder().destinationToken("destinationTokenValue");
+		final Builder result = AccountingDocumentModel.builder().destinationToken("destinationTokenValue");
 
 		assertThat(result).hasFieldOrPropertyWithValue("destinationToken", "destinationTokenValue");
 	}
 
 	@Test
 	void hyperwalletProgram_shouldSetAttributeValueInPlainText() {
-		final var result = AccountingDocumentModel.builder().hyperwalletProgram("hyperwalletProgramValue");
+		final Builder result = AccountingDocumentModel.builder().hyperwalletProgram("hyperwalletProgramValue");
 
 		assertThat(result).hasFieldOrPropertyWithValue("hyperwalletProgram", "hyperwalletProgramValue");
 	}

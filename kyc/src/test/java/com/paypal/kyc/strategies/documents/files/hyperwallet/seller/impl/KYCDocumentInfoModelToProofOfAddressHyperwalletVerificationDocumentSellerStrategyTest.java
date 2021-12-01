@@ -38,7 +38,6 @@ class KYCDocumentInfoModelToProofOfAddressHyperwalletVerificationDocumentSellerS
 
 	@BeforeEach
 	void setUp() {
-
 		documentProofOfAddressFront = KYCDocumentModel.builder()
 				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_ADDRESS).file(proofOfIdentityFileFrontMock)
 				.build();
@@ -50,7 +49,6 @@ class KYCDocumentInfoModelToProofOfAddressHyperwalletVerificationDocumentSellerS
 				.proofOfAddress(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
 						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_ADDRESS_FIELD, "BANK_STATEMENT")))
 				.documents(List.of(documentProofOfAddressFront)).build();
-
 	}
 
 	@Test

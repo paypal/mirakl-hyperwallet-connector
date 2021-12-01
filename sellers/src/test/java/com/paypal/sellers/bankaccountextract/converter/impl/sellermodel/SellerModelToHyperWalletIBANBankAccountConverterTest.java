@@ -41,7 +41,7 @@ class SellerModelToHyperWalletIBANBankAccountConverterTest {
 		when(ibanBankAccountModelMock.getBankBic()).thenReturn(BANK_BIC);
 		doReturn(hyperwalletBankAccount).when(testObj).callSuperConvert(sellerModelMock);
 
-		final var result = testObj.execute(sellerModelMock);
+		final HyperwalletBankAccount result = testObj.execute(sellerModelMock);
 
 		assertThat(result.getBankId()).isEqualTo(BANK_BIC);
 	}
@@ -50,7 +50,7 @@ class SellerModelToHyperWalletIBANBankAccountConverterTest {
 	void isApplicable_shouldReturnTrueWhenBankAccountDetailsIsIbanBankAccountType() {
 		when(sellerModelMock.getBankAccountDetails()).thenReturn(ibanBankAccountModelMock);
 
-		final var result = testObj.isApplicable(sellerModelMock);
+		final boolean result = testObj.isApplicable(sellerModelMock);
 
 		assertThat(result).isTrue();
 	}
@@ -59,7 +59,7 @@ class SellerModelToHyperWalletIBANBankAccountConverterTest {
 	void isApplicable_shouldReturnTrueWhenBankAccountDetailsIsDifferentFromIbanBankAccountType() {
 		when(sellerModelMock.getBankAccountDetails()).thenReturn(abaBankAccountModelMock);
 
-		final var result = testObj.isApplicable(sellerModelMock);
+		final boolean result = testObj.isApplicable(sellerModelMock);
 
 		assertThat(result).isFalse();
 	}
@@ -68,7 +68,7 @@ class SellerModelToHyperWalletIBANBankAccountConverterTest {
 	void isApplicable_shouldReturnFalse_whenNullPaymentInformationIsReceived() {
 		when(sellerModelMock.getBankAccountDetails()).thenReturn(null);
 
-		final var result = testObj.isApplicable(sellerModelMock);
+		final boolean result = testObj.isApplicable(sellerModelMock);
 
 		assertThat(result).isFalse();
 	}

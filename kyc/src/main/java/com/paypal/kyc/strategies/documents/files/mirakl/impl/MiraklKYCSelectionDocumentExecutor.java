@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class MiraklKYCSelectionDocumentMultipleStrategyExecutor
+public class MiraklKYCSelectionDocumentExecutor
 		extends MultipleAbstractStrategyExecutor<KYCDocumentInfoModel, List<KYCDocumentModel>> {
 
 	private final Set<Strategy<KYCDocumentInfoModel, List<KYCDocumentModel>>> strategies;
 
-	public MiraklKYCSelectionDocumentMultipleStrategyExecutor(
+	public MiraklKYCSelectionDocumentExecutor(
 			final Set<Strategy<KYCDocumentInfoModel, List<KYCDocumentModel>>> strategies) {
 		this.strategies = strategies;
 	}

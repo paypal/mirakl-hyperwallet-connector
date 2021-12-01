@@ -16,50 +16,50 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 class HyperwalletObjectToKYCDocumentNotificationModelsConverterTest {
 
-	private static final String CREATED_ON_DATE = "2021-08-17T19:57:29";
-
 	private static final String DOCUMENTS = "documents";
+
+	private static final String CREATED_ON_DATE = "2021-08-17T19:57:29";
 
 	@InjectMocks
 	private HyperwalletObjectToKYCDocumentNotificationModelsConverter testObj;
 
 	@Test
 	void convert_shouldReturnEmptyList_whenArgumentPassedItIsNotANotification() {
-		final var result = testObj.convert(new Object());
+		final List<KYCDocumentNotificationModel> result = testObj.convert(new Object());
 
 		assertThat(result).isEmpty();
 	}
 
 	@Test
 	void convert_shouldReturnAListOfDocuments_whenArgumentPassedHasDocuments() {
-		final var result = testObj.convert(createNotificationWithValidDocuments());
+		final List<KYCDocumentNotificationModel> result = testObj.convert(createNotificationWithValidDocuments());
 
 		assertThat(result).isNotEmpty().hasSize(2);
 	}
 
 	@Test
 	void convert_shouldReturnOneValidDocument_whenArgumentPassedHasOneDocument() {
-		final var result = testObj.convert(createNotificationWithValidDocuments());
+		final List<KYCDocumentNotificationModel> result = testObj.convert(createNotificationWithValidDocuments());
 
 		assertThat(result).isNotEmpty();
 
-		final KYCDocumentNotificationModel kycDocumentNotificationModel1 = result.get(0);
-		assertThat(kycDocumentNotificationModel1.getCreatedOn()).isEqualTo(CREATED_ON_DATE);
-		assertThat(kycDocumentNotificationModel1.getDocumentCategory()).isEqualTo(KYCDocumentCategoryEnum.ADDRESS);
-		assertThat(kycDocumentNotificationModel1.getDocumentStatus()).isEqualTo(KYCDocumentStatusEnum.VALID);
-		assertThat(kycDocumentNotificationModel1.getDocumentType()).isEqualTo(KYCDocumentTypeEnum.BANK_STATEMENT);
+		final KYCDocumentNotificationModel kycDocumentNotificationModel = result.get(0);
+		assertThat(kycDocumentNotificationModel.getCreatedOn()).isEqualTo(CREATED_ON_DATE);
+		assertThat(kycDocumentNotificationModel.getDocumentCategory()).isEqualTo(KYCDocumentCategoryEnum.ADDRESS);
+		assertThat(kycDocumentNotificationModel.getDocumentStatus()).isEqualTo(KYCDocumentStatusEnum.VALID);
+		assertThat(kycDocumentNotificationModel.getDocumentType()).isEqualTo(KYCDocumentTypeEnum.BANK_STATEMENT);
 	}
 
 	@Test
 	void convert_shouldReturnInValidDocumentsWithReasons_whenArgumentPassedHasInvalidDocument() {
-		final var result = testObj.convert(createNotificationWithInvalidDocuments());
+		final List<KYCDocumentNotificationModel> result = testObj.convert(createNotificationWithInvalidDocuments());
 
 		assertThat(result).isNotEmpty();
 
-		final KYCDocumentNotificationModel kycDocumentNotificationModel1 = result.get(0);
-		assertThat(kycDocumentNotificationModel1.getDocumentStatus()).isEqualTo(KYCDocumentStatusEnum.INVALID);
+		final KYCDocumentNotificationModel kycDocumentNotificationModel = result.get(0);
+		assertThat(kycDocumentNotificationModel.getDocumentStatus()).isEqualTo(KYCDocumentStatusEnum.INVALID);
 
-		final List<KYCDocumentRejectedReasonEnum> documentRejectedReasons = kycDocumentNotificationModel1
+		final List<KYCDocumentRejectedReasonEnum> documentRejectedReasons = kycDocumentNotificationModel
 				.getDocumentRejectedReasons();
 		assertThat(documentRejectedReasons).isNotEmpty().hasSize(2).contains(
 				KYCDocumentRejectedReasonEnum.DOCUMENT_CORRECTION_REQUIRED,
@@ -98,7 +98,7 @@ class HyperwalletObjectToKYCDocumentNotificationModelsConverterTest {
 		final Map<String, String> reason1 = Map.of("name", "DOCUMENT_CORRECTION_REQUIRED", "description",
 				"Document requires correction.");
 		final Map<String, String> reason2 = Map.of("name", "DOCUMENT_NOT_COMPLETE", "description",
-				"Document is incompleted.");
+				"Document is incomplet.");
 		return List.of(reason1, reason2);
 	}
 

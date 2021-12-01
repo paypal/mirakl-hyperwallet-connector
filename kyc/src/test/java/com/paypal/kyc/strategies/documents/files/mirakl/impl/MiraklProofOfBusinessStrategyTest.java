@@ -42,28 +42,23 @@ class MiraklProofOfBusinessStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnTrueWhenIsProofOfBusinessAndObjectReceivedAsParameterIsKYCDocumentSellerInfoModel() {
-
 		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModel);
 
 		assertThat(result).isTrue();
-
 	}
 
 	@Test
 	void isApplicable_shouldReturnFalseWhenIsProofOfBusinessAndObjectReceivedAsParameterIsNotKYCDocumentSellerInfoModel() {
-
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
 				.builder().build();
 
 		final boolean result = testObj.isApplicable(kycDocumentBusinessStakeHolderInfoModel);
 
 		assertThat(result).isFalse();
-
 	}
 
 	@Test
 	void isApplicable_shouldReturnFalseWhenIsNotProofOfBusinessAndObjectReceivedAsParameterIsKYCDocumentSellerInfoModel() {
-
 		//@formatter:off
 		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
 				.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
@@ -74,7 +69,6 @@ class MiraklProofOfBusinessStrategyTest {
 		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModel);
 
 		assertThat(result).isFalse();
-
 	}
 
 	@Test

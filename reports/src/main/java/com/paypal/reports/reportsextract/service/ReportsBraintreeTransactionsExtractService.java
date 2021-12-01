@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Service that retrieves data from Braintree API focused on the finantial report
+ * Service that retrieves data from Braintree API focused on the financial report
  * generation
  */
 public interface ReportsBraintreeTransactionsExtractService {

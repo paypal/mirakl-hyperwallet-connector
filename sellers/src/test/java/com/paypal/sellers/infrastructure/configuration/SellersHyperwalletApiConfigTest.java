@@ -45,7 +45,6 @@ class SellersHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenBothAreEquals() {
-
 		final SellersHyperwalletApiConfig sellerApiConfigOne = createUserApiConfig();
 		final SellersHyperwalletApiConfig sellerApiConfigTwo = createUserApiConfig();
 
@@ -56,7 +55,6 @@ class SellersHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenBothAreNotEquals() {
-
 		final SellersHyperwalletApiConfig sellerApiConfigOne = createUserApiConfig();
 		final SellersHyperwalletApiConfig sellerApiConfigTwo = createSellerInvoiceApiConfig();
 
@@ -67,7 +65,6 @@ class SellersHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenSameObjectIsCompared() {
-
 		final SellersHyperwalletApiConfig sellerApiConfigOne = createUserApiConfig();
 
 		final boolean result = sellerApiConfigOne.equals(sellerApiConfigOne);
@@ -77,7 +74,6 @@ class SellersHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenComparedWithAnotherInstanceObject() {
-
 		final SellersHyperwalletApiConfig sellerApiConfigOne = createUserApiConfig();
 
 		final Object o = new Object();

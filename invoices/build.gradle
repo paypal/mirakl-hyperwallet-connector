@@ -7,7 +7,7 @@ dependencies {
     implementation 'org.jetbrains:annotations:19.0.0'
     implementation 'org.javamoney:moneta:1.4.2'
     implementation 'org.json:json:20201115'
-    implementation 'commons-collections:commons-collections:3.2.2'
+    implementation 'org.apache.commons:commons-collections4:4.4'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {

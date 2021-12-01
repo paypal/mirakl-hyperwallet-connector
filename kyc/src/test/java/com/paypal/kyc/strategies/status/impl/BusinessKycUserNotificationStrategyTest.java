@@ -31,20 +31,19 @@ class BusinessKycUserNotificationStrategyTest {
 			final HyperwalletUser.LetterOfAuthorizationStatus letterOfAuthorizationStatus,
 			final MiraklShopKycStatus miraklShopKycStatus) {
 		//@formatter:off
-        final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
-                .clientUserId(String
-                        .valueOf(CLIENT_USER_ID))
-                .verificationStatus(verificationStatus)
-                .businessStakeholderVerificationStatus(businessStakeholderVerificationStatus)
-                .letterOfAuthorizationStatus(letterOfAuthorizationStatus)
-                .profileType(HyperwalletUser.ProfileType.BUSINESS)
-                .build();
-        //@formatter:on
+		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+				.clientUserId(String
+						.valueOf(CLIENT_USER_ID))
+				.verificationStatus(verificationStatus)
+				.businessStakeholderVerificationStatus(businessStakeholderVerificationStatus)
+				.letterOfAuthorizationStatus(letterOfAuthorizationStatus)
+				.profileType(HyperwalletUser.ProfileType.BUSINESS)
+				.build();
+		//@formatter:on
 
-		final var result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
+		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
 
 		assertThat(result).isEqualTo(miraklShopKycStatus);
-
 	}
 
 	@Test
@@ -60,10 +59,9 @@ class BusinessKycUserNotificationStrategyTest {
 				.build();
 		//@formatter:on
 
-		final var result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
+		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
 
 		assertThat(result).isEqualTo(MiraklShopKycStatus.APPROVED);
-
 	}
 
 	@Test
@@ -79,10 +77,9 @@ class BusinessKycUserNotificationStrategyTest {
 				.build();
 		//@formatter:on
 
-		final var result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
+		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
 
 		assertThat(result).isEqualTo(MiraklShopKycStatus.APPROVED);
-
 	}
 
 	@Test
@@ -98,20 +95,18 @@ class BusinessKycUserNotificationStrategyTest {
 				.build();
 		//@formatter:on
 
-		final var result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
+		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
 
 		assertThat(result).isEqualTo(MiraklShopKycStatus.APPROVED);
-
 	}
 
 	@Test
 	void isApplicable_shouldReturnTrueWhenProfileTypeIsBusiness() {
-
 		//@formatter:off
-        final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
-                .profileType(HyperwalletUser.ProfileType.BUSINESS)
-                .build();
-        //@formatter:on
+		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+				.profileType(HyperwalletUser.ProfileType.BUSINESS)
+				.build();
+		//@formatter:on
 
 		final boolean result = testObj.isApplicable(KYCUserStatusNotificationBodyModelStub);
 
@@ -123,10 +118,10 @@ class BusinessKycUserNotificationStrategyTest {
 	void isApplicable_shouldReturnFalseWhenProfileTypeIsNotIndividual(final HyperwalletUser.ProfileType profileType) {
 
 		//@formatter:off
-        final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
-                .profileType(profileType)
-                .build();
-        //@formatter:on
+		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+				.profileType(profileType)
+				.build();
+		//@formatter:on
 
 		final boolean result = testObj.isApplicable(KYCUserStatusNotificationBodyModelStub);
 

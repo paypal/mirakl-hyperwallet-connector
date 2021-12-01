@@ -17,8 +17,6 @@ public final class SellerModelConstants {
 
 	public static final String DRIVERS_LICENSE_ID = "hw-drivers-license-id";
 
-	public static final String EMPLOYER_ID = "hw-employer-id";
-
 	public static final String BUSINESS_TYPE = "hw-business-type";
 
 	public static final String DATE_OF_BIRTH = "hw-date-of-birth";

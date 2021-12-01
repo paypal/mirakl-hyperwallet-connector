@@ -77,14 +77,13 @@ class MiraklInvoiceDTOToInvoiceModelConverterTest {
 	@SuppressWarnings("java:S5961")
 	@Test
 	void convert_shouldMapEveryAttributeOfMiraklInvoiceMockDTOIntoInvoiceModel() {
-
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2000, 11, 5, 12, 30, 22));
 		final LocalDateTime now = TimeMachine.now();
 		final Date fixedDate = DateUtil.convertToDate(now, ZoneId.systemDefault());
 
 		final MiraklInvoiceMockDTO miraklInvoiceMockDTO = createMiraklInvoiceMockDTO();
 
-		final var result = testObj.convert(miraklInvoiceMockDTO);
+		final InvoiceModel result = testObj.convert(miraklInvoiceMockDTO);
 
 		assertThat(result.getShopId()).isEqualTo(SHOP_ID);
 		assertThat(result.getShopName()).isEqualTo(SHOP_NAME);
@@ -137,7 +136,6 @@ class MiraklInvoiceDTOToInvoiceModelConverterTest {
 
 	@Test
 	void convert_shouldReturnNullWhenNullObjectIsReceived() {
-
 		final InvoiceModel result = testObj.convert(null);
 		assertThat(result).isNull();
 	}
@@ -177,16 +175,16 @@ class MiraklInvoiceDTOToInvoiceModelConverterTest {
 		miraklInvoiceMockDTO.setOrderAmount(100.0D);
 		miraklInvoiceMockDTO.setOrderShippingAmount(10.0D);
 		miraklInvoiceMockDTO.setOrderCommissionAmount(1.0D);
-		miraklInvoiceMockDTO.setOrderCommisionAmountVat(2.0D);
+		miraklInvoiceMockDTO.setOrderCommissionAmountVat(2.0D);
 		miraklInvoiceMockDTO.setRefundAmount(3.0D);
 		miraklInvoiceMockDTO.setRefundShippingAmount(4.0D);
 		miraklInvoiceMockDTO.setRefundCommssionAmount(5.0D);
-		miraklInvoiceMockDTO.setRefundCommisionAmountVat(6.0D);
+		miraklInvoiceMockDTO.setRefundCommissionAmountVat(6.0D);
 		miraklInvoiceMockDTO.setSubscriptionAmount(7.0D);
 		miraklInvoiceMockDTO.setSubscriptionAmountVat(8.0D);
 		miraklInvoiceMockDTO.setTotalChargedAmount(9.0D);
 		miraklInvoiceMockDTO.setTotalChargedAmountVat(110.0D);
-		miraklInvoiceMockDTO.setTransterAmount(12.0D);
+		miraklInvoiceMockDTO.setTransferAmount(12.0D);
 		miraklInvoiceMockDTO.setShopOperatorInternalId(SHOP_OPERATOR_INTERNAL_ID);
 		miraklInvoiceMockDTO.setShopIdentificationNumber(SHOP_IDENTIFICATION_NUMBER);
 		miraklInvoiceMockDTO.setTotalManualInvoiceAmount(20.0D);

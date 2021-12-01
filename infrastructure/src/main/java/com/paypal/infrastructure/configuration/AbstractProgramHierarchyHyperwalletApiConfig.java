@@ -28,17 +28,17 @@ public abstract class AbstractProgramHierarchyHyperwalletApiConfig extends Abstr
 		if (Objects.nonNull(hyperwalletPrograms)) {
 			final List<String> storeTokens = Arrays.asList(hyperwalletPrograms.trim().split(","));
 			//@formatter:off
-            try {
-                tokenMap = Optional.of(storeTokens).orElse(List.of())
-                        .stream()
-                        .map(tokenKey -> Pair.of(tokenKey, hyperwalletProgramPrefix.concat(tokenKey)))
-                        .map(tokenKeyAndTokenKeyPrefix -> Pair.of(tokenKeyAndTokenKeyPrefix.getLeft(),
-                                environment.getProperty(tokenKeyAndTokenKeyPrefix.getRight())))
-                        .collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
-            } catch (NullPointerException ex) {
-                throw new InvalidConfigurationException("Property files configuration error. Check hyperwallet program tokens configuration. Are all parameters defined for: '" + hyperwalletProgramPrefix + "*'?");
-            }
-            //@formatter:on
+			try {
+				tokenMap = Optional.of(storeTokens).orElse(List.of())
+						.stream()
+						.map(tokenKey -> Pair.of(tokenKey, hyperwalletProgramPrefix.concat(tokenKey)))
+						.map(tokenKeyAndTokenKeyPrefix -> Pair.of(tokenKeyAndTokenKeyPrefix.getLeft(),
+								environment.getProperty(tokenKeyAndTokenKeyPrefix.getRight())))
+						.collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
+			} catch (NullPointerException ex) {
+				throw new InvalidConfigurationException("Property files configuration error. Check hyperwallet program tokens configuration. Are all parameters defined for: '" + hyperwalletProgramPrefix + "*'?");
+			}
+			//@formatter:on
 
 		}
 		return tokenMap;
@@ -55,7 +55,6 @@ public abstract class AbstractProgramHierarchyHyperwalletApiConfig extends Abstr
 		final AbstractProgramHierarchyHyperwalletApiConfig that = (AbstractProgramHierarchyHyperwalletApiConfig) o;
 
 		return EqualsBuilder.reflectionEquals(this, that);
-
 	}
 
 	@Override

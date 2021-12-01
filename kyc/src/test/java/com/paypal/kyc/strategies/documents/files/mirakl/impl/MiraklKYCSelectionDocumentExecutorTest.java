@@ -1,7 +1,8 @@
-package com.paypal.sellers.sellersextract.service.strategies;
+package com.paypal.kyc.strategies.documents.files.mirakl.impl;
 
 import com.paypal.infrastructure.strategy.Strategy;
-import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
+import com.paypal.kyc.model.KYCDocumentInfoModel;
+import com.paypal.kyc.model.KYCDocumentModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,27 +10,29 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-class HyperWalletBusinessStakeHolderServiceStrategyExecutorSingleTest {
+class MiraklKYCSelectionDocumentExecutorTest {
 
 	@InjectMocks
-	private HyperWalletBusinessStakeHolderServiceStrategyExecutorExecutor testObj;
+	private MiraklKYCSelectionDocumentExecutor testObj;
 
 	@Mock
-	private Strategy<BusinessStakeHolderModel, BusinessStakeHolderModel> strategyMock;
+	private Strategy<KYCDocumentInfoModel, List<KYCDocumentModel>> strategyMock;
 
 	@BeforeEach
 	void setUp() {
-		testObj = new HyperWalletBusinessStakeHolderServiceStrategyExecutorExecutor(Set.of(strategyMock));
+		testObj = new MiraklKYCSelectionDocumentExecutor(Collections.singleton(strategyMock));
 	}
 
 	@Test
 	void getStrategies_shouldReturnConverterStrategyMock() {
-		final var result = testObj.getStrategies();
+		final Set<Strategy<KYCDocumentInfoModel, List<KYCDocumentModel>>> result = testObj.getStrategies();
 
 		assertThat(result).containsExactly(strategyMock);
 	}

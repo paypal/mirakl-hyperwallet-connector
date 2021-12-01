@@ -40,7 +40,7 @@ public abstract class AbstractInvoiceExtractService implements InvoiceExtractSer
 	public List<HyperwalletPayment> extractInvoices(final Date delta) {
 		final List<InvoiceModel> invoices = miraklAccountingDocumentInvoicesExtractService
 				.extractAccountingDocument(delta);
-		final var payeePayments = hyperWalletPaymentExtractService.payPayeeInvoice(invoices);
+		final List<HyperwalletPayment> payeePayments = hyperWalletPaymentExtractService.payPayeeInvoice(invoices);
 		final List<HyperwalletPayment> operatorPayments = payOperator(invoices);
 
 		return Stream.concat(payeePayments.stream(), operatorPayments.stream()).collect(Collectors.toList());

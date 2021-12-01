@@ -60,7 +60,7 @@ public class FailedBankAccountInformationServiceImpl
 	@Override
 	public void deleteByShopId(final String shopId) {
 		if (failedBankAccountInformationRepository.deleteByShopId(shopId) > 0) {
-			log.info("Retry Process: ShopId {} information was sucessfully created/updated after retrying.", shopId);
+			log.info("Retry Process: ShopId {} information was successfully created/updated after retrying.", shopId);
 		}
 	}
 

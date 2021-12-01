@@ -28,9 +28,9 @@ public class SellerHyperwalletSDKServiceImpl implements HyperwalletSDKService {
 	public Hyperwallet getHyperwalletInstanceByHyperwalletProgram(final String hyperwalletProgram) {
 		//@formatter:off
 		final String programUserToken = Optional.ofNullable(this.sellersHyperwalletApiConfig.getUserStoreTokens())
-                .map(tokens -> tokens.get(hyperwalletProgram))
-                .orElse(null);
-        //@formatter:on
+				.map(tokens -> tokens.get(hyperwalletProgram))
+				.orElse(null);
+		//@formatter:on
 
 		return getHyperwalletInstance(programUserToken);
 	}
@@ -47,7 +47,6 @@ public class SellerHyperwalletSDKServiceImpl implements HyperwalletSDKService {
 		return new Hyperwallet(this.sellersHyperwalletApiConfig.getUsername(),
 				this.sellersHyperwalletApiConfig.getPassword(), programToken,
 				this.sellersHyperwalletApiConfig.getServer(), null);
-
 	}
 
 }

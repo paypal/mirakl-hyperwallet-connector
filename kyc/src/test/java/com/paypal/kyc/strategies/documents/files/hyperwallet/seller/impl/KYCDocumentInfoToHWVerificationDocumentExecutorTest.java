@@ -6,35 +6,35 @@ import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-class KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutorTest {
+class KYCDocumentInfoToHWVerificationDocumentExecutorTest {
 
 	@InjectMocks
-	private KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor testObj;
+	private KYCDocumentInfoToHWVerificationDocumentExecutor testObj;
 
 	@Mock
 	private Strategy<KYCDocumentSellerInfoModel, HyperwalletVerificationDocument> strategyMock;
 
 	@BeforeEach
 	void setUp() {
-		testObj = new KYCDocumentInfoToHWVerificationDocumentMultipleStrategyExecutor(Set.of(strategyMock));
+		testObj = new KYCDocumentInfoToHWVerificationDocumentExecutor(Collections.singleton(strategyMock));
 	}
 
 	@Test
 	void getStrategies_shouldReturnConverterStrategyMock() {
-
-		final var result = testObj.getStrategies();
+		final Set<Strategy<KYCDocumentSellerInfoModel, HyperwalletVerificationDocument>> result = testObj
+				.getStrategies();
 
 		assertThat(result).containsExactly(strategyMock);
-
 	}
 
 }

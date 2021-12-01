@@ -1,12 +1,12 @@
 package com.paypal.reports.infraestructure.configuration;
 
 import com.braintreegateway.BraintreeGateway;
-import org.assertj.core.api.Assert;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class ReportsBraintreeApiConfigTest {
@@ -34,10 +34,10 @@ class ReportsBraintreeApiConfigTest {
 	void getBraintreeSDKClient_shouldReturnBraintreeGatewayWithCorrectParameters() {
 		final BraintreeGateway result = testObj.getBraintreeSDKClient();
 
-		Assertions.assertThat(result.getConfiguration().getEnvironment().getEnvironmentName()).isEqualTo(ENVIRONMENT);
-		Assertions.assertThat(result.getConfiguration().getPrivateKey()).isEqualTo(PRIVATE_KEY);
-		Assertions.assertThat(result.getConfiguration().getPublicKey()).isEqualTo(PUBLIC_KEY);
-		Assertions.assertThat(result.getConfiguration().getMerchantPath()).contains(MERCHANT_ID);
+		assertThat(result.getConfiguration().getEnvironment().getEnvironmentName()).isEqualTo(ENVIRONMENT);
+		assertThat(result.getConfiguration().getPrivateKey()).isEqualTo(PRIVATE_KEY);
+		assertThat(result.getConfiguration().getPublicKey()).isEqualTo(PUBLIC_KEY);
+		assertThat(result.getConfiguration().getMerchantPath()).contains(MERCHANT_ID);
 	}
 
 }

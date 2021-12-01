@@ -22,13 +22,13 @@ public class MiraklInvoiceToCreditNoteModelConverter implements Converter<Mirakl
 		}
 
 		//@formatter:off
-        return CreditNoteModel.builder()
-                .shopId(String.valueOf(source.getShopId()))
+		return CreditNoteModel.builder()
+				.shopId(String.valueOf(source.getShopId()))
 				.creditAmount(source.getTotalChargedAmount().doubleValue())
-                .invoiceNumber(source.getId())
-                .currencyIsoCode(source.getCurrencyIsoCode().name())
-                .build();
-        //@formatter:on
+				.invoiceNumber(source.getId())
+				.currencyIsoCode(source.getCurrencyIsoCode().name())
+				.build();
+		//@formatter:on
 	}
 
 }

@@ -29,27 +29,26 @@ class IndividualKYCUserNotificationStrategyTest {
 			final HyperwalletUser.VerificationStatus hyperwalletVerificationStatus,
 			final MiraklShopKycStatus miraklKycStatus) {
 		//@formatter:off
-        final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
-                .clientUserId(String
-                        .valueOf(CLIENT_USER_ID))
-                .verificationStatus(hyperwalletVerificationStatus)
-                .profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
-                .build();
-        //@formatter:on
+		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+				.clientUserId(String
+						.valueOf(CLIENT_USER_ID))
+				.verificationStatus(hyperwalletVerificationStatus)
+				.profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
+				.build();
+		//@formatter:on
 
-		final var result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
+		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
 
 		assertThat(result).isEqualTo(miraklKycStatus);
 	}
 
 	@Test
 	void isApplicable_shouldReturnTrueWhenProfileTypeIsIndividual() {
-
 		//@formatter:off
-        final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
-                .profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
-                .build();
-        //@formatter:on
+		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+				.profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
+				.build();
+		//@formatter:on
 
 		final boolean result = testObj.isApplicable(KYCUserStatusNotificationBodyModelStub);
 
@@ -61,10 +60,10 @@ class IndividualKYCUserNotificationStrategyTest {
 	void isApplicable_shouldReturnFalseWhenProfileTypeIsNotIndividual(final HyperwalletUser.ProfileType profileType) {
 
 		//@formatter:off
-        final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
-                .profileType(profileType)
-                .build();
-        //@formatter:on
+		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+				.profileType(profileType)
+				.build();
+		//@formatter:on
 
 		final boolean result = testObj.isApplicable(KYCUserStatusNotificationBodyModelStub);
 

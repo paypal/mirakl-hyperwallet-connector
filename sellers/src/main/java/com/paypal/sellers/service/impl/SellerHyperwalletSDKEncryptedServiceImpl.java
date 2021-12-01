@@ -27,7 +27,6 @@ public class SellerHyperwalletSDKEncryptedServiceImpl extends SellerHyperwalletS
 		return new Hyperwallet(this.sellersHyperwalletApiConfig.getUsername(),
 				this.sellersHyperwalletApiConfig.getPassword(), programToken,
 				this.sellersHyperwalletApiConfig.getServer(), this.hyperwalletEncryption);
-
 	}
 
 }

@@ -34,15 +34,13 @@ class SellerHyperwalletSDKEncryptedServiceImplTest {
 
 	@Test
 	void getHyperwalletInstance_shouldReturnAnHyperwalletInstanceWithEncryptedOption() {
-		when(this.sellersHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(this.sellersHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(this.sellersHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(sellersHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(sellersHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(sellersHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final Hyperwallet result = this.testObj.getHyperwalletInstance(PROGRAM_TOKEN);
+		final Hyperwallet result = testObj.getHyperwalletInstance(PROGRAM_TOKEN);
 
-		assertThat(result).hasFieldOrPropertyWithValue("apiClient.hyperwalletEncryption",
-				this.hyperwalletEncryptionMock);
-
+		assertThat(result).hasFieldOrPropertyWithValue("apiClient.hyperwalletEncryption", hyperwalletEncryptionMock);
 	}
 
 }

@@ -45,7 +45,7 @@ class MyStrategySingleExecutorTest {
 
 		testObj.execute(sourceMock);
 
-		verify(strategyMock, times(0)).execute(sourceMock);
+		verify(strategyMock, never()).execute(sourceMock);
 	}
 
 	@Test

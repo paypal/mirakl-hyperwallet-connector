@@ -62,9 +62,10 @@ public class JobExecutionInformationListener extends JobListenerSupport {
 		jobExecutionInformationEntity.setStartTime(DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault()));
 		jobExecutionInformationEntity.setStatus(JobStatus.RUNNING);
 
-		final var savedInformation = jobExecutionInformationRepository.save(jobExecutionInformationEntity);
+		final JobExecutionInformationEntity savedInformation = jobExecutionInformationRepository
+				.save(jobExecutionInformationEntity);
 
-		final var jobDataMap = context.getJobDetail().getJobDataMap();
+		final JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
 		jobDataMap.put(RUNNING_JOB_ENTITY, savedInformation);
 
 		final JobDetail jobDetail = context.getJobDetail().getJobBuilder().usingJobData(jobDataMap).build();
@@ -78,8 +79,8 @@ public class JobExecutionInformationListener extends JobListenerSupport {
 	}
 
 	protected void saveExecutedJobExecutionInformation(final JobExecutionContext context) {
-		final var savedInformation = (JobExecutionInformationEntity) context.getJobDetail().getJobDataMap()
-				.get(RUNNING_JOB_ENTITY);
+		final JobExecutionInformationEntity savedInformation = (JobExecutionInformationEntity) context.getJobDetail()
+				.getJobDataMap().get(RUNNING_JOB_ENTITY);
 		savedInformation.setEndTime(DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault()));
 		savedInformation.setStatus(JobStatus.COMPLETED);
 		jobExecutionInformationRepository.save(savedInformation);

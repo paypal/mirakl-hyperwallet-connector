@@ -12,17 +12,17 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Strategy Factory class that controls strategies to insert or update bank account
- * information into Hyperwallet
+ * Executor class that controls strategies to insert or update bank account information
+ * into Hyperwallet
  */
 @Slf4j
 @Service
-public class HyperWalletBankAccountServiceStrategyExecutor
+public class HyperWalletBankAccountServiceExecutor
 		extends SingleAbstractStrategyExecutor<SellerModel, Optional<HyperwalletBankAccount>> {
 
 	private final Set<Strategy<SellerModel, Optional<HyperwalletBankAccount>>> strategies;
 
-	public HyperWalletBankAccountServiceStrategyExecutor(
+	public HyperWalletBankAccountServiceExecutor(
 			final Set<Strategy<SellerModel, Optional<HyperwalletBankAccount>>> strategies) {
 		this.strategies = strategies;
 	}
@@ -38,7 +38,7 @@ public class HyperWalletBankAccountServiceStrategyExecutor
 	@Override
 	public Optional<HyperwalletBankAccount> execute(final SellerModel seller) {
 		if (Objects.isNull(seller.getBankAccountDetails())) {
-			log.warn("No bank account info for shop code:  [{}]", seller.getClientUserId());
+			log.warn("No bank account info for shop code: [{}]", seller.getClientUserId());
 			return Optional.empty();
 		}
 		return callSuperExecute(seller);

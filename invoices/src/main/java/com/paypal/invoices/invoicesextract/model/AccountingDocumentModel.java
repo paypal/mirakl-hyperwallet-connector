@@ -564,12 +564,12 @@ public class AccountingDocumentModel {
 		private Optional<String> getMiraklStringCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
 				final String customFieldCode) {
 			//@formatter:off
-            return fields.stream()
-                    .filter(field -> field.getCode().equals(customFieldCode))
-                    .filter(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::isInstance)
-                    .map(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::cast).findAny()
-                    .map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
-            //@formatter:on
+			return fields.stream()
+					.filter(field -> field.getCode().equals(customFieldCode))
+					.filter(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::isInstance)
+					.map(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::cast).findAny()
+					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+			//@formatter:on
 		}
 
 		private Optional<String> getMiraklSingleValueListCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,

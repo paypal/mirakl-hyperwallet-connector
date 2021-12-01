@@ -4,6 +4,7 @@ import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.kyc.model.KYCDocumentNotificationModel;
 import com.paypal.kyc.model.KYCRejectionReasonTypeEnum;
+import com.paypal.kyc.model.KYCUserStatusNotificationBodyModel;
 import com.paypal.kyc.service.KYCRejectionReasonService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,12 +46,13 @@ class HyperWalletObjectToKYCUserStatusExecutorNotificationBodyModelConverterTest
 
 	@Test
 	void convert_shouldTransformHyperWalletWebhookBusinessUserNotificationToKycBusinessUserStatusNotificationModel_whenDetailsIsNotNull() {
-		final var hyperWalletKycUserBodyNotification = createHyperWalletKycUserBodyNotification(BUSINESS_PROFILE_TYPE);
+		final Map<String, String> hyperWalletKycUserBodyNotification = createHyperWalletKycUserBodyNotification(
+				BUSINESS_PROFILE_TYPE);
 
 		when(kycRejectionReasonServiceMock.getReasonTypes(hyperWalletKycUserBodyNotification))
 				.thenReturn(List.of(KYCRejectionReasonTypeEnum.VERIFICATIONSTATUS_PROF_REQUIRED));
 
-		final var result = testObj.convert(hyperWalletKycUserBodyNotification);
+		final KYCUserStatusNotificationBodyModel result = testObj.convert(hyperWalletKycUserBodyNotification);
 
 		assertThat(result.getClientUserId()).isEqualTo(CLIENT_USER_ID);
 		assertThat(result.getProfileType()).isEqualTo(BUSINESS_PROFILE_TYPE);
@@ -65,13 +67,13 @@ class HyperWalletObjectToKYCUserStatusExecutorNotificationBodyModelConverterTest
 
 	@Test
 	void convert_shouldTransformHyperWalletWebhookIndividualUserNotificationToKycIndividualUserStatusNotificationModel_whenDetailsIsNotNull() {
-		final var hyperWalletKycUserBodyNotification = createHyperWalletKycUserBodyNotification(
+		final Map<String, String> hyperWalletKycUserBodyNotification = createHyperWalletKycUserBodyNotification(
 				INDIVIDUAL_PROFILE_TYPE);
 
 		when(kycRejectionReasonServiceMock.getReasonTypes(hyperWalletKycUserBodyNotification))
 				.thenReturn(List.of(KYCRejectionReasonTypeEnum.VERIFICATIONSTATUS_IND_REQUIRED));
 
-		final var result = testObj.convert(hyperWalletKycUserBodyNotification);
+		final KYCUserStatusNotificationBodyModel result = testObj.convert(hyperWalletKycUserBodyNotification);
 
 		assertThat(result.getClientUserId()).isEqualTo(CLIENT_USER_ID);
 		assertThat(result.getProfileType()).isEqualTo(INDIVIDUAL_PROFILE_TYPE);
@@ -81,14 +83,14 @@ class HyperWalletObjectToKYCUserStatusExecutorNotificationBodyModelConverterTest
 
 	@Test
 	void convert_shouldTransformHyperWalletWebhookUserNotificationWithBusinessStakeHolderRequirementToKycUserStatusNotificationModelWithBusinessStakeholderReasonType_whenDetailsIsNotNull() {
-		final var hyperWalletKycUserBodyNotification = createHyperWalletKycBusinessUserBodyNotification(
+		final Map<String, String> hyperWalletKycUserBodyNotification = createHyperWalletKycBusinessUserBodyNotification(
 				HyperwalletUser.BusinessStakeholderVerificationStatus.REQUIRED,
 				HyperwalletUser.LetterOfAuthorizationStatus.NOT_REQUIRED);
 
 		when(kycRejectionReasonServiceMock.getReasonTypes(hyperWalletKycUserBodyNotification))
 				.thenReturn(List.of(KYCRejectionReasonTypeEnum.BUSINESS_STAKEHOLDER_REQUIRED));
 
-		final var result = testObj.convert(hyperWalletKycUserBodyNotification);
+		final KYCUserStatusNotificationBodyModel result = testObj.convert(hyperWalletKycUserBodyNotification);
 
 		assertThat(result.getClientUserId()).isEqualTo(CLIENT_USER_ID);
 		assertThat(result.getProfileType()).isEqualTo(BUSINESS_PROFILE_TYPE);
@@ -98,14 +100,14 @@ class HyperWalletObjectToKYCUserStatusExecutorNotificationBodyModelConverterTest
 
 	@Test
 	void convert_shouldTransformHyperWalletWebhookUserNotificationWithLetterOfAuthorizationRequirementToKycUserStatusNotificationModelWithLetterOfAuthorizationReasonType_whenDetailsIsNotNull() {
-		final var hyperWalletKycUserBodyNotification = createHyperWalletKycBusinessUserBodyNotification(
+		final Map<String, String> hyperWalletKycUserBodyNotification = createHyperWalletKycBusinessUserBodyNotification(
 				HyperwalletUser.BusinessStakeholderVerificationStatus.NOT_REQUIRED,
 				HyperwalletUser.LetterOfAuthorizationStatus.REQUIRED);
 
 		when(kycRejectionReasonServiceMock.getReasonTypes(hyperWalletKycUserBodyNotification))
 				.thenReturn(List.of(KYCRejectionReasonTypeEnum.LETTER_OF_AUTHORIZATION_REQUIRED));
 
-		final var result = testObj.convert(hyperWalletKycUserBodyNotification);
+		final KYCUserStatusNotificationBodyModel result = testObj.convert(hyperWalletKycUserBodyNotification);
 
 		assertThat(result.getClientUserId()).isEqualTo(CLIENT_USER_ID);
 		assertThat(result.getProfileType()).isEqualTo(BUSINESS_PROFILE_TYPE);
@@ -116,7 +118,7 @@ class HyperWalletObjectToKYCUserStatusExecutorNotificationBodyModelConverterTest
 
 	@Test
 	void convert_shouldTransformHyperWalletWebhookNotificationToKyCUserStatusNotificationModel_whenObjectIsNotJSonObject() {
-		final var result = testObj.convert(new Object());
+		final KYCUserStatusNotificationBodyModel result = testObj.convert(new Object());
 
 		assertThat(result).isNull();
 	}

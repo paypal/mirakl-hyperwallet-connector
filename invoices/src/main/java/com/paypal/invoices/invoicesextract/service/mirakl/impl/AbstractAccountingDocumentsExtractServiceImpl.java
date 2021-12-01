@@ -70,32 +70,32 @@ public abstract class AbstractAccountingDocumentsExtractServiceImpl<T extends Ac
 	protected List<T> filterOnlyMappableDocuments(final List<T> invoices, final Set<String> shopIds) {
 
 		//@formatter:off
-        log.warn("Credit notes documents with ids [{}] should be skipped because are lacking hw-program or bank account token", invoices.stream()
-                .filter(invoice -> !shopIds.contains(invoice.getShopId()))
-                .map(AccountingDocumentModel::getInvoiceNumber)
-                .collect(Collectors.joining(",")));
-        //@formatter:on
+		log.warn("Credit notes documents with ids [{}] should be skipped because are lacking hw-program or bank account token", invoices.stream()
+				.filter(invoice -> !shopIds.contains(invoice.getShopId()))
+				.map(AccountingDocumentModel::getInvoiceNumber)
+				.collect(Collectors.joining(",")));
+		//@formatter:on
 
 		//@formatter:off
-        return invoices.stream()
-                .filter(invoice -> shopIds.contains(invoice.getShopId()))
-                .collect(Collectors.toList());
-        //@formatter:on
+		return invoices.stream()
+				.filter(invoice -> shopIds.contains(invoice.getShopId()))
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 	@NonNull
 	protected List<MiraklShop> getMiraklShops(final List<T> invoices) {
 		//@formatter:off
-        final Set<String> shopIds = invoices.stream()
-                .map(AccountingDocumentModel::getShopId)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
+		final Set<String> shopIds = invoices.stream()
+				.map(AccountingDocumentModel::getShopId)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toSet());
 
-        log.info("Retrieving information of shops [{}] for invoices [{}]", String.join(",", shopIds),
-                invoices.stream()
-                        .map(AccountingDocumentModel::getInvoiceNumber)
-                        .collect(Collectors.joining(",")));
-        //@formatter:on
+		log.info("Retrieving information of shops [{}] for invoices [{}]", String.join(",", shopIds),
+				invoices.stream()
+						.map(AccountingDocumentModel::getInvoiceNumber)
+						.collect(Collectors.joining(",")));
+		//@formatter:on
 
 		try {
 			return getAllShops(shopIds);
@@ -120,12 +120,12 @@ public abstract class AbstractAccountingDocumentsExtractServiceImpl<T extends Ac
 
 	protected Map<String, Pair<String, String>> mapShopsWithDestinationToken(final List<MiraklShop> shops) {
 		//@formatter:off
-        return Stream.ofNullable(shops)
-                .flatMap(Collection::stream)
-                .map(miraklShopToAccountingModelConverter::convert)
-                .filter(invoiceModel -> Objects.nonNull(invoiceModel.getDestinationToken()) && Objects.nonNull(invoiceModel.getHyperwalletProgram()))
-                .collect(Collectors.toMap(AccountingDocumentModel::getShopId, accountingDocument -> Pair.of(accountingDocument.getDestinationToken(), accountingDocument.getHyperwalletProgram()), (i1, i2) -> i1));
-        //@formatter:on
+		return Stream.ofNullable(shops)
+				.flatMap(Collection::stream)
+				.map(miraklShopToAccountingModelConverter::convert)
+				.filter(invoiceModel -> Objects.nonNull(invoiceModel.getDestinationToken()) && Objects.nonNull(invoiceModel.getHyperwalletProgram()))
+				.collect(Collectors.toMap(AccountingDocumentModel::getShopId, accountingDocument -> Pair.of(accountingDocument.getDestinationToken(), accountingDocument.getHyperwalletProgram()), (i1, i2) -> i1));
+		//@formatter:on
 	}
 
 	@NonNull

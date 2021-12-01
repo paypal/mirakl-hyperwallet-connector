@@ -41,30 +41,26 @@ class FinancialReportConverterServiceImplTest {
 	}
 
 	@Test
-	void convertBraintreeTransactionLineIntoFinancialReportLine_shouldCallToBrantreeTransactionLineToFinancialReportLineConverter() {
-
+	void convertBraintreeTransactionLineIntoFinancialReportLine_shouldCallToBraintreeTransactionLineToFinancialReportLineConverter() {
 		testObj.convertBraintreeTransactionLineIntoFinancialReportLine(hmcBraintreeTransactionLineMock);
 
 		verify(hmcBraintreeTransactionLineHmcFinancialReportLineConverterMock).convert(hmcBraintreeTransactionLineMock);
-
 	}
 
 	@Test
 	void convertMiraklTransactionLineIntoFinancialReportLine_shouldCallToMiraklTransactionLineToFinancialReportLineConverter() {
-
 		testObj.convertMiraklTransactionLineIntoFinancialReportLine(hmcMiraklTransactionLineMock);
 
 		verify(hmcMiraklTransactionLineHmcFinancialReportLineConverterMock).convert(hmcMiraklTransactionLineMock);
 	}
 
 	@Test
-	void convertBrainTreeAndMiraklTransactionLineIntoFinancialReportLine_shouldCallToBrantreeAndMiraklTransactionLineToFinancialReportLineConverter() {
-
+	void convertBrainTreeAndMiraklTransactionLineIntoFinancialReportLine_shouldCallToBraintreeAndMiraklTransactionLineToFinancialReportLineConverter() {
 		testObj.convertBrainTreeAndMiraklTransactionLineIntoFinancialReportLine(hmcBraintreeTransactionLineMock,
 				hmcMiraklTransactionLineMock);
+
 		verify(hmcFinancialReportLineConverterMock)
 				.convert(Pair.of(hmcBraintreeTransactionLineMock, hmcMiraklTransactionLineMock));
-
 	}
 
 }

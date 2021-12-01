@@ -45,11 +45,11 @@ class MiraklProofOfIdentityBusinessStakeholderStrategyTest {
 		testObj = new MiraklProofOfIdentityBusinessStakeholderStrategy(miraklMarketplacePlatformOperatorApiClientMock);
 
 		//@formatter:off
-        kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
-                .proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-                        HYPERWALLET_BUSINESS_STAKEHOLDER_PROOF_IDENTITY_TYPE_FIELD, "PASSPORT")), BUSINESS_STAKEHOLDER_NUMBER)
-                .build();
-        //@formatter:on
+		kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
+				.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+						HYPERWALLET_BUSINESS_STAKEHOLDER_PROOF_IDENTITY_TYPE_FIELD, "PASSPORT")), BUSINESS_STAKEHOLDER_NUMBER)
+				.build();
+		//@formatter:on
 	}
 
 	@Test

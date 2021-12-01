@@ -27,10 +27,8 @@ public class InvoiceHyperwalletSDKEncryptedServiceImpl extends InvoiceHyperwalle
 	 */
 	@Override
 	public Hyperwallet getHyperwalletInstanceWithProgramToken(final String programToken) {
-		return new Hyperwallet(this.invoicesHyperwalletApiConfig.getUsername(),
-				this.invoicesHyperwalletApiConfig.getPassword(), programToken,
-				this.invoicesHyperwalletApiConfig.getServer(), this.hyperwalletEncryption);
-
+		return new Hyperwallet(invoicesHyperwalletApiConfig.getUsername(), invoicesHyperwalletApiConfig.getPassword(),
+				programToken, invoicesHyperwalletApiConfig.getServer(), hyperwalletEncryption);
 	}
 
 	/**
@@ -40,9 +38,8 @@ public class InvoiceHyperwalletSDKEncryptedServiceImpl extends InvoiceHyperwalle
 	public Hyperwallet getHyperwalletInstanceByHyperwalletProgram(final String programToken) {
 		final String programUserToken = getProgramTokenByHyperwalletProgram(programToken);
 
-		return new Hyperwallet(this.invoicesHyperwalletApiConfig.getUsername(),
-				this.invoicesHyperwalletApiConfig.getPassword(), programUserToken,
-				this.invoicesHyperwalletApiConfig.getServer(), this.hyperwalletEncryption);
+		return new Hyperwallet(invoicesHyperwalletApiConfig.getUsername(), invoicesHyperwalletApiConfig.getPassword(),
+				programUserToken, invoicesHyperwalletApiConfig.getServer(), hyperwalletEncryption);
 	}
 
 }

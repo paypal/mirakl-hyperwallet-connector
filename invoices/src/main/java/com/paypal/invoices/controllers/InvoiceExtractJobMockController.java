@@ -63,7 +63,7 @@ public class InvoiceExtractJobMockController extends AbstractJobController {
 	private void storeInvoicesInSession(final MiraklInvoicesMockListDTO invoices) {
 		//@formatter:off
 		final List<InvoiceModel> convertedInvoices = Optional.ofNullable(Optional.ofNullable(invoices)
-				.orElse(new MiraklInvoicesMockListDTO()).getInvoices())
+						.orElse(new MiraklInvoicesMockListDTO()).getInvoices())
 				.orElse(List.of()).stream()
 				.map(miraklInvoiceDTOToInvoiceModelConverter::convert)
 				.filter(Objects::nonNull)

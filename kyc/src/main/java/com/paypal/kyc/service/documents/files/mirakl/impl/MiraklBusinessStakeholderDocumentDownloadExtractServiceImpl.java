@@ -9,7 +9,7 @@ import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentModel;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklBusinessStakeholderDocumentDownloadExtractService;
-import com.paypal.kyc.strategies.documents.files.mirakl.impl.MiraklKYCSelectionDocumentMultipleStrategyExecutor;
+import com.paypal.kyc.strategies.documents.files.mirakl.impl.MiraklKYCSelectionDocumentExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +26,13 @@ public class MiraklBusinessStakeholderDocumentDownloadExtractServiceImpl
 
 	private final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient;
 
-	private final MiraklKYCSelectionDocumentMultipleStrategyExecutor miraklKYCSelectionDocumentStrategyExecutor;
+	private final MiraklKYCSelectionDocumentExecutor miraklKYCSelectionDocumentStrategyExecutor;
 
 	private final MailNotificationUtil kycMailNotificationUtil;
 
 	public MiraklBusinessStakeholderDocumentDownloadExtractServiceImpl(
 			final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient,
-			final MiraklKYCSelectionDocumentMultipleStrategyExecutor miraklKYCSelectionDocumentStrategyExecutor,
+			final MiraklKYCSelectionDocumentExecutor miraklKYCSelectionDocumentStrategyExecutor,
 			final MailNotificationUtil kycMailNotificationUtil) {
 		this.miraklMarketplacePlatformOperatorApiClient = miraklMarketplacePlatformOperatorApiClient;
 		this.miraklKYCSelectionDocumentStrategyExecutor = miraklKYCSelectionDocumentStrategyExecutor;
@@ -49,35 +49,53 @@ public class MiraklBusinessStakeholderDocumentDownloadExtractServiceImpl
 		final KYCDocumentBusinessStakeHolderInfoModel kycBusinessStakeholderInfoModelWithMiraklShops = populateMiraklShopBusinessStakeholderDocuments(
 				kycBusinessStakeHolderInfoModel);
 
-		if (((kycBusinessStakeholderInfoModelWithMiraklShops.isRequiresLetterOfAuthorization()
-				&& kycBusinessStakeholderInfoModelWithMiraklShops.isRequiresKYC())
-				&& (!kycBusinessStakeholderInfoModelWithMiraklShops.existsDocumentInMirakl()
-						|| !kycBusinessStakeholderInfoModelWithMiraklShops
-								.existsLetterOfAuthorizationDocumentInMirakl()))
-				|| (kycBusinessStakeholderInfoModelWithMiraklShops.isRequiresLetterOfAuthorization()
-						&& !kycBusinessStakeholderInfoModelWithMiraklShops
-								.existsLetterOfAuthorizationDocumentInMirakl())
-				|| (kycBusinessStakeholderInfoModelWithMiraklShops.isRequiresKYC()
-						&& !kycBusinessStakeholderInfoModelWithMiraklShops.existsDocumentInMirakl())) {
+		if (isLoARequiredForKYCButNotUploaded(kycBusinessStakeholderInfoModelWithMiraklShops)
+				|| isLoARequiredButNotUploaded(kycBusinessStakeholderInfoModelWithMiraklShops)
+				|| isDocumentMissingForKYC(kycBusinessStakeholderInfoModelWithMiraklShops)) {
 			log.warn("Some needed documents are missing for shop [{}], skipping pushing all documents to hyperwallet",
 					kycBusinessStakeholderInfoModelWithMiraklShops.getClientUserId());
 			return kycBusinessStakeholderInfoModelWithMiraklShops;
 		}
 
 		//@formatter:off
-        final List<KYCDocumentModel> extractedBusinessStakeholderDocumentsSelectedBySeller = miraklKYCSelectionDocumentStrategyExecutor
-                .execute(kycBusinessStakeholderInfoModelWithMiraklShops)
-                .stream()
-                .flatMap(List::stream)
-                .collect(Collectors.toList());
-        //@formatter:on
+		final List<KYCDocumentModel> extractedBusinessStakeholderDocumentsSelectedBySeller = miraklKYCSelectionDocumentStrategyExecutor
+				.execute(kycBusinessStakeholderInfoModelWithMiraklShops)
+				.stream()
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
+		//@formatter:on
 
 		return kycBusinessStakeholderInfoModelWithMiraklShops.toBuilder()
 				.documents(extractedBusinessStakeholderDocumentsSelectedBySeller).build();
-
 	}
 
-	private KYCDocumentBusinessStakeHolderInfoModel populateMiraklShopBusinessStakeholderDocuments(
+	private boolean isDocumentMissingForKYC(
+			final KYCDocumentBusinessStakeHolderInfoModel kycBusinessStakeholderInfoModelWithMiraklShops) {
+		//@formatter:off
+		return kycBusinessStakeholderInfoModelWithMiraklShops.isRequiresKYC()
+				&& !kycBusinessStakeholderInfoModelWithMiraklShops.existsDocumentInMirakl();
+		//@formatter:on
+	}
+
+	private boolean isLoARequiredButNotUploaded(
+			final KYCDocumentBusinessStakeHolderInfoModel kycBusinessStakeholderInfoModelWithMiraklShops) {
+		//@formatter:off
+		return kycBusinessStakeholderInfoModelWithMiraklShops.isRequiresLetterOfAuthorization()
+				&& !kycBusinessStakeholderInfoModelWithMiraklShops.existsLetterOfAuthorizationDocumentInMirakl();
+		//@formatter:on
+	}
+
+	private boolean isLoARequiredForKYCButNotUploaded(
+			final KYCDocumentBusinessStakeHolderInfoModel kycBusinessStakeholderInfoModelWithMiraklShops) {
+		//@formatter:off
+		// Requires KYC and LoA
+		return kycBusinessStakeholderInfoModelWithMiraklShops.isRequiresLetterOfAuthorization() && kycBusinessStakeholderInfoModelWithMiraklShops.isRequiresKYC()
+				// And LoA document is not uploaded to Mirakl
+				&& (!kycBusinessStakeholderInfoModelWithMiraklShops.existsDocumentInMirakl() || !kycBusinessStakeholderInfoModelWithMiraklShops.existsLetterOfAuthorizationDocumentInMirakl());
+		//@formatter:on
+	}
+
+	protected KYCDocumentBusinessStakeHolderInfoModel populateMiraklShopBusinessStakeholderDocuments(
 			final KYCDocumentBusinessStakeHolderInfoModel kycBusinessStakeHolderInfoModel) {
 		final MiraklGetShopDocumentsRequest getShopBusinessStakeholderDocumentsRequest = new MiraklGetShopDocumentsRequest(
 				List.of(kycBusinessStakeHolderInfoModel.getClientUserId()));
@@ -89,11 +107,11 @@ public class MiraklBusinessStakeholderDocumentDownloadExtractServiceImpl
 					.getShopDocuments(getShopBusinessStakeholderDocumentsRequest);
 
 			//@formatter:off
-            log.info("Business stakeholder documents available for seller with id [{}]: [{}]", kycBusinessStakeHolderInfoModel.getClientUserId(),
-                    shopDocuments.stream()
-                            .map(miraklDocument -> "Id:" + miraklDocument.getId() + " ,fileName:" + miraklDocument.getFileName() + " ,typeCode:" + miraklDocument.getTypeCode())
-                            .collect(Collectors.joining(" | ")));
-            //@formatter:on
+			log.info("Business stakeholder documents available for seller with id [{}]: [{}]", kycBusinessStakeHolderInfoModel.getClientUserId(),
+					shopDocuments.stream()
+							.map(miraklDocument -> "Id:" + miraklDocument.getId() + " ,fileName:" + miraklDocument.getFileName() + " ,typeCode:" + miraklDocument.getTypeCode())
+							.collect(Collectors.joining(" | ")));
+			//@formatter:on
 			return kycBusinessStakeHolderInfoModel.toBuilder().miraklShopDocuments(shopDocuments).build();
 		}
 		catch (final MiraklException e) {

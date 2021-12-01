@@ -3,10 +3,11 @@ package com.paypal.sellers.sellersextract.service.impl;
 import com.mirakl.client.core.exception.MiraklApiException;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
+import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
-import com.paypal.sellers.infrastructure.utils.MiraklLoggingErrorsUtil;
+import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderConstants;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
@@ -15,6 +16,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -55,10 +57,9 @@ public class MiraklBusinessStakeholderExtractServiceImpl implements MiraklBusine
 		final MiraklUpdateShop miraklUpdateShop = createMiraklUpdateFieldRequestForStakeholders(clientUserId,
 				businessStakeHolderModels);
 		final MiraklUpdateShopsRequest request = new MiraklUpdateShopsRequest(List.of(miraklUpdateShop));
-		log.info("Updating tokens for business stakeholders of shop [{}]", clientUserId);
 		log.debug("Update shop request [{}]", ToStringBuilder.reflectionToString(request));
 		try {
-			final var miraklUpdatedShops = miraklOperatorClient.updateShops(request);
+			final MiraklUpdatedShops miraklUpdatedShops = miraklOperatorClient.updateShops(request);
 			Optional.ofNullable(miraklUpdatedShops).ifPresent(
 					response -> log.debug("Update shop response [{}]", ToStringBuilder.reflectionToString(response)));
 		}
@@ -73,16 +74,19 @@ public class MiraklBusinessStakeholderExtractServiceImpl implements MiraklBusine
 	private MiraklUpdateShop createMiraklUpdateFieldRequestForStakeholders(final String clientUserId,
 			final List<BusinessStakeHolderModel> businessStakeHolderModels) {
 		final MiraklUpdateShop miraklUpdateShop = new MiraklUpdateShop();
-		final String shopId = clientUserId;
-		miraklUpdateShop.setShopId(Long.valueOf(shopId));
+		miraklUpdateShop.setShopId(Long.valueOf(clientUserId));
 
+		final List<String> stakeholderTokens = new ArrayList<>();
 		final List<MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue> stakeholdersTokenFields = businessStakeHolderModels
-				.stream()
-				.map(businessStakeHolderModel -> new MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue(
-						BusinessStakeHolderConstants.TOKEN + HYPHEN + businessStakeHolderModel.getStkId(),
-						businessStakeHolderModel.getToken()))
-				.collect(Collectors.toList());
+				.stream().map(businessStakeHolderModel -> {
+					stakeholderTokens.add(businessStakeHolderModel.getToken());
+					return new MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue(
+							BusinessStakeHolderConstants.TOKEN + HYPHEN + businessStakeHolderModel.getStkId(),
+							businessStakeHolderModel.getToken());
+				}).collect(Collectors.toList());
 
+		log.info("Storing business stakeholder tokens [{}] for shop [{}]", String.join(",", stakeholderTokens),
+				clientUserId);
 		miraklUpdateShop.setAdditionalFieldValues(Collections.unmodifiableList(stakeholdersTokenFields));
 
 		return miraklUpdateShop;

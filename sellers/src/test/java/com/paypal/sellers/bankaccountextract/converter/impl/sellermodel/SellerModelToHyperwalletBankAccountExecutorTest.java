@@ -15,26 +15,24 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-class SellerModelToHyperwalletBankAccountStrategyExecutorTest {
+class SellerModelToHyperwalletBankAccountExecutorTest {
 
 	@InjectMocks
-	private SellerModelToHyperwalletBankAccountStrategyExecutor testObj;
+	private SellerModelToHyperwalletBankAccountExecutor testObj;
 
 	@Mock
 	private Strategy<SellerModel, HyperwalletBankAccount> strategy1, strategy2;
 
 	@BeforeEach
 	void setUp() {
-		testObj = new SellerModelToHyperwalletBankAccountStrategyExecutor(Set.of(strategy1, strategy2));
+		testObj = new SellerModelToHyperwalletBankAccountExecutor(Set.of(strategy1, strategy2));
 	}
 
 	@Test
 	void getStrategies_shouldReturnSetOfAvailableStrategies() {
-
-		final var result = testObj.getStrategies();
+		final Set<Strategy<SellerModel, HyperwalletBankAccount>> result = testObj.getStrategies();
 
 		assertThat(result).containsExactlyInAnyOrder(strategy1, strategy2);
-
 	}
 
 }

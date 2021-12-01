@@ -94,9 +94,9 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 				.collect(Collectors.toList());
 
 		log.info("Paid invoices: [{}]",
-				 paidInvoices.stream()
-						 .map(HyperwalletPayment::getClientPaymentId)
-						 .collect(Collectors.joining(",")));
+				paidInvoices.stream()
+						.map(HyperwalletPayment::getClientPaymentId)
+						.collect(Collectors.joining(",")));
 
 		return paidInvoices;
 		//@formatter:on

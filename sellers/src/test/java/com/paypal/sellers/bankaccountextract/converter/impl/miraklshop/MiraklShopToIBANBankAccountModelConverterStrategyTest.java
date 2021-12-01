@@ -8,6 +8,7 @@ import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklAbaBankAccountInformation;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklIbanBankAccountInformation;
 import com.paypal.sellers.bankaccountextract.model.BankAccountType;
+import com.paypal.sellers.bankaccountextract.model.IBANBankAccountModel;
 import com.paypal.sellers.bankaccountextract.model.TransferType;
 import com.paypal.sellers.sellersextract.model.SellerModelConstants;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +20,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static com.paypal.sellers.sellersextract.model.SellerModelConstants.*;
+import static com.paypal.sellers.sellersextract.model.SellerModelConstants.HYPERWALLET_BANK_ACCOUNT_STATE;
+import static com.paypal.sellers.sellersextract.model.SellerModelConstants.HYPERWALLET_BANK_ACCOUNT_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -106,7 +108,7 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 
 		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
 
-		final var result = testObj.execute(miraklShopMock);
+		final IBANBankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off
 		assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", ES_COUNTRY_ISO)
 				.hasFieldOrPropertyWithValue("transferMethodCurrency", EUR_CURRENCY)
@@ -153,7 +155,7 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 
 		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
 
-		final var result = testObj.execute(miraklShopMock);
+		final IBANBankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off
 		assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", ES_COUNTRY_ISO)
 				.hasFieldOrPropertyWithValue("transferType", TransferType.BANK_ACCOUNT)
@@ -171,7 +173,6 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 				.hasFieldOrPropertyWithValue("hyperwalletProgram", HYPERWALLET_PROGRAM);
 
 		//@formatter:on
-
 	}
 
 	@Test
@@ -199,7 +200,7 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 
 		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
 
-		final var result = testObj.execute(miraklShopMock);
+		final IBANBankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off
 		assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", ES_COUNTRY_ISO)
 				.hasFieldOrPropertyWithValue("transferMethodCurrency", EUR_CURRENCY)
@@ -217,14 +218,13 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 				.hasFieldOrPropertyWithValue("token", TOKEN)
 				.hasFieldOrPropertyWithValue("hyperwalletProgram", HYPERWALLET_PROGRAM);
 		//@formatter:on
-
 	}
 
 	@Test
 	void isApplicable_shouldReturnTrue_whenPaymentInformationIsIBAN() {
 		when(miraklShopMock.getPaymentInformation()).thenReturn(miraklIbanBankAccountInformationMock);
 
-		final var result = testObj.isApplicable(miraklShopMock);
+		final boolean result = testObj.isApplicable(miraklShopMock);
 
 		assertThat(result).isTrue();
 	}
@@ -233,7 +233,7 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 	void isApplicable_shouldReturnFalse_whenPaymentInformationIsNotIBAN() {
 		when(miraklShopMock.getPaymentInformation()).thenReturn(miraklABABankAccountInformationMock);
 
-		final var result = testObj.isApplicable(miraklShopMock);
+		final boolean result = testObj.isApplicable(miraklShopMock);
 
 		assertThat(result).isFalse();
 	}
@@ -242,7 +242,7 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 	void isApplicable_shouldReturnFalse_whenNullPaymentInformationIsReceived() {
 		when(miraklShopMock.getPaymentInformation()).thenReturn(null);
 
-		final var result = testObj.isApplicable(miraklShopMock);
+		final boolean result = testObj.isApplicable(miraklShopMock);
 
 		assertThat(result).isFalse();
 	}

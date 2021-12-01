@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 class EmptyPaymentNotificationStrategyTest {
 
-	LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.WARN)
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.WARN)
 			.recordForType(EmptyPaymentNotificationStrategy.class);
 
 	@InjectMocks
@@ -27,14 +27,14 @@ class EmptyPaymentNotificationStrategyTest {
 	void execute() {
 		logTrackerStub.recordForLevel(LogTracker.LogLevel.WARN);
 
-		testObj.execute(null);
+		final Void result = testObj.execute(null);
 
 		assertThat(logTrackerStub.contains("Payment notification received with a null object.")).isTrue();
+		assertThat(result).isNull();
 	}
 
 	@Test
 	void isApplicable_shouldReturnTrue_whenPaymentNotificationBodyModelIsNull() {
-
 		final boolean result = testObj.isApplicable(null);
 
 		assertThat(result).isTrue();
@@ -42,7 +42,6 @@ class EmptyPaymentNotificationStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnFalse_whenPaymentNotificationBodyModelIsNotNull() {
-
 		final boolean result = testObj.isApplicable(paymentNotificationBodyModelMock);
 
 		assertThat(result).isFalse();
