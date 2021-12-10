@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -69,7 +70,7 @@ class SellerModelToHyperWalletUserConverterTest {
 
 	private static final String COMPANY_NAME = "companyName";
 
-	private static final String COMPANY_REGISTRATION_NUMBER = "businessRegistrationId";
+	private static final String COMPANY_REGISTRATION_NUMBER = "companyRegistrationNumber";
 
 	private static final String HYPERWALLET_PROGRAM = "hyperwalletProgram";
 
@@ -91,35 +92,35 @@ class SellerModelToHyperWalletUserConverterTest {
 
 	@BeforeEach
 	void setUp() {
-		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
-		when(sellersHyperwalletApiConfig.getUserStoreTokens()).thenReturn(tokensMock);
 		when(tokensMock.get(HYPERWALLET_PROGRAM)).thenReturn(PROGRAM_TOKEN);
 		when(sellerModelMock.getClientUserId()).thenReturn(CLIENT_USER_ID);
-		when(sellerModelMock.getFirstName()).thenReturn(FIRST_NAME);
-		when(sellerModelMock.getLastName()).thenReturn(SECOND_NAME);
-		when(sellerModelMock.getAddressLine1()).thenReturn(ADDRESS_LINE_ONE);
-		when(sellerModelMock.getAddressLine2()).thenReturn(ADDRESS_LINE_TWO);
+		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
+		when(sellersHyperwalletApiConfig.getUserStoreTokens()).thenReturn(tokensMock);
 		when(sellerModelMock.getBusinessName()).thenReturn(BUSINESS_NAME);
 		when(sellerModelMock.getBusinessType()).thenReturn(SellerBusinessType.PRIVATE_COMPANY);
 		when(sellerModelMock.getCity()).thenReturn(CITY);
-		when(sellerModelMock.getCountry()).thenReturn(COUNTRY);
-		when(sellerModelMock.getCountryOfBirth()).thenReturn(COUNTRY_OF_BIRTH);
-		when(sellerModelMock.getDateOfBirth()).thenReturn(DATE_OF_BIRTH);
-		when(sellerModelMock.getCountryOfNationality()).thenReturn(COUNTRY_OF_NATIONALITY);
-		when(sellerModelMock.getDriversLicenseId()).thenReturn(DRIVERS_LICENSE);
-		when(sellerModelMock.getEmail()).thenReturn(EMAIL);
-		when(sellerModelMock.getGovernmentIdType()).thenReturn(SellerGovernmentIdType.NATIONAL_ID_CARD);
-		when(sellerModelMock.getGovernmentId()).thenReturn(GOVERNMENT_ID);
-		when(sellerModelMock.getPassportId()).thenReturn(PASSPORT_ID);
-		when(sellerModelMock.getMobilePhone()).thenReturn(MOBILE_PHONE);
-		when(sellerModelMock.getPhoneNumber()).thenReturn(PHONE_NUMBER);
 		when(sellerModelMock.getPostalCode()).thenReturn(POSTAL_CODE);
+		when(sellerModelMock.getAddressLine1()).thenReturn(ADDRESS_LINE_ONE);
+		when(sellerModelMock.getCountry()).thenReturn(COUNTRY);
 		when(sellerModelMock.getStateProvince()).thenReturn(STATE_PROVINCE);
-		when(sellerModelMock.getCompanyName()).thenReturn(COMPANY_NAME);
-		when(sellerModelMock.getCompanyRegistrationNumber()).thenReturn(COMPANY_REGISTRATION_NUMBER);
 		when(sellerModelMock.getToken()).thenReturn(USER_TOKEN);
-		when(sellerModelMock.getBusinessRegistrationStateProvince()).thenReturn(BUSINESS_REGISTRATION_STATE_PROVINCE);
+		when(sellerModelMock.getEmail()).thenReturn(EMAIL);
 		when(sellerModelMock.getCompanyRegistrationCountry()).thenReturn(COMPANY_REGISTRATION_COUNTRY);
+		when(sellerModelMock.getBusinessRegistrationStateProvince()).thenReturn(BUSINESS_REGISTRATION_STATE_PROVINCE);
+		when(sellerModelMock.getCompanyRegistrationNumber()).thenReturn(COMPANY_REGISTRATION_NUMBER);
+		lenient().when(sellerModelMock.getAddressLine2()).thenReturn(ADDRESS_LINE_TWO);
+		lenient().when(sellerModelMock.getPhoneNumber()).thenReturn(PHONE_NUMBER);
+		lenient().when(sellerModelMock.getLastName()).thenReturn(SECOND_NAME);
+		lenient().when(sellerModelMock.getFirstName()).thenReturn(FIRST_NAME);
+		lenient().when(sellerModelMock.getCountryOfBirth()).thenReturn(COUNTRY_OF_BIRTH);
+		lenient().when(sellerModelMock.getDateOfBirth()).thenReturn(DATE_OF_BIRTH);
+		lenient().when(sellerModelMock.getCountryOfNationality()).thenReturn(COUNTRY_OF_NATIONALITY);
+		lenient().when(sellerModelMock.getDriversLicenseId()).thenReturn(DRIVERS_LICENSE);
+		lenient().when(sellerModelMock.getGovernmentIdType()).thenReturn(SellerGovernmentIdType.NATIONAL_ID_CARD);
+		lenient().when(sellerModelMock.getGovernmentId()).thenReturn(GOVERNMENT_ID);
+		lenient().when(sellerModelMock.getPassportId()).thenReturn(PASSPORT_ID);
+		lenient().when(sellerModelMock.getMobilePhone()).thenReturn(MOBILE_PHONE);
+		lenient().when(sellerModelMock.getCompanyName()).thenReturn(COMPANY_NAME);
 	}
 
 	@Test
@@ -128,30 +129,25 @@ class SellerModelToHyperWalletUserConverterTest {
 
 		final HyperwalletUser result = testObj.convert(sellerModelMock);
 
-		assertThat(result).hasFieldOrPropertyWithValue("clientUserId", CLIENT_USER_ID)
-				.hasFieldOrPropertyWithValue("businessName", BUSINESS_NAME)
-				.hasFieldOrPropertyWithValue("profileType", HyperwalletUser.ProfileType.BUSINESS)
-				.hasFieldOrPropertyWithValue("firstName", FIRST_NAME)
-				.hasFieldOrPropertyWithValue("lastName", SECOND_NAME)
-				.hasFieldOrPropertyWithValue("dateOfBirth", DATE_OF_BIRTH)
-				.hasFieldOrPropertyWithValue("countryOfBirth", COUNTRY_OF_BIRTH)
-				.hasFieldOrPropertyWithValue("countryOfNationality", COUNTRY_OF_NATIONALITY)
-				.hasFieldOrPropertyWithValue("phoneNumber", PHONE_NUMBER)
-				.hasFieldOrPropertyWithValue("mobileNumber", MOBILE_PHONE).hasFieldOrPropertyWithValue("email", EMAIL)
-				.hasFieldOrPropertyWithValue("governmentId", GOVERNMENT_ID)
-				.hasFieldOrPropertyWithValue("passportId", PASSPORT_ID)
-				.hasFieldOrPropertyWithValue("addressLine1", ADDRESS_LINE_ONE)
-				.hasFieldOrPropertyWithValue("addressLine2", ADDRESS_LINE_TWO).hasFieldOrPropertyWithValue("city", CITY)
-				.hasFieldOrPropertyWithValue("stateProvince", STATE_PROVINCE)
-				.hasFieldOrPropertyWithValue("country", COUNTRY).hasFieldOrPropertyWithValue("postalCode", POSTAL_CODE)
-				.hasFieldOrPropertyWithValue("programToken", PROGRAM_TOKEN)
-				.hasFieldOrPropertyWithValue("driversLicenseId", DRIVERS_LICENSE)
-				.hasFieldOrPropertyWithValue("businessType", HyperwalletUser.BusinessType.PRIVATE_COMPANY)
-				.hasFieldOrPropertyWithValue("governmentIdType", HyperwalletUser.GovernmentIdType.NATIONAL_ID_CARD)
-				.hasFieldOrPropertyWithValue("businessOperatingName", COMPANY_NAME)
-				.hasFieldOrPropertyWithValue("token", USER_TOKEN)
-				.hasFieldOrPropertyWithValue("businessRegistrationCountry", COMPANY_REGISTRATION_COUNTRY)
-				.hasFieldOrPropertyWithValue("businessRegistrationStateProvince", BUSINESS_REGISTRATION_STATE_PROVINCE);
+		assertThat(result).hasAllNullFieldsOrPropertiesExcept("clientUserId", "businessName", "profileType",
+				"businessType", "addressLine1", "city", "stateProvince", "postalCode", "programToken", "country",
+				"token", "inclusions", "email", "businessRegistrationCountry", "businessRegistrationStateProvince",
+				"businessRegistrationId");
+		assertThat(result.getClientUserId()).isEqualTo(CLIENT_USER_ID);
+		assertThat(result.getBusinessName()).isEqualTo(BUSINESS_NAME);
+		assertThat(result.getProfileType()).isEqualTo(HyperwalletUser.ProfileType.BUSINESS);
+		assertThat(result.getBusinessType()).isEqualTo(HyperwalletUser.BusinessType.PRIVATE_COMPANY);
+		assertThat(result.getAddressLine1()).isEqualTo(ADDRESS_LINE_ONE);
+		assertThat(result.getCity()).isEqualTo(CITY);
+		assertThat(result.getStateProvince()).isEqualTo(STATE_PROVINCE);
+		assertThat(result.getPostalCode()).isEqualTo(POSTAL_CODE);
+		assertThat(result.getProgramToken()).isEqualTo(PROGRAM_TOKEN);
+		assertThat(result.getToken()).isEqualTo(USER_TOKEN);
+		assertThat(result.getCountry()).isEqualTo(COUNTRY);
+		assertThat(result.getEmail()).isEqualTo(EMAIL);
+		assertThat(result.getBusinessRegistrationCountry()).isEqualTo(COMPANY_REGISTRATION_COUNTRY);
+		assertThat(result.getBusinessRegistrationStateProvince()).isEqualTo(BUSINESS_REGISTRATION_STATE_PROVINCE);
+		assertThat(result.getBusinessRegistrationId()).isEqualTo(COMPANY_REGISTRATION_NUMBER);
 	}
 
 	@Test

@@ -38,5 +38,6 @@ sonarqube {
         property "sonar.cpd.exclusions", "**/sellers/sellersextract/model/**," +
                 "**/sellers/bankaccountextract/model/**," +
                 "**/infrastructure/events/**"
+        property "sonar.qualitygate.wait", true
     }
 }
