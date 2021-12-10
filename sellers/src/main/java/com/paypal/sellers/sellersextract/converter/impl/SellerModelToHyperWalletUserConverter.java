@@ -25,45 +25,46 @@ public class SellerModelToHyperWalletUserConverter implements Converter<SellerMo
 	 */
 	@Override
 	public HyperwalletUser convert(final SellerModel sellerModel) {
-		//@formatter:off
 		final HyperwalletUser hyperwalletUser = new HyperwalletUser();
+		final HyperwalletUser.ProfileType profileType = EnumUtils.getEnum(HyperwalletUser.ProfileType.class,
+				sellerModel.getProfileType().name(), HyperwalletUser.ProfileType.UNKNOWN);
+
 		hyperwalletUser.setClientUserId(sellerModel.getClientUserId());
 		hyperwalletUser.setBusinessName(sellerModel.getBusinessName());
-		hyperwalletUser.setProfileType(EnumUtils.getEnum(HyperwalletUser.ProfileType.class,
-				sellerModel.getProfileType().name(), HyperwalletUser.ProfileType.UNKNOWN));
-		hyperwalletUser.setFirstName(sellerModel.getFirstName());
-		hyperwalletUser.setLastName(sellerModel.getLastName());
-		hyperwalletUser.setDateOfBirth(sellerModel.getDateOfBirth());
-		hyperwalletUser.setCountryOfBirth(sellerModel.getCountryOfBirth());
-		hyperwalletUser.setCountryOfNationality(sellerModel.getCountryOfNationality());
-		hyperwalletUser.setPhoneNumber(sellerModel.getPhoneNumber());
-		hyperwalletUser.setMobileNumber(sellerModel.getMobilePhone());
-		hyperwalletUser.setEmail(sellerModel.getEmail());
-		hyperwalletUser.setGovernmentId(sellerModel.getGovernmentId());
-		hyperwalletUser.setPassportId(sellerModel.getPassportId());
+		hyperwalletUser.setProfileType(profileType);
+		Optional.ofNullable(sellerModel.getBusinessType()).map(Enum::name).map(HyperwalletUser.BusinessType::valueOf)
+				.ifPresent(hyperwalletUser::setBusinessType);
 		hyperwalletUser.setAddressLine1(sellerModel.getAddressLine1());
-		hyperwalletUser.setAddressLine2(sellerModel.getAddressLine2());
 		hyperwalletUser.setCity(sellerModel.getCity());
 		hyperwalletUser.setStateProvince(sellerModel.getStateProvince());
-		hyperwalletUser.setCountry(sellerModel.getCountry());
 		hyperwalletUser.setPostalCode(sellerModel.getPostalCode());
-		hyperwalletUser.setProgramToken(Optional.ofNullable(sellersHyperwalletApiConfig.getUserStoreTokens().get(sellerModel.getHyperwalletProgram())).orElse(null));
-		hyperwalletUser.setDriversLicenseId(sellerModel.getDriversLicenseId());
+		hyperwalletUser.setCountry(sellerModel.getCountry());
+		hyperwalletUser.setProgramToken(
+				sellersHyperwalletApiConfig.getUserStoreTokens().get(sellerModel.getHyperwalletProgram()));
 		hyperwalletUser.setToken(sellerModel.getToken());
-		hyperwalletUser.setBusinessOperatingName(Optional.ofNullable(sellerModel.getCompanyName()).orElse(null));
-		hyperwalletUser.setBusinessRegistrationId(Optional.ofNullable(sellerModel.getCompanyRegistrationNumber()).orElse(null));
-		hyperwalletUser.setBusinessRegistrationCountry(Optional.ofNullable(sellerModel.getCompanyRegistrationCountry()).orElse(null));
-		hyperwalletUser.setBusinessRegistrationStateProvince(Optional.ofNullable(sellerModel.getBusinessRegistrationStateProvince()).orElse(null));
+		hyperwalletUser.setEmail(sellerModel.getEmail());
+		hyperwalletUser.setBusinessRegistrationCountry(sellerModel.getCompanyRegistrationCountry());
+		hyperwalletUser.setBusinessRegistrationStateProvince(sellerModel.getBusinessRegistrationStateProvince());
+		hyperwalletUser.setBusinessRegistrationId(sellerModel.getCompanyRegistrationNumber());
 
-		Optional.ofNullable(sellerModel.getBusinessType())
-				.map(Enum::name)
-				.map(HyperwalletUser.BusinessType::valueOf)
-				.ifPresent(hyperwalletUser::setBusinessType);
-		Optional.ofNullable(sellerModel.getGovernmentIdType())
-				.map(Enum::name)
-				.map(HyperwalletUser.GovernmentIdType::valueOf)
-				.ifPresent(hyperwalletUser::setGovernmentIdType);
-		//@formatter:on
+		if (HyperwalletUser.ProfileType.INDIVIDUAL.equals(profileType)) {
+			hyperwalletUser.setFirstName(sellerModel.getFirstName());
+			hyperwalletUser.setLastName(sellerModel.getLastName());
+			hyperwalletUser.setDateOfBirth(sellerModel.getDateOfBirth());
+			hyperwalletUser.setCountryOfBirth(sellerModel.getCountryOfBirth());
+			hyperwalletUser.setCountryOfNationality(sellerModel.getCountryOfNationality());
+			hyperwalletUser.setPhoneNumber(sellerModel.getPhoneNumber());
+			hyperwalletUser.setMobileNumber(sellerModel.getMobilePhone());
+			hyperwalletUser.setAddressLine2(sellerModel.getAddressLine2());
+			hyperwalletUser.setGovernmentId(sellerModel.getGovernmentId());
+			hyperwalletUser.setPassportId(sellerModel.getPassportId());
+			hyperwalletUser.setDriversLicenseId(sellerModel.getDriversLicenseId());
+
+			hyperwalletUser.setBusinessOperatingName(sellerModel.getCompanyName());
+
+			Optional.ofNullable(sellerModel.getGovernmentIdType()).map(Enum::name)
+					.map(HyperwalletUser.GovernmentIdType::valueOf).ifPresent(hyperwalletUser::setGovernmentIdType);
+		}
 
 		return hyperwalletUser;
 	}
