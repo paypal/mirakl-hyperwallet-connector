@@ -1,16 +1,14 @@
 # Hyperwallet Mirakl Connector
 
-The Hyperwallet Mirakl Connector (HMC) is a service that integrates the Hyperwallet and Mirakl
-platforms.
+The Hyperwallet Mirakl Connector (HMC) is a service that integrates the Hyperwallet and Mirakl platforms.
 
 ## Installation
 
 After downloading this repository, you must acquire a Mirakl login account to access the Mirakl
-  Artifactory https://artifactory.mirakl.net/artifactory/mirakl-ext-repo/. See the "Access to
-  Artifactory" topic
-  on https://hyperwallet-dev.mirakl.net/help/Customers/topics/Connectors/SDK/java/access_java_sdk.html
-    - These account credentials will be used for setting the Mirakl SDK User and Mirakl SDK Password
-      environment variables
+Artifactory https://artifactory.mirakl.net/artifactory/mirakl-ext-repo/. See the "Access to Artifactory" topic
+on https://hyperwallet-dev.mirakl.net/help/Customers/topics/Connectors/SDK/java/access_java_sdk.html
+
+- These account credentials will be used for setting the Mirakl SDK User and Mirakl SDK Password environment variables
 
 ### System prerequisites for execution & deployment
 
@@ -20,7 +18,9 @@ After downloading this repository, you must acquire a Mirakl login account to ac
 
 This connector is configured primarily through the use of environment variables.
 
-The following table provides every environment variable, and describes whether the environment variable is mandatory or optional (either by having a default value or only being used when specific features are enabled), and a description and example.
+The following table provides every environment variable, and describes whether the environment variable is mandatory or
+optional (either by having a default value or only being used when specific features are enabled), and a description and
+example.
 
 | ENVIRONMENT VARIABLE                                                | MANDATORY                                                    | DESCRIPTION                                                                                                                                                                          | EXAMPLE VALUE                              |
 |-------------------------------------------------------------------- |--------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
@@ -61,28 +61,38 @@ The following table provides every environment variable, and describes whether t
 | `PAYPAL_HYPERWALLET_SIGN_ALGORITHM`                                 |   NO                                                         | The sign algorithm for Layer7 encryption ([Hyperwallet encryption](https://docs.hyperwallet.com/content/api/v4/overview/payload-encryption))                                         | `RS256`                                    |
 | `PAYPAL_HYPERWALLET_ENCRYPTION_METHOD`                              |   NO                                                         | The encryption method used for Layer7 encryption ([Hyperwallet encryption](https://docs.hyperwallet.com/content/api/v4/overview/payload-encryption))                                 | `A256CBC-HS512`                            |
 | `PAYPAL_HYPERWALLET_PRIVATE_JWK_JSON_LOCATION`                      |   NO                                                         | The private/public JWK set location                                                                                                                                                  | `/your/path/to/private/keys/jwk_set.key`   |
-| `PAYPAL_HYPERWALLET_PUBLIC_JWK_JSON_LOCATION`                       |   NO                                                         | The public JWK set location.                                                                                                                                                         |`https://example.com/hw/shared`             |
+| `PAYPAL_HYPERWALLET_PUBLIC_JWK_JSON_LOCATION`                       |   NO                                                         | The public JWK set location.                                                                                                                                                         | `https://example.com/hw/shared`            |
+| `PAYPAL_HYPERWALLET_KYC_AUTOMATED`                                  |   NO (default value: `false`)                                 | Set to `true` if using the automated API-driven verification flow, where the connector updates KYC statuses on sellers and the required statuses on documents in Mirakl. Set to `false` for the Managed verification flow, where the connector only updates KYC statuses on sellers in Mirakl, or for setups where verification is not needed. | Possible values:`true` or `false`          |
 | `PAYPAL_MOCK_SERVER_URL`                                            |   YES                                                        | The URL to your webhook/mock server. Only used when running with the `qa` Spring profile.                                                                                            | `https://mockserver.example.com`           |
 
-A sample .env file is provided in this repository, primarily for use in the Docker container deployment scenario (documented below). The .env file can also be used to source environment variables for use in local deployment, if you prefer to store these in a file. If you do this, remember that for local deployment you will still need to properly export/source the variables from the file and into the executing shell.
+A sample .env file is provided in this repository, primarily for use in the Docker container deployment scenario (
+documented below). The .env file can also be used to source environment variables for use in local deployment, if you
+prefer to store these in a file. If you do this, remember that for local deployment you will still need to properly
+export/source the variables from the file and into the executing shell.
 
 ### Property Files
 
-This is a multi-module Gradle project composed by Spring Boot modules ([Official gradle Documentation](https://docs.gradle.org/current/userguide/multi_project_builds.html))
+This is a multi-module Gradle project composed by Spring Boot
+modules ([Official gradle Documentation](https://docs.gradle.org/current/userguide/multi_project_builds.html))
 
 Every module contains a configuration file located under the `MODULE_NAME/src/main/resources` folder path.
 
-All configuration should be done by setting environment variables, as described in the table above. 
+All configuration should be done by setting environment variables, as described in the table above.
 
-The module configuration files listed below contain properties that retrieve their values directly from environment variables. The modules and their configuration files are described here, for troubleshooting purposes or to support advanced configuration & deployment:
+The module configuration files listed below contain properties that retrieve their values directly from environment
+variables. The modules and their configuration files are described here, for troubleshooting purposes or to support
+advanced configuration & deployment:
 
-- **sellers**: Synchronises seller information between Mirakl and Hyperwallet.  
+- **sellers**: Synchronises seller information between Mirakl and Hyperwallet.
 - **kyc**: Pushes identification documents from Mirakl to Hyperwallet for KYC purposes.
-- **invoices**: Distributes funds to sellers based on Mirakl's invoices and manual credit notes, and processes commissions for the operator. 
-- **notifications**: Receives incoming webhook notifications from Hyperwallet and forwards them for further processing by other modules.
+- **invoices**: Distributes funds to sellers based on Mirakl's invoices and manual credit notes, and processes
+  commissions for the operator.
+- **notifications**: Receives incoming webhook notifications from Hyperwallet and forwards them for further processing
+  by other modules.
 - **reports**: Generates the CSV report from invoices and manual credit notes from Mirakl and Braintree transactions.
 - **infrastructure**: Contains common functionality used by the rest of the modules.
-- **web**: Centralises the startup of the web application and exposes all the endpoints for manually running the cron jobs.  
+- **web**: Centralises the startup of the web application and exposes all the endpoints for manually running the cron
+  jobs.
 
 | CONFIGURATION FILE                                      | MODULE          | DESCRIPTION                                                                                                                                                                                                   |
 | ------------------------------------------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -98,9 +108,10 @@ The module configuration files listed below contain properties that retrieve the
 
 ## Execution & Deployment
 
-The connector can either be deployed locally, or with a container.  
+The connector can either be deployed locally, or with a container.
 
-To ease testing & initial deployment, we strongly recommend to start with the containerized version using Docker Compose and the provided templates.
+To ease testing & initial deployment, we strongly recommend to start with the containerized version using Docker Compose
+and the provided templates.
 
 ### Local
 
@@ -109,11 +120,13 @@ For local execution you will need to build the connector and start it up with th
 * `./gradlew build`
 * `./gradlew web:bootRun`
 
-We strongly recommend for testing and development purposes to use the containerized version with Docker Compose, explained in the following sections.
+We strongly recommend for testing and development purposes to use the containerized version with Docker Compose,
+explained in the following sections.
 
 #### Running whole stack with Docker Compose
 
-To make it easier to run the application, as it depends on multiple services, a Docker Compose configuration exists within the project.
+To make it easier to run the application, as it depends on multiple services, a Docker Compose configuration exists
+within the project.
 
 #### Building the Docker image with Docker Compose
 
@@ -125,11 +138,13 @@ The Docker image will create the file `docker-compose.yml`, which is based on th
 
 This Gradle task will run the Docker image based on the generated `docker-compose.yml` file:
 
-`./gradlew dockerComposeUp`  
+`./gradlew dockerComposeUp`
 
-The Docker deploy uses the .env file to apply all the mandatory environment variables defined previously [in the environment variables table](#Configuration).  
- 
-Make sure your .env file contains all the mandatory environment variables, otherwise the connector will not be able to start.
+The Docker deploy uses the .env file to apply all the mandatory environment variables defined
+previously [in the environment variables table](#Configuration).
+
+Make sure your .env file contains all the mandatory environment variables, otherwise the connector will not be able to
+start.
 
 To check for configuration issues run:   
 `docker-compose --env-file .env config` and see if the variables are all correctly set.
@@ -144,14 +159,16 @@ This will start the services defined in `docker-compose.yml`.
 
 #### Production build
 
-In order to generate a Docker Compose ready to be used in production, the build command needs the property `prod` set to `true`:
+In order to generate a Docker Compose ready to be used in production, the build command needs the property `prod` set
+to `true`:
 
 `./gradlew buildDockerCompose -Pprod=true`
 
 ## Operator Commissions
 
-By default, the operator commissions feature is enabled. This is set in the property `invoices.operator.commissions.enabled` in the `invoices.properties` file. 
-This feature can be disabled by setting the value of this property to `false`.
+By default, the operator commissions feature is enabled. This is set in the
+property `invoices.operator.commissions.enabled` in the `invoices.properties` file. This feature can be disabled by
+setting the value of this property to `false`.
 
 ## Program Configuration
 
@@ -159,29 +176,26 @@ This feature can be disabled by setting the value of this property to `false`.
 
 The default setup provides a single-level hierarchy where 1 Issuing Merchant corresponds to 1 Issuing Store.
 
-This is defined in Mirakl using the `hw-program` shop custom field (see the Mirakl Configuration
-section in the Solution Guide), which for a single hierarchy program should contain a single value
-list with only one value `DEFAULT`.
+This is defined in Mirakl using the `hw-program` shop custom field (see the Mirakl Configuration section in the Solution
+Guide), which for a single hierarchy program should contain a single value list with only one value `DEFAULT`.
 
-The described environment variables dependant on the field `hw-program` mentioned on the setup step are 
-designed for this hierarchy type.
+The described environment variables dependant on the field `hw-program` mentioned on the setup step are designed for
+this hierarchy type.
 
 ### Multiple Programs
 
-The Hyperwallet, Mirakl, and HMC configurations can be extended to accommodate a multiple program
-hierarchy structure, where 1 Issuing Merchant can have multiple Issuing Stores.
+The Hyperwallet, Mirakl, and HMC configurations can be extended to accommodate a multiple program hierarchy structure,
+where 1 Issuing Merchant can have multiple Issuing Stores.
 
-Based on Hyperwallet's configuration, it will be necessary to modify the Hyperwallet Program
-configuration.
+Based on Hyperwallet's configuration, it will be necessary to modify the Hyperwallet Program configuration.
 
-By default, HMC supports just one. Just in case it is needed multiple values, we need to do some
-easy modifications.
+By default, HMC supports just one. Just in case it is needed multiple values, we need to do some easy modifications.
 
 For example:
 
 * We have two different Hyperwallet programs: UK and Europe.
-* We defined in Mirakl a custom attribute which label is `hw-program` as `SingleValueList` with these
-  values: `EUROPE` and `UK`
+* We defined in Mirakl a custom attribute which label is `hw-program` as `SingleValueList` with these values: `EUROPE`
+  and `UK`
 
 In that case, we need to setup the following variables as described:
 
@@ -192,8 +206,7 @@ In that case, we need to setup the following variables as described:
     * Remove `invoices.hyperwallet.api.hyperwalletprogram.token.DEFAULT` property
     * Remove `invoices.operator.commissions.bankAccount.token.DEFAULT` property
     * Define token for UK: `invoices.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
-    * Define token for
-      EUROPE: `invoices.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
+    * Define token for EUROPE: `invoices.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
     * Define the operator bank account token for
       UK: `invoices.operator.commissions.bankAccount.token.UK = <YOUR_UK_BANK_ACCOUNT_TOKEN>`
     * Define the operator bank account token for
@@ -202,51 +215,46 @@ In that case, we need to setup the following variables as described:
 * File: `kyc.properties`:
     * Remove `kyc.hyperwallet.api.hyperwalletprogram.token.DEFAULT`
     * Define token for UK: `kyc.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
-    * Define token for
-      EUROPE: `kyc.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
+    * Define token for EUROPE: `kyc.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
 
 * File: `seller.properties`:
     * Remove `sellers.hyperwallet.api.hyperwalletprogram.token.DEFAULT`
     * Define token for UK: `sellers.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
-    * Define token for
-      EUROPE: `sellers.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
+    * Define token for EUROPE: `sellers.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
 
-If you're using Docker, remember to update the Docker Compose template file to reflect the existence
-of these 2 new environments. Add them into the Docker Compose template file you're
-using (`docker-compose.prod.yml.template` or `docker-compose.yml.template`), for example with UK and
-Europe:
+If you're using Docker, remember to update the Docker Compose template file to reflect the existence of these 2 new
+environments. Add them into the Docker Compose template file you're using (`docker-compose.prod.yml.template`
+or `docker-compose.yml.template`), for example with UK and Europe:
 
 - `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_PAYMENTS_UK`
 - `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_USERS_UK`
 - `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_PAYMENTS_EUROPE`
 - `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_USERS_EUROPE`
 
-Besides, if you had the necessity of adapting the property files to accommodate this kind of hierarchy you can make use of
-environment variables substitution feature built in with Spring Boot ([link](https://docs.spring.io/spring-boot/docs/2.4.5/reference/html/howto.html#howto-externalize-configuration))
+Besides, if you had the necessity of adapting the property files to accommodate this kind of hierarchy you can make use
+of environment variables substitution feature built in with Spring
+Boot ([link](https://docs.spring.io/spring-boot/docs/2.4.5/reference/html/howto.html#howto-externalize-configuration))
 
-This way the tokens would be store in a safe manner.  
+This way the tokens would be store in a safe manner.
 
 ## Financial Reporting (Braintree) Configuration
 
-The Hyperwallet Mirakl Connector has the ability to generate a financial report, compiling
-information from the Mirakl and Braintree platforms.
+The Hyperwallet Mirakl Connector has the ability to generate a financial report, compiling information from the Mirakl
+and Braintree platforms.
 
-For enabling this functionality you will need to add the `financial-report` value to
-the `PAYPAL_SPRING_PROFILE_ACTIVE`, for example: `PAYPAL_SPRING_PROFILE_ACTIVE=dev,financial-report`.
+For enabling this functionality you will need to add the `financial-report` value to the `PAYPAL_SPRING_PROFILE_ACTIVE`,
+for example: `PAYPAL_SPRING_PROFILE_ACTIVE=dev,financial-report`.
 
 ## Setting up jobs
 
-The Hyperwallet Mirakl Connector runs jobs to perform various integrations between the Hyperwallet
-and Mirakl platforms.
+The Hyperwallet Mirakl Connector runs jobs to perform various integrations between the Hyperwallet and Mirakl platforms.
 
-* Individual sellers extract job: Extracts the individual seller information from Mirakl and creates
-  it on Hyperwallet.
-* Professional sellers extract job: Extracts the professional seller information from Mirakl and
-  creates it on Hyperwallet.
-* Bank Accounts job sellers extract job: Extracts the bank detail information from sellers and
-  creates a bank on account Hyperwallet associated to the corresponding user in Hyperwallet
-* Documents extract job: Extracts the documents from Mirakl and pushes them into Hyperwallet for KYC
-  purposes.
+* Individual sellers extract job: Extracts the individual seller information from Mirakl and creates it on Hyperwallet.
+* Professional sellers extract job: Extracts the professional seller information from Mirakl and creates it on
+  Hyperwallet.
+* Bank Accounts job sellers extract job: Extracts the bank detail information from sellers and creates a bank on account
+  Hyperwallet associated to the corresponding user in Hyperwallet
+* Documents extract job: Extracts the documents from Mirakl and pushes them into Hyperwallet for KYC purposes.
 
 Those jobs are currently setup across the properties file as this table follows:
 
@@ -258,11 +266,10 @@ Those jobs are currently setup across the properties file as this table follows:
 | `invoices.extractinvoices.scheduling.cronexpression`                  | 1 0 0 1/1 * ? *   | `invoices/src/main/resources/invoices.properties`    |
 | `kyc.documentsextract.scheduling.cronexpression`                      | 1 30 0 1/1 * ? *  | `kyc/src/main/resources/kyc.properties`              |
 
-The existing jobs can be executed manually through their endpoints. All endpoints support 2 optional
-parameters:
+The existing jobs can be executed manually through their endpoints. All endpoints support 2 optional parameters:
 
-* `delta`: When provided for an extract job, the job will only process entities that were
-  updated/created after this date
+* `delta`: When provided for an extract job, the job will only process entities that were updated/created after this
+  date
 * `name` : When provided, the job will be given this name
 
 |                       Param                                           |            Format              |
@@ -286,32 +293,30 @@ See example of valid execution request:
 
 ## Webhook Notifications
 
-The Hyperwallet platform is capable of sending event notifications via webhook. This connector comes
-with a built-in listener to process supported webhook notification types, and works with both basic
-authentication and payload encryption.
+The Hyperwallet platform is capable of sending event notifications via webhook. This connector comes with a built-in
+listener to process supported webhook notification types, and works with both basic authentication and payload
+encryption.
 
-The endpoint for the webhook listener is on the path: `/webhooks/notifications`. This path is used
-by default, and no properties or configuration are used for enabling or setting up the webhook
-listener.
+The endpoint for the webhook listener is on the path: `/webhooks/notifications`. This path is used by default, and no
+properties or configuration are used for enabling or setting up the webhook listener.
 
-During the on-boarding process, Hyperwallet will enable webhook notifications by registering the
-webhook listener endpoint URL (for example, https://hmc.example.com/webhooks/notifications).
+During the on-boarding process, Hyperwallet will enable webhook notifications by registering the webhook listener
+endpoint URL (for example, https://hmc.example.com/webhooks/notifications).
 
 ## Payload Encryption
 
 This connector supports payload encryption for connecting with Hyperwallet's
-API (https://docs.hyperwallet.com/content/api/v4/overview/payload-encryption). This payload
-encryption feature is based on JOSE (https://jose.readthedocs.io/en/latest/) and
-JWT (https://jwt.io/).
+API (https://docs.hyperwallet.com/content/api/v4/overview/payload-encryption). This payload encryption feature is based
+on JOSE (https://jose.readthedocs.io/en/latest/) and JWT (https://jwt.io/).
 
 If you need further information, consult the Hyperwallet v4 API reference
 documentation (https://docs.hyperwallet.com/content/api/v4/overview/payload-encryption).
 
 ### Setting up JWK key sets
 
-To communicate with the connector Hyperwallet needs to retrieve a jwk key set and this set of keys
-should be published in an endpoint with a valid TLS certificate, it is needed that you generate one
-key for signing and another one for encrypting the messages.
+To communicate with the connector Hyperwallet needs to retrieve a jwk key set and this set of keys should be published
+in an endpoint with a valid TLS certificate, it is needed that you generate one key for signing and another one for
+encrypting the messages.
 
 You can generate the keys via this website: https://mkjwk.org/
 
@@ -326,8 +331,8 @@ Supported JWE encryption algorithms are:
 - RSA-OAEP-256
 - ECDH-ES, ECDH-ES+A128KW, ECDH-ES+A192KW, ECDH-ES+A256KW
 
-Once you have generated both keys you need create 2 files, one with only the public keys and another
-one containing both public and private keys, like the following examples
+Once you have generated both keys you need create 2 files, one with only the public keys and another one containing both
+public and private keys, like the following examples
 
 ```json lines
 {
@@ -402,12 +407,12 @@ Following this previous example the environment variables values for UAT would b
 `PAYPAL_HYPERWALLET_PUBLIC_JWK_JSON_LOCATION  = /your/path/to/public/keys/jwk_set.key
 ```
 
-By default, and under the encrypted profile, the connector allows you to share your public keys
-throughout this endpoint: ```/jwkset```
+By default, and under the encrypted profile, the connector allows you to share your public keys throughout this
+endpoint: ```/jwkset```
 
 Take into account that this file can also be published in a different server than the connector (
-like an S3 bucket) and you'll simply need to modify the `hyperwallet.api.hmcPublicKeyLocation` with
-the proper URL where this file is published.
+like an S3 bucket) and you'll simply need to modify the `hyperwallet.api.hmcPublicKeyLocation` with the proper URL where
+this file is published.
 
 **_IMPORTANT: Publish publicly only the PUBLIC keys JSON file_**
 
@@ -416,16 +421,16 @@ file the profile `encrypted`, e.g. for a development machine:
 
 `spring.profiles.active=dev,encrypted`
 
-Notice also that Hyperwallet enables the possibility of having the webhook notifications encrypted,
-if you have asked this feature to be enabled, the connector will take care of decrypting the
-notifications whenever the profile `encrypted` is set.
+Notice also that Hyperwallet enables the possibility of having the webhook notifications encrypted, if you have asked
+this feature to be enabled, the connector will take care of decrypting the notifications whenever the
+profile `encrypted` is set.
 
 ## Other endpoints
 
 ### Health check
 
-The connector exposes via `spring-boot-actuator` library a health check endpoint under
-route `/actuator/health` that will return an object like this whenever the server is up and running:
+The connector exposes via `spring-boot-actuator` library a health check endpoint under route `/actuator/health` that
+will return an object like this whenever the server is up and running:
 
 ```json
 {
@@ -453,4 +458,3 @@ to return a version object:
   }
 }
 ```
-
