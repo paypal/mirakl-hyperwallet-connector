@@ -2,11 +2,14 @@ package com.paypal.kyc.strategies.status;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.core.exception.MiraklException;
+import com.mirakl.client.domain.common.error.ErrorBean;
 import com.mirakl.client.mmp.domain.shop.MiraklShopKyc;
 import com.mirakl.client.mmp.domain.shop.MiraklShopKycStatus;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
+import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShopWithErrors;
+import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShopReturn;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
@@ -27,6 +30,7 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -43,13 +47,20 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 
 	protected static final String COMMA = ",";
 
+	protected static final String MAIL_SUBJECT = "Issue detected updating KYC information in Mirakl";
+
+	protected static final String MSG_ERROR_DETECTED = "Something went wrong updating KYC information of shop [%s]%n%s";
+
 	protected static final String ERROR_MESSAGE_PREFIX = "There was an error, please check the logs for further information:\n";
 
-	protected final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient;
+	@Value("${hyperwallet.kycAutomated}")
+	protected boolean isKycAutomated;
 
 	protected final MailNotificationUtil mailNotificationUtil;
 
 	protected final KYCRejectionReasonService kycRejectionReasonService;
+
+	protected final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient;
 
 	protected final MiraklSellerDocumentsExtractService miraklSellerDocumentsExtractService;
 
@@ -86,19 +97,22 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 			log.info("Updating KYC status for shop [{}]", shopId);
 			try {
 				final MiraklUpdatedShops response = miraklOperatorClient.updateShops(request);
-				Optional.ofNullable(response)
-						.ifPresent(miraklUpdatedShopsResponse -> log.debug("Mirakl update shop response: [{}]",
-								ToStringBuilder.reflectionToString(miraklUpdatedShopsResponse)));
-				log.info("KYC status updated to [{}] for shop [{}]", status.name(), shopId);
+				if (response == null) {
+					log.error("No response was received for update request for shop [{}]", shopId);
+				}
+				else {
+					log.debug("Mirakl update shop response: [{}]", ToStringBuilder.reflectionToString(response));
+					final List<MiraklUpdatedShopReturn> shopReturns = response.getShopReturns();
+					shopReturns.forEach(this::logShopUpdates);
+				}
 
 				deleteInvalidDocuments(kycUserStatusNotificationBodyModel);
 			}
 			catch (final MiraklException ex) {
-				log.error("Something went wrong updating information of shop [{}]", shopId);
-				mailNotificationUtil.sendPlainTextEmail("Issue detected updating KYC information in Mirakl",
-						String.format(
-								ERROR_MESSAGE_PREFIX + "Something went wrong updating KYC information of shop [%s]%n%s",
-								shopId, MiraklLoggingErrorsUtil.stringify(ex)));
+				final String errorMessage = String.format(MSG_ERROR_DETECTED, shopId,
+						MiraklLoggingErrorsUtil.stringify(ex));
+				log.error(errorMessage);
+				mailNotificationUtil.sendPlainTextEmail(MAIL_SUBJECT, ERROR_MESSAGE_PREFIX + errorMessage);
 			}
 		}
 	}
@@ -159,24 +173,26 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 		miraklUpdateShop.setKyc(new MiraklShopKyc(status, kycRejectionReasonService.getRejectionReasonDescriptions(kycUserStatusNotificationBodyModel.getReasonsType())));
 		//@formatter:on
 
-		final List<MiraklRequestAdditionalFieldValue> additionalFieldValues = new ArrayList<>();
-		if (HyperwalletUser.VerificationStatus.REQUIRED
-				.equals(kycUserStatusNotificationBodyModel.getVerificationStatus())) {
-			final MiraklSimpleRequestAdditionalFieldValue kycVerificationStatusCustomField = new MiraklSimpleRequestAdditionalFieldValue();
-			kycVerificationStatusCustomField.setCode(HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_BUSINESS_FIELD);
-			kycVerificationStatusCustomField.setValue(Boolean.TRUE.toString());
-			additionalFieldValues.add(kycVerificationStatusCustomField);
-		}
-		if (HyperwalletUser.LetterOfAuthorizationStatus.REQUIRED
-				.equals(kycUserStatusNotificationBodyModel.getLetterOfAuthorizationStatus())) {
-			final MiraklSimpleRequestAdditionalFieldValue kycLetterOfAuthorizationStatusCustomField = new MiraklSimpleRequestAdditionalFieldValue();
-			kycLetterOfAuthorizationStatusCustomField
-					.setCode(HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD);
-			kycLetterOfAuthorizationStatusCustomField.setValue(Boolean.TRUE.toString());
-			additionalFieldValues.add(kycLetterOfAuthorizationStatusCustomField);
-		}
-		if (!CollectionUtils.isEmpty(additionalFieldValues)) {
-			miraklUpdateShop.setAdditionalFieldValues(additionalFieldValues);
+		if (isKycAutomated()) {
+			final List<MiraklRequestAdditionalFieldValue> additionalFieldValues = new ArrayList<>();
+			if (HyperwalletUser.VerificationStatus.REQUIRED
+					.equals(kycUserStatusNotificationBodyModel.getVerificationStatus())) {
+				final MiraklSimpleRequestAdditionalFieldValue kycVerificationStatusCustomField = new MiraklSimpleRequestAdditionalFieldValue();
+				kycVerificationStatusCustomField.setCode(HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_BUSINESS_FIELD);
+				kycVerificationStatusCustomField.setValue(Boolean.TRUE.toString());
+				additionalFieldValues.add(kycVerificationStatusCustomField);
+			}
+			if (HyperwalletUser.LetterOfAuthorizationStatus.REQUIRED
+					.equals(kycUserStatusNotificationBodyModel.getLetterOfAuthorizationStatus())) {
+				final MiraklSimpleRequestAdditionalFieldValue kycLetterOfAuthorizationStatusCustomField = new MiraklSimpleRequestAdditionalFieldValue();
+				kycLetterOfAuthorizationStatusCustomField
+						.setCode(HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD);
+				kycLetterOfAuthorizationStatusCustomField.setValue(Boolean.TRUE.toString());
+				additionalFieldValues.add(kycLetterOfAuthorizationStatusCustomField);
+			}
+			if (!CollectionUtils.isEmpty(additionalFieldValues)) {
+				miraklUpdateShop.setAdditionalFieldValues(additionalFieldValues);
+			}
 		}
 		return new MiraklUpdateShopsRequest(List.of(miraklUpdateShop));
 	}
@@ -188,6 +204,31 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 
 	private LocalDateTime getLocalDateTimeFromDate(final Date date) {
 		return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+	}
+
+	private void logShopUpdates(final MiraklUpdatedShopReturn updatedShopReturn) {
+		Optional.ofNullable(updatedShopReturn.getShopUpdated()).ifPresent(
+				shop -> log.info("KYC status updated to [{}] for shop [{}]", shop.getKyc().getStatus(), shop.getId()));
+
+		Optional.ofNullable(updatedShopReturn.getShopError()).ifPresent(this::logErrorMessage);
+	}
+
+	private void logErrorMessage(final MiraklUpdateShopWithErrors shopError) {
+		final Long shopId = shopError.getInput().getShopId();
+		//@formatter:off
+		final String miraklUpdateErrors = shopError.getErrors().stream()
+				.map(ErrorBean::toString)
+				.collect(Collectors.joining(","));
+		//@formatter:on
+
+		final String errorMessage = String.format(MSG_ERROR_DETECTED, shopId, miraklUpdateErrors);
+
+		log.error(errorMessage);
+		mailNotificationUtil.sendPlainTextEmail(MAIL_SUBJECT, ERROR_MESSAGE_PREFIX + errorMessage);
+	}
+
+	protected boolean isKycAutomated() {
+		return isKycAutomated;
 	}
 
 }
