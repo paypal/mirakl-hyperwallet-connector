@@ -1,0 +1,65 @@
+name: Issue report
+about: Create a report to help us improve
+title: "[Issue]: "
+
+body:
+  - type: textarea
+    attributes:
+      label: Describe the Issue
+      description: Please provide a concise summary of the issue. Attach logs from HMC and screenshots from Hyperwallet & Mirakl.
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Environment
+      description: Which environment is the issue occurring in?
+      options:
+        - Live/Production
+        - Test/UAT
+        - Development
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Version
+      description: What version of the connector is the issue occuring on?
+      placeholder: 4.6.0
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Actual Behavior
+      description: A clear and concise description of the current result that is not matching the expectation.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Steps to Reproduce
+      description: Please provide the steps that produce the issue.
+      placeholder: >
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Pre-conditions
+      description: Please provide any additional context for how the issue occurs.
+      placeholder: e.g. The issue happens 5 minutes after a webhook is received.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output, ensuring that any sensitive information has been filtered. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+    validations:
+      required: false
