@@ -143,7 +143,7 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl implements Hyperwa
 			return kycDocumentBusinessStakeHolderInfoModel.toBuilder().sentToHyperwallet(true).build();
 		}
 		catch (final HyperwalletException e) {
-			log.error("Error uploading document to hyperwallet: [{}]", HyperwalletLoggingErrorsUtil.stringify(e));
+			log.error("Error uploading document to Hyperwallet: [{}]", HyperwalletLoggingErrorsUtil.stringify(e));
 			kycMailNotificationUtil.sendPlainTextEmail("Issue detected pushing documents into Hyperwallet",
 					String.format(
 							"Something went wrong pushing documents to Hyperwallet for shop Id [%s] and business stakeholder number [%s]%n%s",

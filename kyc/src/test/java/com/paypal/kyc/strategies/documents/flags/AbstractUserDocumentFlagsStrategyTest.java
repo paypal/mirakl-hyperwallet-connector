@@ -1,5 +1,7 @@
 package com.paypal.kyc.strategies.documents.flags;
 
+import com.callibrity.logging.test.LogTracker;
+import com.callibrity.logging.test.LogTrackerStub;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
@@ -21,12 +23,22 @@ import java.util.List;
 
 import static com.paypal.kyc.model.KYCConstants.HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_BUSINESS_FIELD;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractUserDocumentFlagsStrategyTest {
+
+	private static final String SHOP_ID = "2000";
+
+	private static final String MSG_ERROR = "Something went wrong updating KYC information of shop [%s]. Details [%s]";
+
+	private static final String EMAIL_BODY_PREFIX = "There was an error, please check the logs for further information:\n";
+
+	private static final LogTrackerStub LOG_TRACKER_STUB = LogTrackerStub.create()
+			.recordForLevel(LogTracker.LogLevel.ERROR).recordForType(AbstractUserDocumentFlagsStrategy.class);
 
 	private MyAbstractUserDocumentFlagsStrategy testObj;
 
@@ -38,10 +50,6 @@ class AbstractUserDocumentFlagsStrategyTest {
 
 	@Captor
 	private ArgumentCaptor<MiraklUpdateShopsRequest> miraklUpdateShopsRequestArgumentCaptor;
-
-	private static final String SHOP_ID = "2000";
-
-	private static final String ERROR_MESSAGE_PREFIX = "There was an error, please check the logs for further information:\n";
 
 	@BeforeEach
 	void setUp() {
@@ -96,15 +104,18 @@ class AbstractUserDocumentFlagsStrategyTest {
 				.clientUserId(SHOP_ID)
 				.profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
 				.verificationStatus(HyperwalletUser.VerificationStatus.REQUIRED).build();
-
-		final MiraklException miraklException = new MiraklException("Something bad happened");
-
-		doThrow(miraklException).when(miraklMarketplacePlatformOperatorApiClientMock).updateShops(any(MiraklUpdateShopsRequest.class));
 		//@formatter:on
-		testObj.fillMiraklProofIdentityOrBusinessFlagStatus(kycUserDocumentFlagsNotificationBodyModel);
+		final MiraklException miraklException = new MiraklException("Something bad happened");
+		doThrow(miraklException).when(miraklMarketplacePlatformOperatorApiClientMock)
+				.updateShops(any(MiraklUpdateShopsRequest.class));
+
+		final Throwable throwable = catchThrowable(
+				() -> testObj.fillMiraklProofIdentityOrBusinessFlagStatus(kycUserDocumentFlagsNotificationBodyModel));
+		assertThat(throwable).isEqualTo(miraklException);
+		assertThat(LOG_TRACKER_STUB.contains(String.format(MSG_ERROR, SHOP_ID, miraklException.getMessage()))).isTrue();
 
 		verify(mailNotificationMock).sendPlainTextEmail("Issue detected updating KYC information in Mirakl",
-				String.format(ERROR_MESSAGE_PREFIX + "Something went wrong updating KYC information of shop [%s]%n%s",
+				String.format(EMAIL_BODY_PREFIX + "Something went wrong updating KYC information of shop [%s]%n%s",
 						SHOP_ID, MiraklLoggingErrorsUtil.stringify(miraklException)));
 	}
 

@@ -461,7 +461,7 @@ public class BusinessStakeHolderModel {
 
 		public BusinessStakeHolderModelBuilder hyperwalletProgram(final List<MiraklAdditionalFieldValue> fieldValues) {
 			getMiraklSingleValueListCustomFieldValue(fieldValues, HYPERWALLET_PROGRAM)
-					.ifPresent(hyperwalletProgramValue -> this.hyperwalletProgram = hyperwalletProgramValue);
+					.ifPresent(hyperwalletProgramValue -> hyperwalletProgram = hyperwalletProgramValue);
 
 			return this;
 		}
@@ -506,9 +506,9 @@ public class BusinessStakeHolderModel {
 						try {
 							final ZonedDateTime zonedDateTime = Instant.parse(dateAsStringISO8601)
 									.atZone(ZoneId.of(timeZone));
-							long offsetMillis = TimeUnit.SECONDS
+							final long offsetMillis = TimeUnit.SECONDS
 									.toMillis(ZoneOffset.from(zonedDateTime).getTotalSeconds());
-							long isoMillis = zonedDateTime.toInstant().toEpochMilli();
+							final long isoMillis = zonedDateTime.toInstant().toEpochMilli();
 							return new Date(isoMillis + offsetMillis);
 						}
 						catch (final DateTimeParseException dtpex) {

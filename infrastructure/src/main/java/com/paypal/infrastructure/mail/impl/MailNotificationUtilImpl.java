@@ -36,7 +36,7 @@ public class MailNotificationUtilImpl implements MailNotificationUtil {
 			emailSender.send(message);
 		}
 		catch (final RuntimeException e) {
-			log.error("Something went wrong when sending the email", e);
+			log.error("Email could not be sent. Reason: ", e);
 		}
 	}
 

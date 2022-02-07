@@ -51,11 +51,11 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 	@Test
 	void getBusinessStakeholderDocumentsSelectedBySeller_shouldReturnAnEmptyListWhenNoProofOfAddressNeitherProofOfIdentityHasBeenSelectedBySeller() {
 		//@formatter:off
-        final KYCDocumentBusinessStakeHolderInfoModel kycBusinessStakeholderNonSelectedDocuments = KYCDocumentBusinessStakeHolderInfoModel.builder()
-                .clientUserId(MIRAKL_SHOP_ID)
-                .proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
-                .build();
-        //@formatter:on
+		final KYCDocumentBusinessStakeHolderInfoModel kycBusinessStakeholderNonSelectedDocuments = KYCDocumentBusinessStakeHolderInfoModel.builder()
+				.clientUserId(MIRAKL_SHOP_ID)
+				.proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
+				.build();
+		//@formatter:on
 
 		final KYCDocumentBusinessStakeHolderInfoModel result = testObj
 				.getBusinessStakeholderDocumentsSelectedBySeller(kycBusinessStakeholderNonSelectedDocuments);
@@ -66,12 +66,12 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 	@Test
 	void getBusinessStakeholderDocumentsSelectedBySeller_shouldPopulateKYCInfoModelWithDocumentInformationAndReturnDocumentsReturnedByStrategies() {
 		//@formatter:off
-        final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
-                .businessStakeholderMiraklNumber(1)
-                .clientUserId(MIRAKL_SHOP_ID)
-                .proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
-                .build();
-        //@formatter:on
+		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
+				.businessStakeholderMiraklNumber(1)
+				.clientUserId(MIRAKL_SHOP_ID)
+				.proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
+				.build();
+		//@formatter:on
 
 		final KYCDocumentModel kycDocumentModelFront = KYCDocumentModel.builder()
 				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_FRONT).build();
@@ -109,12 +109,12 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 	@Test
 	void getBusinessStakeholderDocumentsSelectedBySeller_shouldSendMailNotificationWhenMiraklExceptionIsThrown() {
 		//@formatter:off
-        final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
-                .businessStakeholderMiraklNumber(1)
-                .clientUserId(MIRAKL_SHOP_ID)
-                .proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
-                .build();
-        //@formatter:on
+		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
+				.businessStakeholderMiraklNumber(1)
+				.clientUserId(MIRAKL_SHOP_ID)
+				.proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
+				.build();
+		//@formatter:on
 
 		final MiraklShopDocument miraklShopProofOfIdentityDocumentFront = new MiraklShopDocument();
 		miraklShopProofOfIdentityDocumentFront.setTypeCode("hw-bsh1-proof-identity-front");
@@ -137,14 +137,14 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 	@Test
 	void getBusinessStakeholderDocumentsSelectedBySeller_shouldReturnSameInputWhenAuthorizationLetterIsRequiredAndRequiresKYCButDocumentsDoesNotExists() {
 		//@formatter:off
-        final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
-                .builder()
-                .requiresKYC(true)
-                .requiresLetterOfAuthorization(true)
-                .businessStakeholderMiraklNumber(1)
-                .clientUserId(MIRAKL_SHOP_ID)
-                .proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID).build();
-        //@formatter:on
+		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
+				.builder()
+				.requiresKYC(true)
+				.requiresLetterOfAuthorization(true)
+				.businessStakeholderMiraklNumber(1)
+				.clientUserId(MIRAKL_SHOP_ID)
+				.proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID).build();
+		//@formatter:on
 
 		final KYCDocumentBusinessStakeHolderInfoModel result = testObj
 				.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
@@ -155,13 +155,13 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 	@Test
 	void getBusinessStakeholderDocumentsSelectedBySeller_shouldReturnSameInputWhenRequiresKYCButDocumentsDoesNotExists() {
 		//@formatter:off
-        final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
-                .builder()
-                .requiresKYC(true)
-                .businessStakeholderMiraklNumber(1)
-                .clientUserId(MIRAKL_SHOP_ID)
-                .proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID).build();
-        //@formatter:on
+		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
+				.builder()
+				.requiresKYC(true)
+				.businessStakeholderMiraklNumber(1)
+				.clientUserId(MIRAKL_SHOP_ID)
+				.proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID).build();
+		//@formatter:on
 
 		final KYCDocumentBusinessStakeHolderInfoModel result = testObj
 				.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
@@ -172,13 +172,13 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 	@Test
 	void getBusinessStakeholderDocumentsSelectedBySeller_shouldReturnSameInputWhenRequiresLetterOfAuthorizationButDocumentsDoesNotExists() {
 		//@formatter:off
-        final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
-                .builder()
-                .requiresLetterOfAuthorization(true)
-                .businessStakeholderMiraklNumber(1)
-                .clientUserId(MIRAKL_SHOP_ID)
-                .proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID).build();
-        //@formatter:on
+		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
+				.builder()
+				.requiresLetterOfAuthorization(true)
+				.businessStakeholderMiraklNumber(1)
+				.clientUserId(MIRAKL_SHOP_ID)
+				.proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID).build();
+		//@formatter:on
 
 		final KYCDocumentBusinessStakeHolderInfoModel result = testObj
 				.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
@@ -189,13 +189,13 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 	@Test
 	void getBusinessStakeholderDocumentsSelectedBySeller_shouldPopulateKYCInfoModelWithDocumentInformationAndReturnDocumentsReturnedByStrategies_whenLetterOfAuthorizationIsRequiredAndLetterOfAuthorizationDocumentIsFilled() {
 		//@formatter:off
-        final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
-                .businessStakeholderMiraklNumber(1)
-                .requiresLetterOfAuthorization(Boolean.TRUE)
-                .clientUserId(MIRAKL_SHOP_ID)
-                .proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
-                .build();
-        //@formatter:on
+		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
+				.businessStakeholderMiraklNumber(1)
+				.requiresLetterOfAuthorization(Boolean.TRUE)
+				.clientUserId(MIRAKL_SHOP_ID)
+				.proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
+				.build();
+		//@formatter:on
 
 		final KYCDocumentModel kycDocumentModelProofOfIdentityFront = KYCDocumentModel.builder()
 				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_FRONT).build();
@@ -239,13 +239,13 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 	@Test
 	void getBusinessStakeholderDocumentsSelectedBySeller_shouldNotPopulateKYCInfoModelWithDocumentInformationWhenLetterOfAuthorizationIsRequiredAndLetterOfAuthorizationDocumentIsNotFilled() {
 		//@formatter:off
-        final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
-                .businessStakeholderMiraklNumber(1)
-                .requiresLetterOfAuthorization(Boolean.TRUE)
-                .clientUserId(MIRAKL_SHOP_ID)
-                .proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
-                .build();
-        //@formatter:on
+		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
+				.businessStakeholderMiraklNumber(1)
+				.requiresLetterOfAuthorization(Boolean.TRUE)
+				.clientUserId(MIRAKL_SHOP_ID)
+				.proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
+				.build();
+		//@formatter:on
 
 		final MiraklShopDocument miraklShopProofOfIdentityDocumentFront = new MiraklShopDocument();
 		miraklShopProofOfIdentityDocumentFront.setTypeCode("hw-bsh1-proof-identity-front");

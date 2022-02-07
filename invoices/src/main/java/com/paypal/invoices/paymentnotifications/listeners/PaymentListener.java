@@ -1,34 +1,42 @@
 package com.paypal.invoices.paymentnotifications.listeners;
 
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
+import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.events.PaymentEvent;
+import com.paypal.infrastructure.listeners.AbstractNotificationListener;
+import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.model.entity.NotificationInfoEntity;
+import com.paypal.infrastructure.repository.FailedNotificationInformationRepository;
 import com.paypal.invoices.paymentnotifications.service.PaymentNotificationService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 /**
  * Listener for payment notification events
  */
 @Service
-@Slf4j
-public class PaymentListener implements ApplicationListener<PaymentEvent> {
+public class PaymentListener extends AbstractNotificationListener<PaymentEvent> {
 
-	@Resource
-	private PaymentNotificationService paymentNotificationService;
+	private static final String NOTIFICATION_TYPE = "payment";
 
-	/**
-	 * Receives a payment notification and processes it to update Mirakl
-	 * @param event {@link PaymentEvent}
-	 */
+	private final PaymentNotificationService paymentNotificationService;
+
+	public PaymentListener(final MailNotificationUtil mailNotificationUtil,
+			final PaymentNotificationService paymentNotificationService,
+			final FailedNotificationInformationRepository failedNotificationInformationRepository,
+			final Converter<HyperwalletWebhookNotification, NotificationInfoEntity> notificationInfoEntityToNotificationConverter) {
+		super(mailNotificationUtil, failedNotificationInformationRepository,
+				notificationInfoEntityToNotificationConverter);
+		this.paymentNotificationService = paymentNotificationService;
+	}
+
 	@Override
-	public void onApplicationEvent(final PaymentEvent event) {
-		final HyperwalletWebhookNotification notification = event.getNotification();
-		log.info("Processing HMC incoming payment notification [{}] ", notification.getToken());
-
+	protected void processNotification(final HyperwalletWebhookNotification notification) {
 		paymentNotificationService.processPaymentNotification(notification);
+	}
+
+	@Override
+	protected String getNotificationType() {
+		return NOTIFICATION_TYPE;
 	}
 
 }

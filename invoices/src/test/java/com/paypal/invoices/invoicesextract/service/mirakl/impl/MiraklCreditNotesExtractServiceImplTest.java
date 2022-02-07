@@ -23,7 +23,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -33,10 +32,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentPaymentStatus.PENDING;
 import static com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentType.MANUAL_CREDIT;
 import static com.mirakl.client.mmp.request.payment.invoice.MiraklAccountingDocumentState.COMPLETE;
+import static com.paypal.infrastructure.constants.HyperWalletConstants.MIRAKL_MAX_RESULTS_PER_PAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -83,7 +86,7 @@ class MiraklCreditNotesExtractServiceImplTest {
 	private MiraklShop miraklShopThreeMock;
 
 	@Mock
-	private HMCMiraklInvoices miraklInvoicesMock;
+	private HMCMiraklInvoices miraklInvoicesOneMock, miraklInvoicesTwoMock;
 
 	@Mock
 	private HMCMiraklInvoice miraklInvoiceOneMock, miraklInvoiceTwoMock;
@@ -244,8 +247,8 @@ class MiraklCreditNotesExtractServiceImplTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 0, 55));
 		final Date now = DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault());
 
-		when(miraklMarketplacePlatformOperatorApiClientMock.getInvoices(any())).thenReturn(miraklInvoicesMock);
-		when(miraklInvoicesMock.getHmcInvoices()).thenReturn(List.of(miraklInvoiceOneMock, miraklInvoiceTwoMock));
+		when(miraklMarketplacePlatformOperatorApiClientMock.getInvoices(any())).thenReturn(miraklInvoicesOneMock);
+		when(miraklInvoicesOneMock.getHmcInvoices()).thenReturn(List.of(miraklInvoiceOneMock, miraklInvoiceTwoMock));
 		when(miraklInvoiceToCreditNoteModelConverter.convert(miraklInvoiceOneMock)).thenReturn(creditNoteOneMock);
 		when(miraklInvoiceToCreditNoteModelConverter.convert(miraklInvoiceTwoMock)).thenReturn(creditNoteTwoMock);
 
@@ -268,7 +271,7 @@ class MiraklCreditNotesExtractServiceImplTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 0, 55));
 		final Date now = DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault());
 
-		when(miraklMarketplacePlatformOperatorApiClientMock.getInvoices(any())).thenReturn(miraklInvoicesMock);
+		when(miraklMarketplacePlatformOperatorApiClientMock.getInvoices(any())).thenReturn(miraklInvoicesOneMock);
 
 		final List<CreditNoteModel> creditNoteList = testObj.getAccountingDocuments(now);
 
@@ -294,26 +297,41 @@ class MiraklCreditNotesExtractServiceImplTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 0, 55));
 		final Date now = DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault());
 
-		when(miraklMarketplacePlatformOperatorApiClientMock.getInvoices(miraklGetInvoicesRequestMock))
-				.thenReturn(miraklInvoicesMock);
-		when(miraklInvoicesMock.getTotalCount()).thenReturn(2L);
-		when(miraklInvoicesMock.getHmcInvoices()).thenReturn(Collections.singletonList(miraklInvoiceOneMock),
-				Collections.singletonList(miraklInvoiceTwoMock));
-		when(miraklInvoiceToCreditNoteModelConverter.convert(miraklInvoiceOneMock)).thenReturn(creditNoteOneMock);
-		when(miraklInvoiceToCreditNoteModelConverter.convert(miraklInvoiceTwoMock)).thenReturn(creditNoteTwoMock);
-		doReturn(miraklGetInvoicesRequestMock).when(testObj).createAccountingDocumentRequest(now,
-				InvoiceTypeEnum.MANUAL_CREDIT);
+		final List<HMCMiraklInvoice> firstPageResponseInvoices = getListOfHMCMiraklInvoiceMocks(
+				MIRAKL_MAX_RESULTS_PER_PAGE);
+		final List<HMCMiraklInvoice> secondPageResponseInvoices = getListOfHMCMiraklInvoiceMocks(
+				MIRAKL_MAX_RESULTS_PER_PAGE / 2);
+		final long totalResponseInvoices = firstPageResponseInvoices.size() + secondPageResponseInvoices.size();
+
+		when(miraklMarketplacePlatformOperatorApiClientMock
+				.getInvoices(argThat(request -> request != null && request.getOffset() == 0)))
+						.thenReturn(miraklInvoicesOneMock);
+		when(miraklMarketplacePlatformOperatorApiClientMock
+				.getInvoices(argThat(request -> request != null && request.getOffset() == MIRAKL_MAX_RESULTS_PER_PAGE)))
+						.thenReturn(miraklInvoicesTwoMock);
+		when(miraklInvoicesOneMock.getTotalCount()).thenReturn(totalResponseInvoices);
+		when(miraklInvoicesOneMock.getHmcInvoices()).thenReturn(firstPageResponseInvoices);
+		when(miraklInvoicesTwoMock.getTotalCount()).thenReturn(totalResponseInvoices);
+		when(miraklInvoicesTwoMock.getHmcInvoices()).thenReturn(secondPageResponseInvoices);
+
+		final List<CreditNoteModel> expectedCreditNotes = Stream
+				.concat(firstPageResponseInvoices.stream(), secondPageResponseInvoices.stream())
+				.map(invoice -> mockAndReturn(invoice)).collect(Collectors.toList());
 
 		final List<CreditNoteModel> result = testObj.getAccountingDocuments(now);
 
-		final InOrder inOrder = inOrder(miraklGetInvoicesRequestMock, miraklMarketplacePlatformOperatorApiClientMock);
+		assertThat(result).containsExactlyElementsOf(expectedCreditNotes);
+	}
 
-		inOrder.verify(miraklGetInvoicesRequestMock).setOffset(0);
-		inOrder.verify(miraklMarketplacePlatformOperatorApiClientMock).getInvoices(miraklGetInvoicesRequestMock);
-		inOrder.verify(miraklGetInvoicesRequestMock).setOffset(1);
-		inOrder.verify(miraklMarketplacePlatformOperatorApiClientMock).getInvoices(miraklGetInvoicesRequestMock);
+	private CreditNoteModel mockAndReturn(final HMCMiraklInvoice invoice) {
+		final CreditNoteModel creditNoteModelMock = mock(CreditNoteModel.class);
+		when(miraklInvoiceToCreditNoteModelConverter.convert(invoice)).thenReturn(creditNoteModelMock);
+		return creditNoteModelMock;
+	}
 
-		assertThat(result).containsExactlyInAnyOrder(creditNoteOneMock, creditNoteTwoMock);
+	private List<HMCMiraklInvoice> getListOfHMCMiraklInvoiceMocks(final int numberOfMocks) {
+		return IntStream.range(0, numberOfMocks).mapToObj(i -> mock(HMCMiraklInvoice.class))
+				.collect(Collectors.toList());
 	}
 
 	@Test

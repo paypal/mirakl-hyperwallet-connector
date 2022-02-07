@@ -12,7 +12,6 @@ import com.paypal.sellers.service.AbstractHyperwalletRetryAPIStrategy;
 import com.paypal.sellers.service.FailedEntityInformationService;
 import com.paypal.sellers.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -52,13 +51,9 @@ public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
 		final HyperwalletBankAccount hwBankAccountRequest = sellerModelToHyperwalletBankAccountStrategyExecutor
 				.execute(seller);
 		if (Objects.nonNull(hwBankAccountRequest)) {
-			log.debug("Hyperwallet API bank account request: [{}]",
-					ToStringBuilder.reflectionToString(hwBankAccountRequest));
 			try {
 				hwCreatedBankAccount = callHyperwalletAPI(seller.getHyperwalletProgram(), hwBankAccountRequest);
 				log.info("Bank account created or updated for seller with clientId [{}]", seller.getClientUserId());
-				log.debug("Hyperwallet create or updated bank account response: [{}]",
-						ToStringBuilder.reflectionToString(hwBankAccountRequest));
 			}
 			catch (final HyperwalletException e) {
 				if (e.getCause() instanceof IOException) {

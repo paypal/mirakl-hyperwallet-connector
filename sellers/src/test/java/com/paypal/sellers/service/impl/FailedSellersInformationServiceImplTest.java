@@ -26,10 +26,10 @@ class FailedSellersInformationServiceImplTest {
 	private FailedSellersInformation failedSellersInformationOneMock, failedSellersInformationTwoMock;
 
 	@Captor
-	ArgumentCaptor<List<FailedSellersInformation>> failedSellersInformationEntityListArgumentCaptor;
+	private ArgumentCaptor<List<FailedSellersInformation>> failedSellersInformationEntityListArgumentCaptor;
 
 	@Captor
-	ArgumentCaptor<String> failedSellersInformationEntityArgumentCaptor;
+	private ArgumentCaptor<String> failedSellersInformationEntityArgumentCaptor;
 
 	@Test
 	void saveAll_shouldSaveAllShopsIntoDatabase_whenShopsAreReceived() {

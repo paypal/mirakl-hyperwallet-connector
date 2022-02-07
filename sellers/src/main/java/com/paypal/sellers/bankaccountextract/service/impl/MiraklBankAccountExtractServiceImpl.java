@@ -4,7 +4,6 @@ import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
 import com.mirakl.client.core.exception.MiraklApiException;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
-import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
@@ -12,11 +11,9 @@ import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.bankaccountextract.service.MiraklBankAccountExtractService;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.paypal.sellers.sellersextract.model.SellerModelConstants.HYPERWALLET_BANK_ACCOUNT_TOKEN;
 
@@ -51,14 +48,9 @@ public class MiraklBankAccountExtractServiceImpl implements MiraklBankAccountExt
 		userTokenCustomField.setValue(hyperwalletBankAccount.getToken());
 		miraklUpdateShop.setAdditionalFieldValues(List.of(userTokenCustomField));
 		final MiraklUpdateShopsRequest request = new MiraklUpdateShopsRequest(List.of(miraklUpdateShop));
-		log.debug("Mirakl Update shop request: [{}]", ToStringBuilder.reflectionToString(request));
 		log.info("Updating bank account token for shop [{}]", shopId);
 		try {
-			final MiraklUpdatedShops miraklUpdatedShops = miraklOperatorClient.updateShops(request);
-			Optional.ofNullable(miraklUpdatedShops)
-					.ifPresent(miraklUpdatedShopsResponse -> log.debug("Mirakl Update shop response: [{}]",
-							ToStringBuilder.reflectionToString(miraklUpdatedShops)));
-
+			miraklOperatorClient.updateShops(request);
 			log.info("Bank account token updated for shop [{}]", shopId);
 		}
 		catch (final MiraklApiException ex) {

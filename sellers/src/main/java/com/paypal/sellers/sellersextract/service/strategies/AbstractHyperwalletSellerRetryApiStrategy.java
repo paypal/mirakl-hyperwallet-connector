@@ -12,7 +12,6 @@ import com.paypal.sellers.service.AbstractHyperwalletRetryAPIStrategy;
 import com.paypal.sellers.service.FailedEntityInformationService;
 import com.paypal.sellers.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.IOException;
 
@@ -52,12 +51,9 @@ public abstract class AbstractHyperwalletSellerRetryApiStrategy
 		boolean includedAsFailed = false;
 		HyperwalletUser hyperwalletUser = null;
 		final HyperwalletUser hwUserRequest = sellerModelHyperwalletUserConverter.convert(seller);
-		log.debug("Hyperwallet API user request: [{}]", ToStringBuilder.reflectionToString(hwUserRequest));
 		try {
 			hyperwalletUser = createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl(hwUserRequest);
 			log.info("Seller created or updated for seller with clientId [{}]", seller.getClientUserId());
-			log.debug("Hyperwallet created or updated seller response: [{}]",
-					ToStringBuilder.reflectionToString(hwUserRequest));
 		}
 		catch (final HyperwalletException e) {
 			if (e.getCause() instanceof IOException) {

@@ -1,6 +1,7 @@
 package com.paypal.infrastructure.configuration;
 
 import com.paypal.infrastructure.model.entity.JobExecutionInformationEntity;
+import com.paypal.infrastructure.model.entity.NotificationInfoEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -25,28 +26,28 @@ class InfrastructureDatasourceConfigTest {
 	private InfrastructureDatasourceConfig testObj;
 
 	@Mock
-	private EntityManagerFactoryBuilder entityManagerFactoryBuilderMock;
+	private DataSource dataSourceMock;
 
 	@Mock
-	private DataSource dataSourceMock;
+	private EntityManagerFactory entityManagerFactoryMock;
 
 	@Mock
 	private EntityManagerFactoryBuilder.Builder builderMock;
 
-	@Captor
-	private ArgumentCaptor<Class> packagesArgumentCaptor;
-
 	@Mock
-	private LocalContainerEntityManagerFactoryBean applicationTransactionManagerMock;
-
-	@Mock
-	private EntityManagerFactory entityManagerFactoryMock;
+	private DataSourceBuilder<DataSource> dataSourceBuilderMock;
 
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	private DataSourceProperties applicationDataSourcePropertiesMock;
 
 	@Mock
-	private DataSourceBuilder<DataSource> dataSourceBuilderMock;
+	private EntityManagerFactoryBuilder entityManagerFactoryBuilderMock;
+
+	@Mock
+	private LocalContainerEntityManagerFactoryBean applicationTransactionManagerMock;
+
+	@Captor
+	private ArgumentCaptor<Class> packagesArgumentCaptor;
 
 	@Test
 	void applicationDataSourceDataSourceProperties_shouldCreateANewDataSourcePropertiesInstance() {
@@ -73,7 +74,8 @@ class InfrastructureDatasourceConfigTest {
 		testObj.applicationEntityManagerFactory(entityManagerFactoryBuilderMock, dataSourceMock);
 
 		verify(builderMock).packages(packagesArgumentCaptor.capture());
-		assertThat(packagesArgumentCaptor.getValue()).isEqualTo(JobExecutionInformationEntity.class);
+		assertThat(packagesArgumentCaptor.getAllValues()).containsExactlyInAnyOrder(JobExecutionInformationEntity.class,
+				NotificationInfoEntity.class);
 	}
 
 	@Test

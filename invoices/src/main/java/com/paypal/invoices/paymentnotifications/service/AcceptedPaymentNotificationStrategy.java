@@ -45,8 +45,11 @@ public class AcceptedPaymentNotificationStrategy implements Strategy<PaymentNoti
 	 */
 	@Override
 	public Void execute(final PaymentNotificationBodyModel paymentNotificationBodyModel) {
-		miraklMarketplacePlatformFrontOperatorApi
-				.confirmAccountingDocumentPayment(createPaymentConfirmationRequest(paymentNotificationBodyModel));
+		final MiraklConfirmAccountingDocumentPaymentRequest paymentConfirmationRequest = createPaymentConfirmationRequest(
+				paymentNotificationBodyModel);
+
+		miraklMarketplacePlatformFrontOperatorApi.confirmAccountingDocumentPayment(paymentConfirmationRequest);
+
 		return null;
 	}
 
@@ -71,7 +74,7 @@ public class AcceptedPaymentNotificationStrategy implements Strategy<PaymentNoti
 	/**
 	 * Checks whether the strategy must be executed based on the
 	 * {@code paymentNotificationBodyModel}
-	 * @param paymentNotificationBodyModel the paymentNotificationBodyModel object
+	 * @param paymentNotificationBodyModel the {@code paymentNotificationBodyModel} object
 	 * @return returns whether the strategy is applicable or not
 	 */
 	@Override

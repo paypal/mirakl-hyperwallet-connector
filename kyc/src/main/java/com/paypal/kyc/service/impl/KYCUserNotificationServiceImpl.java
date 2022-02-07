@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class KYCUserNotificationServiceImpl implements KYCUserNotificationService {
 
-	private final KYCUserStatusExecutor kyCUserNotificationExecutor;
+	private final KYCUserStatusExecutor kyCUserStatusExecutor;
 
 	private final KYCUserDocumentFlagsExecutor kycUserDocumentFlagsExecutor;
 
@@ -25,11 +25,11 @@ public class KYCUserNotificationServiceImpl implements KYCUserNotificationServic
 
 	private final Converter<Object, KYCUserDocumentFlagsNotificationBodyModel> hyperWalletObjectToKycUserDocumentFlagsNotificationBodyModelConverter;
 
-	public KYCUserNotificationServiceImpl(final KYCUserStatusExecutor kyCUserNotificationExecutor,
+	public KYCUserNotificationServiceImpl(final KYCUserStatusExecutor kyCUserStatusExecutor,
 			final KYCUserDocumentFlagsExecutor kycUserDocumentFlagsExecutor,
 			final Converter<Object, KYCUserStatusNotificationBodyModel> hyperWalletObjectToKycUserNotificationBodyModelConverter,
 			final Converter<Object, KYCUserDocumentFlagsNotificationBodyModel> hyperWalletObjectToKycUserDocumentFlagsNotificationBodyModelConverter) {
-		this.kyCUserNotificationExecutor = kyCUserNotificationExecutor;
+		this.kyCUserStatusExecutor = kyCUserStatusExecutor;
 		this.kycUserDocumentFlagsExecutor = kycUserDocumentFlagsExecutor;
 		this.hyperWalletObjectToKycUserNotificationBodyModelConverter = hyperWalletObjectToKycUserNotificationBodyModelConverter;
 		this.hyperWalletObjectToKycUserDocumentFlagsNotificationBodyModelConverter = hyperWalletObjectToKycUserDocumentFlagsNotificationBodyModelConverter;
@@ -42,7 +42,7 @@ public class KYCUserNotificationServiceImpl implements KYCUserNotificationServic
 	public void updateUserKYCStatus(final HyperwalletWebhookNotification incomingNotification) {
 		final KYCUserStatusNotificationBodyModel kycUserNotification = hyperWalletObjectToKycUserNotificationBodyModelConverter
 				.convert(incomingNotification.getObject());
-		kyCUserNotificationExecutor.execute(kycUserNotification);
+		kyCUserStatusExecutor.execute(kycUserNotification);
 	}
 
 	/**

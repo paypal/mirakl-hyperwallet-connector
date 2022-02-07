@@ -215,9 +215,9 @@ public class SellerModel {
 					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue)
 					.ifPresent(dateAsStringISO8601 -> {
 						final ZonedDateTime zonedDateTime = Instant.parse(dateAsStringISO8601).atZone(ZoneId.of(timeZone));
-						long offsetMillis = TimeUnit.SECONDS.toMillis(ZoneOffset.from(zonedDateTime).getTotalSeconds());
-						long isoMillis = zonedDateTime.toInstant().toEpochMilli();
-						this.dateOfBirth = new Date(isoMillis + offsetMillis);
+						final long offsetMillis = TimeUnit.SECONDS.toMillis(ZoneOffset.from(zonedDateTime).getTotalSeconds());
+						final long isoMillis = zonedDateTime.toInstant().toEpochMilli();
+						dateOfBirth = new Date(isoMillis + offsetMillis);
 					});
 			//@formatter:on
 
@@ -287,7 +287,7 @@ public class SellerModel {
 
 		public SellerModelBuilder hyperwalletProgram(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklSingleValueListCustomFieldValue(fields, HYPERWALLET_PROGRAM)
-					.ifPresent(hyperwalletProgramValue -> this.hyperwalletProgram = hyperwalletProgramValue);
+					.ifPresent(hyperwalletProgramValue -> hyperwalletProgram = hyperwalletProgramValue);
 
 			return this;
 		}

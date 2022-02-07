@@ -2,7 +2,7 @@ package com.paypal.notifications.controllers;
 
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
 import com.paypal.infrastructure.BusinessStakeholderTestHelper;
-import com.paypal.notifications.services.NotificationService;
+import com.paypal.notifications.service.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
@@ -29,8 +29,8 @@ public class IncomingHyperwalletNotificationWebhookMockController {
 	@PostMapping("/notifications")
 	@ResponseStatus(HttpStatus.OK)
 	public void receiveIncomingNotification(@RequestBody final HyperwalletWebhookNotification incomingNotificationDTO,
-			@RequestParam(name = "enable_stk", required = false) String bstkTokenList,
-			@RequestParam(name = "client_user_id", required = false) String clientUserId) {
+			@RequestParam(name = "enable_stk", required = false) final String bstkTokenList,
+			@RequestParam(name = "client_user_id", required = false) final String clientUserId) {
 		log.info("Incoming params for stk: {'enable_stk': [{}], 'client_user_id': [{}]}", bstkTokenList, clientUserId);
 		if (Objects.nonNull(bstkTokenList) && Objects.nonNull(clientUserId)) {
 			businessStakeholderTestHelper.storeRequiredVerificationBstk(bstkTokenList, clientUserId);

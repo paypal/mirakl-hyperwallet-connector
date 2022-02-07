@@ -11,7 +11,6 @@ import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 import com.paypal.invoices.invoicesextract.service.hyperwallet.HyperWalletPaymentExtractService;
 import com.paypal.invoices.invoicesextract.service.hyperwallet.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -105,7 +104,6 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 	protected HyperwalletPayment createPayment(final HyperwalletPayment hyperwalletPayment) {
 		try {
 			log.info("Trying to create payment for invoice [{}]", hyperwalletPayment.getClientPaymentId());
-			log.debug(ToStringBuilder.reflectionToString(hyperwalletPayment));
 			final Hyperwallet hyperwalletAPIClient = invoicesHyperwalletSDKService
 					.getHyperwalletInstanceWithProgramToken(hyperwalletPayment.getProgramToken());
 			final HyperwalletPayment payment = hyperwalletAPIClient.createPayment(hyperwalletPayment);

@@ -17,6 +17,7 @@ import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.infrastructure.exceptions.HMCException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.*;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
 import static com.paypal.kyc.model.KYCConstants.HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD;
 import static com.paypal.kyc.model.KYCConstants.HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_BUSINESS_FIELD;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -51,6 +53,8 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 	private static final String MIRAKL_CUSTOM_FIELD_NAME_1 = "miraklCustomFieldName1";
 
 	private static final String MIRAKL_CUSTOM_FIELD_NAME_2 = "miraklCustomFieldName2";
+
+	private static final String ERROR_MESSAGE_PREFIX = "There was an error, please check the logs for further information:\n";
 
 	@Spy
 	@InjectMocks
@@ -284,13 +288,12 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 		when(miraklMarketplacePlatformOperatorApiClientMock.updateShops(any(MiraklUpdateShopsRequest.class)))
 				.thenThrow(exception);
 
-		testObj.updateShop(kycUserStatusNotificationBodyModelMock);
+		final Throwable throwable = catchThrowable(() -> testObj.updateShop(kycUserStatusNotificationBodyModelMock));
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail("Issue detected updating KYC information in Mirakl",
-				String.format(
-						"There was an error, please check the logs for further information:\n"
-								+ "Something went wrong updating KYC information of shop [%s]%n%s",
+				String.format(ERROR_MESSAGE_PREFIX + "Something went wrong updating KYC information of shop [%s]%n%s",
 						SHOP_ID, MiraklLoggingErrorsUtil.stringify(exception)));
+		assertThat(throwable).isEqualTo(exception);
 	}
 
 	@Test
@@ -307,7 +310,7 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 	}
 
 	@Test
-	void updateShop_whenShopUpdateReturnsError_shouldLogTheErrorAndSendAnEmail() {
+	void updateShop_whenShopUpdateReturnsError_shouldLogTheError_andSendAnEmail_andThrowAnException() {
 		when(kycUserStatusNotificationBodyModelMock.getClientUserId()).thenReturn(SHOP_ID);
 		when(testObj.expectedKycMiraklStatus(kycUserStatusNotificationBodyModelMock))
 				.thenReturn(MiraklShopKycStatus.APPROVED);
@@ -320,16 +323,15 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 		when(miraklUpdateShopWithErrorsMock.getErrors()).thenReturn(Collections.singleton(errorBeanMock));
 		when(errorBeanMock.toString()).thenReturn(ERROR_BEAN_MESSAGE);
 
-		testObj.updateShop(kycUserStatusNotificationBodyModelMock);
+		final Throwable throwable = catchThrowable(() -> testObj.updateShop(kycUserStatusNotificationBodyModelMock));
 
-		assertThat(logTrackerStub.contains(String
-				.format("Something went wrong updating KYC information of shop [%s]%n%s", SHOP_ID, ERROR_BEAN_MESSAGE)))
-						.isTrue();
+		final String exceptionMessage = String.format("Something went wrong updating KYC information of shop [%s]%n%s",
+				SHOP_ID, ERROR_BEAN_MESSAGE);
+		assertThat(logTrackerStub.contains(exceptionMessage)).isTrue();
+		assertThat(throwable).isInstanceOf(HMCException.class);
+
 		verify(mailNotificationUtilMock).sendPlainTextEmail("Issue detected updating KYC information in Mirakl",
-				String.format(
-						"There was an error, please check the logs for further information:\n"
-								+ "Something went wrong updating KYC information of shop [%s]%n%s",
-						SHOP_ID, ERROR_BEAN_MESSAGE));
+				ERROR_MESSAGE_PREFIX + exceptionMessage);
 	}
 
 	@Test

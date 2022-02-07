@@ -69,7 +69,7 @@ class MailNotificationUtilImplTest {
 
 		testObj.sendPlainTextEmail(SUBJECT, BODY);
 
-		assertThat(logTrackerStub.contains("Something went wrong")).isTrue();
+		assertThat(logTrackerStub.contains("Email could not be sent.")).isTrue();
 	}
 
 }
