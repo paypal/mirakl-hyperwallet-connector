@@ -1,35 +1,45 @@
 package com.paypal.kyc.listeners;
 
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
+import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.events.KycUserEvent;
+import com.paypal.infrastructure.listeners.AbstractNotificationListener;
+import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.model.entity.NotificationInfoEntity;
+import com.paypal.infrastructure.repository.FailedNotificationInformationRepository;
 import com.paypal.kyc.service.KYCUserNotificationService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 /**
  * Listener for user Kyc events
  */
 @Service
 @Slf4j
-public class KycUserEventListener implements ApplicationListener<KycUserEvent> {
+public class KYCUserEventListener extends AbstractNotificationListener<KycUserEvent> {
 
-	@Resource
-	private KYCUserNotificationService kycNotificationService;
+	private static final String NOTIFICATION_TYPE = "KYC";
 
-	/**
-	 * Receives a user kyc notification and processes it to update Mirakl
-	 * @param event {@link KycUserEvent}
-	 */
+	private final KYCUserNotificationService kycNotificationService;
+
+	public KYCUserEventListener(final MailNotificationUtil mailNotificationUtil,
+			final KYCUserNotificationService kycNotificationService,
+			final FailedNotificationInformationRepository failedNotificationInformationRepository,
+			final Converter<HyperwalletWebhookNotification, NotificationInfoEntity> notificationInfoEntityToNotificationConverter) {
+		super(mailNotificationUtil, failedNotificationInformationRepository,
+				notificationInfoEntityToNotificationConverter);
+		this.kycNotificationService = kycNotificationService;
+	}
+
 	@Override
-	public void onApplicationEvent(final KycUserEvent event) {
-		final HyperwalletWebhookNotification notification = event.getNotification();
-		log.info("Processing HMC incoming KYC notification [{}] ", notification.getToken());
-
+	protected void processNotification(final HyperwalletWebhookNotification notification) {
 		kycNotificationService.updateUserKYCStatus(notification);
 		kycNotificationService.updateUserDocumentsFlags(notification);
+	}
+
+	@Override
+	protected String getNotificationType() {
+		return NOTIFICATION_TYPE;
 	}
 
 }

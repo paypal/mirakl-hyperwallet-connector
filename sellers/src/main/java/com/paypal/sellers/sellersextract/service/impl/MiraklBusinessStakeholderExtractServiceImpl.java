@@ -3,7 +3,6 @@ package com.paypal.sellers.sellersextract.service.impl;
 import com.mirakl.client.core.exception.MiraklApiException;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
-import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
@@ -12,14 +11,12 @@ import com.paypal.sellers.sellersextract.model.BusinessStakeHolderConstants;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.paypal.sellers.sellersextract.service.impl.BusinessStakeholderExtractServiceImpl.ERROR_MESSAGE_PREFIX;
@@ -57,11 +54,8 @@ public class MiraklBusinessStakeholderExtractServiceImpl implements MiraklBusine
 		final MiraklUpdateShop miraklUpdateShop = createMiraklUpdateFieldRequestForStakeholders(clientUserId,
 				businessStakeHolderModels);
 		final MiraklUpdateShopsRequest request = new MiraklUpdateShopsRequest(List.of(miraklUpdateShop));
-		log.debug("Update shop request [{}]", ToStringBuilder.reflectionToString(request));
 		try {
-			final MiraklUpdatedShops miraklUpdatedShops = miraklOperatorClient.updateShops(request);
-			Optional.ofNullable(miraklUpdatedShops).ifPresent(
-					response -> log.debug("Update shop response [{}]", ToStringBuilder.reflectionToString(response)));
+			miraklOperatorClient.updateShops(request);
 		}
 		catch (final MiraklApiException ex) {
 			log.error("Something went wrong getting information of shop [{}]", clientUserId);

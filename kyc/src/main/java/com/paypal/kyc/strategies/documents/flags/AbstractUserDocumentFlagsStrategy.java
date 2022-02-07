@@ -22,7 +22,7 @@ public abstract class AbstractUserDocumentFlagsStrategy
 
 	protected final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient;
 
-	protected static final String ERROR_MESSAGE_PREFIX = "There was an error, please check the logs for further information:\n";
+	protected static final String EMAIL_BODY_PREFIX = "There was an error, please check the logs for further information:\n";
 
 	protected AbstractUserDocumentFlagsStrategy(final MailNotificationUtil mailNotificationUtil,
 			final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient) {
@@ -56,7 +56,7 @@ public abstract class AbstractUserDocumentFlagsStrategy
 		updateShop.setAdditionalFieldValues(List.of(additionalValue));
 
 		try {
-			log.debug("Updating KYC proof of identity flag in Mirakl for shopId [{}]", source.getClientUserId());
+			log.info("Updating KYC proof of identity flag in Mirakl for shopId [{}]", source.getClientUserId());
 			final MiraklUpdateShopsRequest miraklUpdateShopsRequest = new MiraklUpdateShopsRequest(List.of(updateShop));
 			miraklMarketplacePlatformOperatorApiClient.updateShops(miraklUpdateShopsRequest);
 			log.info("Proof of identity flag updated for shopId [{}]", source.getClientUserId());
@@ -65,9 +65,10 @@ public abstract class AbstractUserDocumentFlagsStrategy
 			log.error("Something went wrong updating KYC information of shop [{}]. Details [{}]",
 					source.getClientUserId(), ex.getMessage());
 			mailNotificationUtil.sendPlainTextEmail("Issue detected updating KYC information in Mirakl",
-					String.format(
-							ERROR_MESSAGE_PREFIX + "Something went wrong updating KYC information of shop [%s]%n%s",
+					String.format(EMAIL_BODY_PREFIX + "Something went wrong updating KYC information of shop [%s]%n%s",
 							source.getClientUserId(), MiraklLoggingErrorsUtil.stringify(ex)));
+			// Rethrow exception to handle it in AbstractNotificationListener
+			throw ex;
 		}
 	}
 

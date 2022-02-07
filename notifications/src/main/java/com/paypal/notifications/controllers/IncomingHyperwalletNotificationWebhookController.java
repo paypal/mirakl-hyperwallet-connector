@@ -1,7 +1,7 @@
 package com.paypal.notifications.controllers;
 
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
-import com.paypal.notifications.services.NotificationService;
+import com.paypal.notifications.service.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;

@@ -34,7 +34,7 @@ public class FailurePaymentNotificationStrategy implements Strategy<PaymentNotif
 		mailNotificationUtil.sendPlainTextEmail(
 				String.format("Payment Issue - %s", paymentNotificationBodyModel.getClientPaymentId()),
 				String.format(
-						"There was an issue with payment of %s invoice. The payment status is %s. Please login to Hyperwallet to view an resolve the payment issue.",
+						"There was an issue with payment of %s invoice. The payment status is %s. Please login to Hyperwallet to view and resolve the payment issue.",
 						paymentNotificationBodyModel.getClientPaymentId(), paymentNotificationBodyModel.getStatus()));
 		return null;
 	}

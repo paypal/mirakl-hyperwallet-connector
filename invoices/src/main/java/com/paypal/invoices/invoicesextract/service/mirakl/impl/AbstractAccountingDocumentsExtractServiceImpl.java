@@ -19,7 +19,6 @@ import com.paypal.invoices.invoicesextract.model.InvoiceTypeEnum;
 import com.paypal.invoices.invoicesextract.service.mirakl.MiraklAccountingDocumentExtractService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -146,7 +145,6 @@ public abstract class AbstractAccountingDocumentsExtractServiceImpl<T extends Ac
 		final MiraklGetShopsRequest request = new MiraklGetShopsRequest();
 		request.setShopIds(shopIds);
 		request.setPaginate(false);
-		log.debug(ToStringBuilder.reflectionToString(request));
 		return request;
 	}
 
@@ -164,7 +162,7 @@ public abstract class AbstractAccountingDocumentsExtractServiceImpl<T extends Ac
 			if (receivedInvoices.getTotalCount() <= invoices.size()) {
 				break;
 			}
-			offset++;
+			offset += MIRAKL_MAX_RESULTS_PER_PAGE;
 		}
 
 		return invoices;

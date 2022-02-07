@@ -68,7 +68,6 @@ public class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy extends
 
 	protected void fillMiraklProofIdentityOrBusinessFlagStatus(final KYCUserDocumentFlagsNotificationBodyModel source,
 			final List<String> kycCustomValuesRequiredVerificationBusinessStakeholders) {
-
 		if (CollectionUtils.isNotEmpty(kycCustomValuesRequiredVerificationBusinessStakeholders)) {
 			final MiraklUpdateShop updateShop = new MiraklUpdateShop();
 
@@ -82,7 +81,7 @@ public class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy extends
 			updateShop.setAdditionalFieldValues(additionalFieldValues);
 
 			try {
-				log.debug("Updating KYC proof of identity flag in Mirakl for business Stakeholder for shopId [{}]",
+				log.info("Updating KYC proof of identity flag in Mirakl for business Stakeholder for shopId [{}]",
 						source.getClientUserId());
 				final MiraklUpdateShopsRequest miraklUpdateShopsRequest = new MiraklUpdateShopsRequest(
 						List.of(updateShop));
@@ -96,9 +95,11 @@ public class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy extends
 						source.getClientUserId(), ex.getMessage());
 				mailNotificationUtil.sendPlainTextEmail(
 						"Issue detected updating KYC business stakeholder information in Mirakl",
-						String.format(ERROR_MESSAGE_PREFIX
+						String.format(EMAIL_BODY_PREFIX
 								+ "Something went wrong updating KYC business stakeholder information for shop [%s]%n%s",
 								source.getClientUserId(), MiraklLoggingErrorsUtil.stringify(ex)));
+				// Rethrow exception to handle it in AbstractNotificationListener
+				throw ex;
 			}
 		}
 	}

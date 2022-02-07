@@ -6,7 +6,6 @@ import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.MiraklShops;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
-import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
@@ -16,14 +15,16 @@ import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.MiraklSellersExtractService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.context.annotation.Primary;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -147,11 +148,8 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 		miraklUpdateShop.setAdditionalFieldValues(List.of(userTokenCustomField));
 		final MiraklUpdateShopsRequest request = new MiraklUpdateShopsRequest(List.of(miraklUpdateShop));
 		log.info("Updating token for shop [{}] to [{}]", shopId, hyperwalletUser.getToken());
-		log.debug("Update shop request [{}]", ToStringBuilder.reflectionToString(request));
 		try {
-			final MiraklUpdatedShops miraklUpdatedShops = miraklOperatorClient.updateShops(request);
-			Optional.ofNullable(miraklUpdatedShops).ifPresent(
-					response -> log.debug("Update shop response [{}]", ToStringBuilder.reflectionToString(response)));
+			miraklOperatorClient.updateShops(request);
 		}
 		catch (final MiraklApiException ex) {
 			log.error("Something went wrong getting information of shop [{}]", shopId);
@@ -200,13 +198,8 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 		request.setUpdatedSince(delta);
 		request.setPaginate(false);
 		log.info("Retrieving shops since {}", delta);
-		log.debug("Get Shops request [{}]", ToStringBuilder.reflectionToString(request));
 		try {
-			final MiraklShops shops = miraklOperatorClient.getShops(request);
-			Optional.ofNullable(shops).ifPresent(shopResponse -> log.debug("Get Shops response [{}]",
-					ToStringBuilder.reflectionToString(shopResponse)));
-
-			return shops;
+			return miraklOperatorClient.getShops(request);
 		}
 		catch (final MiraklApiException ex) {
 			log.error("Something went wrong getting shop information since [{}]", delta);
@@ -222,13 +215,8 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 		request.setShopIds(shopIds);
 		request.setPaginate(false);
 		log.info("Retrieving shops with ids {}", shopIds);
-		log.debug("Get Shops request [{}]", ToStringBuilder.reflectionToString(request));
 		try {
-			final MiraklShops shops = miraklOperatorClient.getShops(request);
-			Optional.ofNullable(shops).ifPresent(shopResponse -> log.debug("Get Shops response [{}]",
-					ToStringBuilder.reflectionToString(shopResponse)));
-
-			return shops;
+			return miraklOperatorClient.getShops(request);
 		}
 		catch (final MiraklApiException ex) {
 			log.error("Something went wrong getting s information with ids [{}]", shopIds);

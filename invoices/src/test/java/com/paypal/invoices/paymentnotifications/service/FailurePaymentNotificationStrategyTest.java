@@ -42,7 +42,7 @@ class FailurePaymentNotificationStrategyTest {
 		testObj.execute(paymentNotificationBodyModelMock);
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail("Payment Issue - ClientPaymentID",
-				"There was an issue with payment of ClientPaymentID invoice. The payment status is FAILED. Please login to Hyperwallet to view an resolve the payment issue.");
+				"There was an issue with payment of ClientPaymentID invoice. The payment status is FAILED. Please login to Hyperwallet to view and resolve the payment issue.");
 	}
 
 	@Test

@@ -8,6 +8,7 @@ import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiC
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
+import com.paypal.infrastructure.exceptions.HMCException;
 import com.paypal.kyc.infrastructure.configuration.KYCHyperwalletApiConfig;
 import com.paypal.kyc.model.KYCBusinessStakeholderStatusNotificationBodyModel;
 import com.paypal.kyc.model.KYCConstants;
@@ -25,31 +26,34 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 
-	private static final String USER_TOKEN = "userToken";
-
-	private static final String DEFAULT_TOKEN = "defaultToken";
+	private static final String CLIENT_ID = "0229";
 
 	private static final String UK_TOKEN = "ukToken";
 
 	private static final String MIRAKL_SHOP_ID = "0229";
 
-	private static final String BSTK_PROOF_IDENTITY_FIELD = "bstkProofIdentityField";
+	private static final String USER_TOKEN = "userToken";
+
+	private static final String BSTK_TOKEN = "bstkToken";
+
+	private static final String DEFAULT_TOKEN = "defaultToken";
 
 	private static final String CUSTOM_FIELD_1 = "customField1";
 
 	private static final String CUSTOM_FIELD_2 = "customField2";
 
-	private static final String BSTK_TOKEN = "bstkToken";
-
-	private static final String CLIENT_ID = "0229";
+	private static final String BSTK_PROOF_IDENTITY_FIELD = "bstkProofIdentityField";
 
 	private static final Map<String, String> USER_STORE_TOKENS = Map.of("DEFAULT", DEFAULT_TOKEN, "UK", UK_TOKEN);
+
+	private static final String HMC_EXCEPTION_MESSAGE = "No Hyperwallet users were found for user token %s in the system instance(s)";
 
 	@InjectMocks
 	private IndividualKYCBusinessStakeholderStatusNotificationStrategy testObj;
@@ -61,10 +65,10 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	private KYCHyperwalletApiConfig kycHyperwalletApiConfigMock;
 
 	@Mock
-	private MiraklBusinessStakeholderDocumentsExtractService miraklBusinessStakeholderDocumentsExtractServiceMock;
+	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
 
 	@Mock
-	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
+	private MiraklBusinessStakeholderDocumentsExtractService miraklBusinessStakeholderDocumentsExtractServiceMock;
 
 	@Mock
 	private Hyperwallet hyperwalletMock;
@@ -73,10 +77,10 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	private HyperwalletUser hyperwalletUserMock;
 
 	@Mock
-	private KYCBusinessStakeholderStatusNotificationBodyModel kycBusinessStakeholderStatusNotificationBodyModelMock;
+	private MiraklUpdatedShops miraklUpdatedShopsMock;
 
 	@Mock
-	private MiraklUpdatedShops miraklUpdatedShopsMock;
+	private KYCBusinessStakeholderStatusNotificationBodyModel kycBusinessStakeholderStatusNotificationBodyModelMock;
 
 	@Captor
 	private ArgumentCaptor<MiraklUpdateShopsRequest> miraklUpdateShopsRequestArgumentCaptor;
@@ -156,17 +160,18 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	}
 
 	@Test
-	void getHyperWalletUser_whenTheUserDoesNotExitInHyperWallet_shouldReturnNull() {
+	void getHyperWalletUser_whenTheUserDoesNotExitInHyperWallet_shouldThrowHMCException() {
 		when(kycHyperwalletApiConfigMock.getUserStoreTokens()).thenReturn(USER_STORE_TOKENS);
 		when(hyperwalletSDKService.getHyperwalletInstance(anyString())).thenReturn(hyperwalletMock);
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getUserToken()).thenReturn(USER_TOKEN);
 		when(hyperwalletMock.getUser(USER_TOKEN)).thenThrow(HyperwalletException.class);
 
-		final HyperwalletUser result = testObj
-				.getHyperWalletUser(kycBusinessStakeholderStatusNotificationBodyModelMock);
+		final Throwable throwable = catchThrowable(
+				() -> testObj.getHyperWalletUser(kycBusinessStakeholderStatusNotificationBodyModelMock));
 
 		verify(hyperwalletMock, times(2)).getUser(USER_TOKEN);
-		assertThat(result).isNull();
+		assertThat(throwable).isInstanceOf(HMCException.class);
+		assertThat(throwable.getMessage()).isEqualTo(String.format(HMC_EXCEPTION_MESSAGE, USER_TOKEN));
 	}
 
 	@Test
@@ -222,12 +227,14 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	}
 
 	@Test
-	void updateMiraklProofIdentityFlagStatus_whenAPICallThrowsException_shouldFinishWithoutExceptions() {
+	void updateMiraklProofIdentityFlagStatus_whenAPICallThrowsException_shouldThrowException() {
+		final MiraklException exception = new MiraklException("An error has occurred");
 		when(miraklMarketplacePlatformOperatorApiClientMock
-				.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenThrow(MiraklException.class);
+				.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenThrow(exception);
 
-		testObj.updateMiraklProofIdentityFlagStatus(MIRAKL_SHOP_ID, BSTK_PROOF_IDENTITY_FIELD,
-				HyperwalletUser.VerificationStatus.REQUIRED);
+		final Throwable throwable = catchThrowable(() -> testObj.updateMiraklProofIdentityFlagStatus(MIRAKL_SHOP_ID,
+				BSTK_PROOF_IDENTITY_FIELD, HyperwalletUser.VerificationStatus.REQUIRED));
+		assertThat(throwable).isEqualTo(exception);
 
 		final MiraklUpdateShopsRequest result = miraklUpdateShopsRequestArgumentCaptor.getValue();
 		final List<MiraklRequestAdditionalFieldValue> additionalFieldValuesToBeChanged = result.getShops().get(0)
@@ -241,16 +248,19 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	}
 
 	@Test
-	void execute_whenTheUserDoesNotExistOnHyperwallet_shouldDoNothing() {
+	void execute_whenTheUserDoesNotExistOnHyperwallet_shouldThrowHMCException() {
 		when(kycHyperwalletApiConfigMock.getUserStoreTokens()).thenReturn(USER_STORE_TOKENS);
 		when(hyperwalletSDKService.getHyperwalletInstance(anyString())).thenReturn(hyperwalletMock);
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getUserToken()).thenReturn(USER_TOKEN);
 		when(hyperwalletMock.getUser(USER_TOKEN)).thenThrow(HyperwalletException.class);
 
-		testObj.execute(kycBusinessStakeholderStatusNotificationBodyModelMock);
+		final Throwable throwable = catchThrowable(
+				() -> testObj.execute(kycBusinessStakeholderStatusNotificationBodyModelMock));
 
 		verify(miraklBusinessStakeholderDocumentsExtractServiceMock, never())
 				.getKYCCustomValuesRequiredVerificationBusinessStakeholders(anyString(), anyList());
+		assertThat(throwable).isInstanceOf(HMCException.class);
+		assertThat(throwable.getMessage()).isEqualTo(String.format(HMC_EXCEPTION_MESSAGE, USER_TOKEN));
 	}
 
 	@Test

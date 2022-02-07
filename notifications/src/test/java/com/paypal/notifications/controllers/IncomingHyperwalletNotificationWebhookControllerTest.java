@@ -1,7 +1,7 @@
 package com.paypal.notifications.controllers;
 
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
-import com.paypal.notifications.services.NotificationService;
+import com.paypal.notifications.service.NotificationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

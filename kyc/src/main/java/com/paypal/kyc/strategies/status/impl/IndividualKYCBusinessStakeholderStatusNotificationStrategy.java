@@ -2,7 +2,6 @@ package com.paypal.kyc.strategies.status.impl;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mchange.v2.lang.StringUtils;
-import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
@@ -87,19 +86,11 @@ public class IndividualKYCBusinessStakeholderStatusNotificationStrategy
 			updateShop.setShopId(Long.valueOf(miraklShopId));
 			updateShop.setAdditionalFieldValues(additionalFieldValues);
 
-			try {
-				log.debug("Updating KYC proof of identity flag in Mirakl for business Stakeholder for shopId [{}]",
-						miraklShopId);
-				final MiraklUpdateShopsRequest miraklUpdateShopsRequest = new MiraklUpdateShopsRequest(
-						List.of(updateShop));
-				miraklMarketplacePlatformOperatorApiClient.updateShops(miraklUpdateShopsRequest);
-				log.info("Proof of identity flag updated for business Stakeholder for shopId [{}]", miraklShopId);
-			}
-			catch (final MiraklException ex) {
-				log.error(
-						"Something went wrong updating KYC business stakeholder information of shop [{}]. Details [{}]",
-						miraklShopId, ex.getMessage());
-			}
+			log.info("Updating KYC proof of identity flag in Mirakl for business Stakeholder for shopId [{}]",
+					miraklShopId);
+			final MiraklUpdateShopsRequest miraklUpdateShopsRequest = new MiraklUpdateShopsRequest(List.of(updateShop));
+			miraklMarketplacePlatformOperatorApiClient.updateShops(miraklUpdateShopsRequest);
+			log.info("Proof of identity flag updated for business Stakeholder for shopId [{}]", miraklShopId);
 		}
 	}
 

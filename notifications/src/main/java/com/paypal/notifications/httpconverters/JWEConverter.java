@@ -51,13 +51,13 @@ public class JWEConverter extends AbstractHttpMessageConverter<Object> {
 	@Override
 	protected Object readInternal(final Class<?> clazz, final HttpInputMessage inputMessage)
 			throws IOException, HttpMessageNotReadableException {
-		return this.objectMapper.readValue(decrypt(inputMessage.getBody()), clazz);
+		return objectMapper.readValue(decrypt(inputMessage.getBody()), clazz);
 	}
 
 	@Override
 	protected void writeInternal(final Object object, final HttpOutputMessage outputMessage)
 			throws IOException, HttpMessageNotWritableException {
-		outputMessage.getBody().write(this.objectMapper.writeValueAsBytes(object));
+		outputMessage.getBody().write(objectMapper.writeValueAsBytes(object));
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class JWEConverter extends AbstractHttpMessageConverter<Object> {
 		final String body = getBodyAsString(inputStream);
 		String decrypt = null;
 		try {
-			decrypt = this.hyperwalletEncryption.decrypt(body);
+			decrypt = hyperwalletEncryption.decrypt(body);
 		}
 		catch (final ParseException | IOException | JOSEException e) {
 			log.error("Something went wrong decrypting the JWE", e);

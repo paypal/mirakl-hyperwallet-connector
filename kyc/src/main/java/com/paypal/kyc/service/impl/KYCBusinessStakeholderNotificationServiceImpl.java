@@ -1,7 +1,11 @@
 package com.paypal.kyc.service.impl;
 
+import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
+import com.mirakl.client.core.exception.MiraklException;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
+import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCBusinessStakeholderStatusNotificationBodyModel;
 import com.paypal.kyc.service.KYCBusinessStakeholderNotificationService;
 import com.paypal.kyc.service.KYCUserNotificationService;
@@ -34,7 +38,29 @@ public class KYCBusinessStakeholderNotificationServiceImpl implements KYCBusines
 	public void updateBusinessStakeholderKYCStatus(final HyperwalletWebhookNotification incomingNotification) {
 		final KYCBusinessStakeholderStatusNotificationBodyModel kycBusinessStakeholderNotification = hyperWalletObjectToKycBusinessStakeholderStatusNotificationBodyModelConverter
 				.convert(incomingNotification);
-		kycBusinessStakeholderStatusExecutor.execute(kycBusinessStakeholderNotification);
+		try {
+			kycBusinessStakeholderStatusExecutor.execute(kycBusinessStakeholderNotification);
+		}
+		// Rethrow exception to handle it in AbstractNotificationListener
+		catch (final HyperwalletException ex) {
+			logException(incomingNotification, HyperwalletLoggingErrorsUtil.stringify(ex));
+			throw ex;
+		}
+		catch (final MiraklException ex) {
+			logException(incomingNotification, MiraklLoggingErrorsUtil.stringify(ex));
+			throw ex;
+		}
+		catch (final RuntimeException ex) {
+			logException(incomingNotification, ex.getMessage());
+			throw ex;
+		}
+	}
+
+	private void logException(final HyperwalletWebhookNotification incomingNotification,
+			final String exceptionMessage) {
+		log.error(
+				"Notification [{}] could not be processed - the KYC Letter of authorization for a business stakeholder could not be updated. Details [{}]",
+				incomingNotification.getToken(), exceptionMessage);
 	}
 
 }

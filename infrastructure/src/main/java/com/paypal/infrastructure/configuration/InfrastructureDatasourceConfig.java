@@ -1,6 +1,7 @@
 package com.paypal.infrastructure.configuration;
 
 import com.paypal.infrastructure.model.entity.JobExecutionInformationEntity;
+import com.paypal.infrastructure.model.entity.NotificationInfoEntity;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -60,7 +61,8 @@ public class InfrastructureDatasourceConfig {
 	@Bean(name = "applicationEntityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean applicationEntityManagerFactory(
 			final EntityManagerFactoryBuilder builder, final DataSource applicationDataSource) {
-		return builder.dataSource(applicationDataSource).packages(JobExecutionInformationEntity.class).build();
+		return builder.dataSource(applicationDataSource)
+				.packages(JobExecutionInformationEntity.class, NotificationInfoEntity.class).build();
 	}
 
 	/**

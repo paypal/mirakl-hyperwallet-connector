@@ -1,447 +1,628 @@
 {
 	"info": {
-		"_postman_id": "9a0162c7-67dc-4c9c-b4c5-e1917f101981",
+		"_postman_id": "97643497-0739-465f-806f-b70610982d1c",
 		"name": "Hyperwallet Mirakl Connector V4",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Professional sellers extract",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "{{env}}/job/professional-sellers-extract?name=professionalSellersExtractJob",
-					"host": [
-						"{{env}}"
-					],
-					"path": [
-						"job",
-						"professional-sellers-extract"
-					],
-					"query": [
-						{
-							"key": "name",
-							"value": "professionalSellersExtractJob"
-						},
-						{
-							"key": "delta",
-							"value": "2021-03-08T14:53:00.000-00:00",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime3min}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime10min}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime20min}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1h}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime12h}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1day}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1week}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1month}}",
-							"disabled": true
+			"name": "Jobs",
+			"item": [
+				{
+					"name": "Professional sellers extract",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{env}}/job/professional-sellers-extract?name=professionalSellersExtractJob&delta={{deltaTime1min}}",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"job",
+								"professional-sellers-extract"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "professionalSellersExtractJob"
+								},
+								{
+									"key": "delta",
+									"value": "2021-03-08T14:53:00.000-00:00",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1min}}"
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime3min}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime10min}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime20min}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1h}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime12h}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1day}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1week}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1month}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime30s}}",
+									"disabled": true
+								}
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Individual sellers extract",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "{{env}}/job/sellers-extract?name=individualSellersExtractJob&delta={{deltaTime10min}}&delta={{deltaTime1h}}&delta={{deltaTime12h}}&delta={{deltaTime1day}}&delta={{deltaTime1week}}",
-					"host": [
-						"{{env}}"
-					],
-					"path": [
-						"job",
-						"sellers-extract"
-					],
-					"query": [
-						{
-							"key": "delta",
-							"value": "2021-04-30T08:59:00.000-00:00",
-							"disabled": true
-						},
-						{
-							"key": "name",
-							"value": "individualSellersExtractJob"
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime10min}}"
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime3min}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime20min}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1h}}"
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime12h}}"
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1day}}"
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1week}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Bank accounts extract",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "{{env}}/job/bank-accounts-extract?name=bankAccountExtractJob&delta={{deltaTime3min}}",
-					"host": [
-						"{{env}}"
-					],
-					"path": [
-						"job",
-						"bank-accounts-extract"
-					],
-					"query": [
-						{
-							"key": "delta",
-							"value": "2021-04-27T10:30:00.000-00:00",
-							"disabled": true
-						},
-						{
-							"key": "name",
-							"value": "bankAccountExtractJob"
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime3min}}"
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime10min}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime20min}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1h}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime12h}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1day}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1month}}",
-							"disabled": true
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Invoices extract",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "{{env}}/job/invoices-extract?name=invoicesExtractJob&delta={{deltaTime3min}}",
-					"host": [
-						"{{env}}"
-					],
-					"path": [
-						"job",
-						"invoices-extract"
-					],
-					"query": [
-						{
-							"key": "delta",
-							"value": "2021-05-20T23:14:00.000-00:00",
-							"disabled": true
-						},
-						{
-							"key": "name",
-							"value": "invoicesExtractJob"
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime3min}}"
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime10min}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime20min}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1h}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime12h}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1day}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1month}}",
-							"disabled": true
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Documents extract",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "{{env}}/job/documents-extract?name=documentsExtractJob&delta={{deltaTime3min}}",
-					"host": [
-						"{{env}}"
-					],
-					"path": [
-						"job",
-						"documents-extract"
-					],
-					"query": [
-						{
-							"key": "delta",
-							"value": "2021-06-15T09:14:00.000-00:00",
-							"disabled": true
-						},
-						{
-							"key": "name",
-							"value": "documentsExtractJob"
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime10min}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime3min}}"
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime20min}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1h}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime12h}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1day}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1week}}",
-							"disabled": true
-						},
-						{
-							"key": "delta",
-							"value": "{{deltaTime1month}}",
-							"disabled": true
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Financial Report",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{env}}/downloads/get?startDate=2021-01-30T00:00:00.000-00:00&endDate=2021-01-30T23:59:59.000-00:00&name=financialReportExtractJob&fileName=financialReport-30-01-2021",
-					"host": [
-						"{{env}}"
-					],
-					"path": [
-						"downloads",
-						"get"
-					],
-					"query": [
-						{
-							"key": "startDate",
-							"value": "2021-01-30T00:00:00.000-00:00"
-						},
-						{
-							"key": "endDate",
-							"value": "2021-01-30T23:59:59.000-00:00"
-						},
-						{
-							"key": "name",
-							"value": "financialReportExtractJob"
-						},
-						{
-							"key": "fileName",
-							"value": "financialReport-30-01-2021"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Health",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{env}}/actuator/info",
-					"host": [
-						"{{env}}"
-					],
-					"path": [
-						"actuator",
-						"info"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "List jobs",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{env}}/job",
-					"host": [
-						"{{env}}"
-					],
-					"path": [
-						"job"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "App Info",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{env}}/actuator/health",
-					"host": [
-						"{{env}}"
-					],
-					"path": [
-						"actuator",
-						"health"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Send Webhook Notification",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"token\": \"wbh-37be6707-5ac9-4b41-b06b-385ba0dacd58\",\n    \"type\": \"USERS.UPDATED.VERIFICATION_STATUS.REQUIRED\",\n    \"createdOn\": \"2021-08-05T09:26:09.000\",\n    \"object\": {\n        \"token\": \"usr-862839d3-1fc6-4982-bd2d-d4c21f044580\",\n        \"status\": \"PRE_ACTIVATED\",\n        \"verificationStatus\": \"REQUIRED\",\n        \"businessStakeholderVerificationStatus\": \"REQUIRED\",\n        \"createdOn\": \"2021-07-16T11:25:41\",\n        \"clientUserId\": \"88451\",\n        \"profileType\": \"BUSINESS\",\n        \"firstName\": \"EXAMPLE_NAME\",\n        \"lastName\": \"EXAMPLE_LASTNAME\",\n        \"dateOfBirth\": \"1989-07-15\",\n        \"countryOfBirth\": \"ES\",\n        \"countryOfNationality\": \"ES\",\n        \"email\": \"example@example.com\",\n        \"governmentId\": \"544811681\",\n        \"governmentIdType\": \"PASSPORT\",\n        \"passportId\": \"121211689\",\n        \"driversLicenseId\": \"juyzfrkabb\",\n        \"addressLine1\": \"example streeet, 229\",\n        \"city\": \"VALENCIA\",\n        \"country\": \"ES\",\n        \"postalCode\": \"46005\",\n        \"language\": \"en\",\n        \"timeZone\": \"GMT\",\n        \"programToken\": \"prg-60f12r341-2e01-4fcr-b7gt-46f03819a398\",\n        \"documents\": [\n            {\n                \"category\": \"BUSINESS\",\n                \"type\": \"INCORPORATION\",\n                \"country\": \"ES\",\n                \"status\": \"INVALID\",\n                \"reasons\": [\n                    {\n                        \"name\": \"DOCUMENT_NOT_COMPLETE\",\n                        \"description\": \"Document is incomplete\"\n                    }\n                ],\n                \"createdOn\": \"2021-08-17T19:57:29\"\n            }\n        ]\n    }\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{env}}/webhooks/notifications",
-					"host": [
-						"{{env}}"
-					],
-					"path": [
-						"webhooks",
-						"notifications"
-					]
+				{
+					"name": "Individual sellers extract",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{env}}/job/sellers-extract?name=individualSellersExtractJob&delta={{deltaTime3min}}",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"job",
+								"sellers-extract"
+							],
+							"query": [
+								{
+									"key": "delta",
+									"value": "2021-04-30T08:59:00.000-00:00",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "individualSellersExtractJob"
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime3min}}"
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime10min}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime20min}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1h}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime12h}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1day}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1week}}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bank accounts extract",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{env}}/job/bank-accounts-extract?name=bankAccountExtractJob&delta={{deltaTime3min}}",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"job",
+								"bank-accounts-extract"
+							],
+							"query": [
+								{
+									"key": "delta",
+									"value": "2021-04-27T10:30:00.000-00:00",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "bankAccountExtractJob"
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime3min}}"
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime10min}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime20min}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1h}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime12h}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1day}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1month}}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invoices extract",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{env}}/job/invoices-extract?name=invoicesExtractJob&delta={{deltaTime3min}}",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"job",
+								"invoices-extract"
+							],
+							"query": [
+								{
+									"key": "delta",
+									"value": "2021-05-20T23:14:00.000-00:00",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "invoicesExtractJob"
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime3min}}"
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime10min}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime20min}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1h}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime12h}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1day}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1month}}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Documents extract",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{env}}/job/documents-extract?name=documentsExtractJob&delta={{deltaTime3min}}",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"job",
+								"documents-extract"
+							],
+							"query": [
+								{
+									"key": "delta",
+									"value": "2021-06-15T09:14:00.000-00:00",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "documentsExtractJob"
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime3min}}"
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime10min}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime20min}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1h}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime12h}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1day}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1week}}",
+									"disabled": true
+								},
+								{
+									"key": "delta",
+									"value": "{{deltaTime1month}}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retry notifications",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{env}}/job/process-failed-notifications",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"job",
+								"process-failed-notifications"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "Utils",
+			"item": [
+				{
+					"name": "Financial Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env}}/downloads/get?startDate=2021-01-30T00:00:00.000-00:00&endDate=2021-01-30T23:59:59.000-00:00&name=financialReportExtractJob&fileName=financialReport-30-01-2021",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"downloads",
+								"get"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2021-01-30T00:00:00.000-00:00"
+								},
+								{
+									"key": "endDate",
+									"value": "2021-01-30T23:59:59.000-00:00"
+								},
+								{
+									"key": "name",
+									"value": "financialReportExtractJob"
+								},
+								{
+									"key": "fileName",
+									"value": "financialReport-30-01-2021"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Info Actuator",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env}}/actuator/info",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"actuator",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health Actuator",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env}}/actuator/health",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List jobs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env}}/job",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"job"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mock notifications",
+			"item": [
+				{
+					"name": "Send Webhook Notification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"wbh-fa591f2c-555a-40a3-88d3-013066d1f63d\",\n  \"type\": \"USERS.UPDATED.VERIFICATION_STATUS.REQUIRED\",\n  \"createdOn\": \"2021-12-09T12:20:02.000\",\n  \"object\": {\n    \"token\": \"usr-123ee07c-33bf-4728-952a-dd767d0de336\",\n    \"status\": \"PRE_ACTIVATED\",\n    \"verificationStatus\": \"REQUIRED\",\n    \"businessStakeholderVerificationStatus\": \"VERIFIED\",\n    \"letterOfAuthorizationStatus\": \"NOT_REQUIRED\",\n    \"createdOn\": \"2021-12-09T12:16:37\",\n    \"clientUserId\": \"2030\",\n    \"profileType\": \"BUSINESS\",\n    \"businessType\": \"CORPORATION\",\n    \"businessName\": \"TEST SHOPPE 2030-1\",\n    \"businessRegistrationId\": \"54645645645\",\n    \"businessRegistrationCountry\": \"ES\",\n    \"phoneNumber\": \"3458901205\",\n    \"email\": \"afakeemail@email.com\",\n    \"addressLine1\": \"30 King Street\",\n    \"city\": \"Valencia\",\n    \"country\": \"ES\",\n    \"postalCode\": \"46001\",\n    \"language\": \"en\",\n    \"timeZone\": \"GMT\",\n    \"programToken\": \"prg-12342f7e-1e2e-4aeb-a349-3f4782e6f9c3\",\n    \"documents\": [\n      {\n        \"category\": \"BUSINESS\",\n        \"type\": \"INCORPORATION\",\n        \"status\": \"INVALID\",\n        \"reasons\": [\n          {\n            \"name\": \"DOCUMENT_CORRECTION_REQUIRED\",\n            \"description\": \"Document requires correction.\"\n          }\n        ],\n        \"createdOn\": \"2021-12-09T12:18:18\"\n      }\n    ]\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env}}/webhooks/notifications",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"webhooks",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Payment Notification (In progress)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"wbh-96ddb609-d849-4f98-97b1-30aa1b03e8b7\",\n    \"type\": \"PAYMENTS.UPDATED.STATUS.IN_PROGRESS\",\n    \"createdOn\": \"2020-12-01T05:16:46.464\",\n    \"object\": {\n        \"token\": \"pmt-ec57a513-b70e-455b-b277-b0020b4241d3\",\n        \"status\": \"IN_PROGRESS\",\n        \"createdOn\": \"2020-12-01T05:16:45\",\n        \"amount\": \"1000.00\",\n        \"currency\": \"USD\",\n        \"clientPaymentId\": \"uat-hw-20201130-clientPaymentId-01\",\n        \"notes\": \"Hyperwallet - Webhook Connectivity Test - 01\",\n        \"purpose\": \"OTHER\",\n        \"expiresOn\": \"2021-05-30T05:16:45\",\n        \"destinationToken\": \"trm-5992f441-b727-45d6-96fc-46133e781c89\",\n        \"programToken\": \"prg-2cb287eb-9e36-4171-bc1f-9954d27aafb0\"\n    },\n    \"links\": [\n        {\n            \"params\": {\n                \"rel\": \"self\"\n            },\n            \"href\": \"https://uat-api.paylution.com/rest/v4/webhook-notifications/wbh-96ddb609-d849-4f98-97b1-30aa1b03e8b7\"\n        }\n    ]\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env}}/webhooks/notifications",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"webhooks",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Payment Notification (Completed)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"wbh-412345609-d849-4f98-97b1-30aa1b03e8b7\",\n    \"type\": \"PAYMENTS.UPDATED.STATUS.COMPLETED\",\n    \"createdOn\": \"2020-12-01T05:16:46.464\",\n    \"object\": {\n        \"token\": \"pmt-ac0a47e6-da9f-4e15-ba7a-dc7356d41135\",\n        \"status\": \"COMPLETED\",\n        \"createdOn\": \"2021-11-12T09:55:53\",\n        \"amount\": \"83767.50\",\n        \"currency\": \"EUR\",\n        \"clientPaymentId\": \"232122\",\n        \"purpose\": \"OTHER\",\n        \"expiresOn\": \"2022-05-11T09:55:53\",\n        \"destinationToken\": \"trm-0f406c41-6464-400d-9ac7-0da3edb1b854\",\n        \"programToken\": \"prg-4908dff1-d002-41f5-8b52-d549108ff7d6\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env}}/webhooks/notifications",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"webhooks",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Bussiness Stakeholder KYC Notification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"wbh-2743396a-1d5f-40ef-aa50-64f8e9b0a937\",\n    \"type\": \"USERS.BUSINESS_STAKEHOLDERS.UPDATED.VERIFICATION_STATUS.REQUIRED\",\n    \"createdOn\": \"2021-10-15T09:46:04.000\",\n    \"object\": {\n        \"token\": \"stk-1686a5c2-d788-453e-b1a4-85db3dfada08\",\n        \"isBusinessContact\": true,\n        \"isDirector\": true,\n        \"isUltimateBeneficialOwner\": true,\n        \"isSeniorManagingOfficial\": false,\n        \"status\": \"ACTIVATED\",\n        \"userToken\": \"usr-c8b15fa8-cb7a-4060-a20c-473f7429219b\",\n        \"verificationStatus\": \"REQUIRED\",\n        \"createdOn\": \"2021-10-15T09:34:11\",\n        \"profileType\": \"INDIVIDUAL\",\n        \"firstName\": \"Forest\",\n        \"middleName\": \"Daphney\",\n        \"lastName\": \"Volkman\",\n        \"dateOfBirth\": \"1992-09-19\",\n        \"countryOfBirth\": \"ES\",\n        \"countryOfNationality\": \"ES\",\n        \"gender\": \"FEMALE\",\n        \"phoneNumber\": \"413.782.7825\",\n        \"mobileNumber\": \"769.396.7125\",\n        \"email\": \"Nicholas36@example.org\",\n        \"governmentId\": \"477970561\",\n        \"governmentIdType\": \"PASSPORT\",\n        \"driversLicenseId\": \"1u56w0h57p\",\n        \"addressLine1\": \"959 Satterfield Turnpike\",\n        \"addressLine2\": \"Suite 665\",\n        \"city\": \"Nolanburgh\",\n        \"stateProvince\": \"CA\",\n        \"country\": \"ES\",\n        \"postalCode\": \"90210\"\n    },\n    \"links\": [\n        {\n            \"params\": {\n                \"rel\": \"self\"\n            },\n            \"href\": \"https://uat-api.paylution.com/rest/v4/webhook-notifications/wbh-2743396a-1d5f-40ef-aa50-64f8e9b0a937\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env}}/webhooks/notifications",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"webhooks",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send User KYC Notification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"wbh-3fc2d619-46f6-49c6-bea6-81482fd532a7\",\n    \"type\": \"USERS.UPDATED.VERIFICATION_STATUS.REQUIRED\",\n    \"createdOn\": \"2021-03-08T14:21:54.365\",\n    \"object\": {\n        \"token\": \"usr-1fecc539-d7ec-451d-89c9-c7ef860bf657\",\n        \"status\": \"PRE_ACTIVATED\",\n        \"verificationStatus\": \"REQUIRED\",\n        \"businessStakeholderVerificationStatus\": \"REQUIRED\",\n        \"letterOfAuthorizationStatus\": \"REQUIRED\",\n        \"createdOn\": \"2021-03-08T14:19:48\",\n        \"clientUserId\": \"14461\",\n        \"profileType\": \"BUSINESS\",\n        \"businessType\": \"PARTNERSHIP\",\n        \"businessName\": \"Agresiva-1612260418976\",\n        \"businessRegistrationId\": \"1860610660\",\n        \"businessOperatingName\": \"Murray - Cormier\",\n        \"countryOfBirth\": \"ES\",\n        \"email\": \"sspqadtp87@example.net\",\n        \"passportId\": \"237088365\",\n        \"driversLicenseId\": \"1t6hr4vr7g\",\n        \"employerId\": \"502861935\",\n        \"addressLine1\": \"122 Garfield Meadows\",\n        \"addressLine2\": \"Path\",\n        \"city\": \"Sipesview\",\n        \"stateProvince\": \"Madrid\",\n        \"country\": \"ES\",\n        \"postalCode\": \"04367\",\n        \"language\": \"en\",\n        \"timeZone\": \"GMT\",\n        \"programToken\": \"prg-586b96c9-5d1f-41d7-b114-df6110768655\"\n    },\n    \"links\": [\n        {\n            \"params\": {\n                \"rel\": \"self\"\n            },\n            \"href\": \"https://uat-api.paylution.com/rest/v4/webhook-notifications/wbh-3fc2d619-46f6-49c6-bea6-81482fd532a7\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env}}/webhooks/notifications",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"webhooks",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send New Stakeholder Notification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"wbh-c39ba293-ef3b-4f16-bfdd-37ee4c5252e2\",\n    \"type\": \"USERS.UPDATED.STATUS.PRE_ACTIVATED\",\n    \"createdOn\": \"2022-01-07T10:27:22.000\",\n    \"object\": {\n        \"token\": \"usr-807ee9c0-9753-4d47-b2e1-a0dc670b6c61\",\n        \"status\": \"PRE_ACTIVATED\",\n        \"verificationStatus\": \"NOT_REQUIRED\",\n        \"createdOn\": \"2022-01-07T10:27:21\",\n        \"clientUserId\": \"5343\",\n        \"profileType\": \"INDIVIDUAL\",\n        \"firstName\": \"Teresa\",\n        \"lastName\": \"Hegmann\",\n        \"dateOfBirth\": \"1991-02-09\",\n        \"countryOfBirth\": \"ES\",\n        \"countryOfNationality\": \"ES\",\n        \"email\": \"injzkgfc_Abbott28@example.net\",\n        \"governmentId\": \"579205783\",\n        \"governmentIdType\": \"PASSPORT\",\n        \"passportId\": \"895463566\",\n        \"driversLicenseId\": \"3kk1vgpvc7\",\n        \"addressLine1\": \"3682 Delphine Underpass\",\n        \"addressLine2\": \"Port\",\n        \"city\": \"WestJustina\",\n        \"stateProvince\": \"Madrid\",\n        \"country\": \"ES\",\n        \"postalCode\": \"39269\",\n        \"language\": \"en\",\n        \"timeZone\": \"GMT\",\n        \"programToken\": \"prg-60512c71-2e04-4fcf-b7f0-66500819a259\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env}}/webhooks/notifications",
+							"host": [
+								"{{env}}"
+							],
+							"path": [
+								"webhooks",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -451,18 +632,21 @@
 				"type": "text/javascript",
 				"exec": [
 					"var moment = require('moment');",
-					"pm.collectionVariables.set('deltaTime3min', moment().utc().subtract(3, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
-					"pm.collectionVariables.set('deltaTime5min', moment().utc().subtract(5, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
-					"pm.collectionVariables.set('deltaTime10min', moment().utc().subtract(10, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
-					"pm.collectionVariables.set('deltaTime20min', moment().utc().subtract(20, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
 					"",
-					"pm.collectionVariables.set('deltaTime1h', moment().utc().subtract(1, 'hours').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
-					"pm.collectionVariables.set('deltaTime12h', moment().utc().subtract(12, 'hours').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
+					"pm.environment.set('deltaTime1min', moment().utc().subtract(1, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
+					"pm.environment.set('deltaTime3min', moment().utc().subtract(3, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
+					"pm.environment.set('deltaTime5min', moment().utc().subtract(5, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
+					"pm.environment.set('deltaTime10min', moment().utc().subtract(10, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
+					"pm.environment.set('deltaTime20min', moment().utc().subtract(20, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
 					"",
-					"pm.collectionVariables.set('deltaTime1day', moment().utc().subtract(1, 'days').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
-					"pm.collectionVariables.set('deltaTime1week', moment().utc().subtract(7, 'days').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
+					"pm.environment.set('deltaTime1h', moment().utc().subtract(1, 'hours').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
+					"pm.environment.set('deltaTime12h', moment().utc().subtract(12, 'hours').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
 					"",
-					"pm.collectionVariables.set('deltaTime1month', moment().utc().subtract(30, 'days').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');"
+					"pm.environment.set('deltaTime1day', moment().utc().subtract(1, 'days').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
+					"pm.environment.set('deltaTime1week', moment().utc().subtract(7, 'days').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
+					"",
+					"pm.environment.set('deltaTime1month', moment().utc().subtract(30, 'days').format(\"YYYY-MM-DDTHH:mm:ss.SSS\")+ 'Z');",
+					""
 				]
 			}
 		},
@@ -478,48 +662,8 @@
 	],
 	"variable": [
 		{
-			"value": "",
-			"disabled": true
-		},
-		{
 			"key": "env",
 			"value": "http://localhost:8080"
-		},
-		{
-			"key": "deltaTime3min",
-			"value": ""
-		},
-		{
-			"key": "deltaTime10min",
-			"value": ""
-		},
-		{
-			"key": "deltaTime20min",
-			"value": ""
-		},
-		{
-			"key": "deltaTime5min",
-			"value": ""
-		},
-		{
-			"key": "deltaTime1h",
-			"value": ""
-		},
-		{
-			"key": "deltaTime12h",
-			"value": ""
-		},
-		{
-			"key": "deltaTime1day",
-			"value": ""
-		},
-		{
-			"key": "deltaTime1week",
-			"value": ""
-		},
-		{
-			"key": "deltaTime1month",
-			"value": ""
 		}
 	]
 }

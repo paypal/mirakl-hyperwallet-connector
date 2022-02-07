@@ -1,39 +1,46 @@
 package com.paypal.invoices.paymentnotifications.listeners;
 
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
-import com.paypal.infrastructure.events.PaymentEvent;
 import com.paypal.invoices.paymentnotifications.service.PaymentNotificationService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PaymentListenerTest {
 
-	@InjectMocks
+	private static final String NOTIFICATION_TYPE = "payment";
+
 	private PaymentListener testObj;
 
 	@Mock
 	private PaymentNotificationService paymentNotificationServiceMock;
 
 	@Mock
-	private PaymentEvent paymentEventMock;
-
-	@Mock
 	private HyperwalletWebhookNotification hyperwalletWebhookNotificationMock;
 
-	@Test
-	void sendPaymentNotification_shouldCallPaymentNotificationService() {
-		when(paymentEventMock.getNotification()).thenReturn(hyperwalletWebhookNotificationMock);
+	@BeforeEach
+	void setUp() {
+		testObj = new PaymentListener(null, paymentNotificationServiceMock, null, null);
+	}
 
-		testObj.onApplicationEvent(paymentEventMock);
+	@Test
+	void processNotification_shouldCallPaymentNotificationService() {
+		testObj.processNotification(hyperwalletWebhookNotificationMock);
 
 		verify(paymentNotificationServiceMock).processPaymentNotification(hyperwalletWebhookNotificationMock);
+	}
+
+	@Test
+	void getNotificationType_shouldReturnPayment() {
+		final String result = testObj.getNotificationType();
+
+		assertThat(result).isEqualTo(NOTIFICATION_TYPE);
 	}
 
 }

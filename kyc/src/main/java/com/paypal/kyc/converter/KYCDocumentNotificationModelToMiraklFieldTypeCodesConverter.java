@@ -32,12 +32,15 @@ public class KYCDocumentNotificationModelToMiraklFieldTypeCodesConverter
 		final KYCProofOfBusinessEnum kycProofOfBusiness = EnumUtils.getEnum(KYCProofOfBusinessEnum.class,
 				document.getDocumentType().toString());
 
-		if (Optional.ofNullable(kycProofOfAddress).isPresent())
+		if (Optional.ofNullable(kycProofOfAddress).isPresent()) {
 			return KYCProofOfAddressEnum.getMiraklFields();
-		else if (Optional.ofNullable(kycProofOfIdentity).isPresent())
+		}
+		else if (Optional.ofNullable(kycProofOfIdentity).isPresent()) {
 			return KYCProofOfIdentityEnum.getMiraklFields(kycProofOfIdentity);
-		else if (Optional.ofNullable(kycProofOfBusiness).isPresent())
+		}
+		else if (Optional.ofNullable(kycProofOfBusiness).isPresent()) {
 			return KYCProofOfBusinessEnum.getMiraklFields();
+		}
 
 		return List.of();
 	}

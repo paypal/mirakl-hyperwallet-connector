@@ -2,7 +2,6 @@ package com.paypal.kyc.strategies.status.impl;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.hyperwallet.clientsdk.model.HyperwalletUser.LetterOfAuthorizationStatus;
-import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
@@ -62,19 +61,12 @@ public class BusinessKYCUserLOAStatusNotificationStrategy extends AbstractKYCBus
 		updateShop.setShopId(Long.valueOf(miraklShopId));
 		updateShop.setAdditionalFieldValues(List.of(miraklSimpleRequestAdditionalFieldValue));
 
-		try {
-			log.debug("Updating KYC Letter of authorization flag in Mirakl for business Stakeholder for shopId [{}]",
-					miraklShopId);
-			final MiraklUpdateShopsRequest miraklUpdateShopsRequest = new MiraklUpdateShopsRequest(List.of(updateShop));
-			miraklMarketplacePlatformOperatorApiClient.updateShops(miraklUpdateShopsRequest);
-			log.info("Letter of authorization flag updated to '{}', for business Stakeholder in shopId [{}]",
-					isLetterOfAuthorizationRequired, miraklShopId);
-		}
-		catch (final MiraklException ex) {
-			log.error(
-					"Something went wrong updating KYC Letter of authorization business stakeholder information of shop [{}]. Details [{}]",
-					miraklShopId, ex.getMessage());
-		}
+		log.info("Updating KYC Letter of authorization flag in Mirakl for business Stakeholder for shopId [{}]",
+				miraklShopId);
+		final MiraklUpdateShopsRequest miraklUpdateShopsRequest = new MiraklUpdateShopsRequest(List.of(updateShop));
+		miraklMarketplacePlatformOperatorApiClient.updateShops(miraklUpdateShopsRequest);
+		log.info("Letter of authorization flag updated to '{}', for business Stakeholder in shopId [{}]",
+				isLetterOfAuthorizationRequired, miraklShopId);
 	}
 
 	protected boolean isLetterOfAuthorizationRequired(final LetterOfAuthorizationStatus letterOfAuthorizationStatus) {

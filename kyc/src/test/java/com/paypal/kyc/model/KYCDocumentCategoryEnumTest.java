@@ -12,14 +12,14 @@ class KYCDocumentCategoryEnumTest {
 
 	@ParameterizedTest
 	@MethodSource("fieldNameAndCategory")
-	void getDocumentCategoryForField_shouldReturnCategoryBasedOnFieldName(String fieldName,
-			KYCDocumentCategoryEnum categoryExpected) {
+	void getDocumentCategoryForField_shouldReturnCategoryBasedOnFieldName(final String fieldName,
+			final KYCDocumentCategoryEnum categoryExpected) {
 		final KYCDocumentCategoryEnum result = KYCDocumentCategoryEnum.getDocumentCategoryForField(fieldName);
 
 		assertThat(result).isEqualTo(categoryExpected);
 	}
 
-	public static Stream<Arguments> fieldNameAndCategory() {
+	private static Stream<Arguments> fieldNameAndCategory() {
 		return Stream.of(Arguments.of("hw-ind-proof-address", KYCDocumentCategoryEnum.ADDRESS),
 				Arguments.of("hw-prof-proof-business-front", KYCDocumentCategoryEnum.BUSINESS),
 				Arguments.of("hw-bsh-letter-authorization", KYCDocumentCategoryEnum.AUTHORIZATION),

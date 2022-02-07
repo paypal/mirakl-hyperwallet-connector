@@ -15,6 +15,7 @@ import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.infrastructure.exceptions.HMCException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
@@ -28,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -93,7 +93,6 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 			final String shopId = kycUserStatusNotificationBodyModel.getClientUserId();
 			final MiraklUpdateShopsRequest request = createUpdateShopRequest(kycUserStatusNotificationBodyModel,
 					status);
-			log.debug("Mirakl update shop request: [{}]", ToStringBuilder.reflectionToString(request));
 			log.info("Updating KYC status for shop [{}]", shopId);
 			try {
 				final MiraklUpdatedShops response = miraklOperatorClient.updateShops(request);
@@ -101,7 +100,6 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 					log.error("No response was received for update request for shop [{}]", shopId);
 				}
 				else {
-					log.debug("Mirakl update shop response: [{}]", ToStringBuilder.reflectionToString(response));
 					final List<MiraklUpdatedShopReturn> shopReturns = response.getShopReturns();
 					shopReturns.forEach(this::logShopUpdates);
 				}
@@ -113,6 +111,8 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 						MiraklLoggingErrorsUtil.stringify(ex));
 				log.error(errorMessage);
 				mailNotificationUtil.sendPlainTextEmail(MAIL_SUBJECT, ERROR_MESSAGE_PREFIX + errorMessage);
+				// Rethrow exception to handle it in AbstractNotificationListener
+				throw ex;
 			}
 		}
 	}
@@ -225,6 +225,7 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 
 		log.error(errorMessage);
 		mailNotificationUtil.sendPlainTextEmail(MAIL_SUBJECT, ERROR_MESSAGE_PREFIX + errorMessage);
+		throw new HMCException(errorMessage);
 	}
 
 	protected boolean isKycAutomated() {
