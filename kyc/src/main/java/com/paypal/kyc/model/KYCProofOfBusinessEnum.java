@@ -8,7 +8,7 @@ import java.util.List;
 
 public enum KYCProofOfBusinessEnum {
 
-	INCORPORATION;
+	INCORPORATION, BUSINESS_REGISTRATION, OPERATING_AGREEMENT;
 
 	public static List<String> getMiraklFields() {
 		return List.of(KYCConstants.HwDocuments.PROOF_OF_BUSINESS);

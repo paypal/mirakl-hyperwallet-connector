@@ -31,10 +31,18 @@ class HyperwalletObjectToKYCDocumentNotificationModelsConverterTest {
 	}
 
 	@Test
+	void convert_shouldReturnAListOfDocuments_forAllTypesOfBusinessDocuments() {
+		final List<KYCDocumentNotificationModel> result = testObj
+				.convert(createNotificationWithProofBusinessInvalidDocuments());
+
+		assertThat(result).hasSize(3);
+	}
+
+	@Test
 	void convert_shouldReturnAListOfDocuments_whenArgumentPassedHasDocuments() {
 		final List<KYCDocumentNotificationModel> result = testObj.convert(createNotificationWithValidDocuments());
 
-		assertThat(result).isNotEmpty().hasSize(2);
+		assertThat(result).hasSize(2);
 	}
 
 	@Test
@@ -61,7 +69,7 @@ class HyperwalletObjectToKYCDocumentNotificationModelsConverterTest {
 
 		final List<KYCDocumentRejectedReasonEnum> documentRejectedReasons = kycDocumentNotificationModel
 				.getDocumentRejectedReasons();
-		assertThat(documentRejectedReasons).isNotEmpty().hasSize(2).contains(
+		assertThat(documentRejectedReasons).hasSize(2).contains(
 				KYCDocumentRejectedReasonEnum.DOCUMENT_CORRECTION_REQUIRED,
 				KYCDocumentRejectedReasonEnum.DOCUMENT_NOT_COMPLETE);
 	}
@@ -84,6 +92,19 @@ class HyperwalletObjectToKYCDocumentNotificationModelsConverterTest {
 				KYCDocumentTypeEnum.CREDIT_CARD_STATEMENT.name(), CREATED_ON_DATE,
 				KYCDocumentCategoryEnum.BUSINESS.name(), createRejectedReasons());
 		return Map.of(DOCUMENTS, List.of(document1, document2));
+	}
+
+	private Map<String, Object> createNotificationWithProofBusinessInvalidDocuments() {
+		final Map<String, Object> document1 = createDocument(KYCDocumentStatusEnum.INVALID.name(),
+				KYCDocumentTypeEnum.INCORPORATION.name(), CREATED_ON_DATE, KYCDocumentCategoryEnum.BUSINESS.name(),
+				createRejectedReasons());
+		final Map<String, Object> document2 = createDocument(KYCDocumentStatusEnum.INVALID.name(),
+				KYCDocumentTypeEnum.BUSINESS_REGISTRATION.name(), CREATED_ON_DATE,
+				KYCDocumentCategoryEnum.BUSINESS.name(), createRejectedReasons());
+		final Map<String, Object> document3 = createDocument(KYCDocumentStatusEnum.INVALID.name(),
+				KYCDocumentTypeEnum.OPERATING_AGREEMENT.name(), CREATED_ON_DATE,
+				KYCDocumentCategoryEnum.BUSINESS.name(), createRejectedReasons());
+		return Map.of(DOCUMENTS, List.of(document1, document2, document3));
 	}
 
 	private Map<String, Object> createDocument(final String status, final String type, final String createdOn,
