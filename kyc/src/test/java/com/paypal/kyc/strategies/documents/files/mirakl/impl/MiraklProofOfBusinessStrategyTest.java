@@ -9,6 +9,8 @@ import com.paypal.kyc.model.KYCProofOfBusinessEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -40,11 +42,18 @@ class MiraklProofOfBusinessStrategyTest {
 		//@formatter:on
 	}
 
-	@Test
-	void isApplicable_shouldReturnTrueWhenIsProofOfBusinessAndObjectReceivedAsParameterIsKYCDocumentSellerInfoModel() {
+	@ParameterizedTest
+	@ValueSource(strings = { "INCORPORATION", "BUSINESS_REGISTRATION", "OPERATING_AGREEMENT" })
+	void isApplicable_shouldReturnTrueWhenIsProofOfBusinessAndObjectReceivedAsParameterIsKYCDocumentSellerInfoModel(
+			final String documentType) {
+		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
+				.proofOfBusiness(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+						KYCConstants.HYPERWALLET_KYC_PROF_PROOF_OF_BUSINESS_FIELD, documentType)))
+				.build();
 		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModel);
 
 		assertThat(result).isTrue();
+
 	}
 
 	@Test
