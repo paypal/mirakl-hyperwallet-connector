@@ -97,17 +97,18 @@ advanced configuration & deployment:
 - **web**: Centralises the startup of the web application and exposes all the endpoints for manually running the cron
   jobs.
 
-| CONFIGURATION FILE                                      | MODULE          | DESCRIPTION                                                                                                                                                                                             |
-| ------------------------------------------------------- | --------------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|  `infrastructure_db.properties`                         | `infrastructure`| Database configuration for saving job execution timestamps                                                                                                                                              |
-|  `infrastructure.properties`                            | `infrastructure`| Configuration related to Email recipients                                                                                                                                                               |
-|  `invoices.properties`                                  | `invoices`      | Hyperwallet/Mirakl API configuration, Hyperwallet bank account/Hyperwallet program token, Manual credit notes/commission toggling, Payment notification types accepted, Extract invoices job scheduling |
-|  `kyc.properties`                                       | `kyc`           | Hyperwallet KYC endpoint/credentials, Mirakl API endpoint/credentials, Hyperwallet program token setup, Extract documents job scheduling                                                                |
-|  `notifications.properties`                             | `notifications` | Properties for routing incoming notifications, Failed notifications retry job scheduling                                                                                                                |
-|  `reports.properties`                                   | `reports`       | Mirakl API configuration, Financial report folder location, Financial report CSV Columns, Financial report file name prefix, Server report Uri path, BrainTree credentials                              |
-|  `sellers_db.properties`                                | `sellers`       | Database configuration for saving sellers that should be retrieved for exporting                                                                                                                        |                                                                                                                                                               |
-|  `sellers.properties`                                   | `sellers`       | Hyperwallet/Mirakl API configuration, Extract sellers/professional sellers/bank account job scheduling                                                                                                  |
-|  `application.properties`                               | `web`           | Spring profiles, Email server configuration, Layer7 encryption configuration (JOSE/JWT)                                                                                                                 |
+| CONFIGURATION FILE             | MODULE          | DESCRIPTION                                                                                                                                                                                            |
+|--------------------------------| --------------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `infrastructure_db.properties` | `infrastructure`| Database configuration for saving job execution timestamps                                                                                                                                             |
+| `infrastructure.properties`    | `infrastructure`| Configuration related to Email recipients                                                                                                                                                              |
+| `invoices.properties`          | `invoices`      | Hyperwallet/Mirakl API configuration, Hyperwallet bank account/Hyperwallet program token, Manual credit notes/commission toggling, Payment notification types accepted, Extract invoices job scheduling |
+| `kyc.properties`               | `kyc`           | Hyperwallet KYC endpoint/credentials, Mirakl API endpoint/credentials, Hyperwallet program token setup, Extract documents job scheduling                                                               |
+| `notifications_db.properties`  | `notifications` | Database configuration for saving notifications                                                                                                                                                        |
+| `notifications.properties`     | `notifications` | Properties for routing incoming notifications, Failed notifications retry job scheduling                                                                                                               |
+| `reports.properties`           | `reports`       | Mirakl API configuration, Financial report folder location, Financial report CSV Columns, Financial report file name prefix, Server report Uri path, BrainTree credentials                             |
+| `sellers_db.properties`        | `sellers`       | Database configuration for saving sellers that should be retrieved for exporting                                                                                                                       |                                                                                                                                                               |
+| `sellers.properties`           | `sellers`       | Hyperwallet/Mirakl API configuration, Extract sellers/professional sellers/bank account job scheduling                                                                                                 |
+| `application.properties`       | `web`           | Spring profiles, Email server configuration, Layer7 encryption configuration (JOSE/JWT)                                                                                                                |
 
 ## Execution & Deployment
 
@@ -314,6 +315,22 @@ properties or configuration are used for enabling or setting up the webhook list
 
 During the on-boarding process, Hyperwallet will enable webhook notifications by registering the webhook listener
 endpoint URL (for example, https://hmc.example.com/webhooks/notifications).
+
+Storing and querying notifications:
+
+The connector stores the incoming notifications, these can be retrieved and deleted using these endpoints.
+A `from` and a `to` date parameters must be provided in both operations.
+
+| HTTP Method | PATH                      | Params                                                              | Description                                             | 
+|-------------|---------------------------|---------------------------------------------------------------------|---------------------------------------------------------|
+| `GET`       | `/webhooks/notifications` | `from` and `to` format ISO-DATE-TIME `yyyy-MM-dd'T'HH:mm:ss.SSSXXX` | Retrieves all the notifications between the given dates |
+| `DELETE`    | `/webhooks/notifications` | `from` and `to` format ISO-DATE-TIME `yyyy-MM-dd'T'HH:mm:ss.SSSXXX` | Deletes all the notifications between the given dates   |
+
+See example of valid execution request:
+
+```curl --location --request GET 'http://localhost:8080/webhooks/notifications?from=2021-04-27T10:30:00.000-00:00&to=2023-04-27T10:30:00.000-00:00'```
+```curl --location --request DELETE 'http://localhost:8080/webhooks/notifications?from=2021-04-27T10:30:00.000-00:00&to=2023-04-27T10:30:00.000-00:00'```
+
 
 ## Payload Encryption
 

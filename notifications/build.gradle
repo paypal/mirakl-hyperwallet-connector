@@ -17,6 +17,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.mockito:mockito-junit-jupiter'
+    testImplementation 'org.mockito:mockito-inline'
 
     implementation project(":infrastructure")
 }
