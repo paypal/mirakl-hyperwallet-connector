@@ -1,5 +1,6 @@
 package com.paypal.sellers.sellersextract.service;
 
+import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 
 import java.util.List;
@@ -14,7 +15,8 @@ public interface BusinessStakeholderExtractService {
 	 * and the token stored in {@code createdHyperWalletUsers} to create Business
 	 * Stakeholders in Hyperwallet and update the token in Mirakl
 	 * @param professionalSellerModels
+	 * @return
 	 */
-	void extractBusinessStakeHolders(List<SellerModel> professionalSellerModels);
+	List<BusinessStakeHolderModel> extractBusinessStakeHolders(List<SellerModel> professionalSellerModels);
 
 }

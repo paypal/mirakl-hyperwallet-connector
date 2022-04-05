@@ -10,8 +10,8 @@ import org.quartz.PersistJobDataAfterExecution;
 import javax.annotation.Resource;
 
 /**
- * Extract sellers job for extracting Mirakl sellers data and populate it on HyperWallet
- * as users
+ * Extract bank account job for extracting Mirakl sellers data and populate it on
+ * HyperWallet as users
  */
 @Slf4j
 @PersistJobDataAfterExecution

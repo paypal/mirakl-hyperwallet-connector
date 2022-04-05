@@ -1,5 +1,6 @@
 package com.paypal.infrastructure.configuration;
 
+import com.paypal.infrastructure.batchjob.BatchJobFailedItem;
 import com.paypal.infrastructure.model.entity.JobExecutionInformationEntity;
 import com.paypal.infrastructure.model.entity.NotificationInfoEntity;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,7 +23,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @PropertySource({ "classpath:infrastructure_db.properties" })
-@EnableJpaRepositories(basePackages = "com.paypal.infrastructure.repository",
+@EnableJpaRepositories(basePackages = { "com.paypal.infrastructure.repository", "com.paypal.infrastructure.batchjob" },
 		entityManagerFactoryRef = "applicationEntityManagerFactory",
 		transactionManagerRef = "applicationTransactionManager")
 public class InfrastructureDatasourceConfig {
@@ -62,7 +63,8 @@ public class InfrastructureDatasourceConfig {
 	public LocalContainerEntityManagerFactoryBean applicationEntityManagerFactory(
 			final EntityManagerFactoryBuilder builder, final DataSource applicationDataSource) {
 		return builder.dataSource(applicationDataSource)
-				.packages(JobExecutionInformationEntity.class, NotificationInfoEntity.class).build();
+				.packages(JobExecutionInformationEntity.class, NotificationInfoEntity.class, BatchJobFailedItem.class)
+				.build();
 	}
 
 	/**

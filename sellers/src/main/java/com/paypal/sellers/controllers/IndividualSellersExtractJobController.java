@@ -1,6 +1,7 @@
 package com.paypal.sellers.controllers;
 
 import com.paypal.infrastructure.controllers.AbstractJobController;
+import com.paypal.sellers.batchjobs.individuals.IndividualSellersExtractBatchJob;
 import com.paypal.sellers.jobs.IndividualSellersExtractJob;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.SchedulerException;
@@ -24,8 +25,8 @@ public class IndividualSellersExtractJobController extends AbstractJobController
 	private static final String DEFAULT_SELLERS_EXTRACT_JOB_NAME = "SellersExtractJobSingleExecution";
 
 	/**
-	 * Triggers the {@link IndividualSellersExtractJob} with the {@code delta} time to
-	 * retrieve shops created or updated since that {@code delta} and schedules the job
+	 * Triggers the {@link IndividualSellersExtractBatchJob} with the {@code delta} time
+	 * to retrieve shops created or updated since that {@code delta} and schedules the job
 	 * with the {@code name} provided
 	 * @param delta the {@link Date} in {@link DateTimeFormat.ISO}
 	 * @param name the job name in {@link String}

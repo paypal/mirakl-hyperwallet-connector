@@ -30,10 +30,10 @@ class ProfessionalSellersExtractJobControllerTest {
 
 	@Test
 	void runJob_shouldCallJobServiceWithValuesPassedAsParam() throws SchedulerException {
-		testObj.runJob(deltaMock, "jobName");
+		this.testObj.runJob(this.deltaMock, "jobName");
 
-		verify(jobService).createAndRunSingleExecutionJob(JOB_NAME, ProfessionalSellersExtractJob.class,
-				AbstractDeltaInfoJob.createJobDataMap(deltaMock), null);
+		verify(this.jobService).createAndRunSingleExecutionJob(JOB_NAME, ProfessionalSellersExtractJob.class,
+				AbstractDeltaInfoJob.createJobDataMap(this.deltaMock), null);
 	}
 
 }

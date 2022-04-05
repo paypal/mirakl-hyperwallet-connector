@@ -1,5 +1,6 @@
 package com.paypal.infrastructure.configuration;
 
+import com.paypal.infrastructure.batchjob.BatchJobFailedItem;
 import com.paypal.infrastructure.model.entity.JobExecutionInformationEntity;
 import com.paypal.infrastructure.model.entity.NotificationInfoEntity;
 import org.junit.jupiter.api.Test;
@@ -75,7 +76,7 @@ class InfrastructureDatasourceConfigTest {
 
 		verify(builderMock).packages(packagesArgumentCaptor.capture());
 		assertThat(packagesArgumentCaptor.getAllValues()).containsExactlyInAnyOrder(JobExecutionInformationEntity.class,
-				NotificationInfoEntity.class);
+				NotificationInfoEntity.class, BatchJobFailedItem.class);
 	}
 
 	@Test

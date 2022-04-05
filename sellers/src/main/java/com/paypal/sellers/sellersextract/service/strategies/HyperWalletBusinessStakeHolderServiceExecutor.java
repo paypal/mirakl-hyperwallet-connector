@@ -11,7 +11,6 @@ import java.util.Set;
  * Executor class that controls strategies to insert or update business stake holders
  * information for a certain seller into Hyperwallet
  */
-
 @Service
 public class HyperWalletBusinessStakeHolderServiceExecutor
 		extends SingleAbstractStrategyExecutor<BusinessStakeHolderModel, BusinessStakeHolderModel> {
