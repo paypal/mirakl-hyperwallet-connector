@@ -27,7 +27,7 @@ class ProfessionalSellersExtractJobConfigTest {
 
 	@Test
 	void extractSellersJob_createsJobDetailWithNameExtractProfessionalSellersJobAndTypeExtractProfessionalSellersJob() {
-		final JobDetail result = testObj.professionalSellerExtractJob();
+		final JobDetail result = this.testObj.professionalSellerExtractJob();
 
 		assertThat(result.getJobClass()).hasSameClassAs(ProfessionalSellersExtractJob.class);
 		assertThat(result.getKey().getName()).isEqualTo("ProfessionalSellersExtractJob");
@@ -38,7 +38,7 @@ class ProfessionalSellersExtractJobConfigTest {
 		final JobDetail jobDetail = JobBuilder.newJob(ProfessionalSellersExtractJob.class).withIdentity(JOB_NAME)
 				.build();
 
-		final Trigger result = testObj.professionalSellerExtractTrigger(jobDetail, CRON_EXPRESSION);
+		final Trigger result = this.testObj.professionalSellerExtractTrigger(jobDetail, CRON_EXPRESSION);
 
 		assertThat(result.getJobKey()).isEqualTo(jobDetail.getKey());
 		assertThat(result.getKey()).isEqualTo(TriggerKey.triggerKey(TRIGGER_PREFIX + JOB_NAME));

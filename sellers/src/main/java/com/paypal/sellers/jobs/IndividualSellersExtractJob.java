@@ -1,25 +1,27 @@
 package com.paypal.sellers.jobs;
 
-import lombok.extern.slf4j.Slf4j;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.JobExecutionContext;
-import org.quartz.PersistJobDataAfterExecution;
+import com.paypal.sellers.batchjobs.individuals.IndividualSellersExtractBatchJob;
+import org.quartz.*;
 
 /**
- * Extract sellers job for extracting Mirakl sellers data and populate it on HyperWallet
- * as users
+ * Quartz Job for executing the {@link IndividualSellersExtractBatchJob}.
  */
-@Slf4j
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class IndividualSellersExtractJob extends AbstractSellersExtractJob {
+public class IndividualSellersExtractJob implements Job {
+
+	private final IndividualSellersExtractBatchJob individualSellersExtractBatchJob;
+
+	public IndividualSellersExtractJob(final IndividualSellersExtractBatchJob individualSellersExtractBatchJob) {
+		this.individualSellersExtractBatchJob = individualSellersExtractBatchJob;
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void execute(final JobExecutionContext context) {
-		sellersExtractService.extractIndividuals(getDelta(context));
+	public void execute(final JobExecutionContext context) throws JobExecutionException {
+		individualSellersExtractBatchJob.execute(context);
 	}
 
 }

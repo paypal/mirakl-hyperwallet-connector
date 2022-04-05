@@ -11,8 +11,9 @@ public interface MiraklBusinessStakeholderExtractService {
 
 	/**
 	 * Updates the token of every businessStakeholder belonging to an specific shop
-	 * @param clientUserId
-	 * @param businessStakeHolderModels
+	 * @param clientUserId the client user ID.
+	 * @param businessStakeHolderModels a {@link List} of
+	 * {@link BusinessStakeHolderModel}s.
 	 */
 	void updateBusinessStakeholderToken(String clientUserId, List<BusinessStakeHolderModel> businessStakeHolderModels);
 

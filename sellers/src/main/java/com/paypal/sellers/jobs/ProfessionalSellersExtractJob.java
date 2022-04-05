@@ -1,25 +1,33 @@
 package com.paypal.sellers.jobs;
 
-import lombok.extern.slf4j.Slf4j;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.JobExecutionContext;
-import org.quartz.PersistJobDataAfterExecution;
+import com.paypal.sellers.batchjobs.bstk.BusinessStakeholdersExtractBatchJob;
+import com.paypal.sellers.batchjobs.professionals.ProfessionalSellersExtractBatchJob;
+import org.quartz.*;
 
 /**
- * Extract sellers job for extracting Mirakl sellers data and populate it on HyperWallet
- * as users
+ * Quartz Job for executing the {@link ProfessionalSellersExtractBatchJob}.
  */
-@Slf4j
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class ProfessionalSellersExtractJob extends AbstractSellersExtractJob {
+public class ProfessionalSellersExtractJob implements Job {
+
+	private final ProfessionalSellersExtractBatchJob professionalSellersExtractBatchJob;
+
+	private final BusinessStakeholdersExtractBatchJob businessStakeholdersExtractBatchJob;
+
+	public ProfessionalSellersExtractJob(final ProfessionalSellersExtractBatchJob professionalSellersExtractBatchJob,
+			final BusinessStakeholdersExtractBatchJob businessStakeholdersExtractBatchJob) {
+		this.professionalSellersExtractBatchJob = professionalSellersExtractBatchJob;
+		this.businessStakeholdersExtractBatchJob = businessStakeholdersExtractBatchJob;
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void execute(final JobExecutionContext context) {
-		sellersExtractService.extractProfessionals(getDelta(context));
+	public void execute(final JobExecutionContext context) throws JobExecutionException {
+		professionalSellersExtractBatchJob.execute(context);
+		businessStakeholdersExtractBatchJob.execute(context);
 	}
 
 }
