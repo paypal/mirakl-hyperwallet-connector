@@ -4,8 +4,10 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletPayment;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.infrastructure.exceptions.HMCException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
+import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 import com.paypal.invoices.invoicesextract.service.hyperwallet.HyperWalletPaymentExtractService;
@@ -49,56 +51,36 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 
 	/**
 	 * {@inheritDoc}
+	 * @return
 	 */
 	@Override
-	public List<HyperwalletPayment> payPayeeInvoice(final List<InvoiceModel> invoices) {
-		return payInvoice(invoices, payeeInvoiceModelToHyperwalletPaymentConverter);
+	public HyperwalletPayment payPayeeInvoice(InvoiceModel invoice) {
+		return payInvoice(invoice, payeeInvoiceModelToHyperwalletPaymentConverter);
 	}
 
 	@Override
-	public List<HyperwalletPayment> payPayeeCreditNote(final List<CreditNoteModel> creditNotes) {
-		final List<HyperwalletPayment> pendingCreditNotes = creditNotes.stream()
-				.map(payeeCreditModelToHyperwalletPaymentConverter::convert).filter(Objects::nonNull)
-				.collect(Collectors.toList());
-
-		log.info("Pending credit notes to pay: [{}]", creditNotes.size());
-
-		final List<HyperwalletPayment> paidCreditNotes = pendingCreditNotes.stream().map(this::createPayment)
-				.filter(Objects::nonNull).collect(Collectors.toList());
-
-		log.info("Paid creditNotes: [{}]",
-				paidCreditNotes.stream().map(HyperwalletPayment::getClientPaymentId).collect(Collectors.joining(",")));
-
-		return paidCreditNotes;
+	public HyperwalletPayment payPayeeCreditNotes(final CreditNoteModel creditNote) {
+		return payInvoice(creditNote, payeeCreditModelToHyperwalletPaymentConverter);
 	}
 
 	@Override
-	public List<HyperwalletPayment> payInvoiceOperator(final List<InvoiceModel> invoices) {
-		return payInvoice(invoices, operatorInvoiceModelToHyperwalletPaymentConverter);
+	public HyperwalletPayment payInvoiceOperator(InvoiceModel invoice) {
+		return payInvoice(invoice, operatorInvoiceModelToHyperwalletPaymentConverter);
 	}
 
-	protected List<HyperwalletPayment> payInvoice(final List<InvoiceModel> invoices,
-			final Converter<InvoiceModel, HyperwalletPayment> invoiceConverter) {
-		//@formatter:off
-		final List<HyperwalletPayment> pendingPayments = invoices.stream()
-				.map(invoiceConverter::convert)
-				.filter(Objects::nonNull)
-				.collect(Collectors.toList());
+	protected <T extends AccountingDocumentModel> HyperwalletPayment payInvoice(final T invoice,
+			final Converter<T, HyperwalletPayment> invoiceConverter) {
+		HyperwalletPayment pendingPayment = invoiceConverter.convert(invoice);
 
-		log.info("Pending invoices to pay: [{}]", invoices.size());
+		log.info("Pending invoices to pay: [{}]", invoice.getInvoiceNumber());
 
-		final List<HyperwalletPayment> paidInvoices = pendingPayments.stream()
-				.map(this::createPayment)
-				.filter(Objects::nonNull)
-				.collect(Collectors.toList());
+		HyperwalletPayment paidInvoice = createPayment(pendingPayment);
 
-		log.info("Paid invoices: [{}]",
-				paidInvoices.stream()
-						.map(HyperwalletPayment::getClientPaymentId)
-						.collect(Collectors.joining(",")));
+		if (paidInvoice != null) {
+			log.info("Paid invoices: [{}]", paidInvoice.getClientPaymentId());
+		}
 
-		return paidInvoices;
-		//@formatter:on
+		return paidInvoice;
 	}
 
 	protected HyperwalletPayment createPayment(final HyperwalletPayment hyperwalletPayment) {
@@ -121,7 +103,7 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 					hyperwalletPayment.getClientPaymentId());
 			log.error(HyperwalletLoggingErrorsUtil.stringify(e));
 
-			return null;
+			throw new HMCException("Error while invoking Hyperwallet", e);
 		}
 	}
 

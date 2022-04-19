@@ -50,7 +50,7 @@ public abstract class AbstractAccountingDocumentsExtractServiceImpl<T extends Ac
 	}
 
 	@Override
-	public List<T> extractAccountingDocument(final Date delta) {
+	public List<T> extractAccountingDocuments(final Date delta) {
 		final List<T> invoices = getAccountingDocuments(delta);
 		final Map<String, Pair<String, String>> mapShopDestinationToken = getMapDestinationTokens(invoices);
 

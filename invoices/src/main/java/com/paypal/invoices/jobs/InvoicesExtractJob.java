@@ -1,36 +1,55 @@
 package com.paypal.invoices.jobs;
 
-import com.paypal.infrastructure.job.AbstractDeltaInfoJob;
+import com.paypal.invoices.batchjobs.creditnotes.CreditNotesExtractBatchJob;
+import com.paypal.invoices.batchjobs.invoices.InvoicesExtractBatchJob;
 import com.paypal.invoices.infraestructure.configuration.CreditNotesConfig;
-import com.paypal.invoices.invoicesextract.service.InvoiceExtractService;
+import com.paypal.invoices.infraestructure.configuration.InvoicesOperatorCommissionsConfig;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.JobExecutionContext;
-import org.quartz.PersistJobDataAfterExecution;
-
-import javax.annotation.Resource;
+import org.quartz.*;
 
 /**
- * Extract invoices job for extracting Mirakl invoices data and populate it on HyperWallet
- * as users
+ * Quartz Job for executing the {@link InvoicesExtractBatchJob} and
+ * {@link CreditNotesExtractBatchJob}.
  */
-@Slf4j
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class InvoicesExtractJob extends AbstractDeltaInfoJob {
+@Slf4j
+public class InvoicesExtractJob implements Job {
 
-	@Resource
-	protected InvoiceExtractService invoiceExtractService;
+	private final InvoicesExtractBatchJob invoicesExtractBatchJob;
 
-	@Resource
-	CreditNotesConfig creditNotesConfig;
+	private final CreditNotesExtractBatchJob creditNotesExtractBatchJob;
+
+	private final CreditNotesConfig creditNotesConfig;
+
+	private final InvoicesOperatorCommissionsConfig invoicesOperatorCommissionsConfig;
+
+	public InvoicesExtractJob(final InvoicesExtractBatchJob invoicesExtractBatchJob,
+			final CreditNotesExtractBatchJob creditNotesExtractBatchJob, final CreditNotesConfig creditNotesConfig,
+			final InvoicesOperatorCommissionsConfig invoicesOperatorCommissionsConfig) {
+		this.invoicesExtractBatchJob = invoicesExtractBatchJob;
+		this.creditNotesExtractBatchJob = creditNotesExtractBatchJob;
+		this.creditNotesConfig = creditNotesConfig;
+		this.invoicesOperatorCommissionsConfig = invoicesOperatorCommissionsConfig;
+	}
 
 	@Override
-	public void execute(final JobExecutionContext context) {
-		invoiceExtractService.extractInvoices(getDelta(context));
+	public void execute(final JobExecutionContext context) throws JobExecutionException {
+		logCommissionsConfig();
+		invoicesExtractBatchJob.execute(context);
 		if (creditNotesConfig.isEnabled()) {
-			invoiceExtractService.extractCreditNotes(getDelta(context));
+			creditNotesExtractBatchJob.execute(context);
 		}
+	}
+
+	private void logCommissionsConfig() {
+		if (invoicesOperatorCommissionsConfig.isEnabled()) {
+			log.info("Payment of commissions is enabled, retrieving payments for the operator");
+		}
+		else {
+			log.info("Payment of commissions is disabled, skipping processing payments to operator");
+		}
+
 	}
 
 }

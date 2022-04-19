@@ -10,6 +10,9 @@ public abstract class AbstractBatchJobItem<T> implements BatchJobItem<T> {
 	private final T item;
 
 	protected AbstractBatchJobItem(final T item) {
+		if (item == null) {
+			throw new IllegalArgumentException("Batch job items can't be empty.");
+		}
 		this.item = item;
 	}
 

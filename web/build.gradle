@@ -2,7 +2,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-quartz'
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'com.googlecode.jmapper-framework:jmapper-core:1.6.1.CR2'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

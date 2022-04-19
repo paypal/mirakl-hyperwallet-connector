@@ -4,27 +4,32 @@ import com.hyperwallet.clientsdk.model.HyperwalletPayment;
 import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 
-import java.util.List;
-
 /**
  * Service to manipulate the payment creation within Hyperwallet
  */
 public interface HyperWalletPaymentExtractService {
 
 	/**
-	 * Creates payments of type {@link HyperwalletPayment} based on {@code invoices} for
+	 * Creates a payment of type {@link HyperwalletPayment} based on {@code invoices} for
 	 * the payees
-	 * @param invoices the {@link List <HyperwalletPayment>}
+	 * @param invoice the {@link InvoiceModel}
+	 * @return
 	 */
-	List<HyperwalletPayment> payPayeeInvoice(List<InvoiceModel> invoices);
-
-	List<HyperwalletPayment> payPayeeCreditNote(List<CreditNoteModel> invoices);
+	HyperwalletPayment payPayeeInvoice(InvoiceModel invoice);
 
 	/**
-	 * Creates payments of type {@link HyperwalletPayment} based on {@code invoices} for
-	 * the operator
-	 * @param invoices the {@link List <HyperwalletPayment>}
+	 * Creates a payment of type {@link HyperwalletPayment} based on {@code invoices} for
+	 * the payees
+	 * @param creditNote the {@link CreditNoteModel}
+	 * @return
 	 */
-	List<HyperwalletPayment> payInvoiceOperator(List<InvoiceModel> invoices);
+	HyperwalletPayment payPayeeCreditNotes(CreditNoteModel creditNote);
+
+	/**
+	 * Create a payment of type {@link HyperwalletPayment} based on {@code invoices} for
+	 * the operator
+	 * @param invoice the {@link InvoiceModel}
+	 */
+	HyperwalletPayment payInvoiceOperator(InvoiceModel invoice);
 
 }

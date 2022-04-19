@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 /**
- * Extract professional sellers job for extracting Mirakl sellers data and populate it on
+ * Extract individual sellers job for extracting Mirakl sellers data and populate it on
  * HyperWallet as users
  */
 @Service

@@ -141,7 +141,7 @@ class MiraklCreditNotesExtractServiceImplTest {
 		when(creditNoteModelModelConvertedFromShopOneMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 		when(creditNoteModelConvertedFromShopTwoMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 
-		final List<CreditNoteModel> result = testObj.extractAccountingDocument(nowAsDate);
+		final List<CreditNoteModel> result = testObj.extractAccountingDocuments(nowAsDate);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock).getShops(miraklGetShopsRequestArgumentCaptor.capture());
 
@@ -162,7 +162,7 @@ class MiraklCreditNotesExtractServiceImplTest {
 
 		doReturn(Collections.emptyList()).when(testObj).getAccountingDocuments(nowAsDate);
 
-		final List<CreditNoteModel> result = testObj.extractAccountingDocument(nowAsDate);
+		final List<CreditNoteModel> result = testObj.extractAccountingDocuments(nowAsDate);
 
 		assertThat(result).isEmpty();
 	}
@@ -203,7 +203,7 @@ class MiraklCreditNotesExtractServiceImplTest {
 		when(creditNoteModelConvertedFromShopTwoMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 		when(creditNoteModelConvertedFromShopThreeMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 
-		final List<CreditNoteModel> result = testObj.extractAccountingDocument(nowAsDate);
+		final List<CreditNoteModel> result = testObj.extractAccountingDocuments(nowAsDate);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock).getShops(miraklGetShopsRequestArgumentCaptor.capture());
 
@@ -235,7 +235,7 @@ class MiraklCreditNotesExtractServiceImplTest {
 		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
 				.getShops(any(MiraklGetShopsRequest.class));
 
-		testObj.extractAccountingDocument(nowAsDate);
+		testObj.extractAccountingDocuments(nowAsDate);
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail("Issue detected getting shops in Mirakl",
 				String.format("Something went wrong getting information of " + "shops" + " [2000]%n%s",

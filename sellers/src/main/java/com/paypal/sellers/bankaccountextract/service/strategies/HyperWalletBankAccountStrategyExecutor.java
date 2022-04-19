@@ -17,12 +17,12 @@ import java.util.Set;
  */
 @Slf4j
 @Service
-public class HyperWalletBankAccountServiceExecutor
+public class HyperWalletBankAccountStrategyExecutor
 		extends SingleAbstractStrategyExecutor<SellerModel, Optional<HyperwalletBankAccount>> {
 
 	private final Set<Strategy<SellerModel, Optional<HyperwalletBankAccount>>> strategies;
 
-	public HyperWalletBankAccountServiceExecutor(
+	public HyperWalletBankAccountStrategyExecutor(
 			final Set<Strategy<SellerModel, Optional<HyperwalletBankAccount>>> strategies) {
 		this.strategies = strategies;
 	}

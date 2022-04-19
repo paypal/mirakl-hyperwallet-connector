@@ -12,12 +12,12 @@ import java.util.Set;
  * information for a certain seller into Hyperwallet
  */
 @Service
-public class HyperWalletBusinessStakeHolderServiceExecutor
+public class HyperWalletBusinessStakeHolderStrategyExecutor
 		extends SingleAbstractStrategyExecutor<BusinessStakeHolderModel, BusinessStakeHolderModel> {
 
 	private final Set<Strategy<BusinessStakeHolderModel, BusinessStakeHolderModel>> strategies;
 
-	public HyperWalletBusinessStakeHolderServiceExecutor(
+	public HyperWalletBusinessStakeHolderStrategyExecutor(
 			final Set<Strategy<BusinessStakeHolderModel, BusinessStakeHolderModel>> strategies) {
 		this.strategies = strategies;
 	}

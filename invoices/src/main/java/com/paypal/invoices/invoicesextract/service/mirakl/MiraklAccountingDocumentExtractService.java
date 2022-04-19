@@ -16,6 +16,6 @@ public interface MiraklAccountingDocumentExtractService<T extends AccountingDocu
 	 * since this parameter value
 	 * @return a {@link List} of {@link InvoiceModel}
 	 */
-	List<T> extractAccountingDocument(@Nullable Date delta);
+	List<T> extractAccountingDocuments(@Nullable Date delta);
 
 }
