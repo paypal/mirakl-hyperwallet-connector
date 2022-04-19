@@ -14,17 +14,17 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-class HyperWalletBusinessStakeHolderServiceExecutorSingleTest {
+class HyperWalletBusinessStakeHolderStrategyExecutorSingleTest {
 
 	@InjectMocks
-	private HyperWalletBusinessStakeHolderServiceExecutor testObj;
+	private HyperWalletBusinessStakeHolderStrategyExecutor testObj;
 
 	@Mock
 	private Strategy<BusinessStakeHolderModel, BusinessStakeHolderModel> strategyMock;
 
 	@BeforeEach
 	void setUp() {
-		testObj = new HyperWalletBusinessStakeHolderServiceExecutor(Set.of(strategyMock));
+		testObj = new HyperWalletBusinessStakeHolderStrategyExecutor(Set.of(strategyMock));
 	}
 
 	@Test

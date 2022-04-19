@@ -4,7 +4,7 @@ import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.infrastructure.batchjob.BatchJobItemProcessor;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
-import com.paypal.sellers.sellersextract.service.strategies.HyperWalletBusinessStakeHolderServiceExecutor;
+import com.paypal.sellers.sellersextract.service.strategies.HyperWalletBusinessStakeHolderStrategyExecutor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,27 +16,27 @@ import java.util.List;
 public class BusinessStakeholdersExtractBatchJobItemProcessor
 		implements BatchJobItemProcessor<BatchJobContext, BusinessStakeholderExtractJobItem> {
 
-	private final HyperWalletBusinessStakeHolderServiceExecutor hyperWalletBusinessStakeHolderServiceExecutor;
+	private final HyperWalletBusinessStakeHolderStrategyExecutor hyperWalletBusinessStakeHolderStrategyExecutor;
 
 	private final MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractService;
 
 	public BusinessStakeholdersExtractBatchJobItemProcessor(
-			final HyperWalletBusinessStakeHolderServiceExecutor hyperWalletBusinessStakeHolderServiceExecutor,
+			final HyperWalletBusinessStakeHolderStrategyExecutor hyperWalletBusinessStakeHolderStrategyExecutor,
 			final MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractService) {
-		this.hyperWalletBusinessStakeHolderServiceExecutor = hyperWalletBusinessStakeHolderServiceExecutor;
+		this.hyperWalletBusinessStakeHolderStrategyExecutor = hyperWalletBusinessStakeHolderStrategyExecutor;
 		this.miraklBusinessStakeholderExtractService = miraklBusinessStakeholderExtractService;
 	}
 
 	/**
 	 * Processes the {@link BusinessStakeholderExtractJobItem} with the
-	 * {@link HyperWalletBusinessStakeHolderServiceExecutor} and update the executed
+	 * {@link HyperWalletBusinessStakeHolderStrategyExecutor} and update the executed
 	 * {@link BusinessStakeHolderModel}.
 	 * @param ctx The {@link BatchJobContext}
 	 * @param jobItem The {@link BusinessStakeholderExtractJobItem}
 	 */
 	@Override
 	public void processItem(final BatchJobContext ctx, final BusinessStakeholderExtractJobItem jobItem) {
-		final BusinessStakeHolderModel businessStakeHolderModel = hyperWalletBusinessStakeHolderServiceExecutor
+		final BusinessStakeHolderModel businessStakeHolderModel = hyperWalletBusinessStakeHolderStrategyExecutor
 				.execute(jobItem.getItem());
 		if (businessStakeHolderModel != null) {
 			miraklBusinessStakeholderExtractService.updateBusinessStakeholderToken(

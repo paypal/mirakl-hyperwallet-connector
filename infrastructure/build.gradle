@@ -8,7 +8,7 @@ dependencies {
     implementation 'com.h2database:h2'
     runtimeOnly 'org.hsqldb:hsqldb'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
     implementation 'com.googlecode.jmapper-framework:jmapper-core:1.6.1.CR2'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

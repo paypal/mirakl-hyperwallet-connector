@@ -17,6 +17,8 @@ class HMCExceptionHandlerTest {
 
 	private static final String EXCEPTION_MESSAGE = "Exception message";
 
+	public static final Throwable[] EMPTY_THROWABLE_ARRAY = new Throwable[0];
+
 	@InjectMocks
 	private HMCExceptionHandler testObj;
 
@@ -33,6 +35,10 @@ class HMCExceptionHandlerTest {
 	void handleHMCException_ShouldReturnABadRequestAndTheExceptionErrorMessage() {
 
 		when(hmcExceptionMock.getMessage()).thenReturn(EXCEPTION_MESSAGE);
+		// The following expectation shouldn't be necessary, since Throwable.getSuppressed
+		// should return an empty array if no exceptions were suppressed, but tests are
+		// failing because Throwable.getSuppressed is returning null.
+		when(hmcExceptionMock.getSuppressed()).thenReturn(EMPTY_THROWABLE_ARRAY);
 
 		final HMCErrorResponse result = testObj.handleHMCException(hmcExceptionMock);
 
@@ -42,6 +48,8 @@ class HMCExceptionHandlerTest {
 	@Test
 	void handleMethodArgumentTypeMismatchException_ShouldReturnABadRequestAndABadRequestErrorMessage() {
 
+		when(methodArgumentTypeMismatchExceptionMock.getSuppressed()).thenReturn(EMPTY_THROWABLE_ARRAY);
+
 		final HMCErrorResponse result = testObj
 				.handleMethodArgumentTypeMismatchException(methodArgumentTypeMismatchExceptionMock);
 
@@ -50,6 +58,8 @@ class HMCExceptionHandlerTest {
 
 	@Test
 	void handleMissingParametersException_ShouldReturnABadRequestAndABadRequestErrorMessage() {
+
+		when(missingServletRequestParameterExceptionMock.getSuppressed()).thenReturn(EMPTY_THROWABLE_ARRAY);
 
 		final HMCErrorResponse result = testObj
 				.handleMissingRequestParametersException(missingServletRequestParameterExceptionMock);

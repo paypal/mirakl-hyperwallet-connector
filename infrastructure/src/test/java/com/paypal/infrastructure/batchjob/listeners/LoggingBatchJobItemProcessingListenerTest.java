@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.apache.commons.lang3.ArrayUtils.EMPTY_THROWABLE_ARRAY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
@@ -80,6 +81,7 @@ class LoggingBatchJobItemProcessingListenerTest {
 
 	@Test
 	void onItemExtractionFailure_ShouldLogAnErrorMessage() {
+		when(exceptionMock.getSuppressed()).thenReturn(EMPTY_THROWABLE_ARRAY);
 
 		logTrackerStub.recordForLevel(LogTracker.LogLevel.ERROR);
 
@@ -99,6 +101,7 @@ class LoggingBatchJobItemProcessingListenerTest {
 
 	@Test
 	void onItemProcessingFailure_ShouldLogAnInfoAndAnErrorMessage() {
+		when(exceptionMock.getSuppressed()).thenReturn(EMPTY_THROWABLE_ARRAY);
 
 		logTrackerStub.recordForLevel(LogTracker.LogLevel.ERROR).recordForLevel(LogTracker.LogLevel.INFO);
 

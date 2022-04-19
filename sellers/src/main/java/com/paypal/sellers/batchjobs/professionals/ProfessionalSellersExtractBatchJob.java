@@ -7,8 +7,8 @@ import com.paypal.infrastructure.batchjob.BatchJobItemsExtractor;
 import org.springframework.stereotype.Service;
 
 /**
- * Extract sellers job for extracting Mirakl professional sellers data and populate it on
- * HyperWallet as users.
+ * Extract professional sellers job for extracting Mirakl professional sellers data and
+ * populate it on HyperWallet as users.
  */
 @Service
 public class ProfessionalSellersExtractBatchJob

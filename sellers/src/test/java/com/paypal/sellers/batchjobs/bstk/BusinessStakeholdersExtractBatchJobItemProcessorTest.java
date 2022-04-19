@@ -3,7 +3,7 @@ package com.paypal.sellers.batchjobs.bstk;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
-import com.paypal.sellers.sellersextract.service.strategies.HyperWalletBusinessStakeHolderServiceExecutor;
+import com.paypal.sellers.sellersextract.service.strategies.HyperWalletBusinessStakeHolderStrategyExecutor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,7 +23,7 @@ class BusinessStakeholdersExtractBatchJobItemProcessorTest {
 	private BusinessStakeholdersExtractBatchJobItemProcessor testObj;
 
 	@Mock
-	private HyperWalletBusinessStakeHolderServiceExecutor hyperWalletBusinessStakeHolderServiceExecutorMock;
+	private HyperWalletBusinessStakeHolderStrategyExecutor hyperWalletBusinessStakeHolderStrategyExecutorMock;
 
 	@Mock
 	private MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractServiceMock;
@@ -39,12 +39,12 @@ class BusinessStakeholdersExtractBatchJobItemProcessorTest {
 		final BusinessStakeholderExtractJobItem businessStakeholderExtractJobItem = new BusinessStakeholderExtractJobItem(
 				businessStakeHolderModel);
 
-		when(hyperWalletBusinessStakeHolderServiceExecutorMock.execute(businessStakeHolderModel))
+		when(hyperWalletBusinessStakeHolderStrategyExecutorMock.execute(businessStakeHolderModel))
 				.thenReturn(businessStakeHolderModel);
 
 		testObj.processItem(batchJobContextMock, businessStakeholderExtractJobItem);
 
-		verify(hyperWalletBusinessStakeHolderServiceExecutorMock).execute(businessStakeHolderModel);
+		verify(hyperWalletBusinessStakeHolderStrategyExecutorMock).execute(businessStakeHolderModel);
 		verify(miraklBusinessStakeholderExtractServiceMock).updateBusinessStakeholderToken(CLIENT_USER_ID,
 				List.of(businessStakeHolderModel));
 	}
@@ -57,11 +57,11 @@ class BusinessStakeholdersExtractBatchJobItemProcessorTest {
 		final BusinessStakeholderExtractJobItem businessStakeholderExtractJobItem = new BusinessStakeholderExtractJobItem(
 				businessStakeHolderModel);
 
-		when(hyperWalletBusinessStakeHolderServiceExecutorMock.execute(businessStakeHolderModel)).thenReturn(null);
+		when(hyperWalletBusinessStakeHolderStrategyExecutorMock.execute(businessStakeHolderModel)).thenReturn(null);
 
 		testObj.processItem(batchJobContextMock, businessStakeholderExtractJobItem);
 
-		verify(hyperWalletBusinessStakeHolderServiceExecutorMock).execute(businessStakeHolderModel);
+		verify(hyperWalletBusinessStakeHolderStrategyExecutorMock).execute(businessStakeHolderModel);
 		verify(miraklBusinessStakeholderExtractServiceMock, never()).updateBusinessStakeholderToken(CLIENT_USER_ID,
 				List.of(businessStakeHolderModel));
 	}

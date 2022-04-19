@@ -137,7 +137,7 @@ class MiraklInvoicesExtractServiceImplTest {
 		when(invoiceModelConvertedFromShopOneMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 		when(invoiceModelConvertedFromShopTwoMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 
-		final List<InvoiceModel> result = testObj.extractAccountingDocument(nowAsDate);
+		final List<InvoiceModel> result = testObj.extractAccountingDocuments(nowAsDate);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock).getShops(miraklGetShopsRequestArgumentCaptor.capture());
 
@@ -158,7 +158,7 @@ class MiraklInvoicesExtractServiceImplTest {
 
 		doReturn(Collections.emptyList()).when(testObj).getAccountingDocuments(nowAsDate);
 
-		final List<InvoiceModel> result = testObj.extractAccountingDocument(nowAsDate);
+		final List<InvoiceModel> result = testObj.extractAccountingDocuments(nowAsDate);
 
 		assertThat(result).isEmpty();
 	}
@@ -195,7 +195,7 @@ class MiraklInvoicesExtractServiceImplTest {
 		when(invoiceModelConvertedFromShopTwoMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 		when(invoiceModelConvertedFromShopThreeMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 
-		final List<InvoiceModel> result = testObj.extractAccountingDocument(nowAsDate);
+		final List<InvoiceModel> result = testObj.extractAccountingDocuments(nowAsDate);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock).getShops(miraklGetShopsRequestArgumentCaptor.capture());
 
@@ -227,7 +227,7 @@ class MiraklInvoicesExtractServiceImplTest {
 		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
 				.getShops(any(MiraklGetShopsRequest.class));
 
-		testObj.extractAccountingDocument(nowAsDate);
+		testObj.extractAccountingDocuments(nowAsDate);
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail("Issue detected getting shops in Mirakl",
 				String.format("Something went wrong getting information of " + "shops" + " [2000]%n%s",
