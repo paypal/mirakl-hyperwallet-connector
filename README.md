@@ -86,7 +86,7 @@ variables. The modules and their configuration files are described here, for tro
 advanced configuration & deployment:
 
 - **sellers**: Synchronises seller information between Mirakl and Hyperwallet.
-- **kyc**: Pushes identification documents from Mirakl to Hyperwallet for KYC purposes.
+- **kyc**: Manages incoming notifications from Hyperwallet for KYC purposes.
 - **invoices**: Distributes funds to sellers based on Mirakl's invoices and manual credit notes, and processes
   commissions for the operator.
 - **notifications**: Receives incoming webhook notifications from Hyperwallet and forwards them for further processing
@@ -96,18 +96,18 @@ advanced configuration & deployment:
 - **web**: Centralises the startup of the web application and exposes all the endpoints for manually running the cron
   jobs.
 
-| CONFIGURATION FILE             | MODULE          | DESCRIPTION                                                                                                                                                                                            |
-|--------------------------------| --------------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `infrastructure_db.properties` | `infrastructure`| Database configuration for saving job execution timestamps                                                                                                                                             |
-| `infrastructure.properties`    | `infrastructure`| Configuration related to Email recipients                                                                                                                                                              |
+| CONFIGURATION FILE             | MODULE          | DESCRIPTION                                                                                                                                                                                             |
+|--------------------------------| --------------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `infrastructure_db.properties` | `infrastructure`| Database configuration for saving job execution timestamps                                                                                                                                              |
+| `infrastructure.properties`    | `infrastructure`| Configuration related to Email recipients                                                                                                                                                               |
 | `invoices.properties`          | `invoices`      | Hyperwallet/Mirakl API configuration, Hyperwallet bank account/Hyperwallet program token, Manual credit notes/commission toggling, Payment notification types accepted, Extract invoices job scheduling |
-| `kyc.properties`               | `kyc`           | Hyperwallet KYC endpoint/credentials, Mirakl API endpoint/credentials, Hyperwallet program token setup, Extract documents job scheduling                                                               |
-| `notifications_db.properties`  | `notifications` | Database configuration for saving notifications                                                                                                                                                        |
-| `notifications.properties`     | `notifications` | Properties for routing incoming notifications, Failed notifications retry job scheduling                                                                                                               |
-| `reports.properties`           | `reports`       | Mirakl API configuration, Financial report folder location, Financial report CSV Columns, Financial report file name prefix, Server report Uri path, BrainTree credentials                             |
-| `sellers_db.properties`        | `sellers`       | Database configuration for saving sellers that should be retrieved for exporting                                                                                                                       |                                                                                                                                                               |
-| `sellers.properties`           | `sellers`       | Hyperwallet/Mirakl API configuration, Extract sellers/professional sellers/bank account job scheduling                                                                                                 |
-| `application.properties`       | `web`           | Spring profiles, Email server configuration, Layer7 encryption configuration (JOSE/JWT)                                                                                                                |
+| `kyc.properties`               | `kyc`           | Hyperwallet KYC endpoint/credentials, Mirakl API endpoint/credentials, Hyperwallet program token setup.                                                                                                 |
+| `notifications_db.properties`  | `notifications` | Database configuration for saving notifications                                                                                                                                                         |
+| `notifications.properties`     | `notifications` | Properties for routing incoming notifications, Failed notifications retry job scheduling                                                                                                                |
+| `reports.properties`           | `reports`       | Mirakl API configuration, Financial report folder location, Financial report CSV Columns, Financial report file name prefix, Server report Uri path, BrainTree credentials                              |
+| `sellers_db.properties`        | `sellers`       | Database configuration for saving sellers that should be retrieved for exporting                                                                                                                        |                                                                                                                                                               |
+| `sellers.properties`           | `sellers`       | Hyperwallet/Mirakl API configuration, Extract sellers/professional sellers/bank account job scheduling                                                                                                  |
+| `application.properties`       | `web`           | Spring profiles, Email server configuration, Layer7 encryption configuration (JOSE/JWT)                                                                                                                 |
 
 ## Execution & Deployment
 
@@ -262,7 +262,6 @@ The Hyperwallet Mirakl Connector runs jobs to perform various integrations betwe
   Hyperwallet.
 * Bank Accounts job sellers extract job: Extracts the bank detail information from sellers and creates a bank on account
   Hyperwallet associated to the corresponding user in Hyperwallet
-* Documents extract job: Extracts the documents from Mirakl and pushes them into Hyperwallet for KYC purposes.
 * Failed notifications retry job: Retries all of the notifications sent from Hyperwallet that failed while being processed.
 
 Those jobs are currently setup across the properties file as this table follows:
@@ -273,7 +272,6 @@ Those jobs are currently setup across the properties file as this table follows:
 | `sellers.extractprofessionalsellers.scheduling.cronexpression`        | 0 0 0 1/1 * ? *   | `sellers/src/main/resources/sellers.properties`             |
 | `sellers.bankaccountextract.scheduling.cronexpression`                | 0 30 0 1/1 * ? *  | `sellers/src/main/resources/sellers.properties`             |
 | `invoices.extractinvoices.scheduling.cronexpression`                  | 1 0 0 1/1 * ? *   | `invoices/src/main/resources/invoices.properties`           |
-| `kyc.documentsextract.scheduling.cronexpression`                      | 1 30 0 1/1 * ? *  | `kyc/src/main/resources/kyc.properties`                     |
 | `notifications.retryfailed.scheduling.cronexpression`                 | 0 0/15 * * * ? *  | `notifications/src/main/resources/notifications.properties` |
 
 The existing jobs can be executed manually through their endpoints. Except for notification retry job, which doesn't receive
@@ -296,7 +294,6 @@ Endpoints:
 | `POST`         | `/job/professional-sellers-extract`   | Professional Sellers extract |
 | `POST`         | `/job/bank-accounts-extract`          | Bank accounts extract        |
 | `POST`         | `/job/invoices-extract`               | Invoices extract             |
-| `POST`         | `/job/documents-extract`              | Documents extract            |
 | `POST`         | `/job//process-failed-notifications`  | Retry failed notifications   |
 
 See example of valid execution request:
