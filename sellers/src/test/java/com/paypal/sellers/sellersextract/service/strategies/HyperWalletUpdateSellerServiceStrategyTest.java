@@ -1,53 +1,74 @@
 package com.paypal.sellers.sellersextract.service.strategies;
 
-import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
-import com.paypal.sellers.sellersextract.model.SellerModel;
-import com.paypal.sellers.service.HyperwalletSDKService;
+import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
+import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class HyperWalletUpdateSellerServiceStrategyTest {
+class HyperWalletUpdateSellerServiceStrategyTest extends HyperwalletSellerServiceStrategyTest {
 
+	@Spy
 	@InjectMocks
 	private HyperWalletUpdateSellerServiceStrategy testObj;
 
-	@Mock
-	private SellerModel sellerModelMock;
+	@Test
+	void callHyperwallet_shouldUpdateUserInHyperwallet() {
+		prepareHyperwalletSDKInstance();
+		when(hyperwalletMock.updateUser(hyperwalletUserRequestMock)).thenReturn(hyperwalletUserResponseMock);
 
-	@Mock
-	private HyperwalletUser hyperWalletUserRequestMock, hyperWalletUserResponseMock;
+		final HyperwalletUser result = testObj.pushToHyperwallet(hyperwalletUserRequestMock);
 
-	@Mock
-	private HyperwalletSDKService hyperwalletSDKServiceMock;
-
-	@Mock
-	private Hyperwallet hyperwalletMock;
-
-	private static final String TOKEN = "token";
-
-	private static final String PROGRAM_TOKEN_VALUE = "programTokenValue";
+		verify(hyperwalletMock).updateUser(hyperwalletUserRequestMock);
+		assertThat(result).isEqualTo(hyperwalletUserResponseMock);
+	}
 
 	@Test
-	void createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl_shouldUpdateUser() {
-		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN_VALUE))
-				.thenReturn(hyperwalletMock);
-		when(hyperWalletUserRequestMock.getProgramToken()).thenReturn(PROGRAM_TOKEN_VALUE);
-		when(hyperwalletMock.updateUser(hyperWalletUserRequestMock)).thenReturn(hyperWalletUserResponseMock);
+	void callHyperwallet_shouldThrowHMCHyperwalletAPIExceptionWhenHyperwalletSDKFails() {
+		doNothing().when(testObj).reportError(anyString(), anyString());
+		prepareHyperwalletSDKInstance();
+		ensureHyperwalletSDKThrowsAnHMCException();
 
-		final HyperwalletUser result = testObj
-				.createOrUpdateUserOnHyperWalletAndUpdateItsTokenOnMirakl(hyperWalletUserRequestMock);
+		assertThatThrownBy(() -> testObj.pushToHyperwallet(hyperwalletUserRequestMock))
+				.isInstanceOf(HMCHyperwalletAPIException.class);
+	}
 
-		verify(hyperwalletMock).updateUser(hyperWalletUserRequestMock);
-		assertThat(result).isEqualTo(hyperWalletUserResponseMock);
+	@Test
+	void callHyperwallet_shouldSendAnEmailWhenHyperwalletSDKFails() {
+		doNothing().when(testObj).reportError(anyString(), anyString());
+		prepareHyperwalletSDKInstance();
+		ensureHyperwalletSDKThrowsAnHMCException();
+
+		assertThatThrownBy(() -> testObj.pushToHyperwallet(hyperwalletUserRequestMock))
+				.isInstanceOf(HMCHyperwalletAPIException.class);
+
+		verify(testObj).reportError("Issue detected when updating seller in Hyperwallet",
+				String.format(ERROR_MESSAGE_PREFIX + "Seller not updated with clientId [%s]%n%s", CLIENT_USER_ID,
+						HyperwalletLoggingErrorsUtil.stringify(hyperwalletException)));
+	}
+
+	@Test
+	void callHyperwallet_shouldLogTheExceptionWhenHyperwalletSDKFails() {
+		doNothing().when(testObj).reportError(anyString(), anyString());
+		prepareHyperwalletSDKInstance();
+		ensureHyperwalletSDKThrowsAnHMCException();
+
+		assertThatThrownBy(() -> testObj.pushToHyperwallet(hyperwalletUserRequestMock))
+				.isInstanceOf(HMCHyperwalletAPIException.class);
+
+		verify(testObj).logErrors(
+				eq(String.format("Error updating seller in hyperwallet with clientUserId [%s]: [{}]", CLIENT_USER_ID)),
+				eq(hyperwalletException), any(Logger.class));
 	}
 
 	@Test
@@ -66,6 +87,10 @@ class HyperWalletUpdateSellerServiceStrategyTest {
 		final boolean result = testObj.isApplicable(sellerModelMock);
 
 		assertThat(result).isTrue();
+	}
+
+	private void ensureHyperwalletSDKThrowsAnHMCException() {
+		doThrow(hyperwalletException).when(hyperwalletMock).updateUser(hyperwalletUserRequestMock);
 	}
 
 }

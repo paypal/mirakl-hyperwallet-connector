@@ -1,8 +1,11 @@
 package com.paypal.kyc.service.documents.files.mirakl.impl;
 
+import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.request.shop.document.MiraklDeleteShopDocumentRequest;
+import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklDocumentsExtractService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +21,13 @@ public abstract class AbstractMiraklDocumentExtractServiceImpl implements Mirakl
 
 	private final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient;
 
+	private final MailNotificationUtil kycMailNotificationUtil;
+
 	protected AbstractMiraklDocumentExtractServiceImpl(
-			final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient) {
+			final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
+			final MailNotificationUtil kycMailNotificationUtil) {
 		this.miraklOperatorClient = miraklOperatorClient;
+		this.kycMailNotificationUtil = kycMailNotificationUtil;
 	}
 
 	/**
@@ -57,6 +64,13 @@ public abstract class AbstractMiraklDocumentExtractServiceImpl implements Mirakl
 				.peek(deleteUpdatedDocumentRequest -> log.info("Deleting document from Mirakl with id [{}]",
 						deleteUpdatedDocumentRequest.getDocumentId()))
 				.forEach(miraklOperatorClient::deleteShopDocument);
+	}
+
+	protected void reportError(final String shopIdentifier, final MiraklException e) {
+
+		kycMailNotificationUtil.sendPlainTextEmail("Issue setting push document flags to false in Mirakl",
+				String.format("Something went wrong setting push document flag to false in Mirakl for %s%n%s",
+						shopIdentifier, MiraklLoggingErrorsUtil.stringify(e)));
 	}
 
 }

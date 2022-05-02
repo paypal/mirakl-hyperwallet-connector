@@ -24,6 +24,31 @@ public class ABABankAccountModel extends BankAccountModel {
 		return new Builder();
 	}
 
+	@Override
+	public Builder toBuilder() {
+		//@formatter:off
+		return ABABankAccountModel.builder()
+				.buildTransferMethodCountry(transferMethodCountry)
+				.buildTransferMethodCurrency(transferMethodCurrency)
+				.transferType(transferType)
+				.type(type)
+				.bankAccountNumber(bankAccountNumber)
+				.businessName(businessName)
+				.firstName(firstName)
+				.lastName(lastName)
+				.buildCountry(country)
+				.addressLine1(addressLine1)
+				.addressLine2(addressLine2)
+				.city(city)
+				.stateProvince(stateProvince)
+				.postalCode(postalCode)
+				.token(token)
+				.hyperwalletProgram(hyperwalletProgram)
+				.branchId(branchId)
+				.bankAccountPurpose(bankAccountPurpose);
+		//@formatter:on
+	}
+
 	public static class Builder extends BankAccountModel.Builder<Builder> {
 
 		private String branchId;

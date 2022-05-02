@@ -5,9 +5,7 @@ import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.sellers.bankaccountextract.service.MiraklBankAccountExtractService;
-import com.paypal.sellers.entity.FailedBankAccountInformation;
 import com.paypal.sellers.sellersextract.model.SellerModel;
-import com.paypal.sellers.service.FailedEntityInformationService;
 import com.paypal.sellers.service.HyperwalletSDKService;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +23,10 @@ public class HyperWalletCreateBankAccountServiceStrategyBankAccount
 	private final MiraklBankAccountExtractService miraklBankAccountExtractService;
 
 	protected HyperWalletCreateBankAccountServiceStrategyBankAccount(
-			final FailedEntityInformationService<FailedBankAccountInformation> failedEntityInformationService,
 			final StrategyExecutor<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyExecutor,
 			final MiraklBankAccountExtractService miraklBankAccountExtractService,
 			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
-		super(failedEntityInformationService, sellerModelToHyperwalletBankAccountStrategyExecutor,
-				hyperwalletSDKService, mailNotificationUtil);
+		super(sellerModelToHyperwalletBankAccountStrategyExecutor, hyperwalletSDKService, mailNotificationUtil);
 		this.miraklBankAccountExtractService = miraklBankAccountExtractService;
 	}
 

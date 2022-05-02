@@ -21,13 +21,10 @@ public interface HyperwalletBusinessStakeholderExtractService {
 	List<String> getKYCRequiredVerificationBusinessStakeHolders(String hyperwalletProgram, String userToken);
 
 	/**
-	 * Pushes the documents into HW and returns the list of
-	 * KYCDocumentBusinessStakeHolderInfoModel that were correctly uploaded to HW
-	 * @param kycBusinessStakeHolderInfoModels List of stakeholder documents to push
-	 * @return the correct list of {@link KYCDocumentBusinessStakeHolderInfoModel} pushed
-	 * to hyperwallet
+	 * Pushes the documents into HW
+	 * @param kycBusinessStakeHolderInfoModel Business stakeholders documents to push
+	 * @return If the document was pushed to HW
 	 */
-	List<KYCDocumentBusinessStakeHolderInfoModel> pushBusinessStakeholderDocuments(
-			List<KYCDocumentBusinessStakeHolderInfoModel> kycBusinessStakeHolderInfoModels);
+	boolean pushDocuments(final KYCDocumentBusinessStakeHolderInfoModel kycBusinessStakeHolderInfoModel);
 
 }

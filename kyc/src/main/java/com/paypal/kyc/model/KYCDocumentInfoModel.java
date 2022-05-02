@@ -4,6 +4,7 @@ import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
 import lombok.Getter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -31,8 +32,6 @@ public class KYCDocumentInfoModel implements Serializable {
 
 	protected final transient List<MiraklShopDocument> miraklShopDocuments;
 
-	protected final boolean sentToHyperwallet;
-
 	protected final String hyperwalletProgram;
 
 	private final List<KYCDocumentModel> documents;
@@ -44,7 +43,6 @@ public class KYCDocumentInfoModel implements Serializable {
 		requiresKYC = builder.requiresKYC;
 		proofOfIdentity = builder.proofOfIdentity;
 		miraklShopDocuments = builder.miraklShopDocuments;
-		sentToHyperwallet = builder.sentToHyperwallet;
 		documents = builder.documents;
 		hyperwalletProgram = builder.hyperwalletProgram;
 	}
@@ -65,6 +63,10 @@ public class KYCDocumentInfoModel implements Serializable {
 
 	public boolean areDocumentsFilled() {
 		return false;
+	}
+
+	public String getDocumentTracingIdentifier() {
+		return StringUtils.EMPTY;
 	}
 
 	@Override
@@ -105,8 +107,6 @@ public class KYCDocumentInfoModel implements Serializable {
 
 		protected List<KYCDocumentModel> documents;
 
-		protected boolean sentToHyperwallet;
-
 		protected String hyperwalletProgram;
 
 		public abstract T getThis();
@@ -143,11 +143,6 @@ public class KYCDocumentInfoModel implements Serializable {
 
 		public T countryIsoCode(final String countryIsoCode) {
 			this.countryIsoCode = countryIsoCode;
-			return getThis();
-		}
-
-		public T sentToHyperwallet(final boolean sentToHyperwallet) {
-			this.sentToHyperwallet = sentToHyperwallet;
 			return getThis();
 		}
 

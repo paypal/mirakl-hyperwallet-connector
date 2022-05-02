@@ -13,23 +13,21 @@ public interface HyperWalletPaymentExtractService {
 	 * Creates a payment of type {@link HyperwalletPayment} based on {@code invoices} for
 	 * the payees
 	 * @param invoice the {@link InvoiceModel}
-	 * @return
 	 */
-	HyperwalletPayment payPayeeInvoice(InvoiceModel invoice);
+	void payPayeeInvoice(InvoiceModel invoice);
 
 	/**
 	 * Creates a payment of type {@link HyperwalletPayment} based on {@code invoices} for
 	 * the payees
 	 * @param creditNote the {@link CreditNoteModel}
-	 * @return
 	 */
-	HyperwalletPayment payPayeeCreditNotes(CreditNoteModel creditNote);
+	void payPayeeCreditNotes(CreditNoteModel creditNote);
 
 	/**
 	 * Create a payment of type {@link HyperwalletPayment} based on {@code invoices} for
 	 * the operator
 	 * @param invoice the {@link InvoiceModel}
 	 */
-	HyperwalletPayment payInvoiceOperator(InvoiceModel invoice);
+	void payInvoiceOperator(InvoiceModel invoice);
 
 }

@@ -1,6 +1,5 @@
 package com.paypal.sellers.sellersextract.service.strategies;
 
-import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.paypal.infrastructure.strategy.SingleAbstractStrategyExecutor;
 import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.sellers.sellersextract.model.SellerModel;
@@ -15,17 +14,16 @@ import java.util.Set;
  */
 @Slf4j
 @Service
-public class HyperWalletUserServiceStrategyExecutor
-		extends SingleAbstractStrategyExecutor<SellerModel, HyperwalletUser> {
+public class HyperWalletUserServiceStrategyExecutor extends SingleAbstractStrategyExecutor<SellerModel, SellerModel> {
 
-	private final Set<Strategy<SellerModel, HyperwalletUser>> strategies;
+	private final Set<Strategy<SellerModel, SellerModel>> strategies;
 
-	public HyperWalletUserServiceStrategyExecutor(final Set<Strategy<SellerModel, HyperwalletUser>> strategies) {
+	public HyperWalletUserServiceStrategyExecutor(final Set<Strategy<SellerModel, SellerModel>> strategies) {
 		this.strategies = strategies;
 	}
 
 	@Override
-	protected Set<Strategy<SellerModel, HyperwalletUser>> getStrategies() {
+	protected Set<Strategy<SellerModel, SellerModel>> getStrategies() {
 		return strategies;
 	}
 

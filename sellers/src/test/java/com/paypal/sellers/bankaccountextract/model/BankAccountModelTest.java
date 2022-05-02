@@ -13,10 +13,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 class BankAccountModelTest {
 
+	private static final String TOKEN_VALUE_1 = "token1";
+
+	private static final String TOKEN_VALUE_2 = "token2";
+
 	@Test
 	void equals_shouldReturnTrueWhenBothAreEquals() {
-		final BankAccountModel bankAccountModelOne = createBankAccountModelObject();
-		final BankAccountModel bankAccountModelTwo = createBankAccountModelObject();
+		final BankAccountModel bankAccountModelOne = createBankAccountModelObject(TOKEN_VALUE_1);
+		final BankAccountModel bankAccountModelTwo = createBankAccountModelObject(TOKEN_VALUE_1);
 
 		final boolean result = bankAccountModelOne.equals(bankAccountModelTwo);
 
@@ -25,7 +29,7 @@ class BankAccountModelTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenBothAreNotEquals() {
-		final BankAccountModel bankAccountModelOne = createBankAccountModelObject();
+		final BankAccountModel bankAccountModelOne = createBankAccountModelObject(TOKEN_VALUE_1);
 		final BankAccountModel bankAccountModelTwo = createAnotherBankAccountModelObject();
 
 		final boolean result = bankAccountModelOne.equals(bankAccountModelTwo);
@@ -35,7 +39,7 @@ class BankAccountModelTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenSameObjectIsCompared() {
-		final BankAccountModel bankAccountModelOne = createBankAccountModelObject();
+		final BankAccountModel bankAccountModelOne = createBankAccountModelObject(TOKEN_VALUE_1);
 
 		final boolean result = bankAccountModelOne.equals(bankAccountModelOne);
 
@@ -44,7 +48,7 @@ class BankAccountModelTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenComparedWithAnotherInstanceObject() {
-		final BankAccountModel bankAccountModelOne = createBankAccountModelObject();
+		final BankAccountModel bankAccountModelOne = createBankAccountModelObject(TOKEN_VALUE_1);
 
 		final Object o = new Object();
 
@@ -53,10 +57,29 @@ class BankAccountModelTest {
 		assertThat(result).isFalse();
 	}
 
-	private BankAccountModel createBankAccountModelObject() {
+	@Test
+	void toBuild_ShouldReturnCopyOfBankAccountModel() {
+
+		final BankAccountModel bankAccountModel = createBankAccountModelObject(TOKEN_VALUE_1);
+		final BankAccountModel copyBankAccountModel = bankAccountModel.toBuilder().build();
+
+		assertThat(bankAccountModel).isEqualTo(copyBankAccountModel);
+	}
+
+	@Test
+	void toBuild_ShouldReturnCopyOfBankAccountModelWithTheUpdatedToken() {
+
+		final BankAccountModel bankAccountModel1 = createBankAccountModelObject(TOKEN_VALUE_1);
+		final BankAccountModel bankAccountModel2 = createBankAccountModelObject(TOKEN_VALUE_2);
+		final BankAccountModel copyBankAccountModel = bankAccountModel1.toBuilder().token(TOKEN_VALUE_2).build();
+
+		assertThat(bankAccountModel2).isEqualTo(copyBankAccountModel);
+	}
+
+	private BankAccountModel createBankAccountModelObject(final String token) {
 		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue tokenBankAccountField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		tokenBankAccountField.setCode(HYPERWALLET_BANK_ACCOUNT_TOKEN);
-		tokenBankAccountField.setValue("token");
+		tokenBankAccountField.setValue(token);
 
 		final MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue stateProvinceBusinessStakeHolderField = new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue();
 		stateProvinceBusinessStakeHolderField.setCode(HYPERWALLET_BANK_ACCOUNT_STATE);

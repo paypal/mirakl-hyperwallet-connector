@@ -1,9 +1,6 @@
 package com.paypal.invoices.batchjobs.invoices;
 
-import com.paypal.infrastructure.batchjob.AbstractBatchJob;
-import com.paypal.infrastructure.batchjob.BatchJobContext;
-import com.paypal.infrastructure.batchjob.BatchJobItemProcessor;
-import com.paypal.infrastructure.batchjob.BatchJobItemsExtractor;
+import com.paypal.infrastructure.batchjob.*;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,7 +8,8 @@ import org.springframework.stereotype.Service;
  * HyperWallet.
  */
 @Service
-public class InvoicesExtractBatchJob extends AbstractBatchJob<BatchJobContext, InvoiceExtractJobItem> {
+public class InvoicesExtractBatchJob extends AbstractBatchJob<BatchJobContext, InvoiceExtractJobItem>
+		implements BatchJob {
 
 	private final InvoicesExtractBatchJobItemsExtractor invoicesExtractBatchJobItemsExtractor;
 

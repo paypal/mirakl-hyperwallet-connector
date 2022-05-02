@@ -35,7 +35,6 @@ subprojects {
     apply plugin: 'java-library'
     apply plugin: 'java'
     apply plugin: 'io.spring.javaformat'
-    apply plugin: 'info.solidsoft.pitest'
     apply plugin: 'jacoco'
 
     java {
@@ -43,10 +42,7 @@ subprojects {
             languageVersion = JavaLanguageVersion.of(15)
         }
     }
-
-    pitest {
-        junit5PluginVersion = '0.12'
-    }
+    
 
     ext {
         set('springCloudVersion', "Hoxton.SR8")

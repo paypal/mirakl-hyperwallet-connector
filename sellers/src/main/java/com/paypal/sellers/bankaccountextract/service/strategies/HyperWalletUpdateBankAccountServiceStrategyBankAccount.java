@@ -4,9 +4,7 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.StrategyExecutor;
-import com.paypal.sellers.entity.FailedBankAccountInformation;
 import com.paypal.sellers.sellersextract.model.SellerModel;
-import com.paypal.sellers.service.FailedEntityInformationService;
 import com.paypal.sellers.service.HyperwalletSDKService;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +18,9 @@ public class HyperWalletUpdateBankAccountServiceStrategyBankAccount
 		extends AbstractHyperwalletBankAccountRetryApiStrategy {
 
 	protected HyperWalletUpdateBankAccountServiceStrategyBankAccount(
-			final FailedEntityInformationService<FailedBankAccountInformation> failedEntityInformationService,
 			final StrategyExecutor<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyExecutor,
 			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
-		super(failedEntityInformationService, sellerModelToHyperwalletBankAccountStrategyExecutor,
-				hyperwalletSDKService, mailNotificationUtil);
+		super(sellerModelToHyperwalletBankAccountStrategyExecutor, hyperwalletSDKService, mailNotificationUtil);
 	}
 
 	/**

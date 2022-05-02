@@ -2,7 +2,10 @@ package com.paypal.sellers.batchjobs.bankaccount;
 
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.infrastructure.batchjob.BatchJobItemProcessor;
+import com.paypal.infrastructure.service.TokenSynchronizationService;
 import com.paypal.sellers.bankaccountextract.service.strategies.HyperWalletBankAccountStrategyExecutor;
+import com.paypal.sellers.sellersextract.model.SellerModel;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,9 +17,13 @@ public class BankAccountExtractBatchJobItemProcessor
 
 	private final HyperWalletBankAccountStrategyExecutor hyperWalletBankAccountStrategyExecutor;
 
+	private final TokenSynchronizationService<SellerModel> bankAccountTokenSynchronizationService;
+
 	public BankAccountExtractBatchJobItemProcessor(
-			final HyperWalletBankAccountStrategyExecutor hyperWalletBankAccountStrategyExecutor) {
+			HyperWalletBankAccountStrategyExecutor hyperWalletBankAccountStrategyExecutor,
+			TokenSynchronizationService<SellerModel> bankAccountTokenSynchronizationService) {
 		this.hyperWalletBankAccountStrategyExecutor = hyperWalletBankAccountStrategyExecutor;
+		this.bankAccountTokenSynchronizationService = bankAccountTokenSynchronizationService;
 	}
 
 	/**
@@ -27,7 +34,9 @@ public class BankAccountExtractBatchJobItemProcessor
 	 */
 	@Override
 	public void processItem(final BatchJobContext ctx, final BankAccountExtractJobItem jobItem) {
-		hyperWalletBankAccountStrategyExecutor.execute(jobItem.getItem());
+		final SellerModel synchronizedSellerModel = bankAccountTokenSynchronizationService
+				.synchronizeToken(jobItem.getItem());
+		hyperWalletBankAccountStrategyExecutor.execute(synchronizedSellerModel);
 	}
 
 }

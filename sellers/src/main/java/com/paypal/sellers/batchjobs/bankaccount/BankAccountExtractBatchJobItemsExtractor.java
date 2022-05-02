@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The extractor class for retrieving all the sellers within a delta time from mirakl
@@ -30,7 +31,12 @@ public class BankAccountExtractBatchJobItemsExtractor
 	 */
 	@Override
 	protected Collection<BankAccountExtractJobItem> getItems(Date delta) {
-		return miraklSellersExtractService.extractIndividuals(delta).stream().map(BankAccountExtractJobItem::new)
+		Collection<BankAccountExtractJobItem> individualBankAccounts = miraklSellersExtractService
+				.extractIndividuals(delta).stream().map(BankAccountExtractJobItem::new).collect(Collectors.toList());
+		Collection<BankAccountExtractJobItem> professionalBankAccounts = miraklSellersExtractService
+				.extractProfessionals(delta).stream().map(BankAccountExtractJobItem::new).collect(Collectors.toList());
+
+		return Stream.concat(individualBankAccounts.stream(), professionalBankAccounts.stream())
 				.collect(Collectors.toList());
 	}
 

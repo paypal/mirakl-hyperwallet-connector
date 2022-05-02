@@ -20,6 +20,30 @@ public class UKBankAccountModel extends BankAccountModel {
 		return new UKBankAccountModel.Builder();
 	}
 
+	@Override
+	public Builder toBuilder() {
+		//@formatter:off
+        return UKBankAccountModel.builder()
+				.buildTransferMethodCountry(transferMethodCountry)
+				.buildTransferMethodCurrency(transferMethodCurrency)
+				.transferType(transferType)
+				.type(type)
+				.bankAccountNumber(bankAccountNumber)
+				.businessName(businessName)
+				.firstName(firstName)
+				.lastName(lastName)
+				.buildCountry(country)
+				.addressLine1(addressLine1)
+				.addressLine2(addressLine2)
+				.city(city)
+				.stateProvince(stateProvince)
+				.postalCode(postalCode)
+				.token(token)
+				.hyperwalletProgram(hyperwalletProgram)
+                .bankAccountId(bankAccountId);
+        //@formatter:on
+	}
+
 	public static class Builder extends BankAccountModel.Builder<UKBankAccountModel.Builder> {
 
 		private String bankAccountId;

@@ -120,6 +120,12 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 		return true;
 	}
 
+	@Override
+	public String getDocumentTracingIdentifier() {
+		return "Shop Id [%s] and Business Stakeholder number [%s]".formatted(getClientUserId(),
+				getBusinessStakeholderMiraklNumber());
+	}
+
 	public Builder toBuilder() {
 		//@formatter:off
 		return KYCDocumentBusinessStakeHolderInfoModel.builder()
@@ -133,7 +139,6 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 				.proofOfIdentity(proofOfIdentity)
 				.miraklShopDocuments(miraklShopDocuments)
 				.contact(contact)
-				.sentToHyperwallet(sentToHyperwallet)
 				.notifiedDocumentsReadyForReview(notifiedDocumentsReadyForReview)
 				.hyperwalletProgram(hyperwalletProgram)
 				.documents(getDocuments());

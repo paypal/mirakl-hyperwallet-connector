@@ -124,6 +124,11 @@ public class KYCDocumentSellerInfoModel extends KYCDocumentInfoModel {
 	}
 
 	@Override
+	public String getDocumentTracingIdentifier() {
+		return "shop Id [%s]".formatted(getClientUserId());
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (this == o) {
 			return true;
@@ -164,7 +169,6 @@ public class KYCDocumentSellerInfoModel extends KYCDocumentInfoModel {
 				.proofOfAddress(proofOfAddress)
 				.proofOfBusiness(proofOfBusiness)
 				.miraklShopDocuments(miraklShopDocuments)
-				.sentToHyperwallet(sentToHyperwallet)
 				.hyperwalletProgram(hyperwalletProgram)
 				.documents(getDocuments());
 		//@formatter:on
