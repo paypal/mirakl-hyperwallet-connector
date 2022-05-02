@@ -1,6 +1,5 @@
 package com.paypal.sellers.sellersextract.service.strategies;
 
-import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +20,7 @@ class HyperWalletUserServiceStrategyExecutorSingleTest {
 	private HyperWalletUserServiceStrategyExecutor testObj;
 
 	@Mock
-	private Strategy<SellerModel, HyperwalletUser> strategyMock;
+	private Strategy<SellerModel, SellerModel> strategyMock;
 
 	@BeforeEach
 	void setUp() {
@@ -30,7 +29,7 @@ class HyperWalletUserServiceStrategyExecutorSingleTest {
 
 	@Test
 	void getStrategies_shouldReturnConverterStrategyMock() {
-		final Set<Strategy<SellerModel, HyperwalletUser>> result = testObj.getStrategies();
+		final Set<Strategy<SellerModel, SellerModel>> result = testObj.getStrategies();
 
 		assertThat(result).containsExactly(strategyMock);
 	}

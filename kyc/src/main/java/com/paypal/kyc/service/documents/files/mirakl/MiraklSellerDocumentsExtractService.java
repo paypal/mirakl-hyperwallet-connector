@@ -1,13 +1,11 @@
 package com.paypal.kyc.service.documents.files.mirakl;
 
-import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Interface that manages logic of getting seller information related to KYC in Mirakl
@@ -34,12 +32,10 @@ public interface MiraklSellerDocumentsExtractService extends MiraklDocumentsExtr
 	/**
 	 * Sets KYC required verification proof of identity/business flag for seller to false
 	 * in Mirakl
-	 * @param successFullPushedListOfDocuments {@link List<KYCDocumentSellerInfoModel>} of
-	 * all seller to be unchecked from KYC verification
-	 * @return {@link Optional<MiraklUpdatedShops>} if everything was fine. Otherwise
-	 * empty.
+	 * @param successFullPushedListOfDocument {@link KYCDocumentSellerInfoModel} seller to
+	 * be unchecked from KYC verification
 	 */
-	Optional<MiraklUpdatedShops> setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(
-			List<KYCDocumentSellerInfoModel> successFullPushedListOfDocuments);
+	void setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(
+			KYCDocumentSellerInfoModel successFullPushedListOfDocument);
 
 }

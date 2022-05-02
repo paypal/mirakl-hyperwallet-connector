@@ -2,8 +2,6 @@ package com.paypal.kyc.service;
 
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 
-import java.util.List;
-
 /**
  * Service in charge of sending a notification when business-related, proof of identity or
  * proof of business documents are updated and imported to Hyperwallet
@@ -13,6 +11,6 @@ import java.util.List;
  */
 public interface KYCReadyForReviewService {
 
-	void notifyReadyForReview(List<KYCDocumentInfoModel> documentsTriedToBeSent);
+	void notifyReadyForReview(KYCDocumentInfoModel kycDocumentInfoModel);
 
 }

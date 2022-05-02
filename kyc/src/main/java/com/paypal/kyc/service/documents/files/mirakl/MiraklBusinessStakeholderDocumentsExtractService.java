@@ -1,11 +1,9 @@
 package com.paypal.kyc.service.documents.files.mirakl;
 
-import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Interface that manages logic of getting business stakeholder information related to KYC
@@ -34,13 +32,11 @@ public interface MiraklBusinessStakeholderDocumentsExtractService extends Mirakl
 
 	/**
 	 * Sets KYC required verification flag for business stakeholder to false in Mirakl
-	 * @param correctlySentBusinessStakeholderDocuments
-	 * {@link List<KYCDocumentBusinessStakeHolderInfoModel>} of all business stakeholder
-	 * to be unchecked from KYC verification
-	 * @return {@link Optional<MiraklUpdatedShops>} if everything was fine. Otherwise
-	 * empty.
+	 * @param correctlySentBusinessStakeholderDocument
+	 * {@link KYCDocumentBusinessStakeHolderInfoModel} a business stakeholder to be
+	 * unchecked from KYC verification.
 	 */
-	Optional<MiraklUpdatedShops> setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(
-			List<KYCDocumentBusinessStakeHolderInfoModel> correctlySentBusinessStakeholderDocuments);
+	void setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(
+			KYCDocumentBusinessStakeHolderInfoModel correctlySentBusinessStakeholderDocument);
 
 }

@@ -6,6 +6,7 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
+import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCConstants;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -58,35 +60,7 @@ class KYCReadyForReviewServiceImplTest {
 			.recordForType(KYCReadyForReviewServiceImpl.class);
 
 	@Test
-	void notifyDocumentsSent_whenDocumentsWereSentToHyperwallet_shouldNotifyBstkReadyForReview() {
-		//@formatter:off
-		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentSent = KYCDocumentBusinessStakeHolderInfoModel.builder()
-				.userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
-						KYCConstants.HYPERWALLET_USER_TOKEN_FIELD, USER_TOKEN_1)))
-				.hyperwalletProgram(HYPERWALLET_PROGRAM)
-				.sentToHyperwallet(Boolean.TRUE)
-				.build();
-		//@formatter:on
-
-		//@formatter:off
-		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentNotSent = KYCDocumentBusinessStakeHolderInfoModel.builder()
-				.userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
-						KYCConstants.HYPERWALLET_USER_TOKEN_FIELD, USER_TOKEN_2)))
-				.hyperwalletProgram(HYPERWALLET_PROGRAM)
-				.sentToHyperwallet(Boolean.FALSE)
-				.build();
-		//@formatter:on
-
-		doNothing().when(testObj).notifyBstkReadyForReview(Map.entry(USER_TOKEN_1, List.of(kycDocumentSent)));
-
-		testObj.notifyReadyForReview(List.of(kycDocumentSent, kycDocumentNotSent));
-
-		verify(testObj).notifyBstkReadyForReview(Map.entry(USER_TOKEN_1, List.of(kycDocumentSent)));
-		verify(testObj, never()).notifyBstkReadyForReview(Map.entry(USER_TOKEN_2, List.of(kycDocumentNotSent)));
-	}
-
-	@Test
-	void notifyBstkReadyForReview_shouldRunNotifyBusinessStakeholderToHW() {
+	void notifyReadyForReview_shouldRunNotifyBusinessStakeholderToHW() {
 		//@formatter:off
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentOne = KYCDocumentBusinessStakeHolderInfoModel.builder()
 				.hyperwalletProgram(HYPERWALLET_PROGRAM)
@@ -100,7 +74,7 @@ class KYCReadyForReviewServiceImplTest {
 		when(hyperwalletSDKServiceMock.getHyperwalletInstance(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletApiClientMock);
 
-		testObj.notifyBstkReadyForReview(Map.entry(USER_TOKEN_1, List.of(kycDocumentOne)));
+		testObj.notifyReadyForReview(kycDocumentOne);
 
 		verify(hyperwalletApiClientMock).updateUser(hyperwalletUserCaptor.capture());
 
@@ -127,11 +101,12 @@ class KYCReadyForReviewServiceImplTest {
 		HyperwalletException hwException = new HyperwalletException("Something bad happened");
 		doThrow(hwException).when(hyperwalletApiClientMock).updateUser(Mockito.any(HyperwalletUser.class));
 
-		testObj.notifyBstkReadyForReview(Map.entry(USER_TOKEN_1, List.of(kycDocumentSent)));
+		assertThatThrownBy(() -> testObj.notifyReadyForReview(kycDocumentSent))
+				.isInstanceOf(HMCHyperwalletAPIException.class);
 
 		verify(hyperwalletSDKServiceMock).getHyperwalletInstance(HYPERWALLET_PROGRAM);
 		verify(hyperwalletApiClientMock).updateUser(hyperwalletUserCaptor.capture());
-		verify(testObj).notifyBstkReadyForReview(Map.entry(USER_TOKEN_1, List.of(kycDocumentSent)));
+		verify(testObj).notifyReadyForReview(kycDocumentSent);
 		verify(kycMailNotificationUtilMock).sendPlainTextEmail("Issue in Hyperwallet status notification",
 				String.format(
 						"There was an error notifying Hyperwallet all documents were sent for shop Id [2000], so Hyperwallet will not be notified about this new situation%n%s",
@@ -150,7 +125,7 @@ class KYCReadyForReviewServiceImplTest {
 				.build();
 		//@formatter:on
 
-		testObj.notifyBstkReadyForReview(Map.entry(USER_TOKEN_1, List.of(kycDocumentOne)));
+		testObj.notifyReadyForReview(kycDocumentOne);
 
 		assertThat(logTrackerStub.contains("Seller with shop Id [2000] has no Hyperwallet Program")).isTrue();
 	}

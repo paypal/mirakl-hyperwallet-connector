@@ -1,18 +1,9 @@
 package com.paypal.kyc.jobs;
 
-import com.paypal.infrastructure.job.AbstractDeltaInfoJob;
-import com.paypal.kyc.model.KYCDocumentInfoModel;
-import com.paypal.kyc.service.DocumentsExtractService;
-import com.paypal.kyc.service.KYCReadyForReviewService;
+import com.paypal.kyc.batchjobs.businessstakeholders.BusinessStakeholdersDocumentsExtractBatchJob;
+import com.paypal.kyc.batchjobs.sellers.SellersDocumentsExtractBatchJob;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.JobExecutionContext;
-import org.quartz.PersistJobDataAfterExecution;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import org.quartz.*;
 
 /**
  * Extract documents job for extracting Mirakl sellers documents data and populate them on
@@ -21,32 +12,25 @@ import java.util.List;
 @Slf4j
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class DocumentsExtractJob extends AbstractDeltaInfoJob {
+public class DocumentsExtractJob implements Job {
 
-	@Resource
-	private DocumentsExtractService documentsExtractService;
+	private final SellersDocumentsExtractBatchJob sellersDocumentsExtractBatchJob;
 
-	@Resource
-	private KYCReadyForReviewService kycReadyForReviewService;
+	private final BusinessStakeholdersDocumentsExtractBatchJob businessStakeholdersDocumentsExtractBatchJob;
+
+	public DocumentsExtractJob(SellersDocumentsExtractBatchJob sellersDocumentsExtractBatchJob,
+			BusinessStakeholdersDocumentsExtractBatchJob businessStakeholdersDocumentsExtractBatchJob) {
+		this.sellersDocumentsExtractBatchJob = sellersDocumentsExtractBatchJob;
+		this.businessStakeholdersDocumentsExtractBatchJob = businessStakeholdersDocumentsExtractBatchJob;
+	}
 
 	/**
-	 * {@inheritDoc} Fetches all the proof of identity, business documents and business
-	 * stakeholders and exports this information to Hyperwallet
-	 * <p>
-	 * If at least one of them was successfully sent, it also sets the customer to Ready
-	 * for Review in Hyperwallet
+	 * {@inheritDoc}
 	 */
 	@Override
-	public void execute(final JobExecutionContext context) {
-		final Date delta = getDelta(context);
-		final List<KYCDocumentInfoModel> documents = new ArrayList<>();
-
-		documents.addAll(documentsExtractService.extractProofOfIdentityAndBusinessSellerDocuments(delta));
-		documents.addAll(documentsExtractService.extractBusinessStakeholderDocuments(delta));
-
-		kycReadyForReviewService.notifyReadyForReview(documents);
-
-		documentsExtractService.cleanUpDocumentsFiles(documents);
+	public void execute(final JobExecutionContext context) throws JobExecutionException {
+		sellersDocumentsExtractBatchJob.execute(context);
+		businessStakeholdersDocumentsExtractBatchJob.execute(context);
 	}
 
 }

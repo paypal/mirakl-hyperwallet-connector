@@ -21,37 +21,37 @@ import static com.paypal.sellers.sellersextract.model.SellerModelConstants.*;
 @Getter
 public class BankAccountModel {
 
-	private final String transferMethodCountry;
+	protected final String transferMethodCountry;
 
-	private final String transferMethodCurrency;
+	protected final String transferMethodCurrency;
 
-	private final TransferType transferType;
+	protected final TransferType transferType;
 
-	private final BankAccountType type;
+	protected final BankAccountType type;
 
-	private final String bankAccountNumber;
+	protected final String bankAccountNumber;
 
-	private final String businessName;
+	protected final String businessName;
 
-	private final String firstName;
+	protected final String firstName;
 
-	private final String lastName;
+	protected final String lastName;
 
-	private final String country;
+	protected final String country;
 
-	private final String addressLine1;
+	protected final String addressLine1;
 
-	private final String addressLine2;
+	protected final String addressLine2;
 
-	private final String city;
+	protected final String city;
 
-	private final String stateProvince;
+	protected final String stateProvince;
 
-	private final String postalCode;
+	protected final String postalCode;
 
-	private final String token;
+	protected final String token;
 
-	private final String hyperwalletProgram;
+	protected final String hyperwalletProgram;
 
 	protected BankAccountModel(final Builder<?> builder) {
 		transferMethodCountry = builder.transferMethodCountry;
@@ -105,6 +105,29 @@ public class BankAccountModel {
 		return Objects.hash(getTransferMethodCountry(), getTransferMethodCurrency(), getTransferType(), getType(),
 				getBankAccountNumber(), getBusinessName(), getFirstName(), getLastName(), getCountry(),
 				getAddressLine1(), getAddressLine2(), getCity(), getStateProvince(), getPostalCode(), getToken());
+	}
+
+	@SuppressWarnings("java:S3740")
+	public Builder toBuilder() {
+		//@formatter:off
+		return BankAccountModel.builder()
+				.buildTransferMethodCountry(transferMethodCountry)
+				.buildTransferMethodCurrency(transferMethodCurrency)
+				.transferType(transferType)
+				.type(type)
+				.bankAccountNumber(bankAccountNumber)
+				.businessName(businessName)
+				.firstName(firstName)
+				.lastName(lastName)
+				.buildCountry(country)
+				.addressLine1(addressLine1)
+				.addressLine2(addressLine2)
+				.city(city)
+				.stateProvince(stateProvince)
+				.postalCode(postalCode)
+				.token(token)
+				.hyperwalletProgram(hyperwalletProgram);
+		//@formatter:on
 	}
 
 	@SuppressWarnings("java:S3740")
@@ -162,6 +185,11 @@ public class BankAccountModel {
 			return getThis();
 		}
 
+		protected T buildTransferMethodCountry(final String transferMethodCountry) {
+			this.transferMethodCountry = transferMethodCountry;
+			return getThis();
+		}
+
 		public T transferMethodCurrency(final String transferMethodCurrency) {
 			try {
 				Optional.of(Monetary.getCurrency(transferMethodCurrency))
@@ -172,6 +200,11 @@ public class BankAccountModel {
 						String.format("Transfer method currency with code: [%s] not valid", transferMethodCurrency),
 						ex);
 			}
+			return getThis();
+		}
+
+		protected T buildTransferMethodCurrency(final String transferMethodCurrency) {
+			this.transferMethodCurrency = transferMethodCurrency;
 			return getThis();
 		}
 
@@ -213,6 +246,11 @@ public class BankAccountModel {
 			return getThis();
 		}
 
+		protected T buildCountry(final String country) {
+			this.country = country;
+			return getThis();
+		}
+
 		public T addressLine1(final String addressLine1) {
 			this.addressLine1 = addressLine1;
 			return getThis();
@@ -233,6 +271,11 @@ public class BankAccountModel {
 			return getThis();
 		}
 
+		public T stateProvince(final String stateProvince) {
+			this.stateProvince = stateProvince;
+			return getThis();
+		}
+
 		public T postalCode(final String postalCode) {
 			this.postalCode = postalCode;
 			return getThis();
@@ -241,6 +284,11 @@ public class BankAccountModel {
 		public T token(final List<MiraklAdditionalFieldValue> fieldValues) {
 			token = getMiraklStringCustomFieldValue(fieldValues, HYPERWALLET_BANK_ACCOUNT_TOKEN).orElse(null);
 
+			return getThis();
+		}
+
+		public T token(final String token) {
+			this.token = token;
 			return getThis();
 		}
 

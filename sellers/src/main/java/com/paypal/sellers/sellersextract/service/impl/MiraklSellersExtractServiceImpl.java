@@ -140,22 +140,21 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 	@Override
 	public void updateUserToken(final HyperwalletUser hyperwalletUser) {
 		final MiraklUpdateShop miraklUpdateShop = new MiraklUpdateShop();
-		final String shopId = hyperwalletUser.getClientUserId();
-		miraklUpdateShop.setShopId(Long.valueOf(shopId));
+		miraklUpdateShop.setShopId(Long.valueOf(hyperwalletUser.getClientUserId()));
 		final MiraklSimpleRequestAdditionalFieldValue userTokenCustomField = new MiraklSimpleRequestAdditionalFieldValue();
 		userTokenCustomField.setCode(HYPERWALLET_USER_TOKEN);
 		userTokenCustomField.setValue(hyperwalletUser.getToken());
 		miraklUpdateShop.setAdditionalFieldValues(List.of(userTokenCustomField));
 		final MiraklUpdateShopsRequest request = new MiraklUpdateShopsRequest(List.of(miraklUpdateShop));
-		log.info("Updating token for shop [{}] to [{}]", shopId, hyperwalletUser.getToken());
+		log.info("Updating token for shop [{}] to [{}]", hyperwalletUser.getClientUserId(), hyperwalletUser.getToken());
 		try {
 			miraklOperatorClient.updateShops(request);
 		}
 		catch (final MiraklApiException ex) {
-			log.error("Something went wrong getting information of shop [{}]", shopId);
+			log.error("Something went wrong getting information of shop [{}]", hyperwalletUser.getClientUserId());
 			sellerMailNotificationUtil.sendPlainTextEmail(EMAIL_SUBJECT_MESSAGE,
 					String.format(ERROR_MESSAGE_PREFIX + "Something went wrong getting information of shop [%s]%n%s",
-							shopId, MiraklLoggingErrorsUtil.stringify(ex)));
+							hyperwalletUser.getClientUserId(), MiraklLoggingErrorsUtil.stringify(ex)));
 		}
 	}
 

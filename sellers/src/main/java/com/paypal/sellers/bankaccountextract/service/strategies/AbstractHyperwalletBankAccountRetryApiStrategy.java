@@ -2,24 +2,23 @@ package com.paypal.sellers.bankaccountextract.service.strategies;
 
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
+import com.mirakl.client.core.exception.MiraklApiException;
+import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
+import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
-import com.paypal.sellers.entity.FailedBankAccountInformation;
+import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.SellerModel;
-import com.paypal.sellers.service.AbstractHyperwalletRetryAPIStrategy;
-import com.paypal.sellers.service.FailedEntityInformationService;
 import com.paypal.sellers.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
 public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
-		extends AbstractHyperwalletRetryAPIStrategy<FailedBankAccountInformation>
 		implements Strategy<SellerModel, Optional<HyperwalletBankAccount>> {
 
 	protected final StrategyExecutor<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyExecutor;
@@ -32,10 +31,8 @@ public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
 			+ "information:\n";
 
 	protected AbstractHyperwalletBankAccountRetryApiStrategy(
-			final FailedEntityInformationService<FailedBankAccountInformation> failedEntityInformationService,
 			final StrategyExecutor<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyExecutor,
 			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
-		super(failedEntityInformationService);
 		this.sellerModelToHyperwalletBankAccountStrategyExecutor = sellerModelToHyperwalletBankAccountStrategyExecutor;
 		this.hyperwalletSDKService = hyperwalletSDKService;
 		this.mailNotificationUtil = mailNotificationUtil;
@@ -46,7 +43,6 @@ public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
 	 */
 	@Override
 	public Optional<HyperwalletBankAccount> execute(final SellerModel seller) {
-		boolean includedAsFailed = false;
 		HyperwalletBankAccount hwCreatedBankAccount = null;
 		final HyperwalletBankAccount hwBankAccountRequest = sellerModelToHyperwalletBankAccountStrategyExecutor
 				.execute(seller);
@@ -56,9 +52,7 @@ public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
 				log.info("Bank account created or updated for seller with clientId [{}]", seller.getClientUserId());
 			}
 			catch (final HyperwalletException e) {
-				if (e.getCause() instanceof IOException) {
-					includedAsFailed = true;
-				}
+
 				mailNotificationUtil
 						.sendPlainTextEmail("Issue detected when creating or updating bank account in Hyperwallet",
 								String.format(ERROR_MESSAGE_PREFIX
@@ -67,9 +61,18 @@ public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
 				log.error("Bank account not created or updated for seller with clientId [{}]",
 						seller.getClientUserId());
 				log.error(HyperwalletLoggingErrorsUtil.stringify(e));
+
+				throw new HMCHyperwalletAPIException(e);
+
 			}
-			finally {
-				callToIncludeIntoRetryProcess(seller, includedAsFailed);
+
+			catch (final MiraklApiException e) {
+
+				log.error("Error while updating Mirakl bank account by clientUserId [{}]", seller.getClientUserId(), e);
+
+				log.error(MiraklLoggingErrorsUtil.stringify(e));
+
+				throw new HMCMiraklAPIException(e);
 			}
 		}
 		return Optional.ofNullable(hwCreatedBankAccount);
@@ -77,9 +80,5 @@ public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
 
 	protected abstract HyperwalletBankAccount callHyperwalletAPI(final String hyperwalletProgram,
 			HyperwalletBankAccount hyperwalletBankAccount);
-
-	protected void callToIncludeIntoRetryProcess(final SellerModel sellerModel, final boolean include) {
-		executeRetryProcess(sellerModel.getClientUserId(), include);
-	}
 
 }

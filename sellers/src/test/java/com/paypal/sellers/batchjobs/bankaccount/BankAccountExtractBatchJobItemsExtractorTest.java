@@ -27,18 +27,20 @@ class BankAccountExtractBatchJobItemsExtractorTest {
 	private MiraklSellersExtractService miraklSellersExtractServiceMock;
 
 	@Mock
-	private SellerModel sellerModelMock1, sellerModelMock2;
+	private SellerModel sellerModelMock1, sellerModelMock2, sellerModelMock3, sellerModelMock4;
 
 	@Test
 	void getItems_ShouldRetrieveAllBankAccountExtractJobItemForTheGivenDelta() {
 
 		when(miraklSellersExtractServiceMock.extractIndividuals(DELTA))
 				.thenReturn(List.of(sellerModelMock1, sellerModelMock2));
+		when(miraklSellersExtractServiceMock.extractProfessionals(DELTA))
+				.thenReturn(List.of(sellerModelMock3, sellerModelMock4));
 
 		final Collection<BankAccountExtractJobItem> result = testObj.getItems(DELTA);
 
 		assertThat(result.stream().map(BankAccountExtractJobItem::getItem)).containsExactlyInAnyOrder(sellerModelMock1,
-				sellerModelMock2);
+				sellerModelMock2, sellerModelMock3, sellerModelMock4);
 	}
 
 }

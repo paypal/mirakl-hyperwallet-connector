@@ -2,6 +2,9 @@ package com.paypal.sellers.bankaccountextract.service.strategies;
 
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
+import com.mirakl.client.core.exception.MiraklApiException;
+import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
+import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
@@ -9,14 +12,13 @@ import com.paypal.sellers.entity.FailedBankAccountInformation;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.service.FailedEntityInformationService;
 import com.paypal.sellers.service.HyperwalletSDKService;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.io.IOException;
 
 import static org.mockito.Mockito.*;
 
@@ -42,9 +44,6 @@ class AbstractHyperwalletBankAccountRetryApiStrategyTest {
 	private MailNotificationUtil mailNotificationUtilMock;
 
 	@Mock
-	private IOException ioExceptionMock;
-
-	@Mock
 	private HyperwalletException hyperwalletExceptionMock;
 
 	private static final String ERROR_MESSAGE_PREFIX = "There was an error, please check the logs for further "
@@ -55,7 +54,6 @@ class AbstractHyperwalletBankAccountRetryApiStrategyTest {
 		when(sellerModelToHyperwalletBankAccountStrategyExecutorMock.execute(sellerModelMock))
 				.thenReturn(hyperwalletBankAccountMock);
 		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
-		doNothing().when(testObj).callToIncludeIntoRetryProcess(sellerModelMock, Boolean.FALSE);
 		testObj.execute(sellerModelMock);
 
 		verify(sellerModelToHyperwalletBankAccountStrategyExecutorMock).execute(sellerModelMock);
@@ -69,33 +67,31 @@ class AbstractHyperwalletBankAccountRetryApiStrategyTest {
 		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 		when(sellerModelToHyperwalletBankAccountStrategyExecutorMock.execute(sellerModelMock))
 				.thenReturn(hyperwalletBankAccountMock);
-		doNothing().when(testObj).callToIncludeIntoRetryProcess(sellerModelMock, Boolean.FALSE);
 		doThrow(hyperwalletException).when(testObj).callHyperwalletAPI(HYPERWALLET_PROGRAM, hyperwalletBankAccountMock);
 
-		testObj.execute(sellerModelMock);
+		AssertionsForClassTypes.assertThatThrownBy(() -> testObj.execute(sellerModelMock))
+				.isInstanceOf(HMCHyperwalletAPIException.class)
+				.hasMessageContaining("An error has occurred while invoking Hyperwallet API");
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail(
 				"Issue detected when creating or updating bank account in Hyperwallet",
 				String.format(
 						ERROR_MESSAGE_PREFIX + "Bank account not created or updated for seller with clientId [%s]%n%s",
 						"2001", HyperwalletLoggingErrorsUtil.stringify(hyperwalletException)));
-		verify(testObj).callToIncludeIntoRetryProcess(sellerModelMock, Boolean.FALSE);
 	}
 
 	@Test
-	void execute_shouldSendEmailNotificationAndIncludeSellerIntoRetryProcessWhenIOExceptionIsThrown() {
-		when(hyperwalletExceptionMock.getCause()).thenReturn(ioExceptionMock);
+	void execute_ShouldThrowMiraklApiException_WhenMiraklRequestThrowsAnHMCMiraklAPIException() {
 		when(sellerModelMock.getClientUserId()).thenReturn("2001");
 		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 		when(sellerModelToHyperwalletBankAccountStrategyExecutorMock.execute(sellerModelMock))
 				.thenReturn(hyperwalletBankAccountMock);
-		doThrow(hyperwalletExceptionMock).when(testObj).callHyperwalletAPI(HYPERWALLET_PROGRAM,
+		doThrow(MiraklApiException.class).when(testObj).callHyperwalletAPI(HYPERWALLET_PROGRAM,
 				hyperwalletBankAccountMock);
-		doNothing().when(testObj).callToIncludeIntoRetryProcess(sellerModelMock, Boolean.TRUE);
 
-		testObj.execute(sellerModelMock);
-
-		verify(testObj).callToIncludeIntoRetryProcess(sellerModelMock, Boolean.TRUE);
+		AssertionsForClassTypes.assertThatThrownBy(() -> testObj.execute(sellerModelMock))
+				.isInstanceOf(HMCMiraklAPIException.class)
+				.hasMessageContaining("An error has occurred while invoking Mirakl API");
 	}
 
 	private static class MyAbstractHyperwalletBankAccountRetryApiStrategy
@@ -105,8 +101,7 @@ class AbstractHyperwalletBankAccountRetryApiStrategyTest {
 				final FailedEntityInformationService<FailedBankAccountInformation> failedEntityInformationService,
 				final StrategyExecutor<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyExecutor,
 				final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
-			super(failedEntityInformationService, sellerModelToHyperwalletBankAccountStrategyExecutor,
-					hyperwalletSDKService, mailNotificationUtil);
+			super(sellerModelToHyperwalletBankAccountStrategyExecutor, hyperwalletSDKService, mailNotificationUtil);
 		}
 
 		@Override

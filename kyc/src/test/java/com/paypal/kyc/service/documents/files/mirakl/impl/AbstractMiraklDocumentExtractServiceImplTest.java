@@ -3,6 +3,7 @@ package com.paypal.kyc.service.documents.files.mirakl.impl;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.request.shop.document.MiraklDeleteShopDocumentRequest;
+import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -73,8 +74,9 @@ class AbstractMiraklDocumentExtractServiceImplTest {
 	public static class MyAbstractMiraklDocumentExtractServiceImpl extends AbstractMiraklDocumentExtractServiceImpl {
 
 		protected MyAbstractMiraklDocumentExtractServiceImpl(
-				final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient) {
-			super(miraklOperatorClient);
+				final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
+				final MailNotificationUtil mailNotificationUtil) {
+			super(miraklOperatorClient, mailNotificationUtil);
 		}
 
 	}

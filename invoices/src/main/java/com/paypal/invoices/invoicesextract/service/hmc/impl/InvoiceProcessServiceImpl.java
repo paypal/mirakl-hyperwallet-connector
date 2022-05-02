@@ -24,13 +24,10 @@ public class InvoiceProcessServiceImpl extends AbstractInvoiceProcessService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public HyperwalletPayment payOperator(final InvoiceModel invoice) {
-
-		HyperwalletPayment operatorPayment = null;
+	public void payOperator(final InvoiceModel invoice) {
 		if (invoicesOperatorCommissionsConfig.isEnabled()) {
-			operatorPayment = super.hyperWalletPaymentExtractService.payInvoiceOperator(invoice);
+			super.hyperWalletPaymentExtractService.payInvoiceOperator(invoice);
 		}
-		return operatorPayment;
 	}
 
 }

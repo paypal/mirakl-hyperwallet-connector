@@ -3,6 +3,7 @@ package com.paypal.kyc.service.impl;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
+import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
@@ -41,77 +42,40 @@ public class KYCReadyForReviewServiceImpl implements KYCReadyForReviewService {
 	}
 
 	@Override
-	public void notifyReadyForReview(final List<KYCDocumentInfoModel> documentsTriedToBeSent) {
-		//@formatter:off
-		final Map<String, List<KYCDocumentInfoModel>> bstkGroupedByClientId = documentsTriedToBeSent.stream()
-				.collect(Collectors.groupingBy(KYCDocumentInfoModel::getUserToken));
-
-		final Map<String, List<KYCDocumentInfoModel>> userWithBstkToBeNotified = bstkGroupedByClientId.entrySet().stream()
-				.filter(entry -> entry.getValue().stream()
-						.allMatch(KYCDocumentInfoModel::isSentToHyperwallet))
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-		userWithBstkToBeNotified.entrySet()
-				.forEach(this::notifyBstkReadyForReview);
-		//@formatter:on
-	}
-
-	protected void notifyBstkReadyForReview(final Map.Entry<String, List<KYCDocumentInfoModel>> entry) {
-		final String token = entry.getKey();
+	public void notifyReadyForReview(KYCDocumentInfoModel kycDocumentInfoModel) {
+		final String token = kycDocumentInfoModel.getUserToken();
 		final HyperwalletUser user = new HyperwalletUser();
 		user.setToken(token);
 		user.setBusinessStakeholderVerificationStatus(
 				HyperwalletUser.BusinessStakeholderVerificationStatus.READY_FOR_REVIEW);
 
 		try {
-			final Optional<String> hyperwalletProgramOptional = getHyperwalletProgram(entry.getValue());
-			if (hyperwalletProgramOptional.isPresent()) {
-				final String hyperwalletProgram = hyperwalletProgramOptional.get();
+			final String hyperwalletProgram = kycDocumentInfoModel.getHyperwalletProgram();
+			if (StringUtils.isNotEmpty(hyperwalletProgram)) {
 				final Hyperwallet hyperwallet = hyperwalletSDKService.getHyperwalletInstance(hyperwalletProgram);
 				final HyperwalletUser hyperwalletUser = hyperwallet.updateUser(user);
 				log.info("Seller with id [{}] has been set as Ready for review", hyperwalletUser.getClientUserId());
 			}
 			else {
-				log.error("Seller with shop Id [{}] has no Hyperwallet Program", getClientId(entry.getValue()));
+				log.error("Seller with shop Id [{}] has no Hyperwallet Program",
+						kycDocumentInfoModel.getClientUserId());
 			}
 
 		}
 		catch (final HyperwalletException e) {
-			//@formatter:off
-			final String clientUserId = CollectionUtils.emptyIfNull(entry.getValue())
-					.stream()
-					.map(KYCDocumentInfoModel::getClientUserId)
-					.findAny()
-					.orElse("undefined");
-			//@formatter:on
-			log.error("Error notifying to Hyperwallet that all documents were sent: [{}]",
-					HyperwalletLoggingErrorsUtil.stringify(e));
-			kycMailNotificationUtil.sendPlainTextEmail("Issue in Hyperwallet status notification", String.format(
-					"There was an error notifying Hyperwallet all documents were sent for shop Id [%s], so Hyperwallet will not be notified about this new situation%n%s",
-					clientUserId, HyperwalletLoggingErrorsUtil.stringify(e)));
+			reportHyperwalletAPIError(kycDocumentInfoModel, e);
+
+			throw new HMCHyperwalletAPIException(e);
 		}
 	}
 
-	private Optional<String> getHyperwalletProgram(final List<KYCDocumentInfoModel> documentInfoList) {
-		//@formatter:off
-		return CollectionUtils.emptyIfNull(documentInfoList)
-				.stream()
-				.filter(Objects::nonNull)
-				.map(KYCDocumentInfoModel::getHyperwalletProgram)
-				.filter(StringUtils::isNotEmpty)
-				.findAny();
-		//@formatter:off
-	}
+	private void reportHyperwalletAPIError(KYCDocumentInfoModel kycDocumentInfoModel, HyperwalletException e) {
+		log.error("Error notifying to Hyperwallet that all documents were sent: [{}]",
+				HyperwalletLoggingErrorsUtil.stringify(e));
 
-	private String getClientId(final List<KYCDocumentInfoModel> documentInfoList) {
-		//@formatter:off
-		return CollectionUtils.emptyIfNull(documentInfoList)
-				.stream()
-				.filter(Objects::nonNull)
-				.map(KYCDocumentInfoModel::getClientUserId)
-				.findAny()
-				.orElse(null);
-		//@formatter:on
+		kycMailNotificationUtil.sendPlainTextEmail("Issue in Hyperwallet status notification", String.format(
+				"There was an error notifying Hyperwallet all documents were sent for shop Id [%s], so Hyperwallet will not be notified about this new situation%n%s",
+				kycDocumentInfoModel.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)));
 	}
 
 }

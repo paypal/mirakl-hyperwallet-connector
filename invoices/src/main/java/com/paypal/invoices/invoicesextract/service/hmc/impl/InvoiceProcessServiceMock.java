@@ -26,13 +26,11 @@ public class InvoiceProcessServiceMock extends AbstractInvoiceProcessService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public HyperwalletPayment payOperator(InvoiceModel invoice) {
+	public void payOperator(InvoiceModel invoice) {
 
-		HyperwalletPayment operatorPayment = null;
 		if (testingInvoicesSessionDataHelper.isOperatorCommissionsEnabled()) {
-			operatorPayment = super.hyperWalletPaymentExtractService.payInvoiceOperator(invoice);
+			super.hyperWalletPaymentExtractService.payInvoiceOperator(invoice);
 		}
-		return operatorPayment;
 	}
 
 }

@@ -10,6 +10,8 @@ import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
+import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
@@ -28,6 +30,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -153,16 +156,11 @@ class MiraklSellerDocumentsExtractServiceImplTest {
 	void setFlagToPushSellerDocumentsToFalse_shouldCallMiraklWithTheClientUsersIdPassedAsParam() {
 		final KYCDocumentSellerInfoModel kycDocumentOne = KYCDocumentSellerInfoModel.builder().clientUserId("2000")
 				.build();
-		final KYCDocumentSellerInfoModel kycDocumentTwo = KYCDocumentSellerInfoModel.builder().clientUserId("2001")
-				.build();
-		final List<KYCDocumentSellerInfoModel> successfullyPushedDocumentsList = List.of(kycDocumentOne,
-				kycDocumentTwo);
 
 		when(miraklMarketplacePlatformOperatorApiClientMock.updateShops(any(MiraklUpdateShopsRequest.class)))
 				.thenReturn(miraklUpdateShopsMock);
 
-		final Optional<MiraklUpdatedShops> result = testObj
-				.setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(successfullyPushedDocumentsList);
+		testObj.setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(kycDocumentOne);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock).updateShops(miraklUpdateShopArgumentCaptor.capture());
 
@@ -184,38 +182,27 @@ class MiraklSellerDocumentsExtractServiceImplTest {
 				.map(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue::getCode)
 				.collect(Collectors.toList());
 
-		assertThat(updatedSellerIdList).containsExactlyInAnyOrder(2000L, 2001L);
-		assertThat(updatedFlagValueList).containsExactlyInAnyOrder("false", "false");
-		assertThat(updatedFlagCodeList).containsExactlyInAnyOrder(
-				HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_BUSINESS_FIELD,
-				HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_BUSINESS_FIELD);
-
-		assertThat(result).hasValue(miraklUpdateShopsMock);
-	}
-
-	@Test
-	void setFlagToPushSellerDocumentsToFalse_shouldDoNothingWhenAnEmptyListIsPassedAsParam() {
-		testObj.setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(List.of());
-		verifyNoInteractions(miraklMarketplacePlatformOperatorApiClientMock);
+		assertThat(updatedSellerIdList).containsOnly(2000L);
+		assertThat(updatedFlagValueList).containsExactly("false");
+		assertThat(updatedFlagCodeList).containsExactly(HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_BUSINESS_FIELD);
 	}
 
 	@Test
 	void setFlagToPushSellerDocumentsToFalse_shouldSendEmailNotificationWhenMiraklExceptionIsThrown() {
 		final KYCDocumentSellerInfoModel kycDocumentOne = KYCDocumentSellerInfoModel.builder().clientUserId("2000")
 				.build();
-		final List<KYCDocumentSellerInfoModel> successfullyPushedDocumentsList = List.of(kycDocumentOne);
 
 		final MiraklException miraklException = new MiraklException("Something went wrong");
 
 		doThrow(miraklException).when(miraklMarketplacePlatformOperatorApiClientMock)
 				.updateShops(any(MiraklUpdateShopsRequest.class));
 
-		testObj.setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(successfullyPushedDocumentsList);
+		assertThatThrownBy(() -> testObj.setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(kycDocumentOne))
+				.isInstanceOf(HMCMiraklAPIException.class);
 
 		verify(kycMailNotificationUtilMock).sendPlainTextEmail("Issue setting push document flags to false in Mirakl",
-				String.format(
-						"Something went wrong setting push document flag to false in Mirakl for shop Id [2000]%n%s",
-						String.join(",", MiraklLoggingErrorsUtil.stringify(miraklException))));
+				String.format("Something went wrong setting push document flag to false in Mirakl for Shop Id 2000%n%s",
+						MiraklLoggingErrorsUtil.stringify(miraklException)));
 	}
 
 	@Test

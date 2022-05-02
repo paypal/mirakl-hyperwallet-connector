@@ -11,6 +11,7 @@ import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.converter.KYCBusinessStakeHolderConverter;
@@ -25,6 +26,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -265,43 +267,21 @@ class MiraklBusinessStakeholderDocumentsExtractServiceImplTest {
 
 	@Test
 	void setBusinessStakeholderFlagToPushBusinessStakeholderDocumentsToFalse_shouldCallMiraklWithTheClientUsersIdPassedAsParam() {
-		//@formatter:off
-		final KYCDocumentBusinessStakeHolderInfoModel kycUserOneBstOne = KYCDocumentBusinessStakeHolderInfoModel.builder()
-				.clientUserId("2000")
-				.businessStakeholderMiraklNumber(1)
-				.requiresKYC(Boolean.TRUE)
-				.sentToHyperwallet(Boolean.TRUE)
-				.build();
-		//@formatter:on
 
 		//@formatter:off
-		final KYCDocumentBusinessStakeHolderInfoModel kycUserTwoBstOne = KYCDocumentBusinessStakeHolderInfoModel.builder()
-				.clientUserId("2001")
-				.businessStakeholderMiraklNumber(1)
-				.requiresKYC(Boolean.TRUE)
-				.sentToHyperwallet(Boolean.TRUE)
-				.build();
-		//@formatter:on
-
-		//@formatter:off
-		final KYCDocumentBusinessStakeHolderInfoModel kycUserThreeBstOne = KYCDocumentBusinessStakeHolderInfoModel.builder()
-				.clientUserId("2002")
-				.businessStakeholderMiraklNumber(1)
-				.requiresKYC(Boolean.TRUE)
-				.sentToHyperwallet(Boolean.TRUE)
-				.requiresLetterOfAuthorization(Boolean.TRUE)
-				.build();
-		//@formatter:on
-
-		final List<KYCDocumentBusinessStakeHolderInfoModel> successfullyPushedDocumentsList = List.of(kycUserOneBstOne,
-				kycUserThreeBstOne, kycUserTwoBstOne);
+        final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel.builder()
+                .clientUserId("2002")
+                .businessStakeholderMiraklNumber(1)
+                .requiresKYC(Boolean.TRUE)
+                .requiresLetterOfAuthorization(Boolean.TRUE)
+                .build();
+        //@formatter:on
 
 		when(miraklMarketplacePlatformOperatorApiClientMock.updateShops(any(MiraklUpdateShopsRequest.class)))
 				.thenReturn(miraklUpdateShopsMock);
 
-		final Optional<MiraklUpdatedShops> result = testObj
-				.setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(
-						successfullyPushedDocumentsList);
+		testObj.setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(
+				kycDocumentBusinessStakeHolderInfoModel);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock).updateShops(miraklUpdateShopArgumentCaptor.capture());
 
@@ -309,66 +289,34 @@ class MiraklBusinessStakeholderDocumentsExtractServiceImplTest {
 		final List<Long> updatedSellerIdList = miraklUpdateShopRequest.getShops().stream()
 				.map(MiraklUpdateShop::getShopId).collect(Collectors.toList());
 
-		assertThat(updatedSellerIdList).containsExactlyInAnyOrder(2000L, 2001L, 2002L);
-		assertThat(getUpdatedFlagValuesForShop(miraklUpdateShopRequest, 2000L))
-				.containsExactlyEntriesOf(Map.of(BUSINESS_STAKEHOLDER_PROOF_IDENTITY_CODE, "false"));
-		assertThat(getUpdatedFlagValuesForShop(miraklUpdateShopRequest, 2001L))
-				.containsExactlyEntriesOf(Map.of(BUSINESS_STAKEHOLDER_PROOF_IDENTITY_CODE, "false"));
+		assertThat(updatedSellerIdList).containsOnly(2002L);
 		assertThat(getUpdatedFlagValuesForShop(miraklUpdateShopRequest, 2002L)).containsAllEntriesOf(Map
 				.of(BUSINESS_STAKEHOLDER_PROOF_IDENTITY_CODE, "false", BUSINESS_STAKEHOLDER_PROOF_AUTH_CODE, "false"));
-
-		assertThat(result).hasValue(miraklUpdateShopsMock);
-	}
-
-	@Test
-	void setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse_whenNoShopsAreNeededForUpdate_shouldDoNothing() {
-		//@formatter:off
-		final KYCDocumentBusinessStakeHolderInfoModel kycUserOneBstOne = KYCDocumentBusinessStakeHolderInfoModel.builder()
-				.clientUserId("2000")
-				.businessStakeholderMiraklNumber(1)
-				.sentToHyperwallet(Boolean.FALSE)
-				.build();
-		//@formatter:on
-
-		final Optional<MiraklUpdatedShops> result = testObj
-				.setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(
-						Collections.singletonList(kycUserOneBstOne));
-
-		assertThat(result).isEmpty();
-
-		verifyNoInteractions(miraklMarketplacePlatformOperatorApiClientMock);
-	}
-
-	@Test
-	void setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse_whenAnEmptyListIsPassedAsParam_shouldDoNothing() {
-		testObj.setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(List.of());
-
-		verifyNoInteractions(miraklMarketplacePlatformOperatorApiClientMock);
 	}
 
 	@Test
 	void setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse_whenMiraklExceptionIsThrown_shouldSendEmailNotification() {
 		//@formatter:off
-		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentOne = KYCDocumentBusinessStakeHolderInfoModel.builder()
-				.clientUserId("2000")
-				.businessStakeholderMiraklNumber(1)
-				.requiresKYC(Boolean.TRUE)
-				.sentToHyperwallet(Boolean.TRUE)
-				.build();
-		final List<KYCDocumentBusinessStakeHolderInfoModel> successfullyPushedDocumentsList = List.of(kycDocumentOne);
-		//@formatter:on
+        final KYCDocumentBusinessStakeHolderInfoModel kycDocumentOne = KYCDocumentBusinessStakeHolderInfoModel.builder()
+                .clientUserId("2000")
+                .businessStakeholderMiraklNumber(1)
+                .requiresKYC(Boolean.TRUE)
+                .build();
+        //@formatter:on
 
 		final MiraklException miraklException = new MiraklException("Something went wrong");
 
 		doThrow(miraklException).when(miraklMarketplacePlatformOperatorApiClientMock)
 				.updateShops(any(MiraklUpdateShopsRequest.class));
 
-		testObj.setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(successfullyPushedDocumentsList);
+		assertThatThrownBy(
+				() -> testObj.setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(kycDocumentOne))
+						.isInstanceOf(HMCMiraklAPIException.class);
 
 		verify(kycMailNotificationUtilMock).sendPlainTextEmail("Issue setting push document flags to false in Mirakl",
 				String.format(
-						"Something went wrong setting push document flag to false in Mirakl for shop Id [2000]%n%s",
-						String.join(",", MiraklLoggingErrorsUtil.stringify(miraklException))));
+						"Something went wrong setting push document flag to false in Mirakl for Shop Id [2000] and Business Stakeholder number [1]%n%s",
+						MiraklLoggingErrorsUtil.stringify(miraklException)));
 	}
 
 	private Map<String, String> getUpdatedFlagValuesForShop(final MiraklUpdateShopsRequest miraklUpdateShopRequest,
