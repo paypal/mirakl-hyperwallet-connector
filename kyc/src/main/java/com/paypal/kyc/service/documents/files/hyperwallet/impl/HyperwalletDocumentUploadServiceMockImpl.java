@@ -72,13 +72,13 @@ public class HyperwalletDocumentUploadServiceMockImpl extends HyperwalletDocumen
 
 	private boolean checkFailingFiles(final List<HyperwalletVerificationDocument> originalFiles) {
 		//@formatter:off
-        return Optional.ofNullable(originalFiles).orElse(List.of()).stream()
-                .map(HyperwalletVerificationDocument::getUploadFiles)
-                .filter(Objects::nonNull)
-                .map(Map::values)
-                .flatMap(Collection::stream)
-                .anyMatch(fileName -> fileName.contains(FAILING_FILES));
-        //@formatter:on
+		return Optional.ofNullable(originalFiles).orElse(List.of()).stream()
+				.map(HyperwalletVerificationDocument::getUploadFiles)
+				.filter(Objects::nonNull)
+				.map(Map::values)
+				.flatMap(Collection::stream)
+				.anyMatch(fileName -> fileName.contains(FAILING_FILES));
+		//@formatter:on
 	}
 
 	protected String getMockServerUrl() {

@@ -5,7 +5,7 @@ import com.mirakl.client.core.exception.MiraklException;
 /**
  * Util class for logging errors of {@link MiraklException}
  */
-public class MiraklLoggingErrorsUtil {
+public final class MiraklLoggingErrorsUtil {
 
 	private static final String MESSAGE_FORMAT = "{exceptionMessage=%s,}";
 

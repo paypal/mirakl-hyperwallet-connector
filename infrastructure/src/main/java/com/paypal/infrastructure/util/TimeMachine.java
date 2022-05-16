@@ -7,7 +7,7 @@ import java.time.ZoneId;
 /**
  * Time machine class to help with date testing
  */
-public class TimeMachine {
+public final class TimeMachine {
 
 	private static Clock clock = Clock.systemDefaultZone();
 

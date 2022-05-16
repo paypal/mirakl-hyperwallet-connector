@@ -19,7 +19,7 @@ import static org.springframework.http.HttpStatus.*;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "/test")
+@RequestMapping("/test")
 @Profile({ "qa", "qaEncrypted" })
 public class HyperwalletNotificationTestUtilsController {
 

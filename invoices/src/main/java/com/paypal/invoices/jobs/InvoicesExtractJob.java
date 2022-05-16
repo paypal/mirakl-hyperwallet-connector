@@ -1,5 +1,7 @@
 package com.paypal.invoices.jobs;
 
+import com.paypal.infrastructure.batchjob.quartz.AbstractBatchJobSupportQuartzJob;
+import com.paypal.infrastructure.batchjob.quartz.QuartzBatchJobAdapterFactory;
 import com.paypal.invoices.batchjobs.creditnotes.CreditNotesExtractBatchJob;
 import com.paypal.invoices.batchjobs.invoices.InvoicesExtractBatchJob;
 import com.paypal.invoices.infraestructure.configuration.CreditNotesConfig;
@@ -14,7 +16,7 @@ import org.quartz.*;
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
 @Slf4j
-public class InvoicesExtractJob implements Job {
+public class InvoicesExtractJob extends AbstractBatchJobSupportQuartzJob implements Job {
 
 	private final InvoicesExtractBatchJob invoicesExtractBatchJob;
 
@@ -24,9 +26,11 @@ public class InvoicesExtractJob implements Job {
 
 	private final InvoicesOperatorCommissionsConfig invoicesOperatorCommissionsConfig;
 
-	public InvoicesExtractJob(final InvoicesExtractBatchJob invoicesExtractBatchJob,
+	public InvoicesExtractJob(final QuartzBatchJobAdapterFactory quartzBatchJobAdapterFactory,
+			final InvoicesExtractBatchJob invoicesExtractBatchJob,
 			final CreditNotesExtractBatchJob creditNotesExtractBatchJob, final CreditNotesConfig creditNotesConfig,
 			final InvoicesOperatorCommissionsConfig invoicesOperatorCommissionsConfig) {
+		super(quartzBatchJobAdapterFactory);
 		this.invoicesExtractBatchJob = invoicesExtractBatchJob;
 		this.creditNotesExtractBatchJob = creditNotesExtractBatchJob;
 		this.creditNotesConfig = creditNotesConfig;
@@ -36,9 +40,9 @@ public class InvoicesExtractJob implements Job {
 	@Override
 	public void execute(final JobExecutionContext context) throws JobExecutionException {
 		logCommissionsConfig();
-		invoicesExtractBatchJob.execute(context);
+		executeBatchJob(invoicesExtractBatchJob, context);
 		if (creditNotesConfig.isEnabled()) {
-			creditNotesExtractBatchJob.execute(context);
+			executeBatchJob(creditNotesExtractBatchJob, context);
 		}
 	}
 

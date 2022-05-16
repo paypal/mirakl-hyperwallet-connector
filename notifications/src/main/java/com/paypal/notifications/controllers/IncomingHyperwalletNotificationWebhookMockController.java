@@ -20,7 +20,7 @@ import java.util.Objects;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "/webhooks")
+@RequestMapping("/webhooks")
 @Profile({ "!prod" })
 public class IncomingHyperwalletNotificationWebhookMockController {
 

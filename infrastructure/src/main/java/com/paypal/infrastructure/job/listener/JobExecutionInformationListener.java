@@ -1,5 +1,6 @@
 package com.paypal.infrastructure.job.listener;
 
+import com.paypal.infrastructure.batchjob.quartz.QuartzBatchJobBean;
 import com.paypal.infrastructure.model.entity.JobExecutionInformationEntity;
 import com.paypal.infrastructure.model.job.JobStatus;
 import com.paypal.infrastructure.repository.JobExecutionInformationRepository;
@@ -57,7 +58,7 @@ public class JobExecutionInformationListener extends JobListenerSupport {
 	 */
 	protected void saveStartJobExecutionInformation(final JobExecutionContext context) {
 		final JobExecutionInformationEntity jobExecutionInformationEntity = new JobExecutionInformationEntity();
-		jobExecutionInformationEntity.setType(context.getJobDetail().getJobClass().getSimpleName());
+		jobExecutionInformationEntity.setType(getJobClass(context));
 		jobExecutionInformationEntity.setName(context.getJobDetail().getKey().getName());
 		jobExecutionInformationEntity.setStartTime(DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault()));
 		jobExecutionInformationEntity.setStatus(JobStatus.RUNNING);
@@ -75,6 +76,15 @@ public class JobExecutionInformationListener extends JobListenerSupport {
 		}
 		catch (final SchedulerException e) {
 			getLog().error(e.getMessage(), e);
+		}
+	}
+
+	private String getJobClass(JobExecutionContext context) {
+		if (QuartzBatchJobBean.class.equals(context.getJobDetail().getJobClass())) {
+			return QuartzBatchJobBean.getBatchJobClass(context).getSimpleName();
+		}
+		else {
+			return context.getJobDetail().getJobClass().getSimpleName();
 		}
 	}
 

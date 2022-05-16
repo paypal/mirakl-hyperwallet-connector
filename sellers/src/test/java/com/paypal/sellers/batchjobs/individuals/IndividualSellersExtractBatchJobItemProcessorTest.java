@@ -31,12 +31,12 @@ class IndividualSellersExtractBatchJobItemProcessorTest {
 
 	private SellerModel sellerModel;
 
-	private IndividualSellerExtractJobItem individualSellerExtractJobItem;
+	private IndividualSellersExtractJobItem individualSellersExtractJobItem;
 
 	@BeforeEach
 	void setUp() {
 		sellerModel = SellerModel.builder().build();
-		individualSellerExtractJobItem = new IndividualSellerExtractJobItem(sellerModel);
+		individualSellersExtractJobItem = new IndividualSellersExtractJobItem(sellerModel);
 		when(tokenSynchronizationServiceMock.synchronizeToken(sellerModel)).thenReturn(sellerModel);
 	}
 
@@ -44,7 +44,7 @@ class IndividualSellersExtractBatchJobItemProcessorTest {
 	void processItem_ShouldAlwaysExecuteHyperWalletUserServiceStrategyExecutor() {
 		when(hyperWalletUserServiceStrategyExecutorMock.execute(sellerModel)).thenReturn(sellerModel);
 
-		testObj.processItem(batchJobContextMock, individualSellerExtractJobItem);
+		testObj.processItem(batchJobContextMock, individualSellersExtractJobItem);
 
 		verify(hyperWalletUserServiceStrategyExecutorMock).execute(sellerModel);
 	}
@@ -53,7 +53,7 @@ class IndividualSellersExtractBatchJobItemProcessorTest {
 	void processItem_shouldSynchronizeSellerBetweenHyperwalletAndMirakl() {
 		when(hyperWalletUserServiceStrategyExecutorMock.execute(sellerModel)).thenReturn(sellerModel);
 
-		testObj.processItem(batchJobContextMock, individualSellerExtractJobItem);
+		testObj.processItem(batchJobContextMock, individualSellersExtractJobItem);
 
 		verify(tokenSynchronizationServiceMock).synchronizeToken(sellerModel);
 	}

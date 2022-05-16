@@ -8,16 +8,16 @@ import com.paypal.notifications.model.entity.NotificationEntity;
 public enum NotificationType {
 
 	//@formatter:off
-    /**
-     * Each type corresponds with the following Mirakl types:
-     * USR -> Seller
-     * PMT -> Payment
-     * STK -> Stakeholder
-     * TRM -> Bank account
-     * UNK -> Unknown
-     */
-    //@formatter:off
+	/**
+	 * Each type corresponds with the following Mirakl types:
+	 * USR -> Seller
+	 * PMT -> Payment
+	 * STK -> Stakeholder
+	 * TRM -> Bank account
+	 * UNK -> Unknown
+	 */
+	//@formatter:off
 
-    USR, PMT, STK, TRM, UNK
+	USR, PMT, STK, TRM, UNK
 
 }

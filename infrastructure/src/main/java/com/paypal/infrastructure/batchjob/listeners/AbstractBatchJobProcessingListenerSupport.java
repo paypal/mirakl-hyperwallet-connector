@@ -4,6 +4,8 @@ import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.infrastructure.batchjob.BatchJobItem;
 import com.paypal.infrastructure.batchjob.BatchJobProcessingListener;
 
+import java.util.Collection;
+
 /**
  * Holds common functionality for batch job processing listeners.
  *
@@ -25,7 +27,7 @@ public class AbstractBatchJobProcessingListenerSupport<C extends BatchJobContext
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onItemExtractionSuccessful(C ctx) {
+	public void onItemExtractionSuccessful(C ctx, Collection<T> extractedItems) {
 		// empty method
 	}
 

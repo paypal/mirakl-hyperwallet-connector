@@ -1,7 +1,6 @@
 package com.paypal.kyc.batchjobs.sellers;
 
 import com.paypal.infrastructure.batchjob.AbstractBatchJobItem;
-import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
 
 /**

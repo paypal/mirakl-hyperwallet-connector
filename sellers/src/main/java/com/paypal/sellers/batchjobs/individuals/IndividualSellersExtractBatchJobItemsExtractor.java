@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  */
 @Component
 public class IndividualSellersExtractBatchJobItemsExtractor
-		extends AbstractDeltaBatchJobItemsExtractor<BatchJobContext, IndividualSellerExtractJobItem> {
+		extends AbstractDeltaBatchJobItemsExtractor<BatchJobContext, IndividualSellersExtractJobItem> {
 
 	private final MiraklSellersExtractService miraklSellersExtractService;
 
@@ -27,14 +27,14 @@ public class IndividualSellersExtractBatchJobItemsExtractor
 
 	/**
 	 * Retrieves all the sellers modified since the {@code delta} time and returns them as
-	 * a {@link IndividualSellerExtractJobItem}
+	 * a {@link IndividualSellersExtractJobItem}
 	 * @param delta the cut-out {@link Date}
-	 * @return a {@link Collection} of {@link IndividualSellerExtractJobItem}
+	 * @return a {@link Collection} of {@link IndividualSellersExtractJobItem}
 	 */
 	@Override
-	protected Collection<IndividualSellerExtractJobItem> getItems(Date delta) {
+	protected Collection<IndividualSellersExtractJobItem> getItems(Date delta) {
 		List<SellerModel> miraklIndividualSellers = miraklSellersExtractService.extractIndividuals(delta);
-		return miraklIndividualSellers.stream().map(IndividualSellerExtractJobItem::new).collect(Collectors.toList());
+		return miraklIndividualSellers.stream().map(IndividualSellersExtractJobItem::new).collect(Collectors.toList());
 	}
 
 }

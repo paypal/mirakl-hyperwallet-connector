@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -27,6 +28,7 @@ public class BatchJobFailedItem {
 
 	private Integer numberOfRetries;
 
-	private BatchJobFailedItemStatus batchJobFailedItemStatus;
+	@NotNull
+	private BatchJobFailedItemStatus status;
 
 }

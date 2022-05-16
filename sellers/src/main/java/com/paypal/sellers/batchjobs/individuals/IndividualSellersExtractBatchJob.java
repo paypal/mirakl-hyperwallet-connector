@@ -10,8 +10,8 @@ import javax.annotation.Resource;
  * HyperWallet as users
  */
 @Service
-public class IndividualSellersExtractBatchJob extends AbstractBatchJob<BatchJobContext, IndividualSellerExtractJobItem>
-		implements BatchJob {
+public class IndividualSellersExtractBatchJob
+		extends AbstractBatchJob<BatchJobContext, IndividualSellersExtractJobItem> {
 
 	@Resource
 	private IndividualSellersExtractBatchJobItemProcessor individualSellersExtractBatchJobItemProcessor;
@@ -22,20 +22,20 @@ public class IndividualSellersExtractBatchJob extends AbstractBatchJob<BatchJobC
 	/**
 	 * Retrieves the individual seller batch job item processor
 	 * @return the {@link BatchJobItemProcessor} for
-	 * {@link IndividualSellerExtractJobItem}
+	 * {@link IndividualSellersExtractJobItem}
 	 */
 	@Override
-	protected BatchJobItemProcessor<BatchJobContext, IndividualSellerExtractJobItem> getBatchJobItemProcessor() {
+	protected BatchJobItemProcessor<BatchJobContext, IndividualSellersExtractJobItem> getBatchJobItemProcessor() {
 		return this.individualSellersExtractBatchJobItemProcessor;
 	}
 
 	/**
 	 * Retrieves the individual seller batch job items extractor
 	 * @return the {@link BatchJobItemsExtractor} for
-	 * {@link IndividualSellerExtractJobItem}
+	 * {@link IndividualSellersExtractJobItem}
 	 */
 	@Override
-	protected BatchJobItemsExtractor<BatchJobContext, IndividualSellerExtractJobItem> getBatchJobItemsExtractor() {
+	protected BatchJobItemsExtractor<BatchJobContext, IndividualSellersExtractJobItem> getBatchJobItemsExtractor() {
 		return this.individualSellersExtractBatchJobItemsExtractor;
 	}
 

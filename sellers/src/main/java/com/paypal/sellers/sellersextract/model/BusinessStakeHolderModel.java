@@ -138,6 +138,25 @@ public class BusinessStakeHolderModel {
 				&& Objects.isNull(country) && Objects.isNull(postalCode);
 	}
 
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof BusinessStakeHolderModel)) {
+			return false;
+		}
+		//@formatter:off
+		final BusinessStakeHolderModel that = (BusinessStakeHolderModel) o;
+		return EqualsBuilder.reflectionEquals(this, that);
+		//@formatter:on
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+
 	public static class BusinessStakeHolderModelBuilder {
 
 		private static final String BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE = "Business Stake Holder number {} incorrect. System only allows Business stake holder attributes from 1 to 5";
@@ -666,25 +685,6 @@ public class BusinessStakeHolderModel {
 			return this;
 		}
 
-	}
-
-	@Override
-	public boolean equals(final Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (!(o instanceof BusinessStakeHolderModel)) {
-			return false;
-		}
-		//@formatter:off
-		final BusinessStakeHolderModel that = (BusinessStakeHolderModel) o;
-		return EqualsBuilder.reflectionEquals(this, that);
-		//@formatter:on
-	}
-
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this);
 	}
 
 }

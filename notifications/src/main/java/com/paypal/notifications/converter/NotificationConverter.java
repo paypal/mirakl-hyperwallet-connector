@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -46,17 +45,17 @@ public class NotificationConverter implements Converter<HyperwalletWebhookNotifi
 	private void populateObjectToken(final HyperwalletWebhookNotification source, final NotificationEntity target) {
 
 		//@formatter:off
-        Optional.ofNullable(source.getObject())
-                .filter(Map.class::isInstance)
-                .map(Map.class::cast)
-                .map(map -> map.get(TOKEN_MAP_KEY))
-                .filter(String.class::isInstance)
-                .map(String.class::cast)
-                .ifPresent(objectToken -> {
-                    target.setObjectToken(objectToken);
-                    target.setNotificationType(getNotificationType(objectToken));
-                });
-        //@formatter:on
+		Optional.ofNullable(source.getObject())
+				.filter(Map.class::isInstance)
+				.map(Map.class::cast)
+				.map(map -> map.get(TOKEN_MAP_KEY))
+				.filter(String.class::isInstance)
+				.map(String.class::cast)
+				.ifPresent(objectToken -> {
+					target.setObjectToken(objectToken);
+					target.setNotificationType(getNotificationType(objectToken));
+				});
+		//@formatter:on
 	}
 
 	private NotificationType getNotificationType(final String objectToken) {

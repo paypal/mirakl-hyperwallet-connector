@@ -8,10 +8,12 @@ import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
+import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
 import com.paypal.sellers.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -25,15 +27,19 @@ public class HyperWalletCreateBusinessStakeHolderServiceStrategy
 
 	private final MailNotificationUtil mailNotificationUtil;
 
+	private final MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractService;
+
 	private static final String ERROR_MESSAGE_PREFIX = "There was an error, please check the logs for further "
 			+ "information:\n";
 
 	public HyperWalletCreateBusinessStakeHolderServiceStrategy(
 			final Converter<BusinessStakeHolderModel, HyperwalletBusinessStakeholder> businessStakeHolderModelHyperwalletBusinessStakeholderConverter,
-			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
+			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil,
+			final MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractService) {
 		this.businessStakeHolderModelHyperwalletBusinessStakeholderConverter = businessStakeHolderModelHyperwalletBusinessStakeholderConverter;
 		this.hyperwalletSDKService = hyperwalletSDKService;
 		this.mailNotificationUtil = mailNotificationUtil;
+		this.miraklBusinessStakeholderExtractService = miraklBusinessStakeholderExtractService;
 	}
 
 	/**
@@ -46,16 +52,25 @@ public class HyperWalletCreateBusinessStakeHolderServiceStrategy
 	 */
 	@Override
 	public BusinessStakeHolderModel execute(final BusinessStakeHolderModel businessStakeHolderModel) {
+
 		final HyperwalletBusinessStakeholder hyperWalletBusinessStakeHolder = businessStakeHolderModelHyperwalletBusinessStakeholderConverter
 				.convert(businessStakeHolderModel);
+
 		try {
+
 			final Hyperwallet hyperwallet = hyperwalletSDKService
 					.getHyperwalletInstanceByHyperwalletProgram(businessStakeHolderModel.getHyperwalletProgram());
+
 			final HyperwalletBusinessStakeholder hyperWalletBusinessStakeHolderResponse = hyperwallet
 					.createBusinessStakeholder(businessStakeHolderModel.getUserToken(), hyperWalletBusinessStakeHolder);
-			return businessStakeHolderModel.toBuilder().token(hyperWalletBusinessStakeHolderResponse.getToken())
-					.justCreated(true).build();
 
+			final BusinessStakeHolderModel createdBusinessStakeHolderModel = businessStakeHolderModel.toBuilder()
+					.token(hyperWalletBusinessStakeHolderResponse.getToken()).justCreated(true).build();
+
+			miraklBusinessStakeholderExtractService.updateBusinessStakeholderToken(
+					createdBusinessStakeHolderModel.getClientUserId(), List.of(createdBusinessStakeHolderModel));
+
+			return createdBusinessStakeHolderModel;
 		}
 		catch (final HyperwalletException e) {
 			log.error("Stakeholder not created for clientId [{}]", businessStakeHolderModel.getClientUserId());

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class IndividualSellerExtractJobItemTest {
+class IndividualSellersExtractJobItemTest {
 
 	private static final String CLIENT_USER_ID = "clientUserId";
 
@@ -16,7 +16,7 @@ class IndividualSellerExtractJobItemTest {
 
 		final SellerModel sellerModel = SellerModel.builder().clientUserId(CLIENT_USER_ID).build();
 
-		final IndividualSellerExtractJobItem testObj = new IndividualSellerExtractJobItem(sellerModel);
+		final IndividualSellersExtractJobItem testObj = new IndividualSellersExtractJobItem(sellerModel);
 
 		assertThat(testObj.getItemId()).isEqualTo(CLIENT_USER_ID);
 	}
@@ -26,7 +26,7 @@ class IndividualSellerExtractJobItemTest {
 
 		final SellerModel sellerModel = SellerModel.builder().clientUserId(CLIENT_USER_ID).build();
 
-		final IndividualSellerExtractJobItem testObj = new IndividualSellerExtractJobItem(sellerModel);
+		final IndividualSellersExtractJobItem testObj = new IndividualSellersExtractJobItem(sellerModel);
 
 		assertThat(testObj.getItemType()).isEqualTo(INDIVIDUAL_SELLER);
 	}

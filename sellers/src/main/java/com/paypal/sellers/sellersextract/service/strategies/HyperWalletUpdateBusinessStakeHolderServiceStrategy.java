@@ -49,12 +49,16 @@ public class HyperWalletUpdateBusinessStakeHolderServiceStrategy
 		final HyperwalletBusinessStakeholder hyperWalletBusinessStakeHolder = businessStakeHolderModelHyperwalletBusinessStakeholderConverter
 				.convert(businessStakeHolderModel);
 		try {
+
 			log.info("Updating stakeholder [{}] for user [{}]", hyperWalletBusinessStakeHolder.getToken(),
 					businessStakeHolderModel.getUserToken());
+
 			final Hyperwallet hyperwallet = hyperwalletSDKService
 					.getHyperwalletInstanceByHyperwalletProgram(businessStakeHolderModel.getHyperwalletProgram());
+
 			hyperwallet.updateBusinessStakeholder(businessStakeHolderModel.getUserToken(),
 					hyperWalletBusinessStakeHolder);
+
 			return businessStakeHolderModel;
 		}
 		catch (final HyperwalletException e) {

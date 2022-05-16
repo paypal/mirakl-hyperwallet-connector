@@ -18,7 +18,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "/webhooks")
+@RequestMapping("/webhooks")
 @Profile({ "prod" })
 public class IncomingHyperwalletNotificationWebhookController {
 

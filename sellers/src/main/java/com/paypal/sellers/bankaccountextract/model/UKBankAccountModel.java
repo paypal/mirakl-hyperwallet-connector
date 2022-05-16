@@ -23,7 +23,7 @@ public class UKBankAccountModel extends BankAccountModel {
 	@Override
 	public Builder toBuilder() {
 		//@formatter:off
-        return UKBankAccountModel.builder()
+		return UKBankAccountModel.builder()
 				.buildTransferMethodCountry(transferMethodCountry)
 				.buildTransferMethodCurrency(transferMethodCurrency)
 				.transferType(transferType)
@@ -40,8 +40,22 @@ public class UKBankAccountModel extends BankAccountModel {
 				.postalCode(postalCode)
 				.token(token)
 				.hyperwalletProgram(hyperwalletProgram)
-                .bankAccountId(bankAccountId);
-        //@formatter:on
+				.bankAccountId(bankAccountId);
+		//@formatter:on
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (super.equals(o)) {
+			final UKBankAccountModel that = (UKBankAccountModel) o;
+			return this.getBankAccountId().equals(that.getBankAccountId());
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
 	}
 
 	public static class Builder extends BankAccountModel.Builder<UKBankAccountModel.Builder> {
@@ -63,20 +77,6 @@ public class UKBankAccountModel extends BankAccountModel {
 			return new UKBankAccountModel(this);
 		}
 
-	}
-
-	@Override
-	public boolean equals(final Object o) {
-		if (super.equals(o)) {
-			final UKBankAccountModel that = (UKBankAccountModel) o;
-			return this.getBankAccountId().equals(that.getBankAccountId());
-		}
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this);
 	}
 
 }

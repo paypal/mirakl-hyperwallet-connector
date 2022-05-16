@@ -3,7 +3,7 @@ package com.paypal.sellers.sellersextract.model;
 /**
  * Holds the id of the custom fields created for stakeholders in Mirakl
  */
-public class BusinessStakeHolderConstants {
+public final class BusinessStakeHolderConstants {
 
 	private BusinessStakeHolderConstants() {
 	}

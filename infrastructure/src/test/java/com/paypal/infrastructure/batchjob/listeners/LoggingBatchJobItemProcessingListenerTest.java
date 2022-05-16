@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collection;
+
 import static org.apache.commons.lang3.ArrayUtils.EMPTY_THROWABLE_ARRAY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.lenient;
@@ -48,6 +50,9 @@ class LoggingBatchJobItemProcessingListenerTest {
 	private BatchJobItem<?> batchJobItemMock;
 
 	@Mock
+	private Collection<BatchJobItem<?>> extractedItemsMock;
+
+	@Mock
 	private Exception exceptionMock;
 
 	@BeforeEach
@@ -72,7 +77,7 @@ class LoggingBatchJobItemProcessingListenerTest {
 	@Test
 	void onItemExtractionSuccessful_ShouldLogAnInfoMessage() {
 
-		testObj.onItemExtractionSuccessful(batchJobContextMock);
+		testObj.onItemExtractionSuccessful(batchJobContextMock, extractedItemsMock);
 
 		assertThat(logTrackerStub.contains("[" + JOB_NAME
 				+ "] Retrieved the following number of items to be processed: " + NUMBER_OF_ITEMS_TO_BE_PROCESSED))
@@ -110,9 +115,10 @@ class LoggingBatchJobItemProcessingListenerTest {
 		assertThat(logTrackerStub
 				.contains("[" + JOB_NAME + "] Failed processing item of type " + ITEM_TYPE + " with id: " + ITEM_ID))
 						.isTrue();
-		assertThat(logTrackerStub.contains("[" + JOB_NAME + "] " + NUMBER_OF_ITEMS_PROCESSED + " items processed. "
-				+ NUMBER_OF_ITEMS_FAILED + " items failed. " + NUMBER_OF_ITEMS_REMAINING + " items remaining"))
-						.isTrue();
+		assertThat(logTrackerStub
+				.contains("[" + JOB_NAME + "] " + NUMBER_OF_ITEMS_PROCESSED + " items processed successfully. "
+						+ NUMBER_OF_ITEMS_FAILED + " items failed. " + NUMBER_OF_ITEMS_REMAINING + " items remaining"))
+								.isTrue();
 
 	}
 
@@ -124,9 +130,10 @@ class LoggingBatchJobItemProcessingListenerTest {
 		assertThat(logTrackerStub.contains(
 				"[" + JOB_NAME + "] Processed successfully item of type " + ITEM_TYPE + " with id: " + ITEM_ID))
 						.isTrue();
-		assertThat(logTrackerStub.contains("[" + JOB_NAME + "] " + NUMBER_OF_ITEMS_PROCESSED + " items processed. "
-				+ NUMBER_OF_ITEMS_FAILED + " items failed. " + NUMBER_OF_ITEMS_REMAINING + " items remaining"))
-						.isTrue();
+		assertThat(logTrackerStub
+				.contains("[" + JOB_NAME + "] " + NUMBER_OF_ITEMS_PROCESSED + " items processed successfully. "
+						+ NUMBER_OF_ITEMS_FAILED + " items failed. " + NUMBER_OF_ITEMS_REMAINING + " items remaining"))
+								.isTrue();
 
 	}
 

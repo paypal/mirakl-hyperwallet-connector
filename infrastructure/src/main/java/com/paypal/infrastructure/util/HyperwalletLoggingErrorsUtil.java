@@ -9,7 +9,7 @@ import org.springframework.util.CollectionUtils;
 /**
  * Util class for logging errors of {@link HyperwalletException}
  */
-public class HyperwalletLoggingErrorsUtil {
+public final class HyperwalletLoggingErrorsUtil {
 
 	private HyperwalletLoggingErrorsUtil() {
 	}

@@ -1,5 +1,6 @@
 package com.paypal.infrastructure.job.listener;
 
+import com.paypal.infrastructure.batchjob.quartz.QuartzBatchJobBean;
 import org.quartz.*;
 import org.quartz.listeners.TriggerListenerSupport;
 import org.springframework.stereotype.Service;
@@ -26,17 +27,16 @@ public class SameJobVetoingListener extends TriggerListenerSupport {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean vetoJobExecution(final Trigger trigger, final JobExecutionContext context) {
+	public boolean vetoJobExecution(final Trigger trigger, final JobExecutionContext jecToBeExecuted) {
 		try {
 			final List<JobExecutionContext> currentlyExecutingJobs = scheduler.getCurrentlyExecutingJobs();
 			// @formatter:off
 			final boolean isVetoed = currentlyExecutingJobs.stream()
-					.map(JobExecutionContext::getJobInstance)
-					.anyMatch(isSameType(context));
+					.anyMatch(isSameType(jecToBeExecuted));
 			// @formatter:on
 			if (isVetoed) {
 				getLog().warn("Vetoing job with key [{}] because job of same type {} was already running",
-						context.getJobDetail().getKey(), context.getJobInstance().getClass());
+						jecToBeExecuted.getJobDetail().getKey(), jecToBeExecuted.getJobInstance().getClass());
 				return true;
 			}
 
@@ -47,8 +47,17 @@ public class SameJobVetoingListener extends TriggerListenerSupport {
 		return false;
 	}
 
-	private static Predicate<Job> isSameType(final JobExecutionContext jec) {
-		return job -> jec.getJobInstance().getClass().equals(job.getClass());
+	private static Predicate<JobExecutionContext> isSameType(final JobExecutionContext jecToBeExecuted) {
+		return context -> getJobClass(context).equals(getJobClass(jecToBeExecuted));
+	}
+
+	private static Class<?> getJobClass(JobExecutionContext jec) {
+		if (jec.getJobInstance() instanceof QuartzBatchJobBean) {
+			return QuartzBatchJobBean.getBatchJobClass(jec);
+		}
+		else {
+			return jec.getJobInstance().getClass();
+		}
 	}
 
 }

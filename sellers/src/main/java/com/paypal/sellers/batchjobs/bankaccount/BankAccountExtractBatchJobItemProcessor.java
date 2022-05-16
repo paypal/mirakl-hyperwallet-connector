@@ -5,7 +5,6 @@ import com.paypal.infrastructure.batchjob.BatchJobItemProcessor;
 import com.paypal.infrastructure.service.TokenSynchronizationService;
 import com.paypal.sellers.bankaccountextract.service.strategies.HyperWalletBankAccountStrategyExecutor;
 import com.paypal.sellers.sellersextract.model.SellerModel;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**

@@ -16,7 +16,7 @@ import static org.springframework.http.HttpStatus.OK;
  * Rest controller for {@link NotificationEntity}.
  */
 @RestController
-@RequestMapping(value = "/webhooks")
+@RequestMapping("/webhooks")
 public class NotificationsController {
 
 	@Resource

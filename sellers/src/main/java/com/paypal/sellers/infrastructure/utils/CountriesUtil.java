@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Utility class for helping with countries manipulation
  */
-public class CountriesUtil {
+public final class CountriesUtil {
 
 	private static final Map<String, Locale> localeMap;
 

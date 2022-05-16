@@ -1,6 +1,6 @@
 package com.paypal.invoices.invoicesextract.model;
 
-public class InvoiceModelConstants {
+public final class InvoiceModelConstants {
 
 	private InvoiceModelConstants() {
 	}

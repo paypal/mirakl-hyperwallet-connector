@@ -20,7 +20,7 @@ import java.util.TimeZone;
  * Utility class to handle dates
  */
 @Slf4j
-public class DateUtil {
+public final class DateUtil {
 
 	public static final TimeZone TIME_UTC = TimeZone.getTimeZone("UTC");
 

@@ -1,18 +1,18 @@
 package com.paypal.sellers.batchjobs.bstk;
 
 import com.paypal.infrastructure.batchjob.BatchJobContext;
+import com.paypal.infrastructure.service.TokenSynchronizationService;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
-import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
 import com.paypal.sellers.sellersextract.service.strategies.HyperWalletBusinessStakeHolderStrategyExecutor;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class BusinessStakeholdersExtractBatchJobItemProcessorTest {
@@ -26,44 +26,27 @@ class BusinessStakeholdersExtractBatchJobItemProcessorTest {
 	private HyperWalletBusinessStakeHolderStrategyExecutor hyperWalletBusinessStakeHolderStrategyExecutorMock;
 
 	@Mock
-	private MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractServiceMock;
+	private TokenSynchronizationService<BusinessStakeHolderModel> businessStakeholderTokenSynchronizationServiceImplMock;
 
 	@Mock
 	private BatchJobContext batchJobContextMock;
 
 	@Test
-	void processItem_ShouldProcessBusinessStakeHolderAndUpdateIt_WhenBusinessStakeHolderIsNotNull() {
+	void processItem_ShouldSynchronizedBusinessStakeHolderTokenAndExecuteIt() {
 
 		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder()
 				.clientUserId(CLIENT_USER_ID).build();
 		final BusinessStakeholderExtractJobItem businessStakeholderExtractJobItem = new BusinessStakeholderExtractJobItem(
 				businessStakeHolderModel);
-
-		when(hyperWalletBusinessStakeHolderStrategyExecutorMock.execute(businessStakeHolderModel))
-				.thenReturn(businessStakeHolderModel);
-
-		testObj.processItem(batchJobContextMock, businessStakeholderExtractJobItem);
-
-		verify(hyperWalletBusinessStakeHolderStrategyExecutorMock).execute(businessStakeHolderModel);
-		verify(miraklBusinessStakeholderExtractServiceMock).updateBusinessStakeholderToken(CLIENT_USER_ID,
-				List.of(businessStakeHolderModel));
-	}
-
-	@Test
-	void processItem_ShouldProcessBusinessStakeHolderAndNotUpdateIt_WhenBusinessStakeHolderIsNull() {
-
-		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder()
+		final BusinessStakeHolderModel synchronizedBusinessStakeHolderModel = BusinessStakeHolderModel.builder()
 				.clientUserId(CLIENT_USER_ID).build();
-		final BusinessStakeholderExtractJobItem businessStakeholderExtractJobItem = new BusinessStakeholderExtractJobItem(
-				businessStakeHolderModel);
 
-		when(hyperWalletBusinessStakeHolderStrategyExecutorMock.execute(businessStakeHolderModel)).thenReturn(null);
+		when(businessStakeholderTokenSynchronizationServiceImplMock.synchronizeToken(businessStakeHolderModel))
+				.thenReturn(synchronizedBusinessStakeHolderModel);
 
 		testObj.processItem(batchJobContextMock, businessStakeholderExtractJobItem);
 
-		verify(hyperWalletBusinessStakeHolderStrategyExecutorMock).execute(businessStakeHolderModel);
-		verify(miraklBusinessStakeholderExtractServiceMock, never()).updateBusinessStakeholderToken(CLIENT_USER_ID,
-				List.of(businessStakeHolderModel));
+		verify(hyperWalletBusinessStakeHolderStrategyExecutorMock).execute(synchronizedBusinessStakeHolderModel);
 	}
 
 }

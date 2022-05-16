@@ -25,7 +25,7 @@ public class CanadianBankAccountModel extends BankAccountModel {
 	@Override
 	public Builder toBuilder() {
 		//@formatter:off
-        return CanadianBankAccountModel.builder()
+		return CanadianBankAccountModel.builder()
 				.buildTransferMethodCountry(transferMethodCountry)
 				.buildTransferMethodCurrency(transferMethodCurrency)
 				.transferType(transferType)
@@ -42,9 +42,9 @@ public class CanadianBankAccountModel extends BankAccountModel {
 				.postalCode(postalCode)
 				.token(token)
 				.hyperwalletProgram(hyperwalletProgram)
-                .bankId(bankId)
-                .branchId(branchId);
-        //@formatter:on
+				.bankId(bankId)
+				.branchId(branchId);
+		//@formatter:on
 	}
 
 	public static class Builder extends BankAccountModel.Builder<CanadianBankAccountModel.Builder> {
