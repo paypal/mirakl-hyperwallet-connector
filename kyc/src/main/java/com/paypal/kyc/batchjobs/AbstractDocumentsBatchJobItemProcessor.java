@@ -54,12 +54,12 @@ public abstract class AbstractDocumentsBatchJobItemProcessor<T extends BatchJobI
 	protected <R extends KYCDocumentInfoModel> void cleanUpDocumentsFiles(final R successFullPushedDocument) {
 		log.info("Cleaning up files from disk...");
 		//@formatter:off
-        successFullPushedDocument.getDocuments().stream()
-                .map(KYCDocumentModel::getFile)
-                .filter(Objects::nonNull)
-                .peek(file -> log.info("File selected to be deleted [{}]", file.getAbsolutePath()))
-                .forEach(File::delete);
-        //@formatter:on
+		successFullPushedDocument.getDocuments().stream()
+				.map(KYCDocumentModel::getFile)
+				.filter(Objects::nonNull)
+				.peek(file -> log.info("File selected to be deleted [{}]", file.getAbsolutePath()))
+				.forEach(File::delete);
+		//@formatter:on
 		log.info("Cleaning up done successfully!");
 	}
 

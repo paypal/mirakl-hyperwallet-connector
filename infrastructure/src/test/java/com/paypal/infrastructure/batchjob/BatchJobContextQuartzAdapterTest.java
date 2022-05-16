@@ -1,19 +1,22 @@
 package com.paypal.infrastructure.batchjob;
 
+import com.paypal.infrastructure.batchjob.quartz.BatchJobContextQuartzAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
+import org.quartz.JobKey;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class BatchJobContextTest {
+class BatchJobContextQuartzAdapterTest {
 
 	private static final String KEY_BATCH_JOB_STATUS = "batchJobStatus";
 
@@ -23,13 +26,15 @@ class BatchJobContextTest {
 
 	private static final String KEY_NUMBER_OF_ITEMS_TO_BE_PROCESSED = "numberOfItemsToBeProcessed";
 
+	private static final String JOB_NAME = "JOB_NAME";
+
 	public static final int NUMBER_OF_ITEMS_PROCESSED = 22;
 
 	public static final int NUMBER_OF_ITEMS_FAILED = 2;
 
 	public static final int NUMBER_OF_ITEMS_TO_BE_PROCESSED = 24;
 
-	private BatchJobContext testObj;
+	private BatchJobContextQuartzAdapter testObj;
 
 	@Mock
 	private JobExecutionContext jobExecutionContextMock;
@@ -39,6 +44,9 @@ class BatchJobContextTest {
 
 	@Mock
 	private JobDataMap jobDataMapMock;
+
+	@Mock
+	private JobKey jobKeyMock;
 
 	@BeforeEach
 	public void setUp() {
@@ -51,8 +59,10 @@ class BatchJobContextTest {
 		lenient().when(jobDataMapMock.get(KEY_NUMBER_OF_ITEMS_FAILED)).thenReturn(NUMBER_OF_ITEMS_FAILED);
 		lenient().when(jobDataMapMock.get(KEY_NUMBER_OF_ITEMS_TO_BE_PROCESSED))
 				.thenReturn(NUMBER_OF_ITEMS_TO_BE_PROCESSED);
+		lenient().when((jobDetailMock.getKey())).thenReturn(jobKeyMock);
+		lenient().when((jobKeyMock.getName())).thenReturn(JOB_NAME);
 
-		testObj = new BatchJobContext(jobExecutionContextMock);
+		testObj = new BatchJobContextQuartzAdapter(jobExecutionContextMock);
 	}
 
 	@Test
@@ -60,7 +70,7 @@ class BatchJobContextTest {
 
 		final String result = testObj.getJobName();
 
-		assertThat(result).isEqualTo(BatchJobContext.class.getSimpleName());
+		assertThat(result).isEqualTo(JOB_NAME);
 	}
 
 	@Test

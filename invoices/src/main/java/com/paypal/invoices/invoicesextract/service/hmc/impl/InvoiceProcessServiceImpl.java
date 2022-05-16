@@ -1,6 +1,5 @@
 package com.paypal.invoices.invoicesextract.service.hmc.impl;
 
-import com.hyperwallet.clientsdk.model.HyperwalletPayment;
 import com.paypal.invoices.infraestructure.configuration.InvoicesOperatorCommissionsConfig;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 import com.paypal.invoices.invoicesextract.service.hmc.InvoiceProcessService;
@@ -24,6 +23,7 @@ public class InvoiceProcessServiceImpl extends AbstractInvoiceProcessService {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void payOperator(final InvoiceModel invoice) {
 		if (invoicesOperatorCommissionsConfig.isEnabled()) {
 			super.hyperWalletPaymentExtractService.payInvoiceOperator(invoice);

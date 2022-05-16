@@ -1,5 +1,7 @@
 package com.paypal.infrastructure.batchjob;
 
+import java.util.Collection;
+
 /**
  * Provides handlers that will be triggered during job execution.
  *
@@ -17,8 +19,9 @@ public interface BatchJobProcessingListener<C extends BatchJobContext, T extends
 	/**
 	 * Handler on successful item extraction.
 	 * @param ctx the job context.
+	 * @param extractedItems the items extracted.
 	 */
-	void onItemExtractionSuccessful(C ctx);
+	void onItemExtractionSuccessful(C ctx, Collection<T> extractedItems);
 
 	/**
 	 * Handler on item extraction failure.

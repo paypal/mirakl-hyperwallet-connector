@@ -1,7 +1,6 @@
 package com.paypal.kyc.service.documents.files.mirakl;
 
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 
 import java.util.List;
@@ -13,8 +12,7 @@ public interface MiraklDocumentsExtractService {
 
 	/**
 	 * Deletes all Mirakl documents from the seller
-	 * @param successFullPushedListOfDocuments
-	 * {@link List<KYCDocumentBusinessStakeHolderInfoModel>}
+	 * @param successFullPushedListOfDocuments {@link List<KYCDocumentInfoModel>}
 	 */
 	void deleteAllDocumentsFromSeller(List<KYCDocumentInfoModel> successFullPushedListOfDocuments);
 

@@ -10,9 +10,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
     implementation 'com.googlecode.jmapper-framework:jmapper-core:1.6.1.CR2'
+    implementation "org.mapstruct:mapstruct:1.4.2.Final"
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
     compileOnly 'org.projectlombok:lombok'
 
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'

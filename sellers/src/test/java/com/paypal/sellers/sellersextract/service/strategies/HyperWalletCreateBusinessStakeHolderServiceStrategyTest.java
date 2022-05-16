@@ -7,12 +7,15 @@ import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
+import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
 import com.paypal.sellers.service.HyperwalletSDKService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -47,6 +50,9 @@ class HyperWalletCreateBusinessStakeHolderServiceStrategyTest {
 	@Mock
 	private BusinessStakeHolderModel.BusinessStakeHolderModelBuilder businessStakeHolderBuilderMock;
 
+	@Mock
+	private MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractServiceMock;
+
 	private static final String CLIENT_ID = "clientID";
 
 	private static final String TOKEN = "token";
@@ -69,12 +75,16 @@ class HyperWalletCreateBusinessStakeHolderServiceStrategyTest {
 				.thenReturn(businessStakeHolderBuilderMock);
 		when(businessStakeHolderBuilderMock.justCreated(true)).thenReturn(businessStakeHolderBuilderMock);
 		when(businessStakeHolderBuilderMock.build()).thenReturn(businessStakeHolderResponseMock);
+		when(businessStakeHolderResponseMock.getClientUserId()).thenReturn(CLIENT_ID);
 		when(businessStakeHolderMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 
 		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletClientMock);
 
 		final BusinessStakeHolderModel result = testObj.execute(businessStakeHolderMock);
+
+		verify(miraklBusinessStakeholderExtractServiceMock).updateBusinessStakeholderToken(CLIENT_ID,
+				List.of(businessStakeHolderResponseMock));
 
 		assertThat(result).isEqualTo(businessStakeHolderResponseMock);
 	}

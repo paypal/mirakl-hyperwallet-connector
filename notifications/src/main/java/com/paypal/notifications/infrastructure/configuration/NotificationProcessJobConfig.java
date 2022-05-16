@@ -23,11 +23,11 @@ public class NotificationProcessJobConfig {
 	@Bean
 	public JobDetail notificationProcessJob() {
 		//@formatter:off
-        return JobBuilder.newJob(NotificationProcessJob.class)
-                .withIdentity(JOB_NAME)
-                .storeDurably()
-                .build();
-        //@formatter:on
+		return JobBuilder.newJob(NotificationProcessJob.class)
+				.withIdentity(JOB_NAME)
+				.storeDurably()
+				.build();
+		//@formatter:on
 	}
 
 	/**
@@ -41,12 +41,12 @@ public class NotificationProcessJobConfig {
 	public Trigger notificationProcessTrigger(@Qualifier("notificationProcessJob") final JobDetail jobDetails,
 			@Value("${notifications.retryfailed.scheduling.cronexpression}") final String cronExpression) {
 		//@formatter:off
-        return TriggerBuilder.newTrigger()
-                .forJob(jobDetails)
-                .withIdentity(TRIGGER_SUFFIX + JOB_NAME)
-                .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
-                .build();
-        //@formatter:on
+		return TriggerBuilder.newTrigger()
+				.forJob(jobDetails)
+				.withIdentity(TRIGGER_SUFFIX + JOB_NAME)
+				.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
+				.build();
+		//@formatter:on
 	}
 
 }

@@ -6,9 +6,11 @@ import com.paypal.sellers.sellersextract.model.SellerModel;
 /**
  * Class that holds the needed information for batch processing {@link SellerModel}
  */
-public class IndividualSellerExtractJobItem extends AbstractBatchJobItem<SellerModel> {
+public class IndividualSellersExtractJobItem extends AbstractBatchJobItem<SellerModel> {
 
-	public IndividualSellerExtractJobItem(SellerModel item) {
+	public static final String ITEM_TYPE = "IndividualSeller";
+
+	public IndividualSellersExtractJobItem(SellerModel item) {
 		super(item);
 	}
 
@@ -28,7 +30,7 @@ public class IndividualSellerExtractJobItem extends AbstractBatchJobItem<SellerM
 	 */
 	@Override
 	public String getItemType() {
-		return "IndividualSeller";
+		return ITEM_TYPE;
 	}
 
 }

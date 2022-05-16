@@ -25,13 +25,13 @@ public class BusinessStakeholderExtractServiceImpl implements BusinessStakeholde
 	public List<BusinessStakeHolderModel> extractBusinessStakeHolders(
 			final List<SellerModel> professionalSellerModels) {
 		//@formatter:off
-        return professionalSellerModels
-                .stream()
-                .map(SellerModel::getBusinessStakeHolderDetails)
-                .flatMap(Collection::stream)
-                .filter(Predicate.not(BusinessStakeHolderModel::isEmpty))
-                .collect(Collectors.toList());
-        //@formatter:on
+		return professionalSellerModels
+				.stream()
+				.map(SellerModel::getBusinessStakeHolderDetails)
+				.flatMap(Collection::stream)
+				.filter(Predicate.not(BusinessStakeHolderModel::isEmpty))
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 }

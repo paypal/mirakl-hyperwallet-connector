@@ -1,15 +1,21 @@
 package com.paypal.infrastructure.batchjob;
 
+import com.paypal.infrastructure.batchjob.entities.BatchJobItemTrackInfoEntity;
+import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.TimeMachine;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.InjectMocks;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,6 +27,8 @@ class BatchJobFailedItemServiceImplTest {
 
 	private static final String ID_001 = "001";
 
+	private static final String ID_002 = "002";
+
 	private static final String SELLER_TYPE = "SELLER";
 
 	private static final int INITIAL_NUMBER_OF_RETRIES = 3;
@@ -31,8 +39,30 @@ class BatchJobFailedItemServiceImplTest {
 	@Mock
 	private BatchJobFailedItemRepository batchJobFailedItemRepositoryMock;
 
+	@Mock
+	private BatchJobTrackingService batchJobTrackingServiceMock;
+
+	@Mock
+	private BatchJobFailedItemRetryPolicy batchJobFailedItemRetryPolicyMock;
+
+	@Mock
+	private MailNotificationUtil mailNotificationUtilMock;
+
 	@Captor
 	private ArgumentCaptor<BatchJobFailedItem> batchJobFailedItemArgumentCaptor;
+
+	@Mock
+	private BatchJobFailedItem batchJobFailedItem1Mock, batchJobFailedItem2Mock;
+
+	@Mock
+	private BatchJobItemTrackInfoEntity batchJobItemTrackInfoEntity1Mock;
+
+	@BeforeEach
+	void setUp() {
+
+		testObj = new BatchJobFailedItemServiceImpl(batchJobFailedItemRepositoryMock, batchJobTrackingServiceMock,
+				List.of(batchJobFailedItemRetryPolicyMock), mailNotificationUtilMock);
+	}
 
 	@Test
 	void itemFailed_ShouldCreateAndSaveAnewFailedItem_WhenBatchJobItemIsNotFound() {
@@ -81,6 +111,67 @@ class BatchJobFailedItemServiceImplTest {
 	}
 
 	@Test
+	void itemFailed_ShouldChangeItemStatusToExhaustedAndSendEmail_WhenBatchJobItemNumberOfRetriesIsGreaterOrEqualsThanFive() {
+
+		final MySellerBatchJobItem sellerBatchJobItem = new MySellerBatchJobItem(new Object());
+		final BatchJobFailedItemId seller = new BatchJobFailedItemId(ID_001, SELLER_TYPE);
+		when(batchJobFailedItemRepositoryMock.findById(seller)).thenReturn(Optional.of(batchJobFailedItem1Mock));
+
+		when(batchJobFailedItem1Mock.getStatus()).thenReturn(BatchJobFailedItemStatus.RETRY_PENDING);
+		when(batchJobFailedItem1Mock.getNumberOfRetries()).thenReturn(5);
+		when(batchJobFailedItem1Mock.getId()).thenReturn(ID_001);
+
+		testObj.saveItemFailed(sellerBatchJobItem);
+
+		verify(batchJobFailedItem1Mock).setStatus(BatchJobFailedItemStatus.RETRIES_EXHAUSTED);
+
+		verify(mailNotificationUtilMock).sendPlainTextEmail(
+				"Max retry attempts reached when processing item [" + ID_001 + "]",
+				"Max retry attempts reached when processing item [" + ID_001
+						+ "], the item won't be processed anymore");
+	}
+
+	@Test
+	void itemFailed_ShouldNotChangeItemStatusToExhaustedAndNotSendEmail_WhenBatchJobItemNumberOfRetriesIsLessThanFive() {
+
+		final MySellerBatchJobItem sellerBatchJobItem = new MySellerBatchJobItem(new Object());
+		final BatchJobFailedItemId seller = new BatchJobFailedItemId(ID_001, SELLER_TYPE);
+		when(batchJobFailedItemRepositoryMock.findById(seller)).thenReturn(Optional.of(batchJobFailedItem1Mock));
+
+		when(batchJobFailedItem1Mock.getStatus()).thenReturn(BatchJobFailedItemStatus.RETRY_PENDING);
+		when(batchJobFailedItem1Mock.getNumberOfRetries()).thenReturn(4);
+
+		testObj.saveItemFailed(sellerBatchJobItem);
+
+		verify(batchJobFailedItem1Mock, never()).setStatus(BatchJobFailedItemStatus.RETRIES_EXHAUSTED);
+
+		verify(mailNotificationUtilMock, never()).sendPlainTextEmail(
+				"Max retry attempts reached when processing item [" + ID_001 + "]",
+				"Max retry attempts reached when processing item [" + ID_001
+						+ "], the item won't be processed anymore");
+	}
+
+	@Test
+	void itemFailed_ShouldNotChangeItemStatusToExhaustedAndNotSendEmail_WhenBatchJobItemNumberOfRetriesIsGreaterOrEqualsThanFiveAndStatusIsRetriesExhausted() {
+
+		final MySellerBatchJobItem sellerBatchJobItem = new MySellerBatchJobItem(new Object());
+		final BatchJobFailedItemId seller = new BatchJobFailedItemId(ID_001, SELLER_TYPE);
+		when(batchJobFailedItemRepositoryMock.findById(seller)).thenReturn(Optional.of(batchJobFailedItem1Mock));
+
+		when(batchJobFailedItem1Mock.getStatus()).thenReturn(BatchJobFailedItemStatus.RETRIES_EXHAUSTED);
+		when(batchJobFailedItem1Mock.getNumberOfRetries()).thenReturn(5);
+
+		testObj.saveItemFailed(sellerBatchJobItem);
+
+		verify(batchJobFailedItem1Mock, never()).setStatus(BatchJobFailedItemStatus.RETRIES_EXHAUSTED);
+
+		verify(mailNotificationUtilMock, never()).sendPlainTextEmail(
+				"Max retry attempts reached when processing item [" + ID_001 + "]",
+				"Max retry attempts reached when processing item [" + ID_001
+						+ "], the item won't be processed anymore");
+	}
+
+	@Test
 	void itemProcessed_ShouldShouldRemoveTheFailedItem_WhenFailedItemIsFound() {
 
 		final MySellerBatchJobItem sellerBatchJobItem = new MySellerBatchJobItem(new Object());
@@ -109,10 +200,34 @@ class BatchJobFailedItemServiceImplTest {
 	}
 
 	@Test
-	void getFailedItemsForRetry() {
+	void getFailedItemsForRetry_ShouldReturnBatchJobFailedItemThatAreNotBeingProcessed() {
 
-		// TODO: Retrieve failed items applying retry policies
-		assertThat(testObj.getFailedItemsForRetry(SELLER_TYPE)).isEmpty();
+		when(batchJobFailedItem1Mock.getId()).thenReturn(ID_001);
+		when(batchJobFailedItem2Mock.getId()).thenReturn(ID_002);
+
+		when(batchJobFailedItemRetryPolicyMock.shouldRetryFailedItem(batchJobFailedItem2Mock)).thenReturn(true);
+
+		when(batchJobFailedItemRepositoryMock.findByTypeAndStatus(SELLER_TYPE, BatchJobFailedItemStatus.RETRY_PENDING))
+				.thenReturn(List.of(batchJobFailedItem1Mock, batchJobFailedItem2Mock));
+
+		when(batchJobItemTrackInfoEntity1Mock.getItemId()).thenReturn(ID_001);
+
+		when(batchJobTrackingServiceMock.getItemsBeingProcessedOrEnquedToProcess(SELLER_TYPE))
+				.thenReturn(List.of(batchJobItemTrackInfoEntity1Mock));
+
+		final List<BatchJobFailedItem> result = testObj.getFailedItemsForRetry(SELLER_TYPE);
+
+		assertThat(result.stream().map(BatchJobFailedItem::getId)).containsExactly(ID_002);
+	}
+
+	@Test
+	void getFailedItems_ShouldReturnAllFailedItemsOfAType() {
+		List<BatchJobFailedItem> batchJobFailedItems = List.of(batchJobFailedItem1Mock, batchJobFailedItem2Mock);
+		when(batchJobFailedItemRepositoryMock.findByType("type1")).thenReturn(batchJobFailedItems);
+
+		List<BatchJobFailedItem> result = testObj.getFailedItems("type1");
+
+		assertThat(result).containsAll(batchJobFailedItems);
 	}
 
 	private static class MySellerBatchJobItem extends AbstractBatchJobItem<Object> {

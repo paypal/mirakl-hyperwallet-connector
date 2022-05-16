@@ -1,6 +1,5 @@
 package com.paypal.invoices.invoicesextract.service.hmc.impl;
 
-import com.hyperwallet.clientsdk.model.HyperwalletPayment;
 import com.paypal.invoices.infraestructure.testing.TestingInvoicesSessionDataHelper;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 import com.paypal.invoices.invoicesextract.service.hmc.InvoiceProcessService;
@@ -26,6 +25,7 @@ public class InvoiceProcessServiceMock extends AbstractInvoiceProcessService {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void payOperator(InvoiceModel invoice) {
 
 		if (testingInvoicesSessionDataHelper.isOperatorCommissionsEnabled()) {

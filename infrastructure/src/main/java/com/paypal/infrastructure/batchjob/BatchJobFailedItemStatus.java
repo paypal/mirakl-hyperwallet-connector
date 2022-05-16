@@ -5,6 +5,6 @@ package com.paypal.infrastructure.batchjob;
  */
 public enum BatchJobFailedItemStatus {
 
-	PENDING, ABORTED
+	RETRY_PENDING, RETRIES_EXHAUSTED
 
 }

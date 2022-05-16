@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
  * HyperWallet.
  */
 @Service
-public class CreditNotesExtractBatchJob extends AbstractBatchJob<BatchJobContext, CreditNoteExtractJobItem>
-		implements BatchJob {
+public class CreditNotesExtractBatchJob extends AbstractBatchJob<BatchJobContext, CreditNoteExtractJobItem> {
 
 	private final CreditNotesExtractBatchJobItemsExtractor creditNotesExtractBatchJobItemsExtractor;
 

@@ -5,6 +5,8 @@ import com.paypal.infrastructure.batchjob.BatchJobItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+
 /**
  * Logging batch job item processing listener.
  */
@@ -25,7 +27,7 @@ public class LoggingBatchJobItemProcessingListener
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onItemExtractionSuccessful(BatchJobContext ctx) {
+	public void onItemExtractionSuccessful(BatchJobContext ctx, Collection<BatchJobItem<?>> extractedItems) {
 		log.info("[{}] Retrieved the following number of items to be processed: {}", ctx.getJobName(),
 				ctx.getNumberOfItemsToBeProcessed());
 	}
@@ -67,7 +69,7 @@ public class LoggingBatchJobItemProcessingListener
 	}
 
 	private void logBatchProgress(BatchJobContext ctx) {
-		log.info("[{}] {} items processed. {} items failed. {} items remaining", ctx.getJobName(),
+		log.info("[{}] {} items processed successfully. {} items failed. {} items remaining", ctx.getJobName(),
 				ctx.getNumberOfItemsProcessed(), ctx.getNumberOfItemsFailed(), ctx.getNumberOfItemsRemaining());
 	}
 

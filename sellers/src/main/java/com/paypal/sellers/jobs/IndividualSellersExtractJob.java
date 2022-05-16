@@ -1,5 +1,7 @@
 package com.paypal.sellers.jobs;
 
+import com.paypal.infrastructure.batchjob.quartz.AbstractBatchJobSupportQuartzJob;
+import com.paypal.infrastructure.batchjob.quartz.QuartzBatchJobAdapterFactory;
 import com.paypal.sellers.batchjobs.individuals.IndividualSellersExtractBatchJob;
 import org.quartz.*;
 
@@ -8,11 +10,13 @@ import org.quartz.*;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class IndividualSellersExtractJob implements Job {
+public class IndividualSellersExtractJob extends AbstractBatchJobSupportQuartzJob implements Job {
 
 	private final IndividualSellersExtractBatchJob individualSellersExtractBatchJob;
 
-	public IndividualSellersExtractJob(final IndividualSellersExtractBatchJob individualSellersExtractBatchJob) {
+	public IndividualSellersExtractJob(final QuartzBatchJobAdapterFactory quartzBatchJobAdapterFactory,
+			final IndividualSellersExtractBatchJob individualSellersExtractBatchJob) {
+		super(quartzBatchJobAdapterFactory);
 		this.individualSellersExtractBatchJob = individualSellersExtractBatchJob;
 	}
 
@@ -21,7 +25,7 @@ public class IndividualSellersExtractJob implements Job {
 	 */
 	@Override
 	public void execute(final JobExecutionContext context) throws JobExecutionException {
-		individualSellersExtractBatchJob.execute(context);
+		executeBatchJob(individualSellersExtractBatchJob, context);
 	}
 
 }

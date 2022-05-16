@@ -2,12 +2,10 @@ package com.paypal.sellers.batchjobs.bstk;
 
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.infrastructure.batchjob.BatchJobItemProcessor;
+import com.paypal.infrastructure.service.TokenSynchronizationService;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
-import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
 import com.paypal.sellers.sellersextract.service.strategies.HyperWalletBusinessStakeHolderStrategyExecutor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Business stakeholders extract batch job item processor for creating the users in HW.
@@ -18,13 +16,13 @@ public class BusinessStakeholdersExtractBatchJobItemProcessor
 
 	private final HyperWalletBusinessStakeHolderStrategyExecutor hyperWalletBusinessStakeHolderStrategyExecutor;
 
-	private final MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractService;
+	private final TokenSynchronizationService<BusinessStakeHolderModel> businessStakeholderTokenSynchronizationService;
 
 	public BusinessStakeholdersExtractBatchJobItemProcessor(
 			final HyperWalletBusinessStakeHolderStrategyExecutor hyperWalletBusinessStakeHolderStrategyExecutor,
-			final MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractService) {
+			final TokenSynchronizationService<BusinessStakeHolderModel> businessStakeholderTokenSynchronizationService) {
 		this.hyperWalletBusinessStakeHolderStrategyExecutor = hyperWalletBusinessStakeHolderStrategyExecutor;
-		this.miraklBusinessStakeholderExtractService = miraklBusinessStakeholderExtractService;
+		this.businessStakeholderTokenSynchronizationService = businessStakeholderTokenSynchronizationService;
 	}
 
 	/**
@@ -36,12 +34,11 @@ public class BusinessStakeholdersExtractBatchJobItemProcessor
 	 */
 	@Override
 	public void processItem(final BatchJobContext ctx, final BusinessStakeholderExtractJobItem jobItem) {
-		final BusinessStakeHolderModel businessStakeHolderModel = hyperWalletBusinessStakeHolderStrategyExecutor
-				.execute(jobItem.getItem());
-		if (businessStakeHolderModel != null) {
-			miraklBusinessStakeholderExtractService.updateBusinessStakeholderToken(
-					businessStakeHolderModel.getClientUserId(), List.of(businessStakeHolderModel));
-		}
+
+		final BusinessStakeHolderModel synchronizedBusinessStakeHolderModel = businessStakeholderTokenSynchronizationService
+				.synchronizeToken(jobItem.getItem());
+
+		hyperWalletBusinessStakeHolderStrategyExecutor.execute(synchronizedBusinessStakeHolderModel);
 	}
 
 }

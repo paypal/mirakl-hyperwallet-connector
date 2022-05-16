@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
  * Mirakl and uploads the documents to Hyperwallet
  */
 @Service
-public class BusinessStakeholdersDocumentsExtractBatchJob extends
-		AbstractBatchJob<BatchJobContext, BusinessStakeholdersDocumentsExtractBatchJobItem> implements BatchJob {
+public class BusinessStakeholdersDocumentsExtractBatchJob
+		extends AbstractBatchJob<BatchJobContext, BusinessStakeholdersDocumentsExtractBatchJobItem> {
 
 	private final BusinessStakeholdersDocumentsExtractBatchJobItemProcessor businessStakeholdersDocumentsExtractBatchJobItemProcessor;
 

@@ -34,9 +34,9 @@ class IndividualSellersExtractBatchJobItemsExtractorTest {
 
 		when(miraklSellersExtractServiceMock.extractIndividuals(DELTA)).thenReturn(List.of(sellerModel1, sellerModel2));
 
-		final Collection<IndividualSellerExtractJobItem> individualSellerExtractJobItems = testObj.getItems(DELTA);
+		final Collection<IndividualSellersExtractJobItem> individualSellersExtractJobItems = testObj.getItems(DELTA);
 
-		assertThat(individualSellerExtractJobItems.stream().map(IndividualSellerExtractJobItem::getItem))
+		assertThat(individualSellersExtractJobItems.stream().map(IndividualSellersExtractJobItem::getItem))
 				.containsExactly(sellerModel1, sellerModel2);
 	}
 

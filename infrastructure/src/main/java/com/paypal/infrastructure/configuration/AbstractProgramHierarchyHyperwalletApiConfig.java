@@ -35,7 +35,8 @@ public abstract class AbstractProgramHierarchyHyperwalletApiConfig extends Abstr
 						.map(tokenKeyAndTokenKeyPrefix -> Pair.of(tokenKeyAndTokenKeyPrefix.getLeft(),
 								environment.getProperty(tokenKeyAndTokenKeyPrefix.getRight())))
 						.collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
-			} catch (NullPointerException ex) {
+			}
+			catch (NullPointerException ex) {
 				throw new InvalidConfigurationException("Property files configuration error. Check hyperwallet program tokens configuration. Are all parameters defined for: '" + hyperwalletProgramPrefix + "*'?");
 			}
 			//@formatter:on

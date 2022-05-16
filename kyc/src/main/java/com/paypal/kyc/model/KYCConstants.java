@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Defines constants needed and defined base on custom parameters in Mirakl
  */
-public class KYCConstants {
+public final class KYCConstants {
 
 	private KYCConstants() {
 	}

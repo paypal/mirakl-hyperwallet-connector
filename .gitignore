@@ -6,6 +6,8 @@ build/
 !**/src/test/**/build/
 **/pipeline.gdsl
 
+**/src/main/generated
+
 ### STS ###
 .apt_generated
 .classpath
