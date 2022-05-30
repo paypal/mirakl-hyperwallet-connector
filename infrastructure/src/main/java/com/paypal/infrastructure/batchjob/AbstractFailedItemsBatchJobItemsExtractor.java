@@ -2,7 +2,6 @@ package com.paypal.infrastructure.batchjob;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Base class for failed items extraction.
@@ -28,10 +27,13 @@ public abstract class AbstractFailedItemsBatchJobItemsExtractor<C extends BatchJ
 	 */
 	@Override
 	public Collection<T> getItems(final C ctx) {
-		return getItems(batchJobFailedItemService.getFailedItemsForRetry(itemType).stream()
-				.map(BatchJobFailedItem::getId).collect(Collectors.toList()));
+		return getBatchJobFailedItems(batchJobFailedItemService.getFailedItemsForRetry(itemType));
 	}
 
-	protected abstract Collection<T> getItems(List<String> ids);
+	protected abstract Collection<T> getBatchJobFailedItems(List<BatchJobFailedItem> batchJobFailedItems);
+
+	public String getItemType() {
+		return itemType;
+	}
 
 }

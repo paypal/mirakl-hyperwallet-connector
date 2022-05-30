@@ -9,15 +9,8 @@ import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceTypeEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.annotation.Profile;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -36,31 +29,14 @@ public class MiraklInvoicesExtractServiceImpl extends AbstractAccountingDocument
 		this.miraklInvoiceToInvoiceModelConverter = miraklInvoiceToInvoiceModelConverter;
 	}
 
-	@NonNull
-	protected List<InvoiceModel> associateBillingDocumentsWithTokens(final List<InvoiceModel> invoices,
-			final Map<String, Pair<String, String>> mapShopDestinationToken) {
-
-		final List<InvoiceModel> filteredInvoices = filterOnlyMappableDocuments(invoices,
-				mapShopDestinationToken.keySet());
-		//@formatter:off
-		return filteredInvoices.stream()
-				.map(invoiceModel -> invoiceModel.toBuilder()
-						.destinationToken(mapShopDestinationToken.get(invoiceModel.getShopId()).getLeft())
-						.hyperwalletProgram(mapShopDestinationToken.get(invoiceModel.getShopId()).getRight())
-						.build())
-				.collect(Collectors.toList());
-		//@formatter:on
+	@Override
+	protected InvoiceTypeEnum getInvoiceType() {
+		return InvoiceTypeEnum.AUTO_INVOICE;
 	}
 
 	@Override
-	protected List<InvoiceModel> getAccountingDocuments(final Date delta) {
-		final List<HMCMiraklInvoice> invoices = getInvoicesForDateAndType(delta, InvoiceTypeEnum.AUTO_INVOICE);
-
-		//@formatter:off
-		return invoices.stream()
-				.map(miraklInvoiceToInvoiceModelConverter::convert)
-				.collect(Collectors.toList());
-		//@formatter:on
+	protected Converter<HMCMiraklInvoice, InvoiceModel> getMiraklInvoiceToAccountingModelConverter() {
+		return miraklInvoiceToInvoiceModelConverter;
 	}
 
 }

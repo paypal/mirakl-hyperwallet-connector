@@ -2,12 +2,13 @@ package com.paypal.sellers.batchjobs.bankaccount;
 
 import com.paypal.infrastructure.batchjob.AbstractBatchJobItem;
 import com.paypal.sellers.sellersextract.model.SellerModel;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Class that holds the needed information for processing a bank account job.
  */
 public class BankAccountExtractJobItem extends AbstractBatchJobItem<SellerModel> {
+
+	public static final String ITEM_TYPE = "BankAccount";
 
 	protected static final String BATCH_JOB_ITEM_EMPTY_ID = "empty";
 
@@ -22,17 +23,7 @@ public class BankAccountExtractJobItem extends AbstractBatchJobItem<SellerModel>
 	@Override
 	public String getItemId() {
 
-		if (getItem().getBankAccountDetails() != null
-				&& StringUtils.isNotBlank(getItem().getBankAccountDetails().getBankAccountNumber())) {
-
-			return getItem().getClientUserId() + "-" + "*****"
-					+ StringUtils.right(getItem().getBankAccountDetails().getBankAccountNumber(), 4);
-
-		}
-		else {
-
-			return getItem().getClientUserId() + "-" + BATCH_JOB_ITEM_EMPTY_ID;
-		}
+		return getItem().getClientUserId();
 	}
 
 	/**
@@ -42,7 +33,7 @@ public class BankAccountExtractJobItem extends AbstractBatchJobItem<SellerModel>
 	 */
 	@Override
 	public String getItemType() {
-		return "BankAccount";
+		return ITEM_TYPE;
 	}
 
 }

@@ -9,6 +9,8 @@ import com.paypal.invoices.invoicesextract.model.InvoiceModel;
  */
 public class InvoiceExtractJobItem extends AbstractBatchJobItem<InvoiceModel> {
 
+	public static final String ITEM_TYPE = "Invoice";
+
 	public InvoiceExtractJobItem(InvoiceModel item) {
 		super(item);
 	}
@@ -28,7 +30,7 @@ public class InvoiceExtractJobItem extends AbstractBatchJobItem<InvoiceModel> {
 	 */
 	@Override
 	public String getItemType() {
-		return "Invoice";
+		return ITEM_TYPE;
 	}
 
 }

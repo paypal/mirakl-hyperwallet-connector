@@ -9,6 +9,8 @@ import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
  */
 public class CreditNoteExtractJobItem extends AbstractBatchJobItem<CreditNoteModel> {
 
+	public static final String ITEM_TYPE = "CreditNote";
+
 	public CreditNoteExtractJobItem(CreditNoteModel item) {
 		super(item);
 	}
@@ -28,7 +30,7 @@ public class CreditNoteExtractJobItem extends AbstractBatchJobItem<CreditNoteMod
 	 */
 	@Override
 	public String getItemType() {
-		return "CreditNote";
+		return ITEM_TYPE;
 	}
 
 }

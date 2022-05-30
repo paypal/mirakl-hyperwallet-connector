@@ -8,18 +8,14 @@ import java.util.Collection;
 
 /**
  * Holds common functionality for batch job processing listeners.
- *
- * @param <C> the job context type.
- * @param <T> the job item type.
  */
-public class AbstractBatchJobProcessingListenerSupport<C extends BatchJobContext, T extends BatchJobItem<?>>
-		implements BatchJobProcessingListener<C, T> {
+public class AbstractBatchJobProcessingListenerSupport implements BatchJobProcessingListener {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void beforeItemExtraction(C ctx) {
+	public void beforeItemExtraction(BatchJobContext ctx) {
 		// empty method
 	}
 
@@ -27,7 +23,7 @@ public class AbstractBatchJobProcessingListenerSupport<C extends BatchJobContext
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onItemExtractionSuccessful(C ctx, Collection<T> extractedItems) {
+	public void onItemExtractionSuccessful(BatchJobContext ctx, Collection<BatchJobItem<?>> extractedItems) {
 		// empty method
 	}
 
@@ -35,7 +31,7 @@ public class AbstractBatchJobProcessingListenerSupport<C extends BatchJobContext
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onItemExtractionFailure(C ctx, Exception e) {
+	public void onItemExtractionFailure(BatchJobContext ctx, Exception e) {
 		// empty method
 	}
 
@@ -43,7 +39,7 @@ public class AbstractBatchJobProcessingListenerSupport<C extends BatchJobContext
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void beforeProcessingItem(C ctx, T item) {
+	public void beforeProcessingItem(BatchJobContext ctx, BatchJobItem<?> item) {
 		// empty method
 	}
 
@@ -51,7 +47,7 @@ public class AbstractBatchJobProcessingListenerSupport<C extends BatchJobContext
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onItemProcessingFailure(C ctx, T item, Exception e) {
+	public void onItemProcessingFailure(BatchJobContext ctx, BatchJobItem<?> item, Exception e) {
 		// empty method
 	}
 
@@ -59,7 +55,7 @@ public class AbstractBatchJobProcessingListenerSupport<C extends BatchJobContext
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onItemProcessingSuccess(C ctx, T item) {
+	public void onItemProcessingSuccess(BatchJobContext ctx, BatchJobItem<?> item) {
 		// empty method
 	}
 
@@ -67,7 +63,7 @@ public class AbstractBatchJobProcessingListenerSupport<C extends BatchJobContext
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onBatchJobStarted(C ctx) {
+	public void onBatchJobStarted(BatchJobContext ctx) {
 		// empty method
 	}
 
@@ -75,7 +71,7 @@ public class AbstractBatchJobProcessingListenerSupport<C extends BatchJobContext
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onBatchJobFinished(C ctx) {
+	public void onBatchJobFinished(BatchJobContext ctx) {
 		// empty method
 	}
 
@@ -83,7 +79,7 @@ public class AbstractBatchJobProcessingListenerSupport<C extends BatchJobContext
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onBatchJobFailure(C ctx, Exception e) {
+	public void onBatchJobFailure(BatchJobContext ctx, Exception e) {
 		// empty method
 	}
 

@@ -1,5 +1,6 @@
 package com.paypal.infrastructure.batchjob;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -16,13 +17,13 @@ public interface BatchJobFailedItemService {
 	 * Save the item failed.
 	 * @param item the item failed.
 	 */
-	void saveItemFailed(final BatchJobItem<?> item);
+	<T extends BatchJobItem<?>> void saveItemFailed(final T item);
 
 	/**
 	 * Remove the item processed from failed items if exists.
 	 * @param item the processed item.
 	 */
-	void removeItemProcessed(final BatchJobItem<?> item);
+	<T extends BatchJobItem<?>> void removeItemProcessed(final T item);
 
 	/**
 	 * Retrieves all failed items for the given item type that should be retried.
@@ -37,5 +38,20 @@ public interface BatchJobFailedItemService {
 	 * @return a {@link List} of {@link BatchJobFailedItem} for the given itemType.
 	 */
 	List<BatchJobFailedItem> getFailedItems(String itemType);
+
+	/**
+	 * Retrieves all failed items for the given type in the given status.
+	 * @param itemType the item type.
+	 * @param status the status of the item.
+	 * @return a {@link List} of {@link BatchJobFailedItem} for the given itemType.
+	 */
+	List<BatchJobFailedItem> getFailedItems(String itemType, BatchJobFailedItemStatus status);
+
+	/**
+	 * Notifies the service that the given items has been extracted, and it should review
+	 * the state of any {@link BatchJobFailedItem}s associated to the given items.
+	 * @param extractedItems Extracted items that should be checked.
+	 */
+	<T extends BatchJobItem<?>> void checkUpdatedFailedItems(Collection<T> extractedItems);
 
 }

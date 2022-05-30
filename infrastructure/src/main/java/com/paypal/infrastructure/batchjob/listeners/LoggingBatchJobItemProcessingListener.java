@@ -12,8 +12,7 @@ import java.util.Collection;
  */
 @Slf4j
 @Component
-public class LoggingBatchJobItemProcessingListener
-		extends AbstractBatchJobProcessingListenerSupport<BatchJobContext, BatchJobItem<?>> {
+public class LoggingBatchJobItemProcessingListener extends AbstractBatchJobProcessingListenerSupport {
 
 	/**
 	 * {@inheritDoc}

@@ -41,7 +41,8 @@ class AbstractFailedItemsBatchJobItemsExtractorTest {
 		}
 
 		@Override
-		protected Collection<BatchJobItem<Object>> getItems(final List<String> ids) {
+		protected Collection<BatchJobItem<Object>> getBatchJobFailedItems(
+				List<BatchJobFailedItem> batchJobFailedItems) {
 			return List.of();
 		}
 

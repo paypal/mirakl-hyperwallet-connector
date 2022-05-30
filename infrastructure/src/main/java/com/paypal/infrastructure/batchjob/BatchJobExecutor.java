@@ -14,9 +14,9 @@ public class BatchJobExecutor {
 	public static final String MSG_ERROR_WHILE_INVOKING_BATCH_JOB_LISTENER = "Error while invoking batch job listener";
 
 	@Resource
-	protected List<BatchJobProcessingListener<BatchJobContext, BatchJobItem<?>>> batchJobProcessingListeners;
+	protected List<BatchJobProcessingListener> batchJobProcessingListeners;
 
-	public <C extends BatchJobContext> void execute(BatchJob<C, BatchJobItem<?>> job, C ctx) {
+	public <C extends BatchJobContext, T extends BatchJobItem<?>> void execute(BatchJob<C, T> job, C ctx) {
 		try {
 			reportBatchJobStarted(ctx);
 
@@ -30,12 +30,12 @@ public class BatchJobExecutor {
 		ctx.resetCounters();
 	}
 
-	private <C extends BatchJobContext> Collection<BatchJobItem<?>> retrieveBatchItems(BatchJob<C, BatchJobItem<?>> job,
+	private <C extends BatchJobContext, T extends BatchJobItem<?>> Collection<T> retrieveBatchItems(BatchJob<C, T> job,
 			final C context) {
 		try {
 			reportItemExtractionStarted(context);
 
-			final Collection<BatchJobItem<?>> items = job.getItems(context);
+			final Collection<T> items = job.getItems(context);
 			context.setNumberOfItemsToBeProcessed(items.size());
 
 			reportItemExtractionFinished(context, items);
@@ -98,8 +98,8 @@ public class BatchJobExecutor {
 		}
 	}
 
-	private <C extends BatchJobContext> void reportItemProcessingFailure(final C ctx, final BatchJobItem<?> item,
-			final RuntimeException e) {
+	private <C extends BatchJobContext, T extends BatchJobItem<?>> void reportItemProcessingFailure(final C ctx,
+			final T item, final RuntimeException e) {
 		ctx.incrementFailedItems();
 
 		for (final var batchJobProcessingListener : batchJobProcessingListeners) {
@@ -112,7 +112,8 @@ public class BatchJobExecutor {
 		}
 	}
 
-	private <C extends BatchJobContext> void reportItemProcessingFinished(final C ctx, final BatchJobItem<?> item) {
+	private <C extends BatchJobContext, T extends BatchJobItem<?>> void reportItemProcessingFinished(final C ctx,
+			T item) {
 		ctx.incrementProcessedItems();
 
 		for (final var batchJobProcessingListener : batchJobProcessingListeners) {
@@ -125,7 +126,8 @@ public class BatchJobExecutor {
 		}
 	}
 
-	private <C extends BatchJobContext> void reportItemProcessingStarted(final C ctx, final BatchJobItem<?> item) {
+	private <C extends BatchJobContext, T extends BatchJobItem<?>> void reportItemProcessingStarted(final C ctx,
+			final T item) {
 		for (final var batchJobProcessingListener : batchJobProcessingListeners) {
 			try {
 				batchJobProcessingListener.beforeProcessingItem(ctx, item);
@@ -147,11 +149,13 @@ public class BatchJobExecutor {
 		}
 	}
 
-	private <C extends BatchJobContext> void reportItemExtractionFinished(final C ctx,
-			Collection<BatchJobItem<?>> extractedItems) {
+	@SuppressWarnings("unchecked")
+	private <C extends BatchJobContext, T extends BatchJobItem<?>> void reportItemExtractionFinished(final C ctx,
+			Collection<T> extractedItems) {
 		for (final var batchJobProcessingListener : batchJobProcessingListeners) {
 			try {
-				batchJobProcessingListener.onItemExtractionSuccessful(ctx, extractedItems);
+				batchJobProcessingListener.onItemExtractionSuccessful(ctx,
+						(Collection<BatchJobItem<?>>) extractedItems);
 			}
 			catch (final RuntimeException e) {
 				log.error(MSG_ERROR_WHILE_INVOKING_BATCH_JOB_LISTENER, e);

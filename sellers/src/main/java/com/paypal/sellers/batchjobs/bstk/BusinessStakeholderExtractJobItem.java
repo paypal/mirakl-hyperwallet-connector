@@ -9,6 +9,8 @@ import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
  */
 public class BusinessStakeholderExtractJobItem extends AbstractBatchJobItem<BusinessStakeHolderModel> {
 
+	public static final String ITEM_TYPE = "BusinessStakeholder";
+
 	protected BusinessStakeholderExtractJobItem(final BusinessStakeHolderModel item) {
 		super(item);
 	}
@@ -28,7 +30,7 @@ public class BusinessStakeholderExtractJobItem extends AbstractBatchJobItem<Busi
 	 */
 	@Override
 	public String getItemType() {
-		return "BusinessStakeholder";
+		return ITEM_TYPE;
 	}
 
 }

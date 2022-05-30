@@ -1,7 +1,7 @@
 package com.paypal.invoices.invoicesextract.converter;
 
 import com.mirakl.client.mmp.domain.common.currency.MiraklIsoCurrencyCode;
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoice;
+import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoice;
 import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +20,7 @@ class MiraklInvoiceToCreditNoteModelConverterTest {
 
 	@Test
 	void convert_shouldConvertFromMiraklInvoiceToCreditNoteModel() {
-		final MiraklInvoice miraklInvoiceStub = new MiraklInvoice();
+		final HMCMiraklInvoice miraklInvoiceStub = new HMCMiraklInvoice();
 		miraklInvoiceStub.setId("2000050");
 		miraklInvoiceStub.setShopId(2000L);
 		miraklInvoiceStub.setTotalChargedAmount(BigDecimal.valueOf(20.00D));

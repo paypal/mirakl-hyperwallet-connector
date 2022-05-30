@@ -126,14 +126,14 @@ public class BatchJobTrackingServiceImpl implements BatchJobTrackingService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void trackJobItemsAdded(String batchJobId, Collection<BatchJobItem<?>> items) {
+	public <T extends BatchJobItem<?>> void trackJobItemsAdded(String batchJobId, Collection<T> items) {
 		List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities = items.stream()
 				.map(it -> createJobItemTracking(batchJobId, it)).collect(Collectors.toList());
 
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities);
 	}
 
-	private BatchJobItemTrackInfoEntity createJobItemTracking(String batchJobId, BatchJobItem<?> item) {
+	private <T extends BatchJobItem<?>> BatchJobItemTrackInfoEntity createJobItemTracking(String batchJobId, T item) {
 		return BatchJobItemTrackInfoEntity.builder().batchJobId(batchJobId).itemId(item.getItemId())
 				.itemType(item.getItemType()).status(BatchJobItemStatus.PENDING).build();
 	}
@@ -142,7 +142,7 @@ public class BatchJobTrackingServiceImpl implements BatchJobTrackingService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void trackJobItemProcessingStarted(String batchJobId, BatchJobItem<?> item) {
+	public <T extends BatchJobItem<?>> void trackJobItemProcessingStarted(String batchJobId, T item) {
 		updatedJobItemStatus(batchJobId, item, BatchJobItemStatus.IN_PROGRESS);
 	}
 
@@ -150,11 +150,13 @@ public class BatchJobTrackingServiceImpl implements BatchJobTrackingService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void trackJobItemProcessingFinished(String batchJobId, BatchJobItem<?> item, boolean successful) {
+	public <T extends BatchJobItem<?>> void trackJobItemProcessingFinished(String batchJobId, T item,
+			boolean successful) {
 		updatedJobItemStatus(batchJobId, item, successful ? BatchJobItemStatus.SUCCESSFUL : BatchJobItemStatus.FAILED);
 	}
 
-	private void updatedJobItemStatus(String batchJobId, BatchJobItem<?> item, BatchJobItemStatus status) {
+	private <T extends BatchJobItem<?>> void updatedJobItemStatus(String batchJobId, T item,
+			BatchJobItemStatus status) {
 		BatchJobItemTrackingInfoId batchJobItemTrackingInfoId = BatchJobItemTrackingInfoId.builder()
 				.batchJobId(batchJobId).itemType(item.getItemType()).itemId(item.getItemId()).build();
 
