@@ -18,11 +18,15 @@ import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceTypeEnum;
 import com.paypal.invoices.invoicesextract.service.mirakl.MiraklAccountingDocumentExtractService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -39,6 +43,9 @@ public abstract class AbstractAccountingDocumentsExtractServiceImpl<T extends Ac
 	protected final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient;
 
 	protected final MailNotificationUtil invoicesMailNotificationUtil;
+
+	@Value("${invoices.searchinvoices.maxdays}")
+	protected int maxNumberOfDaysForInvoiceIdSearch;
 
 	protected AbstractAccountingDocumentsExtractServiceImpl(
 			final Converter<MiraklShop, AccountingDocumentModel> miraklShopToAccountingModelConverter,
@@ -61,10 +68,6 @@ public abstract class AbstractAccountingDocumentsExtractServiceImpl<T extends Ac
 		final List<MiraklShop> shops = getMiraklShops(creditNotes);
 		return mapShopsWithDestinationToken(shops);
 	}
-
-	@NonNull
-	protected abstract List<T> associateBillingDocumentsWithTokens(final List<T> invoices,
-			final Map<String, Pair<String, String>> mapShopDestinationToken);
 
 	protected List<T> filterOnlyMappableDocuments(final List<T> invoices, final Set<String> shopIds) {
 
@@ -96,25 +99,43 @@ public abstract class AbstractAccountingDocumentsExtractServiceImpl<T extends Ac
 						.collect(Collectors.joining(",")));
 		//@formatter:on
 
-		try {
-			return getAllShops(shopIds);
-		}
-		catch (final MiraklApiException ex) {
-			log.error("Something went wrong getting information of shops [{}]", String.join(",", shopIds));
-			invoicesMailNotificationUtil.sendPlainTextEmail("Issue detected getting shops in Mirakl",
-					String.format("Something went wrong getting information of shops [%s]%n%s",
-							String.join(",", shopIds), MiraklLoggingErrorsUtil.stringify(ex)));
-			return Collections.emptyList();
-		}
+		return getAllShops(shopIds);
 	}
 
 	protected List<MiraklShop> getAllShops(final Set<String> shopIds) {
 		if (shopIds.isEmpty()) {
 			return Collections.emptyList();
 		}
-		final MiraklGetShopsRequest request = createShopRequest(shopIds);
-		final MiraklShops miraklShops = miraklMarketplacePlatformOperatorApiClient.getShops(request);
-		return miraklShops.getShops();
+
+		List<List<String>> partitionedShopIds = ListUtils.partition(shopIds.stream().collect(Collectors.toList()), 100);
+		//@formatter:off
+		return partitionedShopIds.stream()
+				.map(this::getAllShopsWithoutPartitioning)
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
+		//@formatter:on
+	}
+
+	protected List<MiraklShop> getAllShopsWithoutPartitioning(final List<String> shopIds) {
+		if (shopIds.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		try {
+			final MiraklGetShopsRequest request = createShopRequest(shopIds.stream().collect(Collectors.toSet()));
+			final MiraklShops miraklShops = miraklMarketplacePlatformOperatorApiClient.getShops(request);
+			return miraklShops.getShops();
+		}
+		catch (final MiraklApiException ex) {
+			List<String> sortedShopIds = shopIds.stream().sorted().collect(Collectors.toList());
+			log.error(String.format("Something went wrong getting information of shops [%s]%n%s",
+					String.join(",", sortedShopIds), MiraklLoggingErrorsUtil.stringify(ex)), ex);
+			invoicesMailNotificationUtil.sendPlainTextEmail("Issue detected getting shops in Mirakl",
+					String.format("Something went wrong getting information of shops [%s]%n%s",
+							String.join(",", sortedShopIds), MiraklLoggingErrorsUtil.stringify(ex)));
+
+			return Collections.emptyList();
+		}
 	}
 
 	protected Map<String, Pair<String, String>> mapShopsWithDestinationToken(final List<MiraklShop> shops) {
@@ -168,6 +189,49 @@ public abstract class AbstractAccountingDocumentsExtractServiceImpl<T extends Ac
 		return invoices;
 	}
 
-	protected abstract List<T> getAccountingDocuments(final Date delta);
+	protected List<T> associateBillingDocumentsWithTokens(final List<T> invoices,
+			final Map<String, Pair<String, String>> mapShopDestinationToken) {
+
+		final List<T> filteredInvoices = filterOnlyMappableDocuments(invoices, mapShopDestinationToken.keySet());
+		//@formatter:off
+		return filteredInvoices.stream()
+				.map(invoiceModel -> (T) invoiceModel.toBuilder()
+						.destinationToken(mapShopDestinationToken.get(invoiceModel.getShopId()).getLeft())
+						.hyperwalletProgram(mapShopDestinationToken.get(invoiceModel.getShopId()).getRight())
+						.build())
+				.collect(Collectors.toList());
+		//@formatter:on
+	}
+
+	protected List<T> getAccountingDocuments(final Date delta) {
+		final List<HMCMiraklInvoice> invoices = getInvoicesForDateAndType(delta, getInvoiceType());
+
+		//@formatter:off
+		return invoices.stream()
+				.map(getMiraklInvoiceToAccountingModelConverter()::convert)
+				.collect(Collectors.toList());
+		//@formatter:on
+	}
+
+	@Override
+	public Collection<T> extractAccountingDocuments(List<String> ids) {
+		final List<HMCMiraklInvoice> invoices = getInvoicesForDateAndType(getTimeRangeForFindByIdInvoices(),
+				getInvoiceType());
+
+		//@formatter:off
+		return invoices.stream()
+				.filter(invoice -> ids.contains(invoice.getId()))
+				.map(getMiraklInvoiceToAccountingModelConverter()::convert)
+				.collect(Collectors.toList());
+		//@formatter:on
+	}
+
+	private Date getTimeRangeForFindByIdInvoices() {
+		return Date.from(LocalDateTime.now().minusMinutes(maxNumberOfDaysForInvoiceIdSearch).toInstant(ZoneOffset.UTC));
+	}
+
+	protected abstract InvoiceTypeEnum getInvoiceType();
+
+	protected abstract Converter<HMCMiraklInvoice, T> getMiraklInvoiceToAccountingModelConverter();
 
 }

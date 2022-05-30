@@ -25,7 +25,7 @@ public class QuartzBatchJobBean extends QuartzJobBean {
 		quartzBatchJobAdapterFactory.getQuartzJob(batchJob).execute(context);
 	}
 
-	public void setBatchJob(BatchJob<? extends BatchJobContext, ? extends BatchJobItem<?>> batchJob) {
+	public void setBatchJob(BatchJob<BatchJobContext, BatchJobItem<?>> batchJob) {
 		this.batchJob = batchJob;
 	}
 

@@ -6,6 +6,7 @@ import com.paypal.infrastructure.util.TimeMachine;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,7 +40,7 @@ public class BatchJobFailedItemServiceImpl implements BatchJobFailedItemService 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void saveItemFailed(final BatchJobItem<?> item) {
+	public <T extends BatchJobItem<?>> void saveItemFailed(final T item) {
 
 		var batchJobFailedItemId = new BatchJobFailedItemId(item.getItemId(), item.getItemType());
 		var batchJobFailedItem = failedItemRepository.findById(batchJobFailedItemId).map(this::updateFailedItem)
@@ -79,7 +80,7 @@ public class BatchJobFailedItemServiceImpl implements BatchJobFailedItemService 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void removeItemProcessed(final BatchJobItem<?> item) {
+	public <T extends BatchJobItem<?>> void removeItemProcessed(final T item) {
 		var batchJobFailedItemId = new BatchJobFailedItemId(item.getItemId(), item.getItemType());
 		failedItemRepository.findById(batchJobFailedItemId).ifPresent(failedItemRepository::delete);
 	}
@@ -104,12 +105,22 @@ public class BatchJobFailedItemServiceImpl implements BatchJobFailedItemService 
 		return failedItemRepository.findByType(itemType);
 	}
 
+	@Override
+	public List<BatchJobFailedItem> getFailedItems(String itemType, BatchJobFailedItemStatus status) {
+		return failedItemRepository.findByTypeAndStatus(itemType, status);
+	}
+
+	@Override
+	public <T extends BatchJobItem<?>> void checkUpdatedFailedItems(Collection<T> extractedItems) {
+		// Nothing to do
+	}
+
 	private boolean shouldRetryFailedItem(BatchJobFailedItem item) {
 		return batchJobFailedItemRetryPolicies.stream().filter(it -> !it.shouldRetryFailedItem(item)).findAny()
 				.isEmpty();
 	}
 
-	private BatchJobFailedItem newFailedItem(final BatchJobItem<?> item) {
+	private <T extends BatchJobItem<?>> BatchJobFailedItem newFailedItem(final T item) {
 		var batchJobFailedItem = new BatchJobFailedItem();
 		batchJobFailedItem.setId(item.getItemId());
 		batchJobFailedItem.setType(item.getItemType());

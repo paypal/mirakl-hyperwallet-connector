@@ -6,6 +6,9 @@ import com.paypal.infrastructure.batchjob.BatchJobItemProcessor;
 import com.paypal.infrastructure.batchjob.BatchJobItemsExtractor;
 import org.springframework.stereotype.Service;
 
+/**
+ * Retries items that have failed during the individual sellers extract job
+ */
 @Service
 public class IndividualSellersRetryBatchJob extends AbstractBatchJob<BatchJobContext, IndividualSellersExtractJobItem> {
 

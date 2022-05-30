@@ -37,7 +37,7 @@ class BatchJobExecutorTest {
 	private BatchJobContext batchJobContextMock;
 
 	@Mock
-	private BatchJobProcessingListener<BatchJobContext, BatchJobItem<?>> listenerMock1, listenerMock2;
+	private BatchJobProcessingListener listenerMock1, listenerMock2;
 
 	@Mock
 	private BatchJobItem<?> itemMock1, itemMock2;

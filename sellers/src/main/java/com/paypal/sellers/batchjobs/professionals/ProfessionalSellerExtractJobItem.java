@@ -8,6 +8,8 @@ import com.paypal.sellers.sellersextract.model.SellerModel;
  */
 public class ProfessionalSellerExtractJobItem extends AbstractBatchJobItem<SellerModel> {
 
+	public static final String ITEM_TYPE = "ProfessionalSeller";
+
 	protected ProfessionalSellerExtractJobItem(final SellerModel item) {
 		super(item);
 	}
@@ -27,7 +29,7 @@ public class ProfessionalSellerExtractJobItem extends AbstractBatchJobItem<Selle
 	 */
 	@Override
 	public String getItemType() {
-		return "ProfessionalSeller";
+		return ITEM_TYPE;
 	}
 
 }

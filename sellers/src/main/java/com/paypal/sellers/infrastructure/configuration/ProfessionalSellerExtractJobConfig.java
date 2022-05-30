@@ -1,5 +1,7 @@
 package com.paypal.sellers.infrastructure.configuration;
 
+import com.paypal.infrastructure.batchjob.quartz.QuartzBatchJobBuilder;
+import com.paypal.sellers.batchjobs.professionals.ProfessionalSellersRetryBatchJob;
 import com.paypal.sellers.jobs.ProfessionalSellersExtractJob;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,6 +20,8 @@ public class ProfessionalSellerExtractJobConfig {
 	private static final String TRIGGER_SUFFIX = "Trigger";
 
 	private static final String JOB_NAME = "ProfessionalSellersExtractJob";
+
+	private static final String RETRY_JOB_NAME = "ProfessionalSellersRetryJob";
 
 	/**
 	 * Creates a recurring job {@link ProfessionalSellersExtractJob}
@@ -48,6 +52,28 @@ public class ProfessionalSellerExtractJobConfig {
 		return TriggerBuilder.newTrigger()
 				.forJob(jobDetails)
 				.withIdentity(TRIGGER_SUFFIX + JOB_NAME)
+				.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
+				.build();
+		//@formatter:on
+	}
+
+	@Bean
+	public JobDetail professionalSellerRetryJob(ProfessionalSellersRetryBatchJob professionalSellersRetryBatchJob) {
+		//@formatter:off
+		return QuartzBatchJobBuilder.newJob(professionalSellersRetryBatchJob)
+				.withIdentity(RETRY_JOB_NAME)
+				.storeDurably()
+				.build();
+		//@formatter:on
+	}
+
+	@Bean
+	public Trigger professionalSellerRetryTrigger(@Qualifier("professionalSellerRetryJob") final JobDetail jobDetails,
+			@Value("${sellers.retryprofessionalsellers.scheduling.cronexpression}") final String cronExpression) {
+		//@formatter:off
+		return TriggerBuilder.newTrigger()
+				.forJob(jobDetails)
+				.withIdentity(TRIGGER_SUFFIX + RETRY_JOB_NAME)
 				.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
 				.build();
 		//@formatter:on

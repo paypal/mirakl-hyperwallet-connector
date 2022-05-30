@@ -9,6 +9,7 @@ import com.mirakl.client.mmp.operator.request.payment.invoice.MiraklGetInvoicesR
 import com.mirakl.client.mmp.request.payment.invoice.MiraklAccountingDocumentState;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoice;
@@ -42,6 +43,7 @@ import static com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingD
 import static com.mirakl.client.mmp.request.payment.invoice.MiraklAccountingDocumentState.COMPLETE;
 import static com.paypal.infrastructure.constants.HyperWalletConstants.MIRAKL_MAX_RESULTS_PER_PAGE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -208,30 +210,6 @@ class MiraklInvoicesExtractServiceImplTest {
 				.hasFieldOrPropertyWithValue(DESTINATION_TOKEN_ATTRIBUTE, TOKEN_2);
 		assertThat(result.get(2)).hasFieldOrPropertyWithValue(SHOP_ID_ATTRIBUTE, SHOP_ID_ONE)
 				.hasFieldOrPropertyWithValue(DESTINATION_TOKEN_ATTRIBUTE, TOKEN_1);
-	}
-
-	@Test
-	void extractAccountingDocument_whenMiraklExceptionIsThrown_shouldSendEmailNotification() {
-		final LocalDateTime now = LocalDateTime.now();
-		TimeMachine.useFixedClockAt(now);
-		final Date nowAsDate = DateUtil.convertToDate(now, ZoneId.systemDefault());
-
-		final InvoiceModel invoiceOne = InvoiceModel.builder().shopId(SHOP_ID_ONE).destinationToken(TOKEN_1)
-				.hyperwalletProgram(HYPERWALLET_PROGRAM).build();
-
-		final List<InvoiceModel> invoiceList = List.of(invoiceOne);
-		doReturn(invoiceList).when(testObj).getAccountingDocuments(nowAsDate);
-
-		final MiraklApiException miraklApiException = new MiraklApiException(
-				new MiraklErrorResponseBean(1, "Something went wrong"));
-		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
-				.getShops(any(MiraklGetShopsRequest.class));
-
-		testObj.extractAccountingDocuments(nowAsDate);
-
-		verify(mailNotificationUtilMock).sendPlainTextEmail("Issue detected getting shops in Mirakl",
-				String.format("Something went wrong getting information of " + "shops" + " [2000]%n%s",
-						MiraklLoggingErrorsUtil.stringify(miraklApiException)));
 	}
 
 	@Test

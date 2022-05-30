@@ -2,13 +2,14 @@ package com.paypal.invoices.invoicesextract.converter;
 
 import com.mirakl.client.mmp.domain.invoice.MiraklInvoice;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoice;
 import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 @Service
-public class MiraklInvoiceToCreditNoteModelConverter implements Converter<MiraklInvoice, CreditNoteModel> {
+public class MiraklInvoiceToCreditNoteModelConverter implements Converter<HMCMiraklInvoice, CreditNoteModel> {
 
 	/**
 	 * Method that retrieves a {@link MiraklInvoice} and returns a {@link CreditNoteModel}
@@ -16,7 +17,7 @@ public class MiraklInvoiceToCreditNoteModelConverter implements Converter<Mirakl
 	 * @return the returned object {@link CreditNoteModel}
 	 */
 	@Override
-	public CreditNoteModel convert(final MiraklInvoice source) {
+	public CreditNoteModel convert(final HMCMiraklInvoice source) {
 		if (Objects.isNull(source)) {
 			return null;
 		}

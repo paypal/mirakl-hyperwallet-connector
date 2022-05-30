@@ -46,14 +46,14 @@ public interface BatchJobTrackingService {
 	 * @param batchJobId the batch job id
 	 * @param items a {@link Collection} of {@link BatchJobItem}.
 	 */
-	void trackJobItemsAdded(String batchJobId, Collection<BatchJobItem<?>> items);
+	<T extends BatchJobItem<?>> void trackJobItemsAdded(String batchJobId, Collection<T> items);
 
 	/**
 	 * Track job item processing as started.
 	 * @param batchJobId the batch job id,
 	 * @param item the {@link BatchJobItem} item.
 	 */
-	void trackJobItemProcessingStarted(String batchJobId, BatchJobItem<?> item);
+	<T extends BatchJobItem<?>> void trackJobItemProcessingStarted(String batchJobId, T item);
 
 	/**
 	 * Track job item processing as finished.
@@ -61,13 +61,13 @@ public interface BatchJobTrackingService {
 	 * @param item the {@link BatchJobItem} item.
 	 * @param successful if successful.
 	 */
-	void trackJobItemProcessingFinished(String batchJobId, BatchJobItem<?> item, boolean successful);
+	<T extends BatchJobItem<?>> void trackJobItemProcessingFinished(String batchJobId, T item, boolean successful);
 
 	/**
 	 * Retrieves a {@link List} of {@link BatchJobItemTrackInfoEntity} that are being
 	 * processed or are going to be processed.
 	 * @param itemType the item type.
-	 * @returna {@link List} of {@link BatchJobItemTrackInfoEntity} that are being
+	 * @return {@link List} of {@link BatchJobItemTrackInfoEntity} that are being
 	 * processed or are going to be processed.
 	 */
 	List<BatchJobItemTrackInfoEntity> getItemsBeingProcessedOrEnquedToProcess(String itemType);
@@ -77,7 +77,7 @@ public interface BatchJobTrackingService {
 	 * {@link LocalDateTime} from and to.
 	 * @param from a {@link LocalDateTime}.
 	 * @param to a {@link LocalDateTime}.
-	 * @returna {@link List} of {@link BatchJobTrackInfoEntity} between the given
+	 * @return {@link List} of {@link BatchJobTrackInfoEntity} between the given
 	 * {@link LocalDateTime} from and to.
 	 */
 	List<BatchJobTrackInfoEntity> getJobTrackingEntries(LocalDateTime from, LocalDateTime to);

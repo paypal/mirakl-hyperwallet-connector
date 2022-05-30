@@ -11,8 +11,7 @@ import java.util.Collection;
  * Tracking batch job processing listener.
  */
 @Component
-public class TrackingBatchJobItemProcessingListener
-		extends AbstractBatchJobProcessingListenerSupport<BatchJobContext, BatchJobItem<?>> {
+public class TrackingBatchJobItemProcessingListener extends AbstractBatchJobProcessingListenerSupport {
 
 	private final BatchJobTrackingService batchJobTrackingService;
 

@@ -5,12 +5,13 @@ import com.paypal.infrastructure.batchjob.BatchJobFailedItemService;
 import com.paypal.infrastructure.batchjob.BatchJobItem;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+
 /**
  * Failure batch job processing listener.
  */
 @Component
-public class FailureBatchJobItemProcessingListener
-		extends AbstractBatchJobProcessingListenerSupport<BatchJobContext, BatchJobItem<?>> {
+public class FailureBatchJobItemProcessingListener extends AbstractBatchJobProcessingListenerSupport {
 
 	private final BatchJobFailedItemService batchJobFailedItemService;
 
@@ -32,6 +33,14 @@ public class FailureBatchJobItemProcessingListener
 	@Override
 	public void onItemProcessingSuccess(BatchJobContext ctx, BatchJobItem<?> item) {
 		batchJobFailedItemService.removeItemProcessed(item);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onItemExtractionSuccessful(BatchJobContext ctx, Collection<BatchJobItem<?>> extractedItems) {
+		batchJobFailedItemService.checkUpdatedFailedItems(extractedItems);
 	}
 
 }
