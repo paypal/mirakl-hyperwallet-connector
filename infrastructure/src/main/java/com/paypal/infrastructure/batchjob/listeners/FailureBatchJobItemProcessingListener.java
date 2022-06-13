@@ -3,6 +3,7 @@ package com.paypal.infrastructure.batchjob.listeners;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.infrastructure.batchjob.BatchJobFailedItemService;
 import com.paypal.infrastructure.batchjob.BatchJobItem;
+import com.paypal.infrastructure.batchjob.BatchJobType;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -40,7 +41,9 @@ public class FailureBatchJobItemProcessingListener extends AbstractBatchJobProce
 	 */
 	@Override
 	public void onItemExtractionSuccessful(BatchJobContext ctx, Collection<BatchJobItem<?>> extractedItems) {
-		batchJobFailedItemService.checkUpdatedFailedItems(extractedItems);
+		if (BatchJobType.EXTRACT.equals(ctx.getBatchJob().getType())) {
+			batchJobFailedItemService.checkUpdatedFailedItems(extractedItems);
+		}
 	}
 
 }

@@ -34,7 +34,7 @@ public class QuartzBatchJobAdapter implements Job {
 	}
 
 	private BatchJobContext getBatchJobContext(final JobExecutionContext jobExecutionContext) {
-		return quartzBatchJobContextFactory.getBatchJobContext(jobExecutionContext);
+		return quartzBatchJobContextFactory.getBatchJobContext(batchJob, jobExecutionContext);
 	}
 
 }

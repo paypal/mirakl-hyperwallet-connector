@@ -8,6 +8,7 @@ import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoice;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceTypeEnum;
+import com.paypal.invoices.invoicesextract.service.hmc.AccountingDocumentsLinksService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +23,10 @@ public class MiraklCreditNotesExtractServiceImpl
 			final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient,
 			final Converter<MiraklShop, AccountingDocumentModel> miraklShopToAccountingModelConverter,
 			final Converter<HMCMiraklInvoice, CreditNoteModel> miraklInvoiceToCreditNoteModelConverter,
-			final MailNotificationUtil invoicesMailNotificationUtil) {
+			final MailNotificationUtil invoicesMailNotificationUtil,
+			final AccountingDocumentsLinksService accountingDocumentsLinksService) {
 		super(miraklShopToAccountingModelConverter, miraklMarketplacePlatformOperatorApiClient,
-				invoicesMailNotificationUtil);
+				accountingDocumentsLinksService, invoicesMailNotificationUtil);
 		this.miraklInvoiceToCreditNoteModelConverter = miraklInvoiceToCreditNoteModelConverter;
 	}
 

@@ -20,7 +20,11 @@ public class BatchJobExecutor {
 		try {
 			reportBatchJobStarted(ctx);
 
-			retrieveBatchItems(job, ctx).forEach(i -> processItem(job, ctx, i));
+			Collection<T> itemsToBeProcessed = retrieveBatchItems(job, ctx);
+
+			prepareForProcessing(job, ctx, itemsToBeProcessed);
+
+			itemsToBeProcessed.forEach(i -> processItem(job, ctx, i));
 
 			reportBatchJobFinished(ctx);
 		}
@@ -47,12 +51,42 @@ public class BatchJobExecutor {
 		}
 	}
 
+	private <T extends BatchJobItem<?>, C extends BatchJobContext> void prepareForProcessing(BatchJob<C, T> job,
+			C context, Collection<T> itemsToBeProcessed) {
+		try {
+			reportPreparationForProcessingStarted(context);
+
+			job.prepareForItemProcessing(context, itemsToBeProcessed);
+
+			reportPreparationForProcessingFinished(context);
+		}
+		catch (final RuntimeException e) {
+			reportPreparationForProcessingFailure(context, e);
+		}
+	}
+
 	private <C extends BatchJobContext, T extends BatchJobItem<?>> void processItem(BatchJob<C, T> job, final C context,
 			final T item) {
 		try {
 			reportItemProcessingStarted(context, item);
-			job.processItem(context, item);
-			reportItemProcessingFinished(context, item);
+
+			T enrichedItem = job.enrichItem(context, item);
+			BatchJobItemValidationResult validationResult = job.validateItem(context, enrichedItem);
+			switch (validationResult.getStatus()) {
+			case INVALID:
+				reportItemProcessingValidationFailure(context, item, validationResult);
+				reportItemProcessingFailure(context, item, null);
+				break;
+			case WARNING:
+				reportItemProcessingValidationFailure(context, item, validationResult);
+				job.processItem(context, enrichedItem);
+				reportItemProcessingFinished(context, item);
+				break;
+			case VALID:
+				job.processItem(context, enrichedItem);
+				reportItemProcessingFinished(context, item);
+				break;
+			}
 		}
 		catch (final RuntimeException e) {
 			reportItemProcessingFailure(context, item, e);
@@ -94,6 +128,18 @@ public class BatchJobExecutor {
 			}
 			catch (final RuntimeException e1) {
 				log.error(MSG_ERROR_WHILE_INVOKING_BATCH_JOB_LISTENER, e1);
+			}
+		}
+	}
+
+	private <C extends BatchJobContext, T extends BatchJobItem<?>> void reportItemProcessingValidationFailure(C ctx,
+			T item, BatchJobItemValidationResult validationResult) {
+		for (final var batchJobProcessingListener : batchJobProcessingListeners) {
+			try {
+				batchJobProcessingListener.onItemProcessingValidationFailure(ctx, item, validationResult);
+			}
+			catch (final RuntimeException e) {
+				log.error(MSG_ERROR_WHILE_INVOKING_BATCH_JOB_LISTENER, e);
 			}
 		}
 	}
@@ -172,6 +218,41 @@ public class BatchJobExecutor {
 				log.error(MSG_ERROR_WHILE_INVOKING_BATCH_JOB_LISTENER, e1);
 			}
 		}
+	}
+
+	private <C extends BatchJobContext> void reportPreparationForProcessingStarted(C context) {
+		for (final var batchJobProcessingListener : batchJobProcessingListeners) {
+			try {
+				batchJobProcessingListener.onPreparationForProcessingStarted(context);
+			}
+			catch (final RuntimeException e) {
+				log.error(MSG_ERROR_WHILE_INVOKING_BATCH_JOB_LISTENER, e);
+			}
+		}
+
+	}
+
+	private <C extends BatchJobContext> void reportPreparationForProcessingFinished(C context) {
+		for (final var batchJobProcessingListener : batchJobProcessingListeners) {
+			try {
+				batchJobProcessingListener.onPreparationForProcessingFinished(context);
+			}
+			catch (final RuntimeException e) {
+				log.error(MSG_ERROR_WHILE_INVOKING_BATCH_JOB_LISTENER, e);
+			}
+		}
+	}
+
+	private <C extends BatchJobContext> void reportPreparationForProcessingFailure(C context, RuntimeException e) {
+		for (final var batchJobProcessingListener : batchJobProcessingListeners) {
+			try {
+				batchJobProcessingListener.onPreparationForProcessingFailure(context, e);
+			}
+			catch (final RuntimeException e1) {
+				log.error(MSG_ERROR_WHILE_INVOKING_BATCH_JOB_LISTENER, e1);
+			}
+		}
+
 	}
 
 }

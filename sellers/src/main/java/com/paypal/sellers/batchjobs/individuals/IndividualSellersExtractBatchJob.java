@@ -1,6 +1,9 @@
 package com.paypal.sellers.batchjobs.individuals;
 
-import com.paypal.infrastructure.batchjob.*;
+import com.paypal.infrastructure.batchjob.AbstractExtractBatchJob;
+import com.paypal.infrastructure.batchjob.BatchJobContext;
+import com.paypal.infrastructure.batchjob.BatchJobItemProcessor;
+import com.paypal.infrastructure.batchjob.BatchJobItemsExtractor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -11,7 +14,7 @@ import javax.annotation.Resource;
  */
 @Service
 public class IndividualSellersExtractBatchJob
-		extends AbstractBatchJob<BatchJobContext, IndividualSellersExtractJobItem> {
+		extends AbstractExtractBatchJob<BatchJobContext, IndividualSellersExtractJobItem> {
 
 	@Resource
 	private IndividualSellersExtractBatchJobItemProcessor individualSellersExtractBatchJobItemProcessor;

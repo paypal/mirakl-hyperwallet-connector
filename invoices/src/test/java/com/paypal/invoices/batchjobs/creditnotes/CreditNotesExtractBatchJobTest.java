@@ -3,6 +3,7 @@ package com.paypal.invoices.batchjobs.creditnotes;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.infrastructure.batchjob.BatchJobItemProcessor;
 import com.paypal.infrastructure.batchjob.BatchJobItemsExtractor;
+import com.paypal.infrastructure.batchjob.BatchJobType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,6 +40,11 @@ class CreditNotesExtractBatchJobTest {
 				.getBatchJobItemProcessor();
 
 		assertThat(result).isEqualTo(creditNotesExtractBatchJobItemProcessorMock);
+	}
+
+	@Test
+	void getBatchJobType_shouldReturnExtractType() {
+		assertThat(testObj.getType()).isEqualTo(BatchJobType.EXTRACT);
 	}
 
 }

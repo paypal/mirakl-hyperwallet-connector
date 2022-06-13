@@ -1,13 +1,13 @@
 package com.paypal.invoices.batchjobs.invoices;
 
-import com.paypal.infrastructure.batchjob.AbstractBatchJobItem;
 import com.paypal.infrastructure.batchjob.BatchJobItem;
+import com.paypal.invoices.batchjobs.common.AbstractAccountingDocumentBatchJobItem;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 
 /**
  * Class that holds the needed information for batch processing {@link InvoiceModel}
  */
-public class InvoiceExtractJobItem extends AbstractBatchJobItem<InvoiceModel> {
+public class InvoiceExtractJobItem extends AbstractAccountingDocumentBatchJobItem<InvoiceModel> {
 
 	public static final String ITEM_TYPE = "Invoice";
 
@@ -31,6 +31,11 @@ public class InvoiceExtractJobItem extends AbstractBatchJobItem<InvoiceModel> {
 	@Override
 	public String getItemType() {
 		return ITEM_TYPE;
+	}
+
+	@Override
+	protected InvoiceExtractJobItem from(InvoiceModel item) {
+		return new InvoiceExtractJobItem(item);
 	}
 
 }

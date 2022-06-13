@@ -24,6 +24,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 //@formatter:on
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
-public class BatchJobFailedItemCacheTestContext {
+public class BatchJobTestContext {
 
 }

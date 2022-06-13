@@ -2,6 +2,7 @@ package com.paypal.infrastructure.batchjob.listeners;
 
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.infrastructure.batchjob.BatchJobItem;
+import com.paypal.infrastructure.batchjob.BatchJobItemValidationResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -65,6 +66,16 @@ public class LoggingBatchJobItemProcessingListener extends AbstractBatchJobProce
 		log.info("[{}] Processed successfully item of type {} with id: {}", ctx.getJobName(), item.getItemType(),
 				item.getItemId());
 		logBatchProgress(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onItemProcessingValidationFailure(BatchJobContext ctx, BatchJobItem<?> item,
+			BatchJobItemValidationResult validationResult) {
+		log.warn("[{}] Validation of item of type {} with id: {} has failed with the following message: {}",
+				ctx.getJobName(), item.getItemType(), item.getItemId(), validationResult.getReason().orElse(""));
 	}
 
 	private void logBatchProgress(BatchJobContext ctx) {

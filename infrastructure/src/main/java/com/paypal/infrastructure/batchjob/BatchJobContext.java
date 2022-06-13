@@ -13,6 +13,10 @@ public interface BatchJobContext {
 	 */
 	String getJobName();
 
+	/**
+	 * Returns the job unique identifier.
+	 * @return the job unique identifier.
+	 */
 	String getJobUuid();
 
 	/**
@@ -86,5 +90,11 @@ public interface BatchJobContext {
 	 * @return the job {@link JobExecutionContext}.
 	 */
 	JobExecutionContext getJobExecutionContext();
+
+	/**
+	 * Returns the job which is being executed.
+	 * @return the {@link BatchJob}.
+	 */
+	<C extends BatchJobContext, T extends BatchJobItem<?>> BatchJob<C, T> getBatchJob();
 
 }

@@ -1,13 +1,13 @@
 package com.paypal.invoices.batchjobs.creditnotes;
 
-import com.paypal.infrastructure.batchjob.AbstractBatchJobItem;
 import com.paypal.infrastructure.batchjob.BatchJobItem;
+import com.paypal.invoices.batchjobs.common.AbstractAccountingDocumentBatchJobItem;
 import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
 
 /**
  * Class that holds the needed information for batch processing {@link CreditNoteModel}
  */
-public class CreditNoteExtractJobItem extends AbstractBatchJobItem<CreditNoteModel> {
+public class CreditNoteExtractJobItem extends AbstractAccountingDocumentBatchJobItem<CreditNoteModel> {
 
 	public static final String ITEM_TYPE = "CreditNote";
 
@@ -31,6 +31,11 @@ public class CreditNoteExtractJobItem extends AbstractBatchJobItem<CreditNoteMod
 	@Override
 	public String getItemType() {
 		return ITEM_TYPE;
+	}
+
+	@Override
+	protected CreditNoteExtractJobItem from(CreditNoteModel item) {
+		return new CreditNoteExtractJobItem(item);
 	}
 
 }

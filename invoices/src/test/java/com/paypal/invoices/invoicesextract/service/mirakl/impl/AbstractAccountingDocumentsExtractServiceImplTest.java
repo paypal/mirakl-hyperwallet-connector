@@ -1,20 +1,19 @@
 package com.paypal.invoices.invoicesextract.service.mirakl.impl;
 
-import com.mirakl.client.core.error.MiraklErrorResponseBean;
-import com.mirakl.client.core.exception.MiraklApiException;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
-import com.mirakl.client.mmp.domain.shop.MiraklShops;
 import com.mirakl.client.mmp.operator.request.payment.invoice.MiraklGetInvoicesRequest;
-import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.infrastructure.itemlinks.model.HyperwalletItemLinkLocator;
+import com.paypal.infrastructure.itemlinks.model.HyperwalletItemTypes;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoice;
 import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoices;
-import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
+import com.paypal.infrastructure.util.DateUtil;
 import com.paypal.infrastructure.util.TimeMachine;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceTypeEnum;
+import com.paypal.invoices.invoicesextract.service.hmc.AccountingDocumentsLinksService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -22,14 +21,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentPaymentStatus.PENDING;
+import static com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentType.MANUAL_CREDIT;
+import static com.mirakl.client.mmp.request.payment.invoice.MiraklAccountingDocumentState.COMPLETE;
+import static com.paypal.infrastructure.constants.HyperWalletConstants.MIRAKL_MAX_RESULTS_PER_PAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -48,6 +50,7 @@ class AbstractAccountingDocumentsExtractServiceImplTest {
 	protected int maxNumberOfDaysForInvoiceIdSearch;
 
 	@InjectMocks
+	@Spy
 	private MyAccountingDocumentsExtractServiceImplTest testObj;
 
 	@Mock
@@ -60,25 +63,13 @@ class AbstractAccountingDocumentsExtractServiceImplTest {
 	private MyAccountingDocumentModel myAccountingDocumentModel1Mock, myAccountingDocumentModel2Mock;
 
 	@Mock
-	private MailNotificationUtil mailNotificationUtilMock;
-
-	@Mock
 	private HMCMiraklInvoice hmcMiraklInvoice1Mock, hmcMiraklInvoice2Mock, hmcMiraklInvoice3Mock;
 
 	@Mock
-	private HMCMiraklInvoices hmcMiraklInvoicesMock;
-
-	@Mock
-	private MiraklShops miraklShops1Mock, miraklShops2Mock, miraklShops3Mock;
-
-	@Mock
-	private MiraklShop miraklShop1Mock, miraklShop2Mock, miraklShop3Mock;
+	private HMCMiraklInvoices hmcMiraklInvoicesMock, hmcMiraklInvoices2Mock;
 
 	@Captor
 	private ArgumentCaptor<MiraklGetInvoicesRequest> miraklGetInvoicesRequestArgumentCaptor;
-
-	@Captor
-	private ArgumentCaptor<MiraklGetShopsRequest> miraklGetShopsRequestArgumentCaptor;
 
 	@Test
 	void extractAccountingDocumentsById_shouldReturnDocuments_whenTheyAreInsideSearchWindow() {
@@ -105,68 +96,97 @@ class AbstractAccountingDocumentsExtractServiceImplTest {
 	}
 
 	@Test
-	void getMiraklShops_shouldSplitRequestInBatchesOfFixedSize() {
-		//@formatter:off
-		List<MyAccountingDocumentModel> invoicesMocks = Stream.iterate(1, n -> n + 1)
-				.limit(250)
-				.map(this::createMyAccountingDocumentModelMock)
-				.collect(Collectors.toList());
+	void extractAccountingDocument_whenNoInvoicesAreReturned_shouldReturnEmptyList() {
+		final LocalDateTime now = LocalDateTime.now();
+		TimeMachine.useFixedClockAt(now);
+		final Date nowAsDate = DateUtil.convertToDate(now, ZoneId.systemDefault());
 
-		when(miraklMarketplacePlatformOperatorApiClient.getShops(argThat(request -> request.getShopIds().size() <= 100)))
-				.thenReturn(miraklShops1Mock)
-				.thenReturn(miraklShops2Mock)
-				.thenReturn(miraklShops3Mock);
-		//@formatter:on
-		when(miraklShops1Mock.getShops()).thenReturn(List.of(miraklShop1Mock));
-		when(miraklShops2Mock.getShops()).thenReturn(List.of(miraklShop2Mock));
-		when(miraklShops3Mock.getShops()).thenReturn(List.of(miraklShop3Mock));
+		doReturn(Collections.emptyList()).when(testObj).extractAccountingDocuments(nowAsDate);
 
-		List<MiraklShop> result = testObj.getMiraklShops(invoicesMocks);
+		final List<MyAccountingDocumentModel> result = testObj.extractAccountingDocuments(nowAsDate);
 
-		assertThat(result).containsExactlyInAnyOrder(miraklShop1Mock, miraklShop2Mock, miraklShop3Mock);
-
-		verify(miraklMarketplacePlatformOperatorApiClient, times(2))
-				.getShops(argThat(request -> request.getShopIds().size() == 100));
-		verify(miraklMarketplacePlatformOperatorApiClient, times(1))
-				.getShops(argThat(request -> request.getShopIds().size() == 50));
+		assertThat(result).isEmpty();
 	}
 
 	@Test
-	void getMiraklShops_shouldSplitRequestInBatchesOfFixedSize_AndContinueOnErrorsInIndividualBatches() {
-		//@formatter:off
-		List<MyAccountingDocumentModel> invoicesMocks = Stream.iterate(1, n -> n + 1)
-				.limit(250)
-				.map(this::createMyAccountingDocumentModelMock)
-				.collect(Collectors.toList());
+	void extractAccountingDocuments_shouldReturnListOfAccountingDocuments() {
+		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 0, 55));
+		final Date now = DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault());
 
-		final MiraklApiException miraklApiException = new MiraklApiException(
-				new MiraklErrorResponseBean(1, "Something went wrong"));
-		when(miraklMarketplacePlatformOperatorApiClient.getShops(argThat(request -> request.getShopIds().size() <= 100)))
-				.thenReturn(miraklShops1Mock)
-				.thenThrow(miraklApiException)
-				.thenReturn(miraklShops3Mock);
-		//@formatter:on
-		when(miraklShops1Mock.getShops()).thenReturn(List.of(miraklShop1Mock));
-		when(miraklShops3Mock.getShops()).thenReturn(List.of(miraklShop3Mock));
+		when(miraklMarketplacePlatformOperatorApiClient.getInvoices(any())).thenReturn(hmcMiraklInvoicesMock);
+		when(hmcMiraklInvoicesMock.getHmcInvoices()).thenReturn(List.of(hmcMiraklInvoice1Mock, hmcMiraklInvoice2Mock));
+		when(invoiceConverterMock.convert(hmcMiraklInvoice1Mock)).thenReturn(myAccountingDocumentModel1Mock);
+		when(invoiceConverterMock.convert(hmcMiraklInvoice2Mock)).thenReturn(myAccountingDocumentModel2Mock);
 
-		List<MiraklShop> result = testObj.getMiraklShops(invoicesMocks);
+		final List<MyAccountingDocumentModel> creditNoteList = testObj.extractAccountingDocuments(now);
 
-		assertThat(result).containsExactlyInAnyOrder(miraklShop1Mock, miraklShop3Mock);
+		verify(miraklMarketplacePlatformOperatorApiClient)
+				.getInvoices(miraklGetInvoicesRequestArgumentCaptor.capture());
 
-		verify(miraklMarketplacePlatformOperatorApiClient, times(3))
-				.getShops(miraklGetShopsRequestArgumentCaptor.capture());
-		MiraklGetShopsRequest failedRequest = miraklGetShopsRequestArgumentCaptor.getAllValues().get(1);
-		verify(mailNotificationUtilMock).sendPlainTextEmail("Issue detected getting shops in Mirakl",
-				String.format("Something went wrong getting information of " + "shops" + " [%s]%n%s",
-						failedRequest.getShopIds().stream().sorted().collect(Collectors.joining(",")),
-						MiraklLoggingErrorsUtil.stringify(miraklApiException)));
+		final MiraklGetInvoicesRequest miraklGetInvoicesRequest = miraklGetInvoicesRequestArgumentCaptor.getValue();
+
+		assertThat(miraklGetInvoicesRequest.getStartDate()).isEqualTo(now);
+		assertThat(miraklGetInvoicesRequest.getStates()).isEqualTo(List.of(COMPLETE));
+		assertThat(miraklGetInvoicesRequest.getPaymentStatus()).isEqualTo(PENDING);
+
+		assertThat(creditNoteList).containsExactlyInAnyOrder(myAccountingDocumentModel1Mock,
+				myAccountingDocumentModel2Mock);
 	}
 
-	private MyAccountingDocumentModel createMyAccountingDocumentModelMock(int id) {
-		MyAccountingDocumentModel myAccountingDocumentModelMock = Mockito.mock(MyAccountingDocumentModel.class);
-		when(myAccountingDocumentModelMock.getShopId()).thenReturn(String.valueOf(id));
+	@Test
+	void createAccountingDocumentRequest_shouldReturnRequestWithTargetInvoiceType() {
+		final Date date = new Date();
 
-		return myAccountingDocumentModelMock;
+		final MiraklGetInvoicesRequest result = testObj.createAccountingDocumentRequest(date,
+				InvoiceTypeEnum.MANUAL_CREDIT);
+
+		assertThat(result.getMax()).isEqualTo(100);
+		assertThat(result.getStartDate()).isEqualTo(date);
+		assertThat(result.getType()).isEqualTo(MANUAL_CREDIT);
+		assertThat(result.getPaymentStatus()).isEqualTo(PENDING);
+		assertThat(result.getStates()).containsExactly(COMPLETE);
+	}
+
+	@Test
+	void getAccountingDocuments_whenRequestNeedsPagination_shouldRepeatRequestAndReturnAllInvoices() {
+		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 0, 55));
+		final Date now = DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault());
+
+		final List<HMCMiraklInvoice> firstPageResponseInvoices = getListOfHMCMiraklInvoiceMocks(
+				MIRAKL_MAX_RESULTS_PER_PAGE);
+		final List<HMCMiraklInvoice> secondPageResponseInvoices = getListOfHMCMiraklInvoiceMocks(
+				MIRAKL_MAX_RESULTS_PER_PAGE / 2);
+		final long totalResponseInvoices = firstPageResponseInvoices.size() + secondPageResponseInvoices.size();
+
+		when(miraklMarketplacePlatformOperatorApiClient
+				.getInvoices(argThat(request -> request != null && request.getOffset() == 0)))
+						.thenReturn(hmcMiraklInvoicesMock);
+		when(miraklMarketplacePlatformOperatorApiClient
+				.getInvoices(argThat(request -> request != null && request.getOffset() == MIRAKL_MAX_RESULTS_PER_PAGE)))
+						.thenReturn(hmcMiraklInvoices2Mock);
+		when(hmcMiraklInvoicesMock.getTotalCount()).thenReturn(totalResponseInvoices);
+		when(hmcMiraklInvoicesMock.getHmcInvoices()).thenReturn(firstPageResponseInvoices);
+		when(hmcMiraklInvoices2Mock.getTotalCount()).thenReturn(totalResponseInvoices);
+		when(hmcMiraklInvoices2Mock.getHmcInvoices()).thenReturn(secondPageResponseInvoices);
+
+		final List<MyAccountingDocumentModel> expectedAccountingDocuments = Stream
+				.concat(firstPageResponseInvoices.stream(), secondPageResponseInvoices.stream())
+				.map(invoice -> mockAndReturn(invoice)).collect(Collectors.toList());
+
+		final List<MyAccountingDocumentModel> result = testObj.extractAccountingDocuments(now);
+
+		assertThat(result).containsExactlyElementsOf(expectedAccountingDocuments);
+	}
+
+	private MyAccountingDocumentModel mockAndReturn(final HMCMiraklInvoice invoice) {
+		final MyAccountingDocumentModel myAccountingDocumentModel = mock(MyAccountingDocumentModel.class);
+		when(invoiceConverterMock.convert(invoice)).thenReturn(myAccountingDocumentModel);
+		return myAccountingDocumentModel;
+	}
+
+	private List<HMCMiraklInvoice> getListOfHMCMiraklInvoiceMocks(final int numberOfMocks) {
+		return IntStream.range(0, numberOfMocks).mapToObj(i -> mock(HMCMiraklInvoice.class))
+				.collect(Collectors.toList());
 	}
 
 	private Date searchWindow() {
@@ -181,10 +201,11 @@ class AbstractAccountingDocumentsExtractServiceImplTest {
 		protected MyAccountingDocumentsExtractServiceImplTest(
 				Converter<MiraklShop, AccountingDocumentModel> miraklShopToAccountingModelConverter,
 				MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient,
+				AccountingDocumentsLinksService accountingDocumentsLinksService,
 				MailNotificationUtil invoicesMailNotificationUtil,
 				Converter<HMCMiraklInvoice, MyAccountingDocumentModel> miraklInvoiceToInvoiceModelConverter) {
 			super(miraklShopToAccountingModelConverter, miraklMarketplacePlatformOperatorApiClient,
-					invoicesMailNotificationUtil);
+					accountingDocumentsLinksService, invoicesMailNotificationUtil);
 			this.miraklInvoiceToInvoiceModelConverter = miraklInvoiceToInvoiceModelConverter;
 		}
 

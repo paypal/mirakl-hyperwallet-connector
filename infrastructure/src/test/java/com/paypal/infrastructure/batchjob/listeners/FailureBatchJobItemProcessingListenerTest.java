@@ -1,8 +1,6 @@
 package com.paypal.infrastructure.batchjob.listeners;
 
-import com.paypal.infrastructure.batchjob.BatchJobContext;
-import com.paypal.infrastructure.batchjob.BatchJobFailedItemService;
-import com.paypal.infrastructure.batchjob.BatchJobItem;
+import com.paypal.infrastructure.batchjob.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class FailureBatchJobItemProcessingListenerTest {
@@ -28,6 +26,9 @@ class FailureBatchJobItemProcessingListenerTest {
 
 	@Mock
 	private BatchJobItem<Object> batchJobItemMock;
+
+	@Mock
+	private BatchJob batchJobMock;
 
 	@Mock
 	private Exception exceptionMock;
@@ -48,12 +49,26 @@ class FailureBatchJobItemProcessingListenerTest {
 		verify(batchJobFailedItemServiceMock).saveItemFailed(batchJobItemMock);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
-	void onItemItemExtractionSuccessful_ShouldCallBatchJobFailedItemServiceItemProcessedMethod() {
+	void onItemItemExtractionSuccessful_ShouldCallBatchJobFailedItemServiceItemProcessedMethod_ForExtractJobs() {
+		when(batchJobContextMock.getBatchJob()).thenReturn(batchJobMock);
+		when(batchJobMock.getType()).thenReturn(BatchJobType.EXTRACT);
 
 		testObj.onItemExtractionSuccessful(batchJobContextMock, List.of(batchJobItemMock));
 
 		verify(batchJobFailedItemServiceMock).checkUpdatedFailedItems(argThat(list -> list.contains(batchJobItemMock)));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	void onItemItemExtractionSuccessful_ShouldCallBatchJobFailedItemServiceItemProcessedMethod_ForRetryJobs() {
+		when(batchJobContextMock.getBatchJob()).thenReturn(batchJobMock);
+		when(batchJobMock.getType()).thenReturn(BatchJobType.RETRY);
+
+		testObj.onItemExtractionSuccessful(batchJobContextMock, List.of(batchJobItemMock));
+
+		verify(batchJobFailedItemServiceMock, times(0)).checkUpdatedFailedItems(any());
 	}
 
 }

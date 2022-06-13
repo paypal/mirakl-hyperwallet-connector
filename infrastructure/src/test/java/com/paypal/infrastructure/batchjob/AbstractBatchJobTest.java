@@ -48,7 +48,22 @@ class AbstractBatchJobTest {
 		verify(batchJobItemProcessorMock, times(1)).processItem(batchJobContextMock, batchJobItemMock);
 	}
 
-	private static class MyAbstractBatchJob extends AbstractBatchJob<BatchJobContext, BatchJobItem<Object>> {
+	@Test
+	void getBatchJobItemValidator_shouldReturnEmptyValue() {
+		assertThat(testObj.getBatchJobItemValidator()).isEmpty();
+	}
+
+	@Test
+	void getBatchJobPreProcessor_shouldReturnEmptyValue() {
+		assertThat(testObj.getBatchJobPreProcessor()).isEmpty();
+	}
+
+	@Test
+	void getBatchJobItemEnricher_shouldReturnEmptyValue() {
+		assertThat(testObj.getBatchJobItemEnricher()).isEmpty();
+	}
+
+	private static class MyAbstractBatchJob extends AbstractExtractBatchJob<BatchJobContext, BatchJobItem<Object>> {
 
 		private final BatchJobItemProcessor<BatchJobContext, BatchJobItem<Object>> itemBatchJobItemProcessor;
 

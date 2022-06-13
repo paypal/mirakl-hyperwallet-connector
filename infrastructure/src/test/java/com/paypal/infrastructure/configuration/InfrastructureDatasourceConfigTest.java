@@ -1,5 +1,6 @@
 package com.paypal.infrastructure.configuration;
 
+import com.paypal.infrastructure.InfrastructureConnectorApplication;
 import com.paypal.infrastructure.batchjob.BatchJobFailedItem;
 import com.paypal.infrastructure.model.entity.JobExecutionInformationEntity;
 import com.paypal.infrastructure.model.entity.NotificationInfoEntity;
@@ -75,8 +76,8 @@ class InfrastructureDatasourceConfigTest {
 		testObj.applicationEntityManagerFactory(entityManagerFactoryBuilderMock, dataSourceMock);
 
 		verify(builderMock).packages(packagesArgumentCaptor.capture());
-		assertThat(packagesArgumentCaptor.getAllValues()).containsExactlyInAnyOrder(JobExecutionInformationEntity.class,
-				NotificationInfoEntity.class, BatchJobFailedItem.class);
+		assertThat(packagesArgumentCaptor.getAllValues())
+				.containsExactlyInAnyOrder(InfrastructureConnectorApplication.class);
 	}
 
 	@Test

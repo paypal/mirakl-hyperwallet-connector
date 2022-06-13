@@ -1,6 +1,5 @@
 package com.paypal.infrastructure.batchjob;
 
-import com.paypal.infrastructure.batchjob.cache.BatchJobFailedItemCacheService;
 import com.paypal.infrastructure.batchjob.entities.BatchJobItemTrackInfoEntity;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.TimeMachine;
@@ -9,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,7 +31,6 @@ class BatchJobFailedItemServiceImplTest {
 
 	private static final int INITIAL_NUMBER_OF_RETRIES = 3;
 
-	@InjectMocks
 	private BatchJobFailedItemServiceImpl testObj;
 
 	@Mock
@@ -51,16 +49,19 @@ class BatchJobFailedItemServiceImplTest {
 	private ArgumentCaptor<BatchJobFailedItem> batchJobFailedItemArgumentCaptor;
 
 	@Mock
-	private BatchJobFailedItem batchJobFailedItem1Mock, batchJobFailedItem2Mock;
+	private BatchJobFailedItem batchJobFailedItem1Mock, batchJobFailedItem2Mock, batchJobFailedItem3Mock;
 
 	@Mock
 	private BatchJobItemTrackInfoEntity batchJobItemTrackInfoEntity1Mock;
 
+	@Mock
+	private BatchJobItem<?> batchJobItem1Mock, batchJobItem2Mock, batchJobItem3Mock;
+
 	@BeforeEach
 	void setUp() {
 
-		testObj = new BatchJobFailedItemServiceImpl(batchJobFailedItemRepositoryMock, batchJobTrackingServiceMock,
-				List.of(batchJobFailedItemRetryPolicyMock), mailNotificationUtilMock);
+		testObj = spy(new BatchJobFailedItemServiceImpl(batchJobFailedItemRepositoryMock, batchJobTrackingServiceMock,
+				List.of(batchJobFailedItemRetryPolicyMock), mailNotificationUtilMock));
 	}
 
 	@Test
@@ -201,13 +202,16 @@ class BatchJobFailedItemServiceImplTest {
 	@Test
 	void getFailedItemsForRetry_ShouldReturnBatchJobFailedItemThatAreNotBeingProcessed() {
 
+		doReturn(5).when(testObj).getMaxNumberOfFailedItems();
+
 		when(batchJobFailedItem1Mock.getId()).thenReturn(ID_001);
 		when(batchJobFailedItem2Mock.getId()).thenReturn(ID_002);
 
 		when(batchJobFailedItemRetryPolicyMock.shouldRetryFailedItem(batchJobFailedItem2Mock)).thenReturn(true);
 
-		when(batchJobFailedItemRepositoryMock.findByTypeAndStatus(SELLER_TYPE, BatchJobFailedItemStatus.RETRY_PENDING))
-				.thenReturn(List.of(batchJobFailedItem1Mock, batchJobFailedItem2Mock));
+		when(batchJobFailedItemRepositoryMock.findByTypeAndStatusOrderByLastRetryTimestampAsc(SELLER_TYPE,
+				BatchJobFailedItemStatus.RETRY_PENDING, Pageable.ofSize(5)))
+						.thenReturn(List.of(batchJobFailedItem1Mock, batchJobFailedItem2Mock));
 
 		when(batchJobItemTrackInfoEntity1Mock.getItemId()).thenReturn(ID_001);
 
@@ -227,6 +231,31 @@ class BatchJobFailedItemServiceImplTest {
 		List<BatchJobFailedItem> result = testObj.getFailedItems("type1");
 
 		assertThat(result).containsAll(batchJobFailedItems);
+	}
+
+	@Test
+	void checkUpdatedFailedItems() {
+		when(batchJobItem1Mock.getItemId()).thenReturn("1");
+		when(batchJobItem1Mock.getItemType()).thenReturn("test");
+		when(batchJobItem2Mock.getItemId()).thenReturn("2");
+		when(batchJobItem2Mock.getItemType()).thenReturn("test");
+		when(batchJobItem3Mock.getItemId()).thenReturn("3");
+		when(batchJobItem3Mock.getItemType()).thenReturn("test");
+
+		when(batchJobFailedItemRepositoryMock.findById(new BatchJobFailedItemId("1", "test")))
+				.thenReturn(Optional.of(batchJobFailedItem1Mock));
+		when(batchJobFailedItemRepositoryMock.findById(new BatchJobFailedItemId("2", "test")))
+				.thenReturn(Optional.empty());
+		when(batchJobFailedItemRepositoryMock.findById(new BatchJobFailedItemId("3", "test")))
+				.thenReturn(Optional.of(batchJobFailedItem3Mock));
+
+		testObj.checkUpdatedFailedItems(List.of(batchJobItem1Mock, batchJobItem2Mock, batchJobItem3Mock));
+
+		verify(batchJobFailedItem1Mock).setNumberOfRetries(0);
+		verify(batchJobFailedItemRepositoryMock).save(batchJobFailedItem1Mock);
+		verify(batchJobFailedItemRepositoryMock, times(0)).save(batchJobFailedItem2Mock);
+		verify(batchJobFailedItem3Mock).setNumberOfRetries(0);
+		verify(batchJobFailedItemRepositoryMock).save(batchJobFailedItem3Mock);
 	}
 
 	private static class MySellerBatchJobItem extends AbstractBatchJobItem<Object> {

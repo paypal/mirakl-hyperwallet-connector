@@ -35,6 +35,15 @@ public interface BatchJobProcessingListener {
 	void beforeProcessingItem(BatchJobContext ctx, BatchJobItem<?> item);
 
 	/**
+	 * Handler on validation failure while item processing
+	 * @param ctx the job context.
+	 * @param item the item.
+	 * @param validationResult the validation result.
+	 */
+	void onItemProcessingValidationFailure(BatchJobContext ctx, BatchJobItem<?> item,
+			BatchJobItemValidationResult validationResult);
+
+	/**
 	 * Handler on failure item processing.
 	 * @param ctx the job context.
 	 * @param item the item.
@@ -67,5 +76,24 @@ public interface BatchJobProcessingListener {
 	 * @param e the exception.
 	 */
 	void onBatchJobFailure(BatchJobContext ctx, Exception e);
+
+	/**
+	 * Handler on preparation for processing phase started
+	 * @param ctx the job context.
+	 */
+	void onPreparationForProcessingStarted(BatchJobContext ctx);
+
+	/**
+	 * Handler on preparation for processing phase finished
+	 * @param ctx the job context.
+	 */
+	void onPreparationForProcessingFinished(BatchJobContext ctx);
+
+	/**
+	 * Handler on preparation for processing phase failed
+	 * @param ctx the job context.
+	 * @param e the exception.
+	 */
+	void onPreparationForProcessingFailure(BatchJobContext ctx, RuntimeException e);
 
 }

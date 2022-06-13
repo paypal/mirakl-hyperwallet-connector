@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ProfessionalSellersExtractBatchJob
-		extends AbstractBatchJob<BatchJobContext, ProfessionalSellerExtractJobItem> {
+		extends AbstractExtractBatchJob<BatchJobContext, ProfessionalSellerExtractJobItem> {
 
 	private final ProfessionalSellersExtractBatchJobItemProcessor professionalSellersExtractBatchJobItemProcessor;
 

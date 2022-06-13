@@ -1,6 +1,13 @@
 package com.paypal.invoices.batchjobs.creditnotes;
 
-import com.paypal.infrastructure.batchjob.*;
+import com.paypal.infrastructure.batchjob.BatchJobContext;
+import com.paypal.infrastructure.batchjob.BatchJobItemProcessor;
+import com.paypal.infrastructure.batchjob.BatchJobItemsExtractor;
+import com.paypal.infrastructure.batchjob.BatchJobType;
+import com.paypal.invoices.batchjobs.common.AbstractAccountingDocumentBatchJob;
+import com.paypal.invoices.batchjobs.common.AccountingDocumentBatchJobItemEnricher;
+import com.paypal.invoices.batchjobs.common.AccountingDocumentBatchJobItemValidator;
+import com.paypal.invoices.batchjobs.common.AccountingDocumentBatchJobPreProcessor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,7 +15,7 @@ import org.springframework.stereotype.Service;
  * HyperWallet.
  */
 @Service
-public class CreditNotesExtractBatchJob extends AbstractBatchJob<BatchJobContext, CreditNoteExtractJobItem> {
+public class CreditNotesExtractBatchJob extends AbstractAccountingDocumentBatchJob<CreditNoteExtractJobItem> {
 
 	private final CreditNotesExtractBatchJobItemsExtractor creditNotesExtractBatchJobItemsExtractor;
 
@@ -16,7 +23,12 @@ public class CreditNotesExtractBatchJob extends AbstractBatchJob<BatchJobContext
 
 	public CreditNotesExtractBatchJob(
 			final CreditNotesExtractBatchJobItemsExtractor creditNotesExtractBatchJobItemsExtractor,
-			final CreditNotesExtractBatchJobItemProcessor creditNotesExtractBatchJobItemProcessor) {
+			final CreditNotesExtractBatchJobItemProcessor creditNotesExtractBatchJobItemProcessor,
+			final AccountingDocumentBatchJobItemEnricher accountingDocumentBatchJobItemEnricher,
+			final AccountingDocumentBatchJobPreProcessor accountingDocumentBatchJobPreProcessor,
+			final AccountingDocumentBatchJobItemValidator accountingDocumentBatchJobItemValidator) {
+		super(accountingDocumentBatchJobItemEnricher, accountingDocumentBatchJobPreProcessor,
+				accountingDocumentBatchJobItemValidator);
 		this.creditNotesExtractBatchJobItemsExtractor = creditNotesExtractBatchJobItemsExtractor;
 		this.creditNotesExtractBatchJobItemProcessor = creditNotesExtractBatchJobItemProcessor;
 	}
@@ -37,6 +49,11 @@ public class CreditNotesExtractBatchJob extends AbstractBatchJob<BatchJobContext
 	@Override
 	protected BatchJobItemProcessor<BatchJobContext, CreditNoteExtractJobItem> getBatchJobItemProcessor() {
 		return this.creditNotesExtractBatchJobItemProcessor;
+	}
+
+	@Override
+	public BatchJobType getType() {
+		return BatchJobType.EXTRACT;
 	}
 
 }

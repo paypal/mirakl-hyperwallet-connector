@@ -3,11 +3,14 @@ package com.paypal.infrastructure.batchjob;
 import com.paypal.infrastructure.batchjob.entities.BatchJobItemTrackInfoEntity;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.TimeMachine;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,9 @@ public class BatchJobFailedItemServiceImpl implements BatchJobFailedItemService 
 	private final List<BatchJobFailedItemRetryPolicy> batchJobFailedItemRetryPolicies;
 
 	private final MailNotificationUtil mailNotificationUtil;
+
+	@Value("${retry.maxFailedItemsToProcessed}")
+	private int maxNumberOfFailedItems;
 
 	public BatchJobFailedItemServiceImpl(final BatchJobFailedItemRepository failedItemRepository,
 			BatchJobTrackingService batchJobTrackingService,
@@ -90,8 +96,8 @@ public class BatchJobFailedItemServiceImpl implements BatchJobFailedItemService 
 	 */
 	@Override
 	public List<BatchJobFailedItem> getFailedItemsForRetry(String itemType) {
-		List<BatchJobFailedItem> failedItems = failedItemRepository.findByTypeAndStatus(itemType,
-				BatchJobFailedItemStatus.RETRY_PENDING);
+		List<BatchJobFailedItem> failedItems = failedItemRepository.findByTypeAndStatusOrderByLastRetryTimestampAsc(
+				itemType, BatchJobFailedItemStatus.RETRY_PENDING, Pageable.ofSize(getMaxNumberOfFailedItems()));
 
 		Set<String> itemsBeingProcessedIds = batchJobTrackingService.getItemsBeingProcessedOrEnquedToProcess(itemType)
 				.stream().map(BatchJobItemTrackInfoEntity::getItemId).collect(Collectors.toSet());
@@ -112,7 +118,18 @@ public class BatchJobFailedItemServiceImpl implements BatchJobFailedItemService 
 
 	@Override
 	public <T extends BatchJobItem<?>> void checkUpdatedFailedItems(Collection<T> extractedItems) {
-		// Nothing to do
+
+		//@formatter:off
+		extractedItems.stream()
+				.map(batchJobItem -> new BatchJobFailedItemId(batchJobItem.getItemId(), batchJobItem.getItemType()))
+				.map(failedItemRepository::findById)
+				.filter(Optional::isPresent)
+				.map(Optional::get)
+				.forEach(batchJobFailedItem -> {
+					batchJobFailedItem.setNumberOfRetries(0);
+					failedItemRepository.save(batchJobFailedItem);
+				});
+		//@formatter:on
 	}
 
 	private boolean shouldRetryFailedItem(BatchJobFailedItem item) {
@@ -136,6 +153,10 @@ public class BatchJobFailedItemServiceImpl implements BatchJobFailedItemService 
 		failedItem.setNumberOfRetries(failedItem.getNumberOfRetries() + 1);
 
 		return failedItem;
+	}
+
+	protected int getMaxNumberOfFailedItems() {
+		return maxNumberOfFailedItems;
 	}
 
 }
