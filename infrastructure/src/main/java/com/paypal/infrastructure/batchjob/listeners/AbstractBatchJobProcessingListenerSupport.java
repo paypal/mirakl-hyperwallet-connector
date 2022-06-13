@@ -2,6 +2,7 @@ package com.paypal.infrastructure.batchjob.listeners;
 
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.infrastructure.batchjob.BatchJobItem;
+import com.paypal.infrastructure.batchjob.BatchJobItemValidationResult;
 import com.paypal.infrastructure.batchjob.BatchJobProcessingListener;
 
 import java.util.Collection;
@@ -43,6 +44,12 @@ public class AbstractBatchJobProcessingListenerSupport implements BatchJobProces
 		// empty method
 	}
 
+	@Override
+	public void onItemProcessingValidationFailure(BatchJobContext ctx, BatchJobItem<?> item,
+			BatchJobItemValidationResult validationResult) {
+		// empty method
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -80,6 +87,21 @@ public class AbstractBatchJobProcessingListenerSupport implements BatchJobProces
 	 */
 	@Override
 	public void onBatchJobFailure(BatchJobContext ctx, Exception e) {
+		// empty method
+	}
+
+	@Override
+	public void onPreparationForProcessingStarted(BatchJobContext ctx) {
+		// empty method
+	}
+
+	@Override
+	public void onPreparationForProcessingFinished(BatchJobContext ctx) {
+		// empty method
+	}
+
+	@Override
+	public void onPreparationForProcessingFailure(BatchJobContext ctx, RuntimeException e) {
 		// empty method
 	}
 

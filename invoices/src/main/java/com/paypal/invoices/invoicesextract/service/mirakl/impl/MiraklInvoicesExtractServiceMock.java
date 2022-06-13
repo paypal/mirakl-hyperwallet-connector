@@ -8,6 +8,7 @@ import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoice;
 import com.paypal.invoices.infraestructure.testing.TestingInvoicesSessionDataHelper;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
+import com.paypal.invoices.invoicesextract.service.hmc.AccountingDocumentsLinksService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -28,14 +29,15 @@ public class MiraklInvoicesExtractServiceMock extends MiraklInvoicesExtractServi
 			final Converter<MiraklShop, AccountingDocumentModel> miraklShopAccountingDocumentModelConverter,
 			final MailNotificationUtil invoicesMailNotificationUtil,
 			final Converter<HMCMiraklInvoice, InvoiceModel> miraklInvoiceToInvoiceModelConverter,
+			final AccountingDocumentsLinksService accountingDocumentsLinksService,
 			final TestingInvoicesSessionDataHelper testingInvoicesSessionDataHelper) {
 		super(miraklMarketplacePlatformOperatorApiClient, miraklShopAccountingDocumentModelConverter,
-				invoicesMailNotificationUtil, miraklInvoiceToInvoiceModelConverter);
+				invoicesMailNotificationUtil, miraklInvoiceToInvoiceModelConverter, accountingDocumentsLinksService);
 		this.testingInvoicesSessionDataHelper = testingInvoicesSessionDataHelper;
 	}
 
 	@Override
-	protected List<InvoiceModel> getAccountingDocuments(final Date delta) {
+	public List<InvoiceModel> extractAccountingDocuments(final Date delta) {
 		//@formatter:off
 		return Stream.ofNullable(testingInvoicesSessionDataHelper.getInvoices())
 				.flatMap(Collection::stream)

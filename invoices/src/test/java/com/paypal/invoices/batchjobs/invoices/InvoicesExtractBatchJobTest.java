@@ -3,6 +3,7 @@ package com.paypal.invoices.batchjobs.invoices;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.infrastructure.batchjob.BatchJobItemProcessor;
 import com.paypal.infrastructure.batchjob.BatchJobItemsExtractor;
+import com.paypal.infrastructure.batchjob.BatchJobType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -38,6 +39,11 @@ class InvoicesExtractBatchJobTest {
 		final BatchJobItemProcessor<BatchJobContext, InvoiceExtractJobItem> result = testObj.getBatchJobItemProcessor();
 
 		assertThat(result).isEqualTo(invoicesExtractBatchJobItemProcessorMock);
+	}
+
+	@Test
+	void getBatchJobType_shouldReturnExtractType() {
+		assertThat(testObj.getType()).isEqualTo(BatchJobType.EXTRACT);
 	}
 
 }

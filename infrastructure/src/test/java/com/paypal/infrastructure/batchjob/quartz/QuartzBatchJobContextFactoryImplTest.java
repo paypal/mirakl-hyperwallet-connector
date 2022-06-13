@@ -1,5 +1,6 @@
 package com.paypal.infrastructure.batchjob.quartz;
 
+import com.paypal.infrastructure.batchjob.BatchJob;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,11 +30,14 @@ class QuartzBatchJobContextFactoryImplTest {
 	@Mock
 	private JobDataMap jobDataMapMock;
 
+	@Mock
+	private BatchJob batchJobMock;
+
 	@Test
 	void getBatchJobContext_ShouldCreateBatchJobContext() {
 		when(jobExecutionContextMock.getJobDetail()).thenReturn(jobDetailMock);
 		when(jobDetailMock.getJobDataMap()).thenReturn(jobDataMapMock);
-		BatchJobContext result = testObj.getBatchJobContext(jobExecutionContextMock);
+		BatchJobContext result = testObj.getBatchJobContext(batchJobMock, jobExecutionContextMock);
 
 		assertThat(result).isNotNull();
 	}

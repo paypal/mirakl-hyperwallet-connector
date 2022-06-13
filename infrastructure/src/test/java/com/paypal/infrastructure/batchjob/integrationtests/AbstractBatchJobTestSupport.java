@@ -17,6 +17,7 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.awaitility.Awaitility.await;
@@ -50,6 +51,15 @@ abstract class AbstractBatchJobTestSupport {
 	@Autowired
 	protected TestBatchJobItemProcessor testBatchJobItemProcessor;
 
+	@Autowired
+	protected TestBatchJobPreProcessor testBatchJobPreProcessor;
+
+	@Autowired
+	protected TestBatchJobItemValidator testBatchJobItemValidator;
+
+	@Autowired
+	protected TestBatchJobItemEnricher testBatchJobItemEnricher;
+
 	protected static AtomicBoolean jobRunning = new AtomicBoolean(false);
 
 	@BeforeEach
@@ -65,6 +75,13 @@ abstract class AbstractBatchJobTestSupport {
 	@BeforeEach
 	void cleanTimeMachineState() {
 		TimeMachine.useSystemDefaultZoneClock();
+	}
+
+	@BeforeEach
+	void resetBatchJobsState() {
+		testBatchJobItemExtractor.itemsIdsToExtract = new ArrayList<>();
+		testBatchJobItemProcessor.itemsIdsToFail = new HashSet<>();
+		testBatchJobItemProcessor.itemsProcessedSuccesfully = new HashSet<>();
 	}
 
 	@PostConstruct
@@ -90,14 +107,50 @@ abstract class AbstractBatchJobTestSupport {
 		await().atMost(2, TimeUnit.SECONDS).until(() -> !jobRunning.get());
 	}
 
-	static class TestRetryBatchJob extends AbstractBatchJob<BatchJobContext, TestBatchJobItem> {
+	static abstract class AbstractTestBatchJob extends AbstractBatchJob<BatchJobContext, TestBatchJobItem> {
+
+		private final TestBatchJobItemEnricher testBatchJobItemEnricher;
+
+		private final TestBatchJobItemValidator testBatchJobItemValidator;
+
+		private final TestBatchJobPreProcessor testBatchJobPreProcessor;
+
+		protected AbstractTestBatchJob(TestBatchJobItemEnricher testBatchJobItemEnricher,
+				TestBatchJobItemValidator testBatchJobItemValidator,
+				TestBatchJobPreProcessor testBatchJobPreProcessor) {
+			this.testBatchJobItemEnricher = testBatchJobItemEnricher;
+			this.testBatchJobItemValidator = testBatchJobItemValidator;
+			this.testBatchJobPreProcessor = testBatchJobPreProcessor;
+		}
+
+		@Override
+		protected Optional<BatchJobItemValidator<BatchJobContext, TestBatchJobItem>> getBatchJobItemValidator() {
+			return Optional.of(testBatchJobItemValidator);
+		}
+
+		@Override
+		protected Optional<BatchJobPreProcessor<BatchJobContext, TestBatchJobItem>> getBatchJobPreProcessor() {
+			return Optional.of(testBatchJobPreProcessor);
+		}
+
+		@Override
+		protected Optional<BatchJobItemEnricher<BatchJobContext, TestBatchJobItem>> getBatchJobItemEnricher() {
+			return Optional.of(testBatchJobItemEnricher);
+		}
+
+	}
+
+	static class TestRetryBatchJob extends AbstractTestBatchJob {
 
 		private final BatchJobFailedItemRetryITTest.TestRetryBatchJobItemExtractor testRetryBatchJobItemExtractor;
 
 		private final BatchJobFailedItemRetryITTest.TestBatchJobItemProcessor testBatchJobItemProcessor;
 
 		TestRetryBatchJob(BatchJobFailedItemRetryITTest.TestRetryBatchJobItemExtractor testRetryBatchJobItemExtractor,
-				BatchJobFailedItemRetryITTest.TestBatchJobItemProcessor testBatchJobItemProcessor) {
+				BatchJobFailedItemRetryITTest.TestBatchJobItemProcessor testBatchJobItemProcessor,
+				TestBatchJobItemEnricher testBatchJobItemEnricher, TestBatchJobItemValidator testBatchJobItemValidator,
+				TestBatchJobPreProcessor testBatchJobPreProcessor) {
+			super(testBatchJobItemEnricher, testBatchJobItemValidator, testBatchJobPreProcessor);
 			this.testRetryBatchJobItemExtractor = testRetryBatchJobItemExtractor;
 			this.testBatchJobItemProcessor = testBatchJobItemProcessor;
 		}
@@ -112,17 +165,24 @@ abstract class AbstractBatchJobTestSupport {
 			return testRetryBatchJobItemExtractor;
 		}
 
+		@Override
+		public BatchJobType getType() {
+			return BatchJobType.RETRY;
+		}
+
 	}
 
-	static class TestBatchJob
-			extends AbstractBatchJob<BatchJobContext, BatchJobFailedItemRetryITTest.TestBatchJobItem> {
+	static class TestBatchJob extends AbstractTestBatchJob {
 
 		private final BatchJobFailedItemRetryITTest.TestBatchJobItemExtractor testBatchJobItemExtractor;
 
 		private final BatchJobFailedItemRetryITTest.TestBatchJobItemProcessor testBatchJobItemProcessor;
 
-		TestBatchJob(BatchJobFailedItemRetryITTest.TestBatchJobItemExtractor testBatchJobItemExtractor,
-				BatchJobFailedItemRetryITTest.TestBatchJobItemProcessor testBatchJobItemProcessor) {
+		TestBatchJob(TestBatchJobItemExtractor testBatchJobItemExtractor,
+				TestBatchJobItemProcessor testBatchJobItemProcessor, TestBatchJobItemEnricher testBatchJobItemEnricher,
+				TestBatchJobItemValidator testBatchJobItemValidator,
+				TestBatchJobPreProcessor testBatchJobPreProcessor) {
+			super(testBatchJobItemEnricher, testBatchJobItemValidator, testBatchJobPreProcessor);
 			this.testBatchJobItemExtractor = testBatchJobItemExtractor;
 			this.testBatchJobItemProcessor = testBatchJobItemProcessor;
 		}
@@ -135,6 +195,11 @@ abstract class AbstractBatchJobTestSupport {
 		@Override
 		protected BatchJobItemsExtractor<BatchJobContext, BatchJobFailedItemRetryITTest.TestBatchJobItem> getBatchJobItemsExtractor() {
 			return testBatchJobItemExtractor;
+		}
+
+		@Override
+		public BatchJobType getType() {
+			return BatchJobType.EXTRACT;
 		}
 
 	}
@@ -178,6 +243,66 @@ abstract class AbstractBatchJobTestSupport {
 		public Collection<BatchJobFailedItemRetryITTest.TestBatchJobItem> getItems(BatchJobContext ctx) {
 			return itemsIdsToExtract.stream().map(BatchJobFailedItemRetryITTest.TestBatchJobItem::new)
 					.collect(Collectors.toList());
+		}
+
+	}
+
+	static class TestBatchJobPreProcessor
+			implements BatchJobPreProcessor<BatchJobContext, BatchJobFailedItemRetryITTest.TestBatchJobItem> {
+
+		Set<Integer> itemsIdsToFail = new HashSet<>();
+
+		Set<BatchJobFailedItemRetryITTest.TestBatchJobItem> itemsProcessedSuccesfully = new HashSet<>();
+
+		@Override
+		public void prepareForProcessing(BatchJobContext ctx, Collection<TestBatchJobItem> itemsToBeProcessed) {
+			if (itemsToBeProcessed.stream().map(BatchJobItem::getItemId)
+					.anyMatch(itemId -> itemsIdsToFail.contains(itemId))) {
+				throw new RuntimeException("Item Failed");
+			}
+			else {
+				itemsProcessedSuccesfully.addAll(itemsToBeProcessed);
+			}
+		}
+
+	}
+
+	static class TestBatchJobItemValidator
+			implements BatchJobItemValidator<BatchJobContext, BatchJobFailedItemRetryITTest.TestBatchJobItem> {
+
+		Set<Integer> itemsIdsToFail = new HashSet<>();
+
+		Set<Integer> itemsIdsToWarn = new HashSet<>();
+
+		Set<Integer> itemsIdsToReject = new HashSet<>();
+
+		@Override
+		public BatchJobItemValidationResult validateItem(BatchJobContext ctx, TestBatchJobItem jobItem) {
+			Integer itemId = Integer.valueOf(jobItem.getItemId());
+			if (itemsIdsToReject.contains(itemId)) {
+				return BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.INVALID).build();
+			}
+			else if (itemsIdsToWarn.contains(itemId)) {
+				return BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.WARNING).build();
+			}
+			else if (itemsIdsToFail.contains(itemId)) {
+				throw new RuntimeException("Item validation exception");
+			}
+			else {
+				return BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.VALID).build();
+			}
+		}
+
+	}
+
+	static class TestBatchJobItemEnricher
+			implements BatchJobItemEnricher<BatchJobContext, BatchJobFailedItemRetryITTest.TestBatchJobItem> {
+
+		Function<String, String> enrichmentFunction = Function.identity();
+
+		@Override
+		public TestBatchJobItem enrichItem(BatchJobContext ctx, TestBatchJobItem jobItem) {
+			return new TestBatchJobItem(jobItem.getItemId(), enrichmentFunction.apply(jobItem.getItem()));
 		}
 
 	}
@@ -256,15 +381,36 @@ abstract class AbstractBatchJobTestSupport {
 		}
 
 		@Bean
+		public TestBatchJobItemValidator testBatchJobItemValidator() {
+			return new TestBatchJobItemValidator();
+		}
+
+		@Bean
+		public TestBatchJobItemEnricher testBatchJobItemEnricher() {
+			return new TestBatchJobItemEnricher();
+		}
+
+		@Bean
+		public TestBatchJobPreProcessor testBatchJobPreProcessor() {
+			return new TestBatchJobPreProcessor();
+		}
+
+		@Bean
 		public TestRetryBatchJob testRetryBatchJob(TestRetryBatchJobItemExtractor testRetryBatchJobItemExtractor,
-				TestBatchJobItemProcessor testBatchJobItemProcessor) {
-			return new TestRetryBatchJob(testRetryBatchJobItemExtractor, testBatchJobItemProcessor);
+				TestBatchJobItemProcessor testBatchJobItemProcessor, TestBatchJobItemEnricher testBatchJobItemEnricher,
+				TestBatchJobItemValidator testBatchJobItemValidator,
+				TestBatchJobPreProcessor testBatchJobPreProcessor) {
+			return new TestRetryBatchJob(testRetryBatchJobItemExtractor, testBatchJobItemProcessor,
+					testBatchJobItemEnricher, testBatchJobItemValidator, testBatchJobPreProcessor);
 		}
 
 		@Bean
 		public TestBatchJob testBatchJob(TestBatchJobItemExtractor testBatchJobItemExtractor,
-				TestBatchJobItemProcessor testBatchJobItemProcessor) {
-			return new TestBatchJob(testBatchJobItemExtractor, testBatchJobItemProcessor);
+				TestBatchJobItemProcessor testBatchJobItemProcessor, TestBatchJobItemEnricher testBatchJobItemEnricher,
+				TestBatchJobItemValidator testBatchJobItemValidator,
+				TestBatchJobPreProcessor testBatchJobPreProcessor) {
+			return new TestBatchJob(testBatchJobItemExtractor, testBatchJobItemProcessor, testBatchJobItemEnricher,
+					testBatchJobItemValidator, testBatchJobPreProcessor);
 		}
 
 		@Bean

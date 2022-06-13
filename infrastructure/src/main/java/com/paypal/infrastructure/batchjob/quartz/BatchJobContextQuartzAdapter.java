@@ -1,6 +1,8 @@
 package com.paypal.infrastructure.batchjob.quartz;
 
+import com.paypal.infrastructure.batchjob.BatchJob;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
+import com.paypal.infrastructure.batchjob.BatchJobItem;
 import com.paypal.infrastructure.batchjob.BatchJobStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
@@ -9,6 +11,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class BatchJobContextQuartzAdapter implements BatchJobContext {
+
+	public static final String KEY_BATCH_JOB = "batchJob";
 
 	private static final String KEY_BATCH_JOB_EXECUTION_UUID = "batchJobUuid";
 
@@ -164,6 +168,11 @@ public class BatchJobContextQuartzAdapter implements BatchJobContext {
 	@Override
 	public JobExecutionContext getJobExecutionContext() {
 		return jobExecutionContext;
+	}
+
+	@Override
+	public <C extends BatchJobContext, T extends BatchJobItem<?>> BatchJob<C, T> getBatchJob() {
+		return (BatchJob) jobExecutionContext.getJobDetail().getJobDataMap().get(KEY_BATCH_JOB);
 	}
 
 	private void setIntValue(final String key, final int value) {

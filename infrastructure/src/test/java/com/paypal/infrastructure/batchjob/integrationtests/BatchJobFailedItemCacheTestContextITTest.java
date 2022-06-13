@@ -13,7 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag("IntegrationTest")
-@SpringBootTest(classes = BatchJobFailedItemCacheTestContext.class)
+@SpringBootTest(classes = BatchJobTestContext.class)
 @TestPropertySource(
 		locations = { "classpath:infrastructure-test.properties", "classpath:infrastructure-test-db.properties" })
 @ExtendWith(SpringExtension.class)

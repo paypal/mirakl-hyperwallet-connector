@@ -9,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.InjectMocks;
-import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -40,7 +39,7 @@ class QuartzBatchJobAdapterTest {
 
 	@Test
 	void execute_ShouldExecuteAdaptedJob() throws JobExecutionException {
-		when(quartzBatchJobContextFactoryMock.getBatchJobContext(jobExecutionContextMock))
+		when(quartzBatchJobContextFactoryMock.getBatchJobContext(batchJobMock, jobExecutionContextMock))
 				.thenReturn(batchJobContextMock);
 		testObj.execute(jobExecutionContextMock);
 

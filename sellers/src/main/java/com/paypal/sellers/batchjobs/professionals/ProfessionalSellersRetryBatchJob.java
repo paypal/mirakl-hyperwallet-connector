@@ -1,9 +1,6 @@
 package com.paypal.sellers.batchjobs.professionals;
 
-import com.paypal.infrastructure.batchjob.AbstractBatchJob;
-import com.paypal.infrastructure.batchjob.BatchJobContext;
-import com.paypal.infrastructure.batchjob.BatchJobItemProcessor;
-import com.paypal.infrastructure.batchjob.BatchJobItemsExtractor;
+import com.paypal.infrastructure.batchjob.*;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,7 +8,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ProfessionalSellersRetryBatchJob
-		extends AbstractBatchJob<BatchJobContext, ProfessionalSellerExtractJobItem> {
+		extends AbstractRetryBatchJob<BatchJobContext, ProfessionalSellerExtractJobItem> {
 
 	private final ProfessionalSellersExtractBatchJobItemProcessor professionalSellersExtractBatchJobItemProcessor;
 

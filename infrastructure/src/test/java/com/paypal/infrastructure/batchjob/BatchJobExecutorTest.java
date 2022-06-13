@@ -31,7 +31,7 @@ class BatchJobExecutorTest {
 	private BatchJobExecutor testObj;
 
 	@Mock
-	private BatchJob<BatchJobContext, BatchJobItem<?>> batchJobMock;
+	private BatchJob<BatchJobContext, BatchJobItem<Object>> batchJobMock;
 
 	@Mock
 	private BatchJobContext batchJobContextMock;
@@ -40,17 +40,28 @@ class BatchJobExecutorTest {
 	private BatchJobProcessingListener listenerMock1, listenerMock2;
 
 	@Mock
-	private BatchJobItem<?> itemMock1, itemMock2;
+	private BatchJobItem<Object> itemMock1, itemMock2;
 
-	private Collection<BatchJobItem<?>> itemCollection;
+	@Mock
+	private BatchJobItem<Object> enrichedItemMock1, enrichedItemMock2;
+
+	private Collection<BatchJobItem<Object>> itemCollection;
 
 	@BeforeEach
 	public void setUp() {
 		testObj.batchJobProcessingListeners = List.of(listenerMock1, listenerMock2);
 		itemCollection = List.of(itemMock1, itemMock2);
 		lenient().when(batchJobMock.getItems(any(BatchJobContext.class))).thenReturn(itemCollection);
+
+		lenient().when(batchJobMock.validateItem(any(), any()))
+				.thenReturn(BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.VALID).build());
+		lenient().when(batchJobMock.enrichItem(any(BatchJobContext.class), eq(itemMock1)))
+				.thenReturn(enrichedItemMock1);
+		lenient().when(batchJobMock.enrichItem(any(BatchJobContext.class), eq(itemMock2)))
+				.thenReturn(enrichedItemMock2);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	void execute_ShouldRetrieveAndProcessBatchItems() {
 
@@ -63,20 +74,67 @@ class BatchJobExecutorTest {
 		inOrder.verify(listenerMock1).beforeItemExtraction(any(BatchJobContext.class));
 		inOrder.verify(listenerMock2).beforeItemExtraction(any(BatchJobContext.class));
 		inOrder.verify(batchJobMock).getItems(any(BatchJobContext.class));
-		inOrder.verify(listenerMock1).onItemExtractionSuccessful(any(BatchJobContext.class), eq(itemCollection));
-		inOrder.verify(listenerMock2).onItemExtractionSuccessful(any(BatchJobContext.class), eq(itemCollection));
+		inOrder.verify(listenerMock1).onItemExtractionSuccessful(any(BatchJobContext.class),
+				(Collection) eq(itemCollection));
+		inOrder.verify(listenerMock2).onItemExtractionSuccessful(any(BatchJobContext.class),
+				(Collection) eq(itemCollection));
+
+		inOrder.verify(batchJobMock).prepareForItemProcessing(any(BatchJobContext.class), any());
+
 		inOrder.verify(listenerMock1).beforeProcessingItem(any(BatchJobContext.class), eq(itemMock1));
 		inOrder.verify(listenerMock2).beforeProcessingItem(any(BatchJobContext.class), eq(itemMock1));
-		inOrder.verify(batchJobMock).processItem(any(BatchJobContext.class), eq(itemMock1));
+		inOrder.verify(batchJobMock).enrichItem(any(BatchJobContext.class), eq(itemMock1));
+		inOrder.verify(batchJobMock).validateItem(any(BatchJobContext.class), eq(enrichedItemMock1));
+		inOrder.verify(batchJobMock).processItem(any(BatchJobContext.class), eq(enrichedItemMock1));
 		inOrder.verify(listenerMock1).onItemProcessingSuccess(any(BatchJobContext.class), eq(itemMock1));
 		inOrder.verify(listenerMock2).onItemProcessingSuccess(any(BatchJobContext.class), eq(itemMock1));
 		inOrder.verify(listenerMock1).beforeProcessingItem(any(BatchJobContext.class), eq(itemMock2));
 		inOrder.verify(listenerMock2).beforeProcessingItem(any(BatchJobContext.class), eq(itemMock2));
-		inOrder.verify(batchJobMock).processItem(any(BatchJobContext.class), eq(itemMock2));
+		inOrder.verify(batchJobMock).enrichItem(any(BatchJobContext.class), eq(itemMock2));
+		inOrder.verify(batchJobMock).validateItem(any(BatchJobContext.class), eq(enrichedItemMock2));
+		inOrder.verify(batchJobMock).processItem(any(BatchJobContext.class), eq(enrichedItemMock2));
 		inOrder.verify(listenerMock1).onItemProcessingSuccess(any(BatchJobContext.class), eq(itemMock2));
 		inOrder.verify(listenerMock2).onItemProcessingSuccess(any(BatchJobContext.class), eq(itemMock2));
 		inOrder.verify(listenerMock1).onBatchJobFinished(any(BatchJobContext.class));
 		inOrder.verify(listenerMock2).onBatchJobFinished(any(BatchJobContext.class));
+	}
+
+	@Test
+	void execute_ShouldContinueProcessing_WhenItemValidationReturnsAWarning() {
+
+		when(batchJobMock.validateItem(any(), eq(enrichedItemMock2))).thenReturn(
+				BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.WARNING).build());
+
+		testObj.execute(batchJobMock, batchJobContextMock);
+
+		verify(batchJobMock).enrichItem(any(BatchJobContext.class), eq(itemMock2));
+		verify(batchJobMock).validateItem(any(BatchJobContext.class), eq(enrichedItemMock2));
+		verify(batchJobMock).processItem(any(BatchJobContext.class), eq(enrichedItemMock2));
+		verify(listenerMock1).onItemProcessingValidationFailure(any(BatchJobContext.class), eq(itemMock2),
+				any(BatchJobItemValidationResult.class));
+		verify(listenerMock2).onItemProcessingValidationFailure(any(BatchJobContext.class), eq(itemMock2),
+				any(BatchJobItemValidationResult.class));
+		verify(listenerMock1).onItemProcessingSuccess(any(BatchJobContext.class), eq(itemMock2));
+		verify(listenerMock2).onItemProcessingSuccess(any(BatchJobContext.class), eq(itemMock2));
+	}
+
+	@Test
+	void execute_ShouldAbortItemProcessingAndRegisterFailure_WhenItemValidationReturnsAnInvalid() {
+
+		when(batchJobMock.validateItem(any(), eq(enrichedItemMock2))).thenReturn(
+				BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.INVALID).build());
+
+		testObj.execute(batchJobMock, batchJobContextMock);
+
+		verify(batchJobMock).enrichItem(any(BatchJobContext.class), eq(itemMock2));
+		verify(batchJobMock).validateItem(any(BatchJobContext.class), eq(enrichedItemMock2));
+		verify(batchJobMock, times(0)).processItem(any(BatchJobContext.class), eq(enrichedItemMock2));
+		verify(listenerMock1).onItemProcessingValidationFailure(any(BatchJobContext.class), eq(itemMock2),
+				any(BatchJobItemValidationResult.class));
+		verify(listenerMock2).onItemProcessingValidationFailure(any(BatchJobContext.class), eq(itemMock2),
+				any(BatchJobItemValidationResult.class));
+		verify(listenerMock1).onItemProcessingFailure(any(BatchJobContext.class), eq(itemMock2), eq(null));
+		verify(listenerMock2).onItemProcessingFailure(any(BatchJobContext.class), eq(itemMock2), eq(null));
 	}
 
 	@Test
@@ -127,6 +185,31 @@ class BatchJobExecutorTest {
 		doThrow(RuntimeException.class).when(batchJobMock).getItems(any(BatchJobContext.class));
 		doThrow(RuntimeException.class).when(listenerMock1).onItemExtractionFailure(any(BatchJobContext.class),
 				any(RuntimeException.class));
+
+		testObj.execute(batchJobMock, batchJobContextMock);
+
+		assertThat(logTrackerStub.contains(MSG_ERROR_WHILE_INVOKING_BATCH_JOB_LISTENER)).isTrue();
+	}
+
+	@Test
+	void execute_ShouldCallOnPreparationForProcessingFailure_WhenPreparationForProcessingThrowsARunTimeException() {
+
+		doThrow(RuntimeException.class).when(batchJobMock).prepareForItemProcessing(any(), any());
+
+		testObj.execute(batchJobMock, batchJobContextMock);
+
+		verify(listenerMock1).onPreparationForProcessingFailure(any(BatchJobContext.class),
+				any(RuntimeException.class));
+		verify(listenerMock2).onPreparationForProcessingFailure(any(BatchJobContext.class),
+				any(RuntimeException.class));
+	}
+
+	@Test
+	void execute_ShouldLogAnError_WhenOnPreparationForProcessingFailureThrowsARunTimeException() {
+
+		doThrow(RuntimeException.class).when(batchJobMock).prepareForItemProcessing(any(), any());
+		doThrow(RuntimeException.class).when(listenerMock1)
+				.onPreparationForProcessingFailure(any(BatchJobContext.class), any(RuntimeException.class));
 
 		testObj.execute(batchJobMock, batchJobContextMock);
 

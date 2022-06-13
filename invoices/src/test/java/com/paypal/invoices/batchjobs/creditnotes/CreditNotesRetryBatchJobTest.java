@@ -1,5 +1,6 @@
 package com.paypal.invoices.batchjobs.creditnotes;
 
+import com.paypal.infrastructure.batchjob.BatchJobType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -28,6 +29,11 @@ class CreditNotesRetryBatchJobTest {
 	@Test
 	void getBatchJobItemsExtractor_shouldReturnRetryBatchJobItemExtractor() {
 		assertThat(testObj.getBatchJobItemsExtractor()).isEqualTo(creditNotesRetryBatchJobItemsExtractorMock);
+	}
+
+	@Test
+	void getBatchJobType_shouldReturnRetryType() {
+		assertThat(testObj.getType()).isEqualTo(BatchJobType.RETRY);
 	}
 
 }

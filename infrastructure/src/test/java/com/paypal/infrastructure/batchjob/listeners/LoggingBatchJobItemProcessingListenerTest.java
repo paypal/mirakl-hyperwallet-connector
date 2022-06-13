@@ -4,6 +4,7 @@ import com.callibrity.logging.test.LogTracker;
 import com.callibrity.logging.test.LogTrackerStub;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.infrastructure.batchjob.BatchJobItem;
+import com.paypal.infrastructure.batchjob.BatchJobItemValidationResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,6 +49,9 @@ class LoggingBatchJobItemProcessingListenerTest {
 
 	@Mock
 	private BatchJobItem<?> batchJobItemMock;
+
+	@Mock
+	private BatchJobItemValidationResult batchJobItemValidationResultMock;
 
 	@Mock
 	private Collection<BatchJobItem<?>> extractedItemsMock;
@@ -135,6 +139,16 @@ class LoggingBatchJobItemProcessingListenerTest {
 						+ NUMBER_OF_ITEMS_FAILED + " items failed. " + NUMBER_OF_ITEMS_REMAINING + " items remaining"))
 								.isTrue();
 
+	}
+
+	@Test
+	void onItemProcessingValidationFailure_ShouldLogWarnMessage() {
+		testObj.onItemProcessingValidationFailure(batchJobContextMock, batchJobItemMock,
+				batchJobItemValidationResultMock);
+
+		assertThat(logTrackerStub.contains(
+				"[" + JOB_NAME + "] Validation of item of type " + ITEM_TYPE + " with id: " + ITEM_ID + " has failed"))
+						.isTrue();
 	}
 
 }

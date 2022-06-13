@@ -1,16 +1,13 @@
 package com.paypal.sellers.batchjobs.bankaccount;
 
-import com.paypal.infrastructure.batchjob.AbstractBatchJob;
-import com.paypal.infrastructure.batchjob.BatchJobContext;
-import com.paypal.infrastructure.batchjob.BatchJobItemProcessor;
-import com.paypal.infrastructure.batchjob.BatchJobItemsExtractor;
+import com.paypal.infrastructure.batchjob.*;
 import org.springframework.stereotype.Service;
 
 /**
  * Retries items that have failed during the bank account extract job
  */
 @Service
-public class BankAccountRetryBatchJob extends AbstractBatchJob<BatchJobContext, BankAccountExtractJobItem> {
+public class BankAccountRetryBatchJob extends AbstractRetryBatchJob<BatchJobContext, BankAccountExtractJobItem> {
 
 	private final BankAccountExtractBatchJobItemProcessor bankAccountExtractBatchJobItemProcessor;
 
