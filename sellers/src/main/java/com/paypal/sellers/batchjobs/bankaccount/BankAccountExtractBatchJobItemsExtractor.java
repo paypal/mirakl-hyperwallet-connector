@@ -2,6 +2,7 @@ package com.paypal.sellers.batchjobs.bankaccount;
 
 import com.paypal.infrastructure.batchjob.AbstractDeltaBatchJobItemsExtractor;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
+import com.paypal.infrastructure.batchjob.BatchJobTrackingService;
 import com.paypal.sellers.sellersextract.service.MiraklSellersExtractService;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,9 @@ public class BankAccountExtractBatchJobItemsExtractor
 
 	private final MiraklSellersExtractService miraklSellersExtractService;
 
-	public BankAccountExtractBatchJobItemsExtractor(final MiraklSellersExtractService miraklSellersExtractService) {
+	public BankAccountExtractBatchJobItemsExtractor(final MiraklSellersExtractService miraklSellersExtractService,
+			final BatchJobTrackingService batchJobTrackingService) {
+		super(batchJobTrackingService);
 		this.miraklSellersExtractService = miraklSellersExtractService;
 	}
 

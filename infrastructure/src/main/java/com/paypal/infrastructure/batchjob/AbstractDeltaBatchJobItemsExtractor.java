@@ -1,12 +1,15 @@
 package com.paypal.infrastructure.batchjob;
 
-import com.paypal.infrastructure.model.entity.JobExecutionInformationEntity;
-import com.paypal.infrastructure.repository.JobExecutionInformationRepository;
+import com.paypal.infrastructure.batchjob.entities.BatchJobTrackInfoEntity;
+import com.paypal.infrastructure.util.DateUtil;
+import com.paypal.infrastructure.util.TimeMachine;
+import org.springframework.beans.factory.annotation.Value;
 
-import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Optional;
+
+import static java.time.ZoneOffset.UTC;
 
 /**
  * Base class for delta items extraction.
@@ -19,21 +22,32 @@ public abstract class AbstractDeltaBatchJobItemsExtractor<C extends BatchJobCont
 
 	private static final String DELTA = "delta";
 
-	@Resource
-	private JobExecutionInformationRepository jobExecutionInformationRepository;
+	private final BatchJobTrackingService batchJobTrackingService;
 
-	public void setJobExecutionInformationRepository(
-			final JobExecutionInformationRepository jobExecutionInformationRepository) {
-		this.jobExecutionInformationRepository = jobExecutionInformationRepository;
+	@Value("${jobs.extraction.maxdays}")
+	protected Integer extractionMaxDays;
+
+	protected AbstractDeltaBatchJobItemsExtractor(BatchJobTrackingService batchJobTrackingService) {
+		this.batchJobTrackingService = batchJobTrackingService;
 	}
 
 	protected Date getDelta(final C context) {
-		final Date delta = (Date) context.getJobExecutionContext().getJobDetail().getJobDataMap().get(DELTA);
+		final Date deltaParameter = findDeltaInJobParameters(context);
 
-		return delta == null ? Optional
-				.ofNullable(jobExecutionInformationRepository.findTopByTypeAndEndTimeIsNotNullOrderByIdDesc(
-						context.getJobExecutionContext().getJobDetail().getJobClass().getSimpleName()))
-				.map(JobExecutionInformationEntity::getStartTime).orElse(null) : delta;
+		return deltaParameter != null ? deltaParameter : getLastSuccessfulExtractionDate(context);
+	}
+
+	private Date findDeltaInJobParameters(final C context) {
+		return (Date) context.getJobExecutionContext().getJobDetail().getJobDataMap().get(DELTA);
+	}
+
+	private Date getLastSuccessfulExtractionDate(final C context) {
+		LocalDateTime searchJobsFrom = TimeMachine.now().minusDays(extractionMaxDays);
+		BatchJobTrackInfoEntity batchJobTrackInfoEntity = batchJobTrackingService
+				.findLastJobExecutionWithNonEmptyExtraction(context.getJobName(), searchJobsFrom).orElse(null);
+
+		return batchJobTrackInfoEntity != null ? DateUtil.convertToDate(batchJobTrackInfoEntity.getStartTime(), UTC)
+				: DateUtil.convertToDate(searchJobsFrom, UTC);
 	}
 
 	/**

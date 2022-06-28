@@ -13,6 +13,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -332,6 +333,32 @@ class BatchJobTrackingServiceImplTest {
 		final List<BatchJobItemTrackInfoEntity> result = testObj.getItemsBeingProcessedOrEnquedToProcess(JOB_TYPE);
 
 		assertThat(result).isEqualTo(List.of(batchJobItemTrackInfoEntityMock));
+	}
+
+	@Test
+	void findLastJobExecutionWithNonEmptyExtraction_ShouldReturnJobWithNonEmptyExtraction() {
+		TimeMachine.useFixedClockAt(LocalDateTime.now());
+
+		when(batchJobTrackingRepositoryMock.findLastJobExecutionsWithItems(JOB_TYPE, TimeMachine.now(),
+				Pageable.ofSize(1))).thenReturn(List.of(batchJobTrackInfoEntityMock));
+
+		Optional<BatchJobTrackInfoEntity> result = testObj.findLastJobExecutionWithNonEmptyExtraction(JOB_TYPE,
+				TimeMachine.now());
+
+		assertThat(result).contains(batchJobTrackInfoEntityMock);
+	}
+
+	@Test
+	void findLastJobExecutionWithNonEmptyExtraction_ShouldReturnEmpty_WhenNoJobsFound() {
+		TimeMachine.useFixedClockAt(LocalDateTime.now());
+
+		when(batchJobTrackingRepositoryMock.findLastJobExecutionsWithItems(JOB_TYPE, TimeMachine.now(),
+				Pageable.ofSize(1))).thenReturn(List.of());
+
+		Optional<BatchJobTrackInfoEntity> result = testObj.findLastJobExecutionWithNonEmptyExtraction(JOB_TYPE,
+				TimeMachine.now());
+
+		assertThat(result).isEmpty();
 	}
 
 }

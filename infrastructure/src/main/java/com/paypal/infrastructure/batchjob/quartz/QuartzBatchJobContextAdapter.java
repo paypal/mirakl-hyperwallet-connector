@@ -4,33 +4,31 @@ import com.paypal.infrastructure.batchjob.BatchJob;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.infrastructure.batchjob.BatchJobItem;
 import com.paypal.infrastructure.batchjob.BatchJobStatus;
-import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public class BatchJobContextQuartzAdapter implements BatchJobContext {
+public class QuartzBatchJobContextAdapter implements BatchJobContext {
 
-	public static final String KEY_BATCH_JOB = "batchJob";
+	protected static final String KEY_BATCH_JOB = "batchJob";
 
-	private static final String KEY_BATCH_JOB_EXECUTION_UUID = "batchJobUuid";
+	protected static final String KEY_BATCH_JOB_NAME = "batchJobName";
 
-	private static final String KEY_BATCH_JOB_STATUS = "batchJobStatus";
+	protected static final String KEY_BATCH_JOB_EXECUTION_UUID = "batchJobUuid";
 
-	private static final String KEY_NUMBER_OF_ITEMS_PROCESSED = "numberOfItemsProcessed";
+	protected static final String KEY_BATCH_JOB_STATUS = "batchJobStatus";
 
-	private static final String KEY_NUMBER_OF_ITEMS_FAILED = "numberOfItemsFailed";
+	protected static final String KEY_NUMBER_OF_ITEMS_PROCESSED = "numberOfItemsProcessed";
 
-	private static final String KEY_NUMBER_OF_ITEMS_TO_BE_PROCESSED = "numberOfItemsToBeProcessed";
+	protected static final String KEY_NUMBER_OF_ITEMS_FAILED = "numberOfItemsFailed";
+
+	protected static final String KEY_NUMBER_OF_ITEMS_TO_BE_PROCESSED = "numberOfItemsToBeProcessed";
 
 	private final JobExecutionContext jobExecutionContext;
 
-	public BatchJobContextQuartzAdapter(final JobExecutionContext jobExecutionContext) {
+	public QuartzBatchJobContextAdapter(final JobExecutionContext jobExecutionContext) {
 		this.jobExecutionContext = jobExecutionContext;
-		if (StringUtils.isEmpty(getStringValue(KEY_BATCH_JOB_EXECUTION_UUID))) {
-			setStringValue(KEY_BATCH_JOB_EXECUTION_UUID, UUID.randomUUID().toString());
-		}
 	}
 
 	/**
@@ -38,7 +36,11 @@ public class BatchJobContextQuartzAdapter implements BatchJobContext {
 	 */
 	@Override
 	public String getJobName() {
-		return jobExecutionContext.getJobDetail().getKey().getName();
+		return getStringValue(KEY_BATCH_JOB_NAME);
+	}
+
+	protected void setJobName(String jobName) {
+		setStringValue(KEY_BATCH_JOB_NAME, jobName);
 	}
 
 	/**
@@ -47,6 +49,10 @@ public class BatchJobContextQuartzAdapter implements BatchJobContext {
 	@Override
 	public String getJobUuid() {
 		return getStringValue(KEY_BATCH_JOB_EXECUTION_UUID);
+	}
+
+	protected void initializeBatchJobUuid() {
+		setStringValue(KEY_BATCH_JOB_EXECUTION_UUID, UUID.randomUUID().toString());
 	}
 
 	/**
@@ -173,6 +179,10 @@ public class BatchJobContextQuartzAdapter implements BatchJobContext {
 	@Override
 	public <C extends BatchJobContext, T extends BatchJobItem<?>> BatchJob<C, T> getBatchJob() {
 		return (BatchJob) jobExecutionContext.getJobDetail().getJobDataMap().get(KEY_BATCH_JOB);
+	}
+
+	protected void setBatchJob(BatchJob<?, ?> batchJob) {
+		jobExecutionContext.getJobDetail().getJobDataMap().put(QuartzBatchJobContextAdapter.KEY_BATCH_JOB, batchJob);
 	}
 
 	private void setIntValue(final String key, final int value) {

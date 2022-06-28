@@ -2,6 +2,7 @@ package com.paypal.invoices.batchjobs.creditnotes;
 
 import com.paypal.infrastructure.batchjob.AbstractDeltaBatchJobItemsExtractor;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
+import com.paypal.infrastructure.batchjob.BatchJobTrackingService;
 import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
 import com.paypal.invoices.invoicesextract.service.mirakl.MiraklAccountingDocumentExtractService;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,9 @@ public class CreditNotesExtractBatchJobItemsExtractor
 	private final MiraklAccountingDocumentExtractService<CreditNoteModel> miraklAccountingDocumentCreditNotesExtractService;
 
 	public CreditNotesExtractBatchJobItemsExtractor(
-			final MiraklAccountingDocumentExtractService<CreditNoteModel> miraklAccountingDocumentCreditNotesExtractService) {
+			final MiraklAccountingDocumentExtractService<CreditNoteModel> miraklAccountingDocumentCreditNotesExtractService,
+			final BatchJobTrackingService batchJobTrackingService) {
+		super(batchJobTrackingService);
 		this.miraklAccountingDocumentCreditNotesExtractService = miraklAccountingDocumentCreditNotesExtractService;
 	}
 

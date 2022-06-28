@@ -2,6 +2,7 @@ package com.paypal.sellers.batchjobs.bstk;
 
 import com.paypal.infrastructure.batchjob.AbstractDeltaBatchJobItemsExtractor;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
+import com.paypal.infrastructure.batchjob.BatchJobTrackingService;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.BusinessStakeholderExtractService;
@@ -27,7 +28,9 @@ public class BusinessStakeholdersExtractBatchJobItemsExtractor
 
 	public BusinessStakeholdersExtractBatchJobItemsExtractor(
 			final MiraklSellersExtractService miraklSellersExtractService,
-			final BusinessStakeholderExtractService businessStakeholderExtractService) {
+			final BusinessStakeholderExtractService businessStakeholderExtractService,
+			final BatchJobTrackingService batchJobTrackingService) {
+		super(batchJobTrackingService);
 		this.miraklSellersExtractService = miraklSellersExtractService;
 		this.businessStakeholderExtractService = businessStakeholderExtractService;
 	}

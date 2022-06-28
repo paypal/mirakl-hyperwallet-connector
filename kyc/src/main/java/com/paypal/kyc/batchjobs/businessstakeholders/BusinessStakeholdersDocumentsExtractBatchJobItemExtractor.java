@@ -2,6 +2,7 @@ package com.paypal.kyc.batchjobs.businessstakeholders;
 
 import com.paypal.infrastructure.batchjob.AbstractDeltaBatchJobItemsExtractor;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
+import com.paypal.infrastructure.batchjob.BatchJobTrackingService;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklBusinessStakeholderDocumentsExtractService;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,9 @@ public class BusinessStakeholdersDocumentsExtractBatchJobItemExtractor
 	private final MiraklBusinessStakeholderDocumentsExtractService miraklBusinessStakeholderDocumentsExtractService;
 
 	public BusinessStakeholdersDocumentsExtractBatchJobItemExtractor(
-			MiraklBusinessStakeholderDocumentsExtractService miraklBusinessStakeholderDocumentsExtractService) {
+			MiraklBusinessStakeholderDocumentsExtractService miraklBusinessStakeholderDocumentsExtractService,
+			final BatchJobTrackingService batchJobTrackingService) {
+		super(batchJobTrackingService);
 		this.miraklBusinessStakeholderDocumentsExtractService = miraklBusinessStakeholderDocumentsExtractService;
 	}
 

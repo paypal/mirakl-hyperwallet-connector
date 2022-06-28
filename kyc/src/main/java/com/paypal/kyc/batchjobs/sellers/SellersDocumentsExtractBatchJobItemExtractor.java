@@ -2,6 +2,7 @@ package com.paypal.kyc.batchjobs.sellers;
 
 import com.paypal.infrastructure.batchjob.AbstractDeltaBatchJobItemsExtractor;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
+import com.paypal.infrastructure.batchjob.BatchJobTrackingService;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklSellerDocumentsExtractService;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,9 @@ public class SellersDocumentsExtractBatchJobItemExtractor
 	private final MiraklSellerDocumentsExtractService miraklSellerDocumentsExtractService;
 
 	public SellersDocumentsExtractBatchJobItemExtractor(
-			final MiraklSellerDocumentsExtractService miraklSellerDocumentsExtractService) {
+			final MiraklSellerDocumentsExtractService miraklSellerDocumentsExtractService,
+			final BatchJobTrackingService batchJobTrackingService) {
+		super(batchJobTrackingService);
 		this.miraklSellerDocumentsExtractService = miraklSellerDocumentsExtractService;
 	}
 

@@ -2,6 +2,7 @@ package com.paypal.invoices.batchjobs.invoices;
 
 import com.paypal.infrastructure.batchjob.AbstractDeltaBatchJobItemsExtractor;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
+import com.paypal.infrastructure.batchjob.BatchJobTrackingService;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 import com.paypal.invoices.invoicesextract.service.mirakl.MiraklAccountingDocumentExtractService;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,9 @@ public class InvoicesExtractBatchJobItemsExtractor
 	private final MiraklAccountingDocumentExtractService<InvoiceModel> miraklAccountingDocumentInvoicesExtractService;
 
 	public InvoicesExtractBatchJobItemsExtractor(
-			final MiraklAccountingDocumentExtractService<InvoiceModel> miraklAccountingDocumentInvoicesExtractService) {
+			final MiraklAccountingDocumentExtractService<InvoiceModel> miraklAccountingDocumentInvoicesExtractService,
+			final BatchJobTrackingService batchJobTrackingService) {
+		super(batchJobTrackingService);
 		this.miraklAccountingDocumentInvoicesExtractService = miraklAccountingDocumentInvoicesExtractService;
 	}
 
