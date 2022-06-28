@@ -1,10 +1,10 @@
-package com.paypal.infrastructure.batchjob;
+package com.paypal.infrastructure.batchjob.quartz;
 
-import com.paypal.infrastructure.batchjob.quartz.BatchJobContextQuartzAdapter;
+import com.paypal.infrastructure.batchjob.BatchJobContext;
+import com.paypal.infrastructure.batchjob.BatchJobStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.quartz.JobDataMap;
@@ -12,11 +12,14 @@ import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 
+import java.util.UUID;
+
+import static com.paypal.infrastructure.batchjob.quartz.QuartzBatchJobContextAdapter.KEY_BATCH_JOB_EXECUTION_UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class BatchJobContextQuartzAdapterTest {
+class QuartzBatchJobContextAdapterTest {
 
 	private static final String KEY_BATCH_JOB_STATUS = "batchJobStatus";
 
@@ -26,7 +29,9 @@ class BatchJobContextQuartzAdapterTest {
 
 	private static final String KEY_NUMBER_OF_ITEMS_TO_BE_PROCESSED = "numberOfItemsToBeProcessed";
 
-	private static final String JOB_NAME = "JOB_NAME";
+	private static final String KEY_BATCH_JOB_NAME = "batchJobName";
+
+	private static final String JOB_NAME = "JobName";
 
 	public static final int NUMBER_OF_ITEMS_PROCESSED = 22;
 
@@ -34,7 +39,7 @@ class BatchJobContextQuartzAdapterTest {
 
 	public static final int NUMBER_OF_ITEMS_TO_BE_PROCESSED = 24;
 
-	private BatchJobContextQuartzAdapter testObj;
+	private QuartzBatchJobContextAdapter testObj;
 
 	@Mock
 	private JobExecutionContext jobExecutionContextMock;
@@ -59,18 +64,24 @@ class BatchJobContextQuartzAdapterTest {
 		lenient().when(jobDataMapMock.get(KEY_NUMBER_OF_ITEMS_FAILED)).thenReturn(NUMBER_OF_ITEMS_FAILED);
 		lenient().when(jobDataMapMock.get(KEY_NUMBER_OF_ITEMS_TO_BE_PROCESSED))
 				.thenReturn(NUMBER_OF_ITEMS_TO_BE_PROCESSED);
-		lenient().when((jobDetailMock.getKey())).thenReturn(jobKeyMock);
-		lenient().when((jobKeyMock.getName())).thenReturn(JOB_NAME);
+		lenient().when(jobDataMapMock.get(KEY_BATCH_JOB_NAME)).thenReturn(JOB_NAME);
 
-		testObj = new BatchJobContextQuartzAdapter(jobExecutionContextMock);
+		testObj = new QuartzBatchJobContextAdapter(jobExecutionContextMock);
 	}
 
 	@Test
-	void getJobName_ShouldReturnJobClassSimpleName() {
+	void getJobName_ShouldReturnJobName() {
 
 		final String result = testObj.getJobName();
 
 		assertThat(result).isEqualTo(JOB_NAME);
+	}
+
+	@Test
+	void initializeBatchJobUuid_ShouldGenerateUUID() {
+		testObj.initializeBatchJobUuid();
+
+		verify(jobDataMapMock).put(eq(KEY_BATCH_JOB_EXECUTION_UUID), argThat(x -> UUID.fromString(x) != null));
 	}
 
 	@Test

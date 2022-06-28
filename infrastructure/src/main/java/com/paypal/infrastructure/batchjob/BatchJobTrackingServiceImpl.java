@@ -6,6 +6,7 @@ import com.paypal.infrastructure.batchjob.entities.BatchJobTrackInfoEntity;
 import com.paypal.infrastructure.batchjob.repository.BatchJobItemTrackingRepository;
 import com.paypal.infrastructure.batchjob.repository.BatchJobTrackingRepository;
 import com.paypal.infrastructure.util.TimeMachine;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -202,6 +203,13 @@ public class BatchJobTrackingServiceImpl implements BatchJobTrackingService {
 	@Override
 	public List<BatchJobItemTrackInfoEntity> getJobItemTrackingEntries(String batchJobId) {
 		return batchJobItemTrackingRepository.findByBatchJobId(batchJobId);
+	}
+
+	@Override
+	public Optional<BatchJobTrackInfoEntity> findLastJobExecutionWithNonEmptyExtraction(String batchJobType,
+			LocalDateTime from) {
+		return batchJobTrackingRepository.findLastJobExecutionsWithItems(batchJobType, from, Pageable.ofSize(1))
+				.stream().findFirst();
 	}
 
 }

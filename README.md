@@ -74,6 +74,7 @@ example.
 | `PAYPAL_HYPERWALLET_STK_MANDATORY_EMAIL`                          | NO (default value: `false`)                                | By default, the business stakeholder email is not mandatory in Hyperwallet.                                                                                                                                                                                                                                                                                                                          | Possible values:`true` or `false`          |
 | `PAYPAL_HYPERWALLET_SEARCH_INVOICES_MAX_DAYS`                     | NO (default value: `15`)                                   | Size in days of the search window when searching invoices by id. Used by invoice retry jobs.                                                                                                                                                                                                                                                                                                         | Possible values: Any positive integer      |
 | `PAYPAL_HYPERWALLET_MAX_FAILED_ITEMS_TO_BE_PROCESSED`             | NO (default value: `100`)                                  | As some Mirakl APIs have a maximun number of items to be requested it sets the amount of max number failed items to be processed on retry jobs                                                                                                                                                                                                                                                       | Possible values: Any positive integer      |
+| `PAYPAL_HYPERWALLET_JOB_EXTRACTION_MAXDAYS`                       | NO (default value: `30`)                                   | The maximum number of days to look in the past when retrieving data from Mirakl during the extraction jobs.                                                                                                                                                                                                                                                                                          | Possible values: Any positive integer      |
 
 A sample .env file is provided in this repository, primarily for use in the Docker container deployment scenario (
 documented below). The .env file can also be used to source environment variables for use in local deployment, if you
@@ -307,6 +308,17 @@ Endpoints:
 See example of valid execution request:
 
 ```curl --location --request POST 'http://localhost:8080/job/bank-accounts-extract?delta=2020-11-22T11:52:00.000-00:00&name=bankAccountExtractJob'```
+
+### Calculating delta in extract jobs
+
+The different extract jobs (individual sellers extract job, invoices extract job, etc.) makes requests to Mirakl to
+retrieve the entities that have changed since a specific date. When the jobs are triggered by the cron expessions this
+initial date for retrieving changes (known as delta) is automatically calculated. Jobs automatically sets the initial
+time for searching entities in Mirakl to the time of the last successful execution of the job that returned Mirakl
+entities.
+
+There is a maximum days to look in the past when the connector makes a Mirakl request to retrieve the changed entities,
+which can be set using the environment variable `PAYPAL_HYPERWALLET_JOB_EXTRACTION_MAXDAYS` (defaults to 30).
 
 ### Retry Jobs
 

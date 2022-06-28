@@ -1,8 +1,12 @@
 package com.paypal.infrastructure.batchjob.repository;
 
 import com.paypal.infrastructure.batchjob.BatchJobStatus;
+import com.paypal.infrastructure.batchjob.entities.BatchJobItemTrackInfoEntity;
 import com.paypal.infrastructure.batchjob.entities.BatchJobTrackInfoEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -40,5 +44,27 @@ public interface BatchJobTrackingRepository extends JpaRepository<BatchJobTrackI
 	 * {@link LocalDateTime}s from and to.
 	 */
 	List<BatchJobTrackInfoEntity> findByStartTimeIsBetween(LocalDateTime from, LocalDateTime to);
+
+	/**
+	 * Returns all the {@link BatchJobTrackInfoEntity} which more than 0
+	 * {@link BatchJobItemTrackInfoEntity} associated to its execution.
+	 * @param batchJobType The batch job type.
+	 * @param from The mimimun {@link LocalDateTime} of the jobs to find.
+	 * @param pageable a {@link Pageable} to control de paging of the query.
+	 * @return a {@link List} of {@link BatchJobTrackInfoEntity} with more than 0 items
+	 * extracted
+	 */
+	@SuppressWarnings("java:S2479")
+	@Query("""
+			SELECT j FROM BatchJobTrackInfoEntity j
+				LEFT JOIN BatchJobItemTrackInfoEntity ji ON j.batchJobId = ji.batchJobId
+				WHERE j.batchJobType = :batchJobType
+					AND j.startTime >= :from
+				GROUP BY j.batchJobId
+				HAVING COUNT(ji.itemId) > 0
+				ORDER BY j.startTime DESC
+			""")
+	List<BatchJobTrackInfoEntity> findLastJobExecutionsWithItems(@Param("batchJobType") String batchJobType,
+			@Param("from") LocalDateTime from, Pageable pageable);
 
 }

@@ -6,6 +6,7 @@ import com.paypal.infrastructure.batchjob.entities.BatchJobTrackInfoEntity;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface BatchJobTrackingService {
 
@@ -90,5 +91,15 @@ public interface BatchJobTrackingService {
 	 * job id.
 	 */
 	List<BatchJobItemTrackInfoEntity> getJobItemTrackingEntries(String batchJobId);
+
+	/**
+	 * Retrieve the last job execution with extracted items.
+	 * @param batchJobType the batch job type
+	 * @param from a minimum starting date for the job
+	 * @return a {@link List} of {@link BatchJobTrackInfoEntity} with more than 0 items
+	 * extracted
+	 */
+	Optional<BatchJobTrackInfoEntity> findLastJobExecutionWithNonEmptyExtraction(String batchJobType,
+			LocalDateTime from);
 
 }
