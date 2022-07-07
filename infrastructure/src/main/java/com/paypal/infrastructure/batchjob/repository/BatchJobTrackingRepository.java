@@ -60,7 +60,7 @@ public interface BatchJobTrackingRepository extends JpaRepository<BatchJobTrackI
 				LEFT JOIN BatchJobItemTrackInfoEntity ji ON j.batchJobId = ji.batchJobId
 				WHERE j.batchJobType = :batchJobType
 					AND j.startTime >= :from
-				GROUP BY j.batchJobId
+				GROUP BY j.batchJobId, j.batchJobType, j.startTime, j.finishTime, j.status
 				HAVING COUNT(ji.itemId) > 0
 				ORDER BY j.startTime DESC
 			""")
