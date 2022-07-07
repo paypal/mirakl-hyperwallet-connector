@@ -65,11 +65,16 @@ class ExtractionDeltaCalculationITTest {
 				10);
 		List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities3 = BatchJobTrackingEntitiesMother
 				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity3, 10);
+		BatchJobTrackInfoEntity batchJobTrackInfoEntity4 = BatchJobTrackingEntitiesMother.buildJobTrackingInfo('B', 4,
+				10);
+		List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities4 = BatchJobTrackingEntitiesMother
+				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity4, 10);
 
-		batchJobTrackingRepository
-				.saveAll(List.of(batchJobTrackInfoEntity1, batchJobTrackInfoEntity2, batchJobTrackInfoEntity3));
+		batchJobTrackingRepository.saveAll(List.of(batchJobTrackInfoEntity1, batchJobTrackInfoEntity2,
+				batchJobTrackInfoEntity3, batchJobTrackInfoEntity4));
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities1);
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities3);
+		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities4);
 
 		List<BatchJobTrackInfoEntity> jobsWithItems = batchJobTrackingRepository.findLastJobExecutionsWithItems(
 				batchJobTrackInfoEntity1.getBatchJobType(), TimeMachine.now().minusDays(11).minusSeconds(1),
@@ -88,10 +93,16 @@ class ExtractionDeltaCalculationITTest {
 				3);
 		List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities2 = BatchJobTrackingEntitiesMother
 				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity2, 10);
+		BatchJobTrackInfoEntity batchJobTrackInfoEntity4 = BatchJobTrackingEntitiesMother.buildJobTrackingInfo('B', 4,
+				10);
+		List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities4 = BatchJobTrackingEntitiesMother
+				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity4, 10);
 
-		batchJobTrackingRepository.saveAll(List.of(batchJobTrackInfoEntity1, batchJobTrackInfoEntity2));
+		batchJobTrackingRepository
+				.saveAll(List.of(batchJobTrackInfoEntity1, batchJobTrackInfoEntity2, batchJobTrackInfoEntity4));
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities1);
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities2);
+		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities4);
 
 		List<BatchJobTrackInfoEntity> jobsWithItems = batchJobTrackingRepository.findLastJobExecutionsWithItems(
 				batchJobTrackInfoEntity1.getBatchJobType(), TimeMachine.now().minusDays(2), Pageable.unpaged());
@@ -111,10 +122,16 @@ class ExtractionDeltaCalculationITTest {
 				2);
 		List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities2 = BatchJobTrackingEntitiesMother
 				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity2, 10);
+		BatchJobTrackInfoEntity batchJobTrackInfoEntity4 = BatchJobTrackingEntitiesMother.buildJobTrackingInfo('B', 4,
+				10);
+		List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities4 = BatchJobTrackingEntitiesMother
+				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity4, 10);
 
-		batchJobTrackingRepository.saveAll(List.of(batchJobTrackInfoEntity1, batchJobTrackInfoEntity2));
+		batchJobTrackingRepository
+				.saveAll(List.of(batchJobTrackInfoEntity1, batchJobTrackInfoEntity2, batchJobTrackInfoEntity4));
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities1);
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities2);
+		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities4);
 
 		Optional<BatchJobTrackInfoEntity> result = batchJobTrackingService.findLastJobExecutionWithNonEmptyExtraction(
 				batchJobTrackInfoEntity1.getBatchJobType(), TimeMachine.now().minusDays(2).minusSeconds(1));
