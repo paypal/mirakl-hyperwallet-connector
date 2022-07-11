@@ -1,0 +1,2093 @@
+{
+  "additional_fields": [
+    {
+      "accepted_values": [
+        "DEFAULT",
+        "EUROPE",
+        "UK"
+      ],
+      "code": "hw-program",
+      "description": "Your Hyperwallet implementation may consist of one or more programs based on your payout needs. Select the appropriate program for this Seller/Payee.",
+      "entity": "SHOP",
+      "label": "Hyperwallet Program",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-user-token",
+      "description": "Auto-generated, DO NOT change this value. This is a unique identifier for this Seller/Payee in Hyperwallet.",
+      "entity": "SHOP",
+      "label": "Hyperwallet User Token",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-bankaccount-token",
+      "description": "Auto-generated, DO NOT change this value. This is a unique identifier for this Seller/Payee's bank account in Hyperwallet.",
+      "entity": "SHOP",
+      "label": "Hyperwallet Bank Account Token",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-kyc-req-proof-authorization",
+      "description": "Auto-generated, DO NOT change this value. This determines whether the Seller/Payee needs to submit a Letter of Authorisation document as part of the payee verification in Hyperwallet.",
+      "entity": "SHOP",
+      "label": "Required Proof of Authorization",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-kyc-req-proof-identity-business",
+      "description": "Auto-generated, DO NOT change this value. This determines whether the Seller/Payee needs to submit a Proof of Identity or Proof of Business documents as part of the payee verification in Hyperwallet.",
+      "entity": "SHOP",
+      "label": "Required Proof of Identity/Business",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "BOOLEAN"
+    },
+    {
+      "accepted_values": [
+        "PASSPOT",
+        "NATIONAL_ID_CARD"
+      ],
+      "code": "hw-government-id-type",
+      "entity": "SHOP",
+      "label": "Government ID Type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST",
+      "_testComment": "Removed NATIONAL_ID_CARD accepted value"
+    },
+    {
+      "code": "hw-government-id",
+      "description": "If the Government ID type above is NATIONAL_ID_CARD please enter the national ID card number. Otherwise, leave blank.",
+      "entity": "SHOP",
+      "label": "Government ID number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-passport-id",
+      "description": "If the Government ID type above is PASSPORT please enter the Passport number. Otherwise, leave blank.",
+      "entity": "SHOP",
+      "label": "Passport Id",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-drivers-license-id",
+      "entity": "SHOP",
+      "label": "Drivers license Id",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-date-of-birth",
+      "entity": "SHOP",
+      "label": "Date of birth",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "DATE"
+    },
+    {
+      "code": "hw-country-of-birth",
+      "description": "Please enter a 2-character ISO country code for the country of birth",
+      "entity": "SHOP",
+      "label": "Country of birth",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-country-of-nationality",
+      "description": "Please enter a 2-character ISO country code for the country of nationality",
+      "entity": "SHOP",
+      "label": "Country of nationality",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-bankaccount-state",
+      "description": "Seller/Payee's Bank Account State/Province",
+      "entity": "SHOP",
+      "label": "Bank Account State/Province",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "accepted_values": [
+        "DRIVERS_LICENSE",
+        "PASSPORT",
+        "GOVERNMENT_ID"
+      ],
+      "code": "hw-ind-proof-identity-type",
+      "description": "Please select the type of document that will be used as the Proof of Identity for the individual seller/shop owner",
+      "entity": "SHOP",
+      "label": "Proof of Identity Type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-ind-proof-identity-country",
+      "description": "Please enter a 2-character ISO country code for the Proof of Identity country",
+      "entity": "SHOP",
+      "label": "Proof of Identity Country",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "accepted_values": [
+        "BANK_STATEMENT",
+        "CREDIT_CARD_STATEMENT",
+        "OFFICIAL_GOVERNMENT_LETTER",
+        "TAX_RETURN",
+        "UTILITY_BILL",
+        "PROPERTY_TAX_ASSESSMENT"
+      ],
+      "code": "hw-ind-proof-address-type",
+      "description": "Please select the type of document that will be used as the Proof of Address for the individual seller/shop owner",
+      "entity": "SHOP",
+      "label": "Proof of Address Type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "accepted_values": [
+        "CORPORATION",
+        "PRIVATE_COMPANY",
+        "PARTNERSHIP",
+        "NOT_FOR_PROFIT_ORGANIZATION",
+        "GOVERNMENT_ENTITY",
+        "PUBLIC_COMPANY"
+      ],
+      "code": "hw-business-type",
+      "description": "Please choose the most relevant type of business for your store",
+      "entity": "SHOP",
+      "label": "Business Type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-business-reg-country",
+      "description": "Please provide the country where the business is registered (2-letter ISO code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Business Registration Country",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-business-reg-state-province",
+      "description": "Please provide the state, province or region where the business is registered. If the country is the US, provide a 2-letter code: docs.hyperwallet.com/content/references/v1/us-state-codes",
+      "entity": "SHOP",
+      "label": "Business Registration State/Province",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "accepted_values": [
+        "INCORPORATION"
+      ],
+      "code": "hw-prof-proof-business-type",
+      "description": "Please ensure this field is set to INCORPORATION when providing a Proof of Business document as part of the payee verification in Hyperwallet",
+      "entity": "SHOP",
+      "label": "Proof of Business Type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-token-1",
+      "description": "Auto-generated, DO NOT change this value. This is a unique identifier for this Business Contact.",
+      "entity": "SHOP",
+      "label": "Hyperwallet Business Stakeholder 1 token",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-business-contact-1",
+      "description": "Please confirm if this person is also the business contact for this store",
+      "entity": "SHOP",
+      "label": "Business Contact",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-director-1",
+      "description": "Please confirm if this person is also a Director of this business",
+      "entity": "SHOP",
+      "label": "Director",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-ubo-1",
+      "description": "Please confirm if this person is also an Ultimate Beneficial Owner (UBO) of this business",
+      "entity": "SHOP",
+      "label": "Ultimate Beneficial Owner",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-smo-1",
+      "description": "Please confirm if this person is also a Senior Managing Officer of this business",
+      "entity": "SHOP",
+      "label": "Senior Managing Officer",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-first-name-1",
+      "description": "Business Contact - First name",
+      "entity": "SHOP",
+      "label": "First name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-middle-name-1",
+      "description": "Business Contact - Middle name",
+      "entity": "SHOP",
+      "label": "Middle name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-last-name-1",
+      "description": "Business Contact - Last name",
+      "entity": "SHOP",
+      "label": "Last name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-dob-1",
+      "description": "Business Contact - Date of birth",
+      "entity": "SHOP",
+      "label": "Date of birth",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "DATE"
+    },
+    {
+      "code": "hw-stakeholder-country-of-birth-1",
+      "description": "Business Contact - Country of birth (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country of birth",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-nationality-1",
+      "description": "Business Contact - Country of nationality (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country of nationality",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "accepted_values": [
+        "FEMALE",
+        "MALE"
+      ],
+      "code": "hw-stakeholder-gender-1",
+      "description": "Business Contact - Gender",
+      "entity": "SHOP",
+      "label": "Gender",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-phone-number-1",
+      "description": "Business Contact - Phone number",
+      "entity": "SHOP",
+      "label": "Phone number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-mobile-number-1",
+      "description": "Business Contact - Mobile phone number",
+      "entity": "SHOP",
+      "label": "Mobile phone number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-email-1",
+      "description": "Business Contact - Email",
+      "entity": "SHOP",
+      "label": "Email",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-address-line1-1",
+      "description": "Business Contact - Address line 1",
+      "entity": "SHOP",
+      "label": "Address line 1",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-address-line2-1",
+      "description": "Business Contact - Address line 2",
+      "entity": "SHOP",
+      "label": "Address line 2",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-city-1",
+      "description": "Business Contact - City",
+      "entity": "SHOP",
+      "label": "City",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-state-1",
+      "description": "Business Contact - State/province",
+      "entity": "SHOP",
+      "label": "State/province",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-post-code-1",
+      "description": "Business Contact - Postal code",
+      "entity": "SHOP",
+      "label": "Postal code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-country-1",
+      "description": "Business Contact - Country of address (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "accepted_values": [
+        "PASSPORT",
+        "NATIONAL_ID_CARD"
+      ],
+      "code": "hw-stakeholder-government-id-type-1",
+      "description": "Business Contact - Government ID type",
+      "entity": "SHOP",
+      "label": "Government ID type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-government-id-num-1",
+      "description": "Business Contact - Government ID number. Please enter the number of the Government ID specified above (either Passport or National ID card)",
+      "entity": "SHOP",
+      "label": "Government ID number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-government-id-count-1",
+      "description": "Business Contact - Government ID country code (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Government ID country code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-drivers-license-num-1",
+      "description": "Business Contact - Drivers license number",
+      "entity": "SHOP",
+      "label": "Drivers license number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-drivers-license-cnt-1",
+      "description": "Business Contact - Drivers license country code (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Drivers license country code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-req-proof-identity-1",
+      "description": "Business Contact - Required Proof of Identity",
+      "entity": "SHOP",
+      "label": "Required Proof of Identity - Stakeholder 1",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "accepted_values": [
+        "DRIVERS_LICENSE",
+        "PASSPORT",
+        "GOVERNMENT_ID"
+      ],
+      "code": "hw-stakeholder-proof-identity-type-1",
+      "description": "Business Contact - Proof of Identity Type",
+      "entity": "SHOP",
+      "label": "Proof of Identity Type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-proof-identity-ctry-1",
+      "description": "Business Contact - Provide the country in 2-character ISO code format",
+      "entity": "SHOP",
+      "label": "Proof of Identity Country",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-token-2",
+      "description": "Auto-generated, DO NOT change this value. This is a unique identifier for this Director.",
+      "entity": "SHOP",
+      "label": "Hyperwallet Business Stakeholder 2 token",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-business-contact-2",
+      "description": "Please confirm if this person is also the business contact for this store",
+      "entity": "SHOP",
+      "label": "Business Contact",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-director-2",
+      "description": "Please select \"Yes\"",
+      "entity": "SHOP",
+      "label": "Director",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-ubo-2",
+      "description": "Please confirm if this person is also an Ultimate Beneficial Owner (UBO) of this business",
+      "entity": "SHOP",
+      "label": "Ultimate Beneficial Owner",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-smo-2",
+      "description": "Please confirm if this person is also a Senior Managing Officer of this business",
+      "entity": "SHOP",
+      "label": "Senior Managing Officer",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-first-name-2",
+      "description": "Director - First name",
+      "entity": "SHOP",
+      "label": "First name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-middle-name-2",
+      "description": "Director - Middle name",
+      "entity": "SHOP",
+      "label": "Middle name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-last-name-2",
+      "description": "Director - Last name",
+      "entity": "SHOP",
+      "label": "Last name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-dob-2",
+      "description": "Director - Date of birth",
+      "entity": "SHOP",
+      "label": "Date of birth",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "DATE"
+    },
+    {
+      "code": "hw-stakeholder-country-of-birth-2",
+      "description": "Director - Country of birth (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country of birth",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-nationality-2",
+      "description": "Director - Country of nationality (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country of nationality",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "accepted_values": [
+        "FEMALE",
+        "MALE"
+      ],
+      "code": "hw-stakeholder-gender-2",
+      "description": "Director - Gender",
+      "entity": "SHOP",
+      "label": "Gender",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-phone-number-2",
+      "description": "Director - Phone number",
+      "entity": "SHOP",
+      "label": "Phone number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-mobile-number-2",
+      "description": "Director - Mobile phone number",
+      "entity": "SHOP",
+      "label": "Mobile phone number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-email-2",
+      "description": "Director - Email",
+      "entity": "SHOP",
+      "label": "Email",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-address-line1-2",
+      "description": "Director - Address line 1",
+      "entity": "SHOP",
+      "label": "Address line 1",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-address-line2-2",
+      "description": "Director - Address line 2",
+      "entity": "SHOP",
+      "label": "Address line 2",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-city-2",
+      "description": "Director - City",
+      "entity": "SHOP",
+      "label": "City",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-state-2",
+      "description": "Director - State/province",
+      "entity": "SHOP",
+      "label": "State/province",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-post-code-2",
+      "description": "Director - Postal code",
+      "entity": "SHOP",
+      "label": "Postal code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-country-2",
+      "description": "Director - Country of address (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "accepted_values": [
+        "PASSPORT",
+        "NATIONAL_ID_CARD"
+      ],
+      "code": "hw-stakeholder-government-id-type-2",
+      "description": "Director - Government ID type",
+      "entity": "SHOP",
+      "label": "Government ID type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-government-id-num-2",
+      "description": "Director - Government ID number. Please enter the number of the Government ID specified above (either Passport or National ID card)",
+      "entity": "SHOP",
+      "label": "Government ID number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-government-id-count-2",
+      "description": "Director - Government ID country code (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Government ID country code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-drivers-license-num-2",
+      "description": "Director - Drivers license number",
+      "entity": "SHOP",
+      "label": "Drivers license number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-drivers-license-cnt-2",
+      "description": "Director - Drivers license country code (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Drivers license country code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-req-proof-identity-2",
+      "description": "Director - Required Proof of Identity",
+      "entity": "SHOP",
+      "label": "Required Proof of Identity - Stakeholder 2",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "accepted_values": [
+        "DRIVERS_LICENSE",
+        "PASSPORT",
+        "GOVERNMENT_ID"
+      ],
+      "code": "hw-stakeholder-proof-identity-type-2",
+      "description": "Director - Proof of Identity Type",
+      "entity": "SHOP",
+      "label": "Proof of Identity Type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-proof-identity-ctry-2",
+      "description": "Director - Provide the country in 2-character ISO code format",
+      "entity": "SHOP",
+      "label": "Proof of Identity Country",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-token-3",
+      "description": "Auto-generated, DO NOT change this value. This is a unique identifier for this UBO/Senior Managing Official.",
+      "entity": "SHOP",
+      "label": "Hyperwallet Business Stakeholder 3 token",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-business-contact-3",
+      "description": "Please confirm if this person is also the business contact for this store.",
+      "entity": "SHOP",
+      "label": "Business Contact",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-director-3",
+      "description": "Please confirm if this person is also a Director of this business",
+      "entity": "SHOP",
+      "label": "Director",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-ubo-3",
+      "description": "Please select \"Yes\"",
+      "entity": "SHOP",
+      "label": "Ultimate Beneficial Owner",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-smo-3",
+      "description": "Please confirm if this person is also a Senior Managing Officer of this business",
+      "entity": "SHOP",
+      "label": "Senior Managing Officer",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-first-name-3",
+      "description": "UBO - First name",
+      "entity": "SHOP",
+      "label": "First name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-middle-name-3",
+      "description": "UBO - Middle name",
+      "entity": "SHOP",
+      "label": "Middle name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-last-name-3",
+      "description": "UBO - Last name",
+      "entity": "SHOP",
+      "label": "Last name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-dob-3",
+      "description": "UBO - Date of birth",
+      "entity": "SHOP",
+      "label": "Date of birth",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "DATE"
+    },
+    {
+      "code": "hw-stakeholder-country-of-birth-3",
+      "description": "UBO - Country of birth (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country of birth",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-nationality-3",
+      "description": "UBO - Country of nationality (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country of nationality",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "accepted_values": [
+        "FEMALE",
+        "MALE"
+      ],
+      "code": "hw-stakeholder-gender-3",
+      "description": "UBO - Gender",
+      "entity": "SHOP",
+      "label": "Gender",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-phone-number-3",
+      "description": "UBO - Phone number",
+      "entity": "SHOP",
+      "label": "Phone number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-mobile-number-3",
+      "description": "UBO - Mobile phone number",
+      "entity": "SHOP",
+      "label": "Mobile phone number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-email-3",
+      "description": "UBO - Email",
+      "entity": "SHOP",
+      "label": "Email",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-address-line1-3",
+      "description": "UBO - Address line 1",
+      "entity": "SHOP",
+      "label": "Address line 1",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-address-line2-3",
+      "description": "UBO - Address line 2",
+      "entity": "SHOP",
+      "label": "Address line 2",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-city-3",
+      "description": "UBO - City",
+      "entity": "SHOP",
+      "label": "City",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-state-3",
+      "description": "UBO - State/province",
+      "entity": "SHOP",
+      "label": "State/province",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-post-code-3",
+      "description": "UBO - Postal code",
+      "entity": "SHOP",
+      "label": "Postal code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-country-3",
+      "description": "UBO - Country of address (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "accepted_values": [
+        "PASSPORT",
+        "NATIONAL_ID_CARD"
+      ],
+      "code": "hw-stakeholder-government-id-type-3",
+      "description": "UBO - Government ID type",
+      "entity": "SHOP",
+      "label": "Government ID type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-government-id-num-3",
+      "description": "UBO - Government ID number. Please enter the number of the Government ID specified above (either Passport or National ID card)",
+      "entity": "SHOP",
+      "label": "Government ID number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-government-id-count-3",
+      "description": "UBO - Government ID country code (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Government ID country code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-drivers-license-num-3",
+      "description": "UBO - Drivers license number",
+      "entity": "SHOP",
+      "label": "Drivers license number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-drivers-license-cnt-3",
+      "description": "UBO - Drivers license country code (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Drivers license country code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-req-proof-identity-3",
+      "description": "UBO - Required Proof of Identity",
+      "entity": "SHOP",
+      "label": "Required Proof of Identity - Stakeholder 3",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "accepted_values": [
+        "DRIVERS_LICENSE",
+        "PASSPORT",
+        "GOVERNMENT_ID"
+      ],
+      "code": "hw-stakeholder-proof-identity-type-3",
+      "description": "UBO - Proof of Identity Type",
+      "entity": "SHOP",
+      "label": "Proof of Identity Type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-proof-identity-ctry-3",
+      "description": "UBO - Provide the country in 2-character ISO code format",
+      "entity": "SHOP",
+      "label": "Proof of Identity Country",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-token-4",
+      "description": "Auto-generated, DO NOT change this value. This is a unique identifier for this UBO.",
+      "entity": "SHOP",
+      "label": "Hyperwallet Business Stakeholder 4 token",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-business-contact-4",
+      "description": "Please confirm if this person is also the business contact for this store.",
+      "entity": "SHOP",
+      "label": "Business Contact",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-director-4",
+      "description": "Please confirm if this person is also a Director of this business",
+      "entity": "SHOP",
+      "label": "Director",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-ubo-4",
+      "description": "Please confirm if this person is also an Ultimate Beneficial Owner (UBO) of this business",
+      "entity": "SHOP",
+      "label": "Ultimate Beneficial Owner",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-smo-4",
+      "description": "Please confirm if this person is also a Senior Managing Officer of this business",
+      "entity": "SHOP",
+      "label": "Senior Managing Officer",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-first-name-4",
+      "description": "UBO 2 - First name",
+      "entity": "SHOP",
+      "label": "First name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-middle-name-4",
+      "description": "UBO 2 - Middle name",
+      "entity": "SHOP",
+      "label": "Middle name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-last-name-4",
+      "description": "UBO 2 - Last name",
+      "entity": "SHOP",
+      "label": "Last name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-dob-4",
+      "description": "UBO 2 - Date of birth",
+      "entity": "SHOP",
+      "label": "Date of birth",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "DATE"
+    },
+    {
+      "code": "hw-stakeholder-country-of-birth-4",
+      "description": "UBO 2 - Country of birth (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country of birth",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-nationality-4",
+      "description": "UBO 2 - Country of nationality (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country of nationality",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "accepted_values": [
+        "FEMALE",
+        "MALE"
+      ],
+      "code": "hw-stakeholder-gender-4",
+      "description": "UBO 2 - Gender",
+      "entity": "SHOP",
+      "label": "Gender",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-phone-number-4",
+      "description": "UBO 2 - Phone number",
+      "entity": "SHOP",
+      "label": "Phone number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-mobile-number-4",
+      "description": "UBO 2 - Mobile phone number",
+      "entity": "SHOP",
+      "label": "Mobile phone number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-email-4",
+      "description": "UBO 2 - Email",
+      "entity": "SHOP",
+      "label": "Email",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-address-line1-4",
+      "description": "UBO 2 - Address line 1",
+      "entity": "SHOP",
+      "label": "Address line 1",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-address-line2-4",
+      "description": "UBO 2 - Address line 2",
+      "entity": "SHOP",
+      "label": "Address line 2",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-city-4",
+      "description": "UBO 2 - City",
+      "entity": "SHOP",
+      "label": "City",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-state-4",
+      "description": "UBO 2 - State/province",
+      "entity": "SHOP",
+      "label": "State/province",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-post-code-4",
+      "description": "UBO 2 - Postal code",
+      "entity": "SHOP",
+      "label": "Postal code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-country-4",
+      "description": "UBO 2 - Country of address (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "accepted_values": [
+        "PASSPORT",
+        "NATIONAL_ID_CARD"
+      ],
+      "code": "hw-stakeholder-government-id-type-4",
+      "description": "UBO 2 - Government ID type",
+      "entity": "SHOP",
+      "label": "Government ID type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-government-id-num-4",
+      "description": "UBO 2 - Government ID number. Please enter the number of the Government ID specified above (either Passport or National ID card)",
+      "entity": "SHOP",
+      "label": "Government ID number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-government-id-count-4",
+      "description": "UBO 2 - Government ID country code (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Government ID country code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-drivers-license-num-4",
+      "description": "UBO 2 - Drivers license number",
+      "entity": "SHOP",
+      "label": "Drivers license number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-drivers-license-cnt-4",
+      "description": "UBO 2 - Drivers license country code (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Drivers license country code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-req-proof-identity-4",
+      "description": "UBO 2 - Required Proof of Identity",
+      "entity": "SHOP",
+      "label": "Required Proof of Identity - Stakeholder 4",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "accepted_values": [
+        "DRIVERS_LICENSE",
+        "PASSPORT",
+        "GOVERNMENT_ID"
+      ],
+      "code": "hw-stakeholder-proof-identity-type-4",
+      "description": "UBO 2 - Proof of Identity Type",
+      "entity": "SHOP",
+      "label": "Proof of Identity Type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-proof-identity-ctry-4",
+      "description": "UBO 2 - Provide the country in 2-character ISO code format",
+      "entity": "SHOP",
+      "label": "Proof of Identity Country",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-token-5",
+      "description": "Auto-generated, DO NOT change this value. This is a unique identifier for this UBO.",
+      "entity": "SHOP",
+      "label": "Hyperwallet Business Stakeholder 5 token",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-business-contact-5",
+      "description": "Please confirm if this person is also the business contact for this store.",
+      "entity": "SHOP",
+      "label": "Business Contact",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-director-5",
+      "description": "Please confirm if this person is also a Director of this business",
+      "entity": "SHOP",
+      "label": "Director",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-ubo-5",
+      "description": "Please confirm if this person is also an Ultimate Beneficial Owner (UBO) of this business",
+      "entity": "SHOP",
+      "label": "Ultimate Beneficial Owner",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-smo-5",
+      "description": "Please confirm if this person is also a Senior Managing Officer of this business",
+      "entity": "SHOP",
+      "label": "Senior Managing Officer",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "code": "hw-stakeholder-first-name-5",
+      "description": "UBO 3 - First name",
+      "entity": "SHOP",
+      "label": "First name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-middle-name-5",
+      "description": "UBO 3 - Middle name",
+      "entity": "SHOP",
+      "label": "Middle name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-last-name-5",
+      "description": "UBO 3 - Last name",
+      "entity": "SHOP",
+      "label": "Last name",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-dob-5",
+      "description": "UBO 3 - Date of birth",
+      "entity": "SHOP",
+      "label": "Date of birth",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "DATE"
+    },
+    {
+      "code": "hw-stakeholder-country-of-birth-5",
+      "description": "UBO 3 - Country of birth (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country of birth",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-nationality-5",
+      "description": "UBO 3 - Country of nationality (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country of nationality",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "accepted_values": [
+        "FEMALE",
+        "MALE"
+      ],
+      "code": "hw-stakeholder-gender-5",
+      "description": "UBO 3 - Gender",
+      "entity": "SHOP",
+      "label": "Gender",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-phone-number-5",
+      "description": "UBO 3 - Phone number",
+      "entity": "SHOP",
+      "label": "Phone number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-mobile-number-5",
+      "description": "UBO 3 - Mobile phone number",
+      "entity": "SHOP",
+      "label": "Mobile phone number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-email-5",
+      "description": "UBO 3 - Email",
+      "entity": "SHOP",
+      "label": "Email",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-address-line1-5",
+      "description": "UBO 3 - Address line 1",
+      "entity": "SHOP",
+      "label": "Address line 1",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-address-line2-5",
+      "description": "UBO 3 - Address line 2",
+      "entity": "SHOP",
+      "label": "Address line 2",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-city-5",
+      "description": "UBO 3 - City",
+      "entity": "SHOP",
+      "label": "City",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-state-5",
+      "description": "UBO 3 - State/province",
+      "entity": "SHOP",
+      "label": "State/province",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-post-code-5",
+      "description": "UBO 3 - Postal code",
+      "entity": "SHOP",
+      "label": "Postal code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-country-5",
+      "description": "UBO 3 - Country of address (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Country",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "accepted_values": [
+        "PASSPORT",
+        "NATIONAL_ID_CARD"
+      ],
+      "code": "hw-stakeholder-government-id-type-5",
+      "description": "UBO 3 - Government ID type",
+      "entity": "SHOP",
+      "label": "Government ID type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-government-id-num-5",
+      "description": "UBO 3 - Government ID number. Please enter the number of the Government ID specified above (either Passport or National ID card)",
+      "entity": "SHOP",
+      "label": "Government ID number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-government-id-count-5",
+      "description": "UBO 3 - Government ID country code (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Government ID country code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-drivers-license-num-5",
+      "description": "UBO 3 - Drivers license number",
+      "entity": "SHOP",
+      "label": "Drivers license number",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-drivers-license-cnt-5",
+      "description": "UBO 3 - Drivers license country code (2-letter code, e.g. ES for Spain)",
+      "entity": "SHOP",
+      "label": "Drivers license country code",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-stakeholder-req-proof-identity-5",
+      "description": "UBO 3 - Required Proof of Identity",
+      "entity": "SHOP",
+      "label": "Required Proof of Identity - Stakeholder 5",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    },
+    {
+      "accepted_values": [
+        "DRIVERS_LICENSE",
+        "PASSPORT",
+        "GOVERNMENT_ID"
+      ],
+      "code": "hw-stakeholder-proof-identity-type-5",
+      "description": "UBO 3 - Proof of Identity Type",
+      "entity": "SHOP",
+      "label": "Proof of Identity Type",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-stakeholder-proof-identity-ctry-5",
+      "description": "UBO 3 - Provide the country in 2-character ISO code format",
+      "entity": "SHOP",
+      "label": "Proof of Identity Country",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-terms-consent",
+      "description": "By accepting these terms I also agree that Hyperwallet may contact me directly to request additional information to verify my account. I will contact the marketplace operator if I need to revoke this.",
+      "entity": "SHOP",
+      "label": "I accept the Hyperwallet Terms of Services and Privacy Policy: https://hyperwallet.com/agreements-terms",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    }
+  ],
+  "total_count": 166
+}

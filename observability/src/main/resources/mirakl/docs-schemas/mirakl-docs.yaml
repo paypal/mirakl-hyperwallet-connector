@@ -1,0 +1,46 @@
+documents:
+  - code: hw-bsh1-proof-identity-front
+    description: Please upload Business Stakeholder 1 - Proof of Identity document (front side)
+    label: Business Stakeholder 1 - Proof of Identity (front)
+  - code: hw-bsh1-proof-identity-back
+    description: Please upload Business Stakeholder 1 - Proof of Identity document (rear side)
+    label: Business Stakeholder 1 - Proof of Identity (back)
+  - code: hw-bsh-letter-authorization
+    description: Please upload the document for business stakeholder contact - Letter of authorization
+    label: Letter of authorization (Business stakeholder contact)
+  - code: hw-bsh2-proof-identity-front
+    description: Please upload Business Stakeholder 2 - Proof of Identity document (front side)
+    label: Business Stakeholder 2 - Proof of Identity (front)
+  - code: hw-bsh2-proof-identity-back
+    description: Please upload Business Stakeholder 2 - Proof of Identity document (rear side)
+    label: Business Stakeholder 2 - Proof of Identity (back)
+  - code: hw-ind-proof-identity-front
+    description: Proof of Identity Front (Individual)
+    label: Proof of Identity Front (Individual)
+  - code: hw-ind-proof-identity-back
+    description: Proof of Identity Back (individual)
+    label: Proof of Identity Back (individual)
+  - code: hw-ind-proof-address
+    description: Proof of Address (Individual)
+    label: Proof of Address (Individual)
+  - code: hw-prof-proof-business-front
+    description: Proof of Business Front (business)
+    label: Proof of Business
+  - code: hw-bsh3-proof-identity-front
+    description: Please upload Business Stakeholder 3 - Proof of Identity document (front side)
+    label: Business Stakeholder 3 - Proof of Identity (front)
+  - code: hw-bsh3-proof-identity-back
+    description: Please upload Business Stakeholder 3 - Proof of Identity document (rear side)
+    label: Business Stakeholder 3 - Proof of Identity (back)
+  - code: hw-bsh4-proof-identity-front
+    description: Please upload Business Stakeholder 4 - Proof of Identity document (front side)
+    label: Business Stakeholder 4 - Proof of Identity (front)
+  - code: hw-bsh4-proof-identity-back
+    description: Please upload Business Stakeholder 4 - Proof of Identity document (rear side)
+    label: Business Stakeholder 4 - Proof of Identity (back)
+  - code: hw-bsh5-proof-identity-front
+    description: Please upload Business Stakeholder 5 - Proof of Identity document (front side)
+    label: Business Stakeholder 5 - Proof of Identity (front)
+  - code: hw-bsh5-proof-identity-back
+    description: Please upload Business Stakeholder 5 - Proof of Identity document (rear side)
+    label: Business Stakeholder 5 - Proof of Identity (back)

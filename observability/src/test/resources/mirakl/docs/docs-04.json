@@ -1,0 +1,140 @@
+{
+  "documents": [
+    {
+      "code": "hw-bsh1-proof-identity-front",
+      "description": "Please upload Business Stakeholder 1 - Proof of Identity document (front side)",
+      "entity": "SHOP",
+      "label": "Business Stakeholder 1 - Proof of Identity (front)",
+      "models": [
+        "MARKETPLACE"
+      ]
+    },
+    {
+      "code": "hw-bsh1-proof-identity-back",
+      "description": "Please upload Business Stakeholder 1 - Proof of Identity document (rear side)",
+      "entity": "SHOP",
+      "label": "Business Stakeholder 1 - Proof of Identity (back)",
+      "models": [
+        "MARKETPLACE"
+      ]
+    },
+    {
+      "code": "hw-bsh-letter-authorization",
+      "description": "Please upload the document for business stakeholder contact - Letter of authorization",
+      "entity": "SHOP",
+      "label": "Letter of authorization (Business stakeholder contact)",
+      "models": [
+        "MARKETPLACE"
+      ]
+    },
+    {
+      "code": "hw-bsh2-proof-identity-front",
+      "description": "Please upload Business Stakeholder 2 - Proof of Identity document (front side)",
+      "entity": "SHOP",
+      "label": "Business Stakeholder 2 - Proof of Identity (front)",
+      "models": [
+        "MARKETPLACE"
+      ]
+    },
+    {
+      "code": "hw-bsh2-proof-identity-back",
+      "description": "Please upload Business Stakeholder 2 - Proof of Identity document (rear side)",
+      "entity": "SHOP",
+      "label": "Business Stakeholder 2 - Proof of Identity (back)",
+      "models": [
+        "MARKETPLACE"
+      ]
+    },
+    {
+      "code": "hw-ind-proof-identity-front",
+      "description": "Proof of Identity Front (Individual)",
+      "entity": "SHOP",
+      "label": "Proof of Identity Front (Individual)",
+      "models": [
+        "MARKETPLACE"
+      ]
+    },
+    {
+      "code": "hw-ind-proof-identity-back",
+      "description": "Proof of Identity Back (individual)",
+      "entity": "SHOP",
+      "label": "Proof of Identity Back (individual)",
+      "models": [
+        "MARKETPLACE"
+      ]
+    },
+    {
+      "code": "hw-ind-proof-address",
+      "description": "Proof of Address (Individual)",
+      "entity": "SHOP",
+      "label": "Proof of Address (Individual)",
+      "models": [
+        "MARKETPLACE"
+      ]
+    },
+    {
+      "code": "hw-prof-proof-business-front",
+      "description": "Proof of Business Front (business)",
+      "entity": "SHOP",
+      "label": "Proof of Business",
+      "models": [
+        "MARKETPLACE"
+      ]
+    },
+    {
+      "code": "hw-bsh3-proof-identity-front",
+      "description": "Please upload Business Stakeholder 3 - Proof of Identity document (front side)",
+      "entity": "SHOP",
+      "label": "Business Stakeholder 3 - Proof of Identity (front)",
+      "models": [
+        "MARKETPLACE"
+      ]
+    },
+    {
+      "code": "hw-bsh3-proof-identity-back",
+      "description": "Please upload Business Stakeholder 3 - Proof of Identity document (rear side)",
+      "entity": "SHOP",
+      "label": "Business Stakeholder 3 - Proof of Identity (back)",
+      "models": [
+        "MARKETPLACE"
+      ]
+    },
+    {
+      "code": "hw-bsh4-proof-identity-front",
+      "description": "Please upload Business Stakeholder 4 - Proof of Identity document (front side)",
+      "entity": "SHOP",
+      "label": "Business Stakeholder 4 - Proof of Identity (front)",
+      "models": [
+        "MARKETPLACE"
+      ]
+    },
+    {
+      "code": "hw-bsh4-proof-identity-back",
+      "description": "Please upload Business Stakeholder 4 - Proof of Identity document (rear side)",
+      "entity": "SHOP",
+      "label": "Business Stakeholder 4 - Proof of Identity (back)",
+      "models": [
+        "MARKETPLACE"
+      ]
+    },
+    {
+      "code": "hw-bsh5-proof-identity-front",
+      "description": "Please upload Business Stakeholder 5 - Proof of Identity document (front side)",
+      "entity": "SHOP",
+      "label": "Business Stakeholder 5 - Proof of Identity (front)",
+      "models": [
+        "MARKETPLACE"
+      ]
+    },
+    {
+      "code": "hw-bsh5-proof-identity-back",
+      "description": "Please upload Business Stakeholder 5 - Proof of Identity document (rear side)",
+      "entity": "SHOP",
+      "label": "Business Stakeholder 5 - Proof of Identity (back)- CHANGED",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "_testComment": "Label has been changed"
+    }
+  ]
+}

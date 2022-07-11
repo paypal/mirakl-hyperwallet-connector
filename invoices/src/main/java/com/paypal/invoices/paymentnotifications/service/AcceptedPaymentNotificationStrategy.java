@@ -59,7 +59,8 @@ public class AcceptedPaymentNotificationStrategy implements Strategy<PaymentNoti
 		miraklAccountingDocumentPaymentConfirmation.setAmount(new BigDecimal(paymentNotificationBodyModel.getAmount()));
 		miraklAccountingDocumentPaymentConfirmation.setCurrencyIsoCode(
 				EnumUtils.getEnum(MiraklIsoCurrencyCode.class, paymentNotificationBodyModel.getCurrency(), null));
-		miraklAccountingDocumentPaymentConfirmation.setInvoiceId(paymentNotificationBodyModel.getClientPaymentId());
+		miraklAccountingDocumentPaymentConfirmation
+				.setInvoiceId(Long.valueOf(paymentNotificationBodyModel.getClientPaymentId()));
 		miraklAccountingDocumentPaymentConfirmation
 				.setTransactionDate(DateUtil.convertToDate(paymentNotificationBodyModel.getCreatedOn(),
 						HyperWalletConstants.HYPERWALLET_DATE_FORMAT, DateUtil.TIME_UTC));

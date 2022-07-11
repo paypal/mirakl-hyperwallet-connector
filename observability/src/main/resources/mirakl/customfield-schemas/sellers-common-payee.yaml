@@ -1,0 +1,16 @@
+metadata:
+  owner: sellers
+  shopType: common
+  group: payee
+  requiredForKyc: No
+label: Hyperwallet Seller/Payee Details
+description: >-
+  Please provide the following details of the Seller/Payee, i.e. details of the Shop
+  owner for Individual Seller or Primary Business Contact for Business Sellers.
+fields:
+  - code: hw-bankaccount-state
+    label: Bank Account State/Province
+    description: Seller/Payee's Bank Account State/Province
+    type: TEXT
+    permissions: READ_WRITE
+

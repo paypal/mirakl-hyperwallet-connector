@@ -1,0 +1,20 @@
+metadata:
+  owner: sellers
+  shopType: common
+  group: terms
+  requiredForKyc: No
+label: Hyperwallet Ts & Cs and Privacy Policy consent
+description: >-
+  Payment Services for your Store will be provided by Hyperwallet, a PayPal company.
+  In order to use this marketplace, you are required to accept the Hyperwallet Terms
+  of Services and Privacy Policy
+fields:
+  - code: hw-terms-consent
+    label: "I accept the Hyperwallet Terms of Services and Privacy Policy: https://hyperwallet.com/agreements-terms"
+    description: >-
+      By accepting these terms I also agree that Hyperwallet may
+      contact me directly to request additional information to verify
+      my account. I will contact the marketplace operator
+      if I need to revoke this.
+    type: BOOLEAN
+    permissions: READ_WRITE

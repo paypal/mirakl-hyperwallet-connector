@@ -1,0 +1,42 @@
+metadata:
+  owner: sellers
+  shopType: individual
+  group: payee
+  requiredForKyc: Yes
+label: Hyperwallet Individual Seller/Payee Details
+description: >-
+  The fields in this section are specific to the verification of
+  Individual Sellers/Payees.
+fields:
+  - code: hw-ind-proof-identity-type
+    label: Proof of Identity Type
+    description: >-
+      Please select the type of document that will be used as the
+      Proof of Identity for the individual seller/shop owner.
+    type: SINGLE_VALUE_LIST
+    allowedValues:
+      - DRIVERS_LICENSE
+      - PASSPORT
+      - GOVERNMENT_ID
+    permissions: READ_WRITE
+  - code: hw-ind-proof-identity-country
+    label: Proof of Identity Country
+    description: >-
+      Please enter a 2-character ISO country code for the
+      Proof of Identity country.
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-ind-proof-address-type
+    label: Proof of Address Type
+    description: >-
+      Please select the type of document that will be used as the
+      Proof of Address for the individual seller/shop owner.
+    type: SINGLE_VALUE_LIST
+    allowedValues:
+      - BANK_STATEMENT
+      - CREDIT_CARD_STATEMENT
+      - OFFICIAL_GOVERNMENT_LETTER
+      - TAX_RETURN
+      - UTILITY_BILL
+      - PROPERTY_TAX_ASSESSMENT
+    permissions: READ_WRITE

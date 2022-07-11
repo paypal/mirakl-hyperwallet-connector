@@ -1,0 +1,89 @@
+{
+  "additional_fields": [
+    {
+      "accepted_values": [
+        "DEFAULT",
+        "EUROPE",
+        "UK"
+      ],
+      "code": "hw-program",
+      "description": "CHANGED",
+      "entity": "SHOP",
+      "label": "Hyperwallet Program",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "LIST",
+      "_testComment": "Description has been changed"
+    },
+    {
+      "code": "hw-user-token",
+      "description": "Auto-generated, DO NOT change this value. This is a unique identifier for this Seller/Payee in Hyperwallet.",
+      "entity": "SHOP",
+      "label": "CHANGED",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "STRING",
+      "_testComment": "Label has been changed"
+    },
+    {
+      "code": "hw-bankaccount-token",
+      "description": "Auto-generated, DO NOT change this value. This is a unique identifier for this Seller/Payee's bank account in Hyperwallet.",
+      "entity": "SHOP",
+      "label": "Hyperwallet Bank Account Token",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING",
+      "_testComment": "Permissions has been changed from INVISIBLE to READ_WRITE"
+    },
+    {
+      "code": "hw-bankaccount-state",
+      "description": "Seller/Payee's Bank Account State/Province",
+      "entity": "SHOP",
+      "label": "Bank Account State/Province",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "REGEX",
+      "regex": "RegExp",
+      "_testComment": "Type has been changed from STRING to REGEX"
+    },
+    {
+      "code": "hw-terms-consent-CHANGED",
+      "description": "By accepting these terms I also agree that Hyperwallet may contact me directly to request additional information to verify my account. I will contact the marketplace operator if I need to revoke this.",
+      "entity": "SHOP",
+      "label": "I accept the Hyperwallet Terms of Services and Privacy Policy: https://hyperwallet.com/agreements-terms",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN",
+      "_testComment": "Code has been changed to cause not found and unexpected field errors."
+    },
+    {
+      "code": "should-be-ignored",
+      "description": "description",
+      "entity": "SHOP",
+      "label": "label",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN",
+      "_testComment": "Doesn't start with hw- and should be ignored"
+    }
+  ],
+  "total_count": 6
+}
