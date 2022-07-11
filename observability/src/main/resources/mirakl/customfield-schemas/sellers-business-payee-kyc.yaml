@@ -1,0 +1,49 @@
+metadata:
+  owner: sellers
+  shopType: business
+  group: payee
+  requiredForKyc: Yes
+label: Hyperwallet Business Seller/Payee Details
+description: >-
+  The fields in this section are specific to the
+  verification of Business Sellers/Payees
+fields:
+  - code: hw-business-type
+    label: Business Type
+    description: >-
+      Please choose the most relevant type of business
+      for your store
+    type: SINGLE_VALUE_LIST
+    allowedValues:
+      - CORPORATION
+      - PRIVATE_COMPANY
+      - PARTNERSHIP
+      - NOT_FOR_PROFIT_ORGANIZATION
+      - GOVERNMENT_ENTITY
+      - PUBLIC_COMPANY
+    permissions: READ_WRITE
+  - code: hw-business-reg-country
+    label: Business Registration Country
+    description: >-
+      Please provide the country where the business is
+      registered (2-letter ISO code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-business-reg-state-province
+    label: Business Registration State/Province
+    description: >-
+      Please provide the state, province or region where the business
+      is registered. If the country is the US, provide a 2-letter
+      code: docs.hyperwallet.com/content/references/v1/us-state-codes
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-prof-proof-business-type
+    label: Proof of Business Type
+    description: >-
+      Please ensure this field is set to INCORPORATION when providing
+      a Proof of Business document as part of the payee verification
+      in Hyperwallet
+    type: SINGLE_VALUE_LIST
+    allowedValues:
+      - INCORPORATION
+    permissions: READ_WRITE

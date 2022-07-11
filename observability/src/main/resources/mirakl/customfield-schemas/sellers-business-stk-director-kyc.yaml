@@ -1,0 +1,205 @@
+metadata:
+  owner: sellers
+  shopType: business
+  group: stakeholders-director
+  requiredForKyc: Yes
+label: Director details (Business Seller/Payee only)
+description: >-
+  Please provide details of one registered company Director. If you
+  selected ‘Yes’ to ‘Director’ in the section above, you can leave this
+  section empty, or add an additional Director.
+fields:
+  - code: hw-stakeholder-token-2
+    label: Hyperwallet Business Stakeholder 2 token
+    description: >-
+      Auto-generated, DO NOT change this value. This is a unique identifier for this Director.
+    type: TEXT
+    permissions: INVISIBLE
+  - code: hw-stakeholder-business-contact-2
+    label: Business Contact
+    description: >-
+      Please confirm if this person is also the business contact for this store
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-director-2
+    label: Director
+    description: >-
+      Please select "Yes"
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-ubo-2
+    label: Ultimate Beneficial Owner
+    description: >-
+      Please confirm if this person is also an Ultimate Beneficial
+      Owner (UBO) of this business
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-smo-2
+    label: Senior Managing Officer
+    description: >-
+      Please confirm if this person is also a Senior Managing
+      Officer of this business
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-first-name-2
+    label: First name
+    description: >-
+      Director - First name
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-middle-name-2
+    label: Middle name
+    description: >-
+      Director - Middle name
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-last-name-2
+    label: Last name
+    description: >-
+      Director - Last name
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-dob-2
+    label: Date of birth
+    description: >-
+      Director - Date of birth
+    type: DATE
+    permissions: READ_WRITE
+  - code: hw-stakeholder-country-of-birth-2
+    label: Country of birth
+    description: >-
+      Director - Country of birth
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-nationality-2
+    label: Country of nationality
+    description: >-
+      Director - Country of nationality
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-gender-2
+    label: Gender
+    description: >-
+      Director - Gender
+    type: SINGLE_VALUE_LIST
+    allowedValues:
+      - FEMALE
+      - MALE
+    permissions: READ_WRITE
+  - code: hw-stakeholder-phone-number-2
+    label: Phone number
+    description: >-
+      Director - Phone number
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-mobile-number-2
+    label: Mobile phone number
+    description: >-
+      Director - Mobile phone number
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-email-2
+    label: Email
+    description: >-
+      Director - Email
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-address-line1-2
+    label: Address line 1
+    description: >-
+      Director - Address line 1
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-address-line2-2
+    label: Address line 2
+    description: >-
+      Director - Address line 2
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-city-2
+    label: City
+    description: >-
+      Director - City
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-state-2
+    label: State/province
+    description: >-
+      Director - State/province
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-post-code-2
+    label: Postal code
+    description: >-
+      Director - Postal code
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-country-2
+    label: Country
+    description: >-
+      Director - Country of address
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-government-id-type-2
+    label: Government ID type
+    description: >-
+      Director - Government ID type
+    type: SINGLE_VALUE_LIST
+    allowedValues:
+      - PASSPORT
+      - NATIONAL_ID_CARD
+    permissions: READ_WRITE
+  - code: hw-stakeholder-government-id-num-2
+    label: Government ID number
+    description: >-
+      Director - Government ID number. Please enter the
+      number of the Government ID specified above
+      (either Passport or National ID card)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-government-id-count-2
+    label: Government ID country code
+    description: >-
+      Director - Government ID country code
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-drivers-license-num-2
+    label: Drivers license number
+    description: >-
+      Director - Drivers license number
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-drivers-license-cnt-2
+    label: Drivers license country code
+    description: >-
+      Director - Drivers license country code
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-req-proof-identity-2
+    label: Required Proof of Identity - Stakeholder 2
+    description: >-
+      Director - Required Proof of Identity
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-proof-identity-type-2
+    label: Proof of Identity Type
+    description: >-
+      Director - Proof of Identity Type
+    type: SINGLE_VALUE_LIST
+    permissions: READ_WRITE
+    allowedValues:
+      - DRIVERS_LICENSE
+      - PASSPORT
+      - GOVERNMENT_ID
+  - code: hw-stakeholder-proof-identity-ctry-2
+    label: Proof of Identity Country
+    description: >-
+      Director - Provide the country in
+      2-character ISO code format
+    type: TEXT
+    permissions: READ_WRITE

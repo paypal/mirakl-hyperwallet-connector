@@ -1,0 +1,73 @@
+{
+  "additional_fields": [
+    {
+      "accepted_values": [
+        "DEFAULT",
+        "EUROPE",
+        "UK"
+      ],
+      "code": "hw-program",
+      "description": "Incorrect Description",
+      "entity": "SHOP",
+      "label": "Hyperwallet Program",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "LIST",
+      "_testComment": "Description has been changed to be incorrect."
+    },
+    {
+      "code": "hw-user-token",
+      "description": "Auto-generated, DO NOT change this value. This is a unique identifier for this Seller/Payee in Hyperwallet",
+      "entity": "SHOP",
+      "label": "Hyperwallet User Token",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "STRING",
+      "_testComment": "The final dot has been removed from the description"
+    },
+    {
+      "code": "hw-bankaccount-token",
+      "description": "Auto-generated, DO NOT change this value. This is a unique identifier for this Seller/Payee's bank account in Hyperwallet.",
+      "entity": "SHOP",
+      "label": "Hyperwallet Bank Account Token",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-bankaccount-state",
+      "description": "Seller/Payee's Bank Account State/Province.",
+      "entity": "SHOP",
+      "label": "Bank Account State/Province",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING",
+      "_testComment": "A final dot has been added to the description"
+    },
+    {
+      "code": "hw-terms-consent",
+      "description": "By accepting these terms I also agree that Hyperwallet may contact me directly to request additional information to verify my account. I will contact the marketplace operator if I need to revoke this.",
+      "entity": "SHOP",
+      "label": "I accept the Hyperwallet Terms of Services and Privacy Policy: https://hyperwallet.com/agreements-terms",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "BOOLEAN"
+    }
+  ],
+  "total_count": 5
+}

@@ -32,7 +32,7 @@ class AcceptedPaymentNotificationStrategyTest {
 
 	private static final String AMOUNT = "123.45";
 
-	private static final String INVOICE_ID = "ID_1234";
+	private static final String INVOICE_ID = "1234";
 
 	private static final String CURRENCY_EUR_ISO_CODE = "EUR";
 
@@ -72,7 +72,7 @@ class AcceptedPaymentNotificationStrategyTest {
 
 		assertThat(miraklConfirmAccountingDocumentPaymentRequest.getAccountingDocuments()).hasSize(1);
 		assertThat(accountingDocuments.get(0).getAmount()).isEqualTo(AMOUNT);
-		assertThat(accountingDocuments.get(0).getInvoiceId()).isEqualTo(INVOICE_ID);
+		assertThat(accountingDocuments.get(0).getInvoiceId()).isEqualTo(Long.valueOf(INVOICE_ID));
 		assertThat(accountingDocuments.get(0).getCurrencyIsoCode()).isEqualTo(MiraklIsoCurrencyCode.EUR);
 		assertThat(accountingDocuments.get(0).getTransactionDate()).isEqualTo(DateUtil.convertToDate(CREATED_ON,
 				HyperWalletConstants.HYPERWALLET_DATE_FORMAT, TimeZone.getTimeZone("UTC")));

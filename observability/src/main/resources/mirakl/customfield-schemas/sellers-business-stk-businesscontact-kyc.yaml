@@ -1,0 +1,205 @@
+metadata:
+  owner: sellers
+  shopType: business
+  group: stakeholders-businesscontact
+  requiredForKyc: Yes
+label: Business Contact details (Business Seller/Payee only)
+description: >-
+  Please provide the details for the primary business contact authorized to act on
+  behalf of your business. This can be different from the person listed in the
+  Contact Details section.
+fields:
+  - code: hw-stakeholder-token-1
+    label: Hyperwallet Business Stakeholder 1 token
+    description: >-
+      Auto-generated, DO NOT change this value. This is a unique identifier for this Business Contact.
+    type: TEXT
+    permissions: INVISIBLE
+  - code: hw-stakeholder-business-contact-1
+    label: Business Contact
+    description: >-
+      Please confirm if this person is also the business contact for this store
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-director-1
+    label: Director
+    description: >-
+      Please confirm if this person is also a Director of this business
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-ubo-1
+    label: Ultimate Beneficial Owner
+    description: >-
+      Please confirm if this person is also an Ultimate Beneficial
+      Owner (UBO) of this business
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-smo-1
+    label: Senior Managing Officer
+    description: >-
+      Please confirm if this person is also a Senior Managing
+      Officer of this business
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-first-name-1
+    label: First name
+    description: >-
+      Business Contact - First name
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-middle-name-1
+    label: Middle name
+    description: >-
+      Business Contact - Middle name
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-last-name-1
+    label: Last name
+    description: >-
+      Business Contact - Last name
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-dob-1
+    label: Date of birth
+    description: >-
+      Business Contact - Date of birth
+    type: DATE
+    permissions: READ_WRITE
+  - code: hw-stakeholder-country-of-birth-1
+    label: Country of birth
+    description: >-
+      Business Contact - Country of birth
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-nationality-1
+    label: Country of nationality
+    description: >-
+      Business Contact - Country of nationality
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-gender-1
+    label: Gender
+    description: >-
+      Business Contact - Gender
+    type: SINGLE_VALUE_LIST
+    allowedValues:
+      - FEMALE
+      - MALE
+    permissions: READ_WRITE
+  - code: hw-stakeholder-phone-number-1
+    label: Phone number
+    description: >-
+      Business Contact - Phone number
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-mobile-number-1
+    label: Mobile phone number
+    description: >-
+      Business Contact - Mobile phone number
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-email-1
+    label: Email
+    description: >-
+      Business Contact - Email
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-address-line1-1
+    label: Address line 1
+    description: >-
+      Business Contact - Address line 1
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-address-line2-1
+    label: Address line 2
+    description: >-
+      Business Contact - Address line 2
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-city-1
+    label: City
+    description: >-
+      Business Contact - City
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-state-1
+    label: State/province
+    description: >-
+      Business Contact - State/province
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-post-code-1
+    label: Postal code
+    description: >-
+      Business Contact - Postal code
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-country-1
+    label: Country
+    description: >-
+      Business Contact - Country of address
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-government-id-type-1
+    label: Government ID type
+    description: >-
+      Business Contact - Government ID type
+    type: SINGLE_VALUE_LIST
+    allowedValues:
+      - PASSPORT
+      - NATIONAL_ID_CARD
+    permissions: READ_WRITE
+  - code: hw-stakeholder-government-id-num-1
+    label: Government ID number
+    description: >-
+      Business Contact - Government ID number. Please enter the
+      number of the Government ID specified above
+      (either Passport or National ID card)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-government-id-count-1
+    label: Government ID country code
+    description: >-
+      Business Contact - Government ID country code
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-drivers-license-num-1
+    label: Drivers license number
+    description: >-
+      Business Contact - Drivers license number
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-drivers-license-cnt-1
+    label: Drivers license country code
+    description: >-
+      Business Contact - Drivers license country code
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-req-proof-identity-1
+    label: Required Proof of Identity - Stakeholder 1
+    description: >-
+      Business Contact - Required Proof of Identity
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-proof-identity-type-1
+    label: Proof of Identity Type
+    description: >-
+      Business Contact - Proof of Identity Type
+    type: SINGLE_VALUE_LIST
+    permissions: READ_WRITE
+    allowedValues:
+      - DRIVERS_LICENSE
+      - PASSPORT
+      - GOVERNMENT_ID
+  - code: hw-stakeholder-proof-identity-ctry-1
+    label: Proof of Identity Country
+    description: >-
+      Business Contact - Provide the country in
+      2-character ISO code format
+    type: TEXT
+    permissions: READ_WRITE

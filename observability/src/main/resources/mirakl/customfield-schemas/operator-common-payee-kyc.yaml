@@ -1,0 +1,26 @@
+metadata:
+  owner: operator
+  shopType: common
+  group: payee
+  requiredForKyc: Yes
+label: Hyperwallet Seller/Payee Details - Operator-only fields
+description: >-
+  The fields in this section are for assisting in the operator's
+  administration & operation tasks. All fields herein should be Invisible to sellers.
+fields:
+  - code: hw-kyc-req-proof-authorization
+    label: Required Proof of Authorization
+    description: >-
+      Auto-generated, DO NOT change this value. This determines
+      whether the Seller/Payee needs to submit a Letter of Authorisation
+      document as part of the payee verification in Hyperwallet.
+    type: BOOLEAN
+    permissions: INVISIBLE
+  - code: hw-kyc-req-proof-identity-business
+    label: Required Proof of Identity/Business
+    description: >-
+      Auto-generated, DO NOT change this value. This determines
+      whether the Seller/Payee needs to submit a Proof of Identity or Proof
+      of Business documents as part of the payee verification in Hyperwallet.
+    type: BOOLEAN
+    permissions: INVISIBLE

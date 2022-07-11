@@ -1,0 +1,56 @@
+metadata:
+  owner: sellers
+  shopType: common
+  group: payee
+  requiredForKyc: Yes
+label: Hyperwallet Seller/Payee Details
+description: >-
+  Please provide the following details of the Seller/Payee, i.e. details of the Shop
+  owner for Individual Seller or Primary Business Contact for Business Sellers.
+fields:
+  - code: hw-government-id-type
+    label: Government ID Type
+    description:
+    type: SINGLE_VALUE_LIST
+    allowedValues:
+      - PASSPORT
+      - NATIONAL_ID_CARD
+    permissions: READ_WRITE
+  - code: hw-government-id
+    label: Government ID number
+    description: >-
+      If the Government ID type above is NATIONAL_ID_CARD please enter
+      the national ID card number. Otherwise, leave blank
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-passport-id
+    label: Passport Id
+    description: >-
+      If the Government ID type above is PASSPORT please enter
+      the Passport number. Otherwise, leave blank
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-drivers-license-id
+    label: Drivers license Id
+    description:
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-date-of-birth
+    label: Date of birth
+    description:
+    type: DATE
+    permissions: READ_WRITE
+  - code: hw-country-of-birth
+    label: Country of birth
+    description: >-
+      Please enter a 2-character ISO country code
+      for the country of birth
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-country-of-nationality
+    label: Country of nationality
+    description: >-
+      Please enter a 2-character ISO country code
+      for the country of nationality
+    type: TEXT
+    permissions: READ_WRITE

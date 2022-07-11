@@ -1,0 +1,32 @@
+metadata:
+  owner: operator
+  shopType: common
+  group: payee
+  requiredForKyc: No
+label: Hyperwallet Seller/Payee Details - Operator-only fields
+description: >-
+  The fields in this section are for assisting in the operator's
+  administration & operation tasks. All fields herein should be Invisible to sellers.
+fields:
+  - code: hw-program
+    label: Hyperwallet Program
+    description: >-
+      Your Hyperwallet implementation may consist of one or more programs
+      based on your payout needs. Select the appropriate program for this
+      Seller/Payee.
+    type: SINGLE_VALUE_LIST
+    permissions: INVISIBLE
+  - code: hw-user-token
+    label: Hyperwallet User Token
+    description: >-
+      Auto-generated, DO NOT change this value. This is a unique identifier
+      for this Seller/Payee in Hyperwallet.
+    type: TEXT
+    permissions: INVISIBLE
+  - code: hw-bankaccount-token
+    label: Hyperwallet Bank Account Token
+    description: >-
+      Auto-generated, DO NOT change this value. This is a unique identifier
+      for this Seller/Payee's bank account in Hyperwallet.
+    type: TEXT
+    permissions: INVISIBLE

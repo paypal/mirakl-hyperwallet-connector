@@ -1,0 +1,58 @@
+{
+  "additional_fields": [
+    {
+      "accepted_values": [
+        "DEFAULT",
+        "EUROPE",
+        "UK"
+      ],
+      "code": "hw-program",
+      "description": "Your Hyperwallet implementation may consist of one or more programs based on your payout needs. Select the appropriate program for this Seller/Payee.",
+      "entity": "SHOP",
+      "label": "Hyperwallet Program",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "LIST"
+    },
+    {
+      "code": "hw-user-token",
+      "description": "Auto-generated, DO NOT change this value. This is a unique identifier for this Seller/Payee in Hyperwallet.",
+      "entity": "SHOP",
+      "label": "Hyperwallet User Token",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-bankaccount-token",
+      "description": "Auto-generated, DO NOT change this value. This is a unique identifier for this Seller/Payee's bank account in Hyperwallet.",
+      "entity": "SHOP",
+      "label": "Hyperwallet Bank Account Token",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "INVISIBLE",
+      "type": "STRING"
+    },
+    {
+      "code": "hw-bankaccount-state",
+      "description": "Seller/Payee's Bank Account State/Province",
+      "entity": "SHOP",
+      "label": "Bank Account State/Province",
+      "models": [
+        "MARKETPLACE"
+      ],
+      "required": false,
+      "shop_permission": "READ_WRITE",
+      "type": "STRING"
+    }
+  ],
+  "total_count": 4
+}

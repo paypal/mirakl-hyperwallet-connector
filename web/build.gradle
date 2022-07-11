@@ -24,6 +24,7 @@ dependencies {
     implementation project(":notifications")
     implementation project(":kyc")
     implementation project(":sellers")
+    implementation project(":observability")
     implementation project(":reports")
 }
 

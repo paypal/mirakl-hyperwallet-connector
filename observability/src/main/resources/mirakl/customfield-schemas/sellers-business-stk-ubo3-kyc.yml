@@ -1,0 +1,202 @@
+metadata:
+  owner: sellers
+  shopType: business
+  group: stakeholders-ubo3
+  requiredForKyc: Yes
+label: Ultimate Beneficial Owner 3 (Business Seller/Payee only)
+description: >-
+  Please use this section to provide details of any additional UBO that has <25% share ownership of your company.
+fields:
+  - code: hw-stakeholder-token-5
+    label: Hyperwallet Business Stakeholder 5 token
+    description: >-
+      Auto-generated, DO NOT change this value. This is a unique identifier for this UBO.
+    type: TEXT
+    permissions: INVISIBLE
+  - code: hw-stakeholder-business-contact-5
+    label: Business Contact
+    description: >-
+      Please confirm if this person is also the business contact for this store
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-director-5
+    label: Director
+    description: >-
+      Please confirm if this person is also a Director of this business
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-ubo-5
+    label: Ultimate Beneficial Owner
+    description: >-
+      Please confirm if this person is also an Ultimate Beneficial Owner (UBO) of this business
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-smo-5
+    label: Senior Managing Officer
+    description: >-
+      Please confirm if this person is also a Senior Managing
+      Officer of this business
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-first-name-5
+    label: First name
+    description: >-
+      UBO 3 - First name
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-middle-name-5
+    label: Middle name
+    description: >-
+      UBO 3 - Middle name
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-last-name-5
+    label: Last name
+    description: >-
+      UBO 3 - Last name
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-dob-5
+    label: Date of birth
+    description: >-
+      UBO 3 - Date of birth
+    type: DATE
+    permissions: READ_WRITE
+  - code: hw-stakeholder-country-of-birth-5
+    label: Country of birth
+    description: >-
+      UBO 3 - Country of birth
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-nationality-5
+    label: Country of nationality
+    description: >-
+      UBO 3 - Country of nationality
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-gender-5
+    label: Gender
+    description: >-
+      UBO 3 - Gender
+    type: SINGLE_VALUE_LIST
+    allowedValues:
+      - FEMALE
+      - MALE
+    permissions: READ_WRITE
+  - code: hw-stakeholder-phone-number-5
+    label: Phone number
+    description: >-
+      UBO 3 - Phone number
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-mobile-number-5
+    label: Mobile phone number
+    description: >-
+      UBO 3 - Mobile phone number
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-email-5
+    label: Email
+    description: >-
+      UBO 3 - Email
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-address-line1-5
+    label: Address line 1
+    description: >-
+      UBO 3 - Address line 1
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-address-line2-5
+    label: Address line 2
+    description: >-
+      UBO 3 - Address line 2
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-city-5
+    label: City
+    description: >-
+      UBO 3 - City
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-state-5
+    label: State/province
+    description: >-
+      UBO 3 - State/province
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-post-code-5
+    label: Postal code
+    description: >-
+      UBO 3 - Postal code
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-country-5
+    label: Country
+    description: >-
+      UBO 3 - Country of address
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-government-id-type-5
+    label: Government ID type
+    description: >-
+      UBO 3 - Government ID type
+    type: SINGLE_VALUE_LIST
+    allowedValues:
+      - PASSPORT
+      - NATIONAL_ID_CARD
+    permissions: READ_WRITE
+  - code: hw-stakeholder-government-id-num-5
+    label: Government ID number
+    description: >-
+      UBO 3 - Government ID number. Please enter the
+      number of the Government ID specified above
+      (either Passport or National ID card)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-government-id-count-5
+    label: Government ID country code
+    description: >-
+      UBO 3 - Government ID country code
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-drivers-license-num-5
+    label: Drivers license number
+    description: >-
+      UBO 3 - Drivers license number
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-drivers-license-cnt-5
+    label: Drivers license country code
+    description: >-
+      UBO 3 - Drivers license country code
+      (2-letter code, e.g. ES for Spain)
+    type: TEXT
+    permissions: READ_WRITE
+  - code: hw-stakeholder-req-proof-identity-5
+    label: Required Proof of Identity - Stakeholder 5
+    description: >-
+      UBO 3 - Required Proof of Identity
+    type: BOOLEAN
+    permissions: READ_WRITE
+  - code: hw-stakeholder-proof-identity-type-5
+    label: Proof of Identity Type
+    description: >-
+      UBO 3 - Proof of Identity Type
+    type: SINGLE_VALUE_LIST
+    permissions: READ_WRITE
+    allowedValues:
+      - DRIVERS_LICENSE
+      - PASSPORT
+      - GOVERNMENT_ID
+  - code: hw-stakeholder-proof-identity-ctry-5
+    label: Proof of Identity Country
+    description: >-
+      UBO 3 - Provide the country in
+      2-character ISO code format
+    type: TEXT
+    permissions: READ_WRITE
