@@ -62,8 +62,8 @@ public abstract class AbstractUserDocumentFlagsStrategy
 			log.info("Proof of identity flag updated for shopId [{}]", source.getClientUserId());
 		}
 		catch (final MiraklException ex) {
-			log.error("Something went wrong updating KYC information of shop [{}]. Details [{}]",
-					source.getClientUserId(), ex.getMessage());
+			log.error(String.format("Something went wrong updating KYC information of shop [%s]. Details [%s]",
+					source.getClientUserId(), ex.getMessage()), ex);
 			mailNotificationUtil.sendPlainTextEmail("Issue detected updating KYC information in Mirakl",
 					String.format(EMAIL_BODY_PREFIX + "Something went wrong updating KYC information of shop [%s]%n%s",
 							source.getClientUserId(), MiraklLoggingErrorsUtil.stringify(ex)));

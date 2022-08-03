@@ -210,8 +210,8 @@ public class MiraklBusinessStakeholderDocumentsExtractServiceImpl extends Abstra
 		}
 		catch (final MiraklException e) {
 
-			log.error("Something went wrong when removing flag to retrieve documents for shop [{}]",
-					shopToUpdate.getClientUserId());
+			log.error(String.format("Something went wrong when removing flag to retrieve documents for shop [%s]",
+					shopToUpdate.getClientUserId()), e);
 
 			reportError(shopToUpdate.getDocumentTracingIdentifier(), e);
 

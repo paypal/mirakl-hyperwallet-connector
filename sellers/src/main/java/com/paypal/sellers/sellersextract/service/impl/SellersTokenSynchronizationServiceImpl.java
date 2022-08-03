@@ -9,6 +9,7 @@ import com.mirakl.client.core.exception.MiraklException;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.service.TokenSynchronizationService;
+import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.MiraklSellersExtractService;
 import com.paypal.sellers.service.HyperwalletSDKService;
@@ -68,7 +69,8 @@ public class SellersTokenSynchronizationServiceImpl implements TokenSynchronizat
 			miraklSellersExtractService.updateUserToken(hyperwalletUser);
 		}
 		catch (final MiraklException e) {
-			log.error("Error while updating Mirakl user by clientUserId [{}]", hyperwalletUser.getClientUserId(), e);
+			log.error(String.format("Error while updating Mirakl user by clientUserId [%s]",
+					hyperwalletUser.getClientUserId()), e);
 			throw new HMCMiraklAPIException(e);
 		}
 	}
@@ -94,7 +96,8 @@ public class SellersTokenSynchronizationServiceImpl implements TokenSynchronizat
 			return hyperwalletSDK.listUsers(paginationOptions);
 		}
 		catch (final HyperwalletException e) {
-			log.error("Error while getting Hyperwallet user by clientUserId [{}]", sellerModel.getClientUserId(), e);
+			log.error(String.format("Error while getting Hyperwallet user by clientUserId [%s].%n%s",
+					sellerModel.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)), e);
 
 			throw new HMCHyperwalletAPIException(e);
 		}

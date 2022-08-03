@@ -20,6 +20,7 @@ class MiraklAPIChecksActuatorAdapterITTest extends AbstractMockServerITTest {
 
 	@Test
 	void miraklAPICheckShouldReturnHealthUp() throws Exception {
+		hyperwalletHealthMockServerFixtures.mockGetHealth_up();
 		healthMockServerFixtures.mockGetVersion_up();
 
 		//@formatter:off
@@ -33,6 +34,7 @@ class MiraklAPIChecksActuatorAdapterITTest extends AbstractMockServerITTest {
 
 	@Test
 	void miraklAPICheckShouldReturnHealthDown() throws Exception {
+		hyperwalletHealthMockServerFixtures.mockGetHealth_up();
 		healthMockServerFixtures.mockGetVersion_down();
 
 		//@formatter:off

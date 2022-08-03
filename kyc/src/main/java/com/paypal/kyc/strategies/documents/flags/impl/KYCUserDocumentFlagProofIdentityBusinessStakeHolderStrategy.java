@@ -90,9 +90,9 @@ public class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy extends
 						source.getClientUserId());
 			}
 			catch (final MiraklException ex) {
-				log.error(
-						"Something went wrong updating KYC business stakeholder information of shop [{}]. Details [{}]",
-						source.getClientUserId(), ex.getMessage());
+				log.error(String.format(
+						"Something went wrong updating KYC business stakeholder information of shop [%s]. Details [%s]",
+						source.getClientUserId(), ex.getMessage()), ex);
 				mailNotificationUtil.sendPlainTextEmail(
 						"Issue detected updating KYC business stakeholder information in Mirakl",
 						String.format(EMAIL_BODY_PREFIX

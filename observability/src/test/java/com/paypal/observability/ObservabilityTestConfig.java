@@ -1,5 +1,6 @@
 package com.paypal.observability;
 
+import com.paypal.observability.hyperwalletapichecks.HyperwalletAPIHealthCheckerConfig;
 import com.paypal.observability.miraklapichecks.MiraklAPIHealthCheckerConfig;
 import com.paypal.observability.mirakldocschecks.MiraklDocsCheckerConfig;
 import com.paypal.observability.miraklfieldschecks.MiraklFieldsCheckerConfig;
@@ -15,7 +16,9 @@ import org.springframework.context.annotation.Import;
 		MiraklDocsCheckerConfig.class,
 		MiraklSchemaDiffsConfig.class,
 		MiraklAPIHealthCheckerConfig.class,
-		MockserverTestConfig.class})
+		HyperwalletAPIHealthCheckerConfig.class,
+		MockserverTestConfig.class
+})
 //@formatter:on
 public class ObservabilityTestConfig {
 

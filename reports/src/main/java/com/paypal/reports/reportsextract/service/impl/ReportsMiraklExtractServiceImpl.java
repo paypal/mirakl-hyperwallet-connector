@@ -66,7 +66,9 @@ public class ReportsMiraklExtractServiceImpl implements ReportsMiraklExtractServ
 
 		}
 		catch (final MiraklException e) {
-			log.error("Something went wrong retrieving log lines from Mirakl from {} to {}", startDate, endDate);
+			log.error(String.format(
+					"Something went wrong retrieving log lines from Mirakl from %1$tT %1$tF to %2$tT %2$tF", startDate,
+					endDate), e);
 			mailNotificationUtil.sendPlainTextEmail(EMAIL_SUBJECT_MESSAGE,
 					String.format(
 							ERROR_MESSAGE_PREFIX

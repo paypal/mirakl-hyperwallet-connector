@@ -1,0 +1,12 @@
+{
+  "errors": [
+    {
+      "message": "Error message",
+      "fieldName": "",
+      "code": "CONSTRAINT_VIOLATIONS",
+      "relatedResources": [
+        "prg-1fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e"
+      ]
+    }
+  ]
+}

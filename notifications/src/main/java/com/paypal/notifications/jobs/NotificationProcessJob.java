@@ -1,7 +1,7 @@
 package com.paypal.notifications.jobs;
 
 import com.paypal.infrastructure.job.AbstractDeltaInfoJob;
-import com.paypal.notifications.service.NotificationService;
+import com.paypal.notifications.service.FailedNotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
@@ -22,12 +22,12 @@ public class NotificationProcessJob extends AbstractDeltaInfoJob {
 	private boolean retryNotifications;
 
 	@Resource
-	protected NotificationService notificationService;
+	protected FailedNotificationService failedNotificationService;
 
 	@Override
 	public void execute(final JobExecutionContext context) {
 		if (shouldRetryNotifications()) {
-			notificationService.processFailedNotifications();
+			failedNotificationService.processFailedNotifications();
 		}
 	}
 

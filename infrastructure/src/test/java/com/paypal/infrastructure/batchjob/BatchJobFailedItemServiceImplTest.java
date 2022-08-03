@@ -129,7 +129,7 @@ class BatchJobFailedItemServiceImplTest {
 		verify(mailNotificationUtilMock).sendPlainTextEmail(
 				"Max retry attempts reached when processing item [" + ID_001 + "]",
 				"Max retry attempts reached when processing item [" + ID_001
-						+ "], the item won't be processed anymore");
+						+ "], the item won't be automatically retried again. It will be processed again if the item has any changes or if a manual job execution is done.");
 	}
 
 	@Test
@@ -149,7 +149,7 @@ class BatchJobFailedItemServiceImplTest {
 		verify(mailNotificationUtilMock, never()).sendPlainTextEmail(
 				"Max retry attempts reached when processing item [" + ID_001 + "]",
 				"Max retry attempts reached when processing item [" + ID_001
-						+ "], the item won't be processed anymore");
+						+ "], the item won't be automatically retried again. It will be processed again if the item has any changes or if a manual job execution is done.");
 	}
 
 	@Test
@@ -169,7 +169,7 @@ class BatchJobFailedItemServiceImplTest {
 		verify(mailNotificationUtilMock, never()).sendPlainTextEmail(
 				"Max retry attempts reached when processing item [" + ID_001 + "]",
 				"Max retry attempts reached when processing item [" + ID_001
-						+ "], the item won't be processed anymore");
+						+ "], the item won't be automatically retried again. It will be processed again if the item has any changes or if a manual job execution is done.");
 	}
 
 	@Test

@@ -43,24 +43,24 @@ public class KYCBusinessStakeholderNotificationServiceImpl implements KYCBusines
 		}
 		// Rethrow exception to handle it in AbstractNotificationListener
 		catch (final HyperwalletException ex) {
-			logException(incomingNotification, HyperwalletLoggingErrorsUtil.stringify(ex));
+			logException(incomingNotification, HyperwalletLoggingErrorsUtil.stringify(ex), ex);
 			throw ex;
 		}
 		catch (final MiraklException ex) {
-			logException(incomingNotification, MiraklLoggingErrorsUtil.stringify(ex));
+			logException(incomingNotification, MiraklLoggingErrorsUtil.stringify(ex), ex);
 			throw ex;
 		}
 		catch (final RuntimeException ex) {
-			logException(incomingNotification, ex.getMessage());
+			logException(incomingNotification, ex.getMessage(), ex);
 			throw ex;
 		}
 	}
 
-	private void logException(final HyperwalletWebhookNotification incomingNotification,
-			final String exceptionMessage) {
-		log.error(
-				"Notification [{}] could not be processed - the KYC Letter of authorization for a business stakeholder could not be updated. Details [{}]",
-				incomingNotification.getToken(), exceptionMessage);
+	private void logException(final HyperwalletWebhookNotification incomingNotification, final String exceptionMessage,
+			Exception e) {
+		log.error(String.format(
+				"Notification [%s] could not be processed - the KYC Letter of authorization for a business stakeholder could not be updated.%n%s",
+				incomingNotification.getToken(), exceptionMessage), e);
 	}
 
 }

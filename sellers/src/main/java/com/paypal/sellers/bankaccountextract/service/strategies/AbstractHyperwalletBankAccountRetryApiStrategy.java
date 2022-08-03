@@ -58,9 +58,8 @@ public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
 								String.format(ERROR_MESSAGE_PREFIX
 										+ "Bank account not created or updated for seller with clientId [%s]%n%s",
 										seller.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)));
-				log.error("Bank account not created or updated for seller with clientId [{}]",
-						seller.getClientUserId());
-				log.error(HyperwalletLoggingErrorsUtil.stringify(e));
+				log.error(String.format("Bank account not created or updated for seller with clientId [%s].%n%s",
+						seller.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)), e);
 
 				throw new HMCHyperwalletAPIException(e);
 

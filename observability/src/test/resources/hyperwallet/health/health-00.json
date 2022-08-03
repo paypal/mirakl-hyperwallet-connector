@@ -1,0 +1,14 @@
+{
+  "token": "prg-1fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e",
+  "createdOn": "2020-10-21T04:10:26",
+  "name": "Integration Testing",
+  "parentToken": "prg-e99fe794-dae6-467c-8be3-980bc812544f",
+  "links": [
+    {
+      "params": {
+        "rel": "self"
+      },
+      "href": "https://uat-api.paylution.com/rest/v4/programs/prg-1fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e/"
+    }
+  ]
+}

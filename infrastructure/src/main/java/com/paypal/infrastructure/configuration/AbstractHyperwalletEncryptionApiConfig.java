@@ -9,14 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 
 /**
  * Class that contains all parameters needed for encryption
  */
 
 @Getter
-@PropertySource({ "classpath:application.properties" })
 public abstract class AbstractHyperwalletEncryptionApiConfig {
 
 	@Value("#{'${hyperwallet.api.encryptionAlgorithm}'}")

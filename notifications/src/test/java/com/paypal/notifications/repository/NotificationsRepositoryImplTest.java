@@ -5,6 +5,7 @@ import com.callibrity.logging.test.LogTrackerStub;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
+import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.notifications.service.hyperwallet.HyperwalletSDKService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -70,15 +71,16 @@ class NotificationsRepositoryImplTest {
 	void getHyperwalletWebhookNotification_shouldReturnNull_andLogException_WhenExceptionIsThrown() {
 		when(hyperwalletSDKService.getHyperwalletInstance(HYPERWALLET_NOTIFICATION_PROGRAM))
 				.thenReturn(hyperwalletInstanceMock);
-		when(hyperwalletInstanceMock.getWebhookEvent(HYPERWALLET_NOTIFICATION_TOKEN))
-				.thenThrow(new HyperwalletException(MSG_ERROR));
+		HyperwalletException hyperwalletException = new HyperwalletException(MSG_ERROR);
+		when(hyperwalletInstanceMock.getWebhookEvent(HYPERWALLET_NOTIFICATION_TOKEN)).thenThrow(hyperwalletException);
 
 		final HyperwalletWebhookNotification result = testObj
 				.getHyperwalletWebhookNotification(HYPERWALLET_NOTIFICATION_PROGRAM, HYPERWALLET_NOTIFICATION_TOKEN);
 
 		assertThat(result).isNull();
-		assertThat(logTrackerStub.contains(String.format("Could not fetch notification [%s] due to reason [%s]",
-				HYPERWALLET_NOTIFICATION_TOKEN, MSG_ERROR))).isTrue();
+		assertThat(logTrackerStub.contains(String.format("Could not fetch notification [%s] due to reason:%n%s",
+				HYPERWALLET_NOTIFICATION_TOKEN, HyperwalletLoggingErrorsUtil.stringify(hyperwalletException))))
+						.isTrue();
 	}
 
 }

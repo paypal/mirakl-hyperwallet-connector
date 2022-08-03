@@ -1,32 +1,34 @@
 package com.paypal.notifications.service.hmc.impl;
 
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
-import com.paypal.infrastructure.model.entity.NotificationInfoEntity;
-import com.paypal.infrastructure.repository.FailedNotificationInformationRepository;
 import com.paypal.infrastructure.strategy.StrategyExecutor;
-import com.paypal.notifications.repository.NotificationsRepository;
+import com.paypal.notifications.converter.NotificationConverter;
+import com.paypal.notifications.evaluator.NotificationEntityEvaluator;
+import com.paypal.notifications.model.entity.NotificationEntity;
 import com.paypal.notifications.service.NotificationService;
+import com.paypal.notifications.service.hmc.NotificationEntityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
-import java.util.stream.StreamSupport;
 
 @Slf4j
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
-	private final NotificationsRepository notificationsRepository;
+	private final NotificationConverter notificationConverter;
 
-	private final FailedNotificationInformationRepository failedNotificationInformationRepository;
+	private final NotificationEntityService notificationEntityService;
+
+	private final NotificationEntityEvaluator notificationEntityEvaluator;
 
 	private final StrategyExecutor<HyperwalletWebhookNotification, Void> hyperwalletWebhookNotificationSenderStrategyExecutor;
 
-	public NotificationServiceImpl(final NotificationsRepository notificationsRepository,
-			final FailedNotificationInformationRepository failedNotificationInformationRepository,
+	public NotificationServiceImpl(NotificationConverter notificationConverter,
+			NotificationEntityService notificationEntityService,
+			NotificationEntityEvaluator notificationEntityEvaluator,
 			final StrategyExecutor<HyperwalletWebhookNotification, Void> hyperwalletWebhookNotificationSenderStrategyExecutor) {
-		this.notificationsRepository = notificationsRepository;
-		this.failedNotificationInformationRepository = failedNotificationInformationRepository;
+		this.notificationConverter = notificationConverter;
+		this.notificationEntityService = notificationEntityService;
+		this.notificationEntityEvaluator = notificationEntityEvaluator;
 		this.hyperwalletWebhookNotificationSenderStrategyExecutor = hyperwalletWebhookNotificationSenderStrategyExecutor;
 	}
 
@@ -35,29 +37,13 @@ public class NotificationServiceImpl implements NotificationService {
 	 */
 	@Override
 	public void processNotification(final HyperwalletWebhookNotification incomingNotificationDTO) {
-		hyperwalletWebhookNotificationSenderStrategyExecutor.execute(incomingNotificationDTO);
-	}
+		final NotificationEntity notificationEntity = notificationConverter.convert(incomingNotificationDTO);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void processFailedNotifications() {
-		final Iterable<NotificationInfoEntity> failedNotifications = failedNotificationInformationRepository.findAll();
-		//@formatter:off
-		StreamSupport.stream(failedNotifications.spliterator(), false)
-				.map(this::getNotificationToReprocess)
-				.filter(Objects::nonNull)
-				.forEach(this::processNotification);
-		//@formatter:on
-	}
+		notificationEntityService.saveNotification(notificationEntity);
 
-	private HyperwalletWebhookNotification getNotificationToReprocess(
-			final NotificationInfoEntity failedNotificationInformationEntity) {
-		log.info("Reprocessing notification [{}]", failedNotificationInformationEntity.getNotificationToken());
-		return notificationsRepository.getHyperwalletWebhookNotification(
-				failedNotificationInformationEntity.getProgram(),
-				failedNotificationInformationEntity.getNotificationToken());
+		if (notificationEntityEvaluator.isProcessable(notificationEntity)) {
+			hyperwalletWebhookNotificationSenderStrategyExecutor.execute(incomingNotificationDTO);
+		}
 	}
 
 }

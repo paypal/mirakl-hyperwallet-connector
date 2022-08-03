@@ -63,8 +63,8 @@ public class KYCReadyForReviewServiceImpl implements KYCReadyForReviewService {
 	}
 
 	private void reportHyperwalletAPIError(KYCDocumentInfoModel kycDocumentInfoModel, HyperwalletException e) {
-		log.error("Error notifying to Hyperwallet that all documents were sent: [{}]",
-				HyperwalletLoggingErrorsUtil.stringify(e));
+		log.error(String.format("Error notifying to Hyperwallet that all documents were sent.%n%s",
+				HyperwalletLoggingErrorsUtil.stringify(e)), e);
 
 		kycMailNotificationUtil.sendPlainTextEmail("Issue in Hyperwallet status notification", String.format(
 				"There was an error notifying Hyperwallet all documents were sent for shop Id [%s], so Hyperwallet will not be notified about this new situation%n%s",

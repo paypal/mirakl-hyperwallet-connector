@@ -115,9 +115,9 @@ public class MiraklBusinessStakeholderDocumentDownloadExtractServiceImpl
 			return kycBusinessStakeHolderInfoModel.toBuilder().miraklShopDocuments(shopDocuments).build();
 		}
 		catch (final MiraklException e) {
-			log.error(
-					"Something went wrong trying to receive business stakeholder documents from Mirakl for seller with id [{}]",
-					kycBusinessStakeHolderInfoModel.getClientUserId());
+			log.error(String.format(
+					"Something went wrong trying to receive business stakeholder documents from Mirakl for seller with id [%s]",
+					kycBusinessStakeHolderInfoModel.getClientUserId()), e);
 			kycMailNotificationUtil.sendPlainTextEmail(
 					"Issue detected getting business stakeholder documents from Mirakl",
 					String.format("Something went wrong getting documents from Mirakl for shop Id [%s]%n%s",

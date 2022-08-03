@@ -1,23 +1,23 @@
-package com.paypal.observability.testsupport;
+package com.paypal.observability.testsupport.fixtures;
 
 import org.mockserver.client.MockServerClient;
 
 public class DocsMockServerFixtures extends AbstractMockServerFixtures {
 
-	public DocsMockServerFixtures(MockServerClient mockServerClient) {
+	public DocsMockServerFixtures(final MockServerClient mockServerClient) {
 		super(mockServerClient);
 	}
 
 	@Override
 	protected String getFolder() {
-		return "docs";
+		return "mirakl/docs";
 	}
 
-	private void mockGetDocsConfiguration(String responseFile, int statusCode) {
+	private void mockGetDocsConfiguration(final String responseFile, final int statusCode) {
 		mockGet("/api/documents", responseFile, statusCode);
 	}
 
-	private void mockGetDocsConfigurationStatusOK(String responseFile) {
+	private void mockGetDocsConfigurationStatusOK(final String responseFile) {
 		mockGetDocsConfiguration(responseFile, 200);
 	}
 

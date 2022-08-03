@@ -193,7 +193,8 @@ public class MiraklSellerDocumentsExtractServiceImpl extends AbstractMiraklDocum
 		}
 		catch (final MiraklException e) {
 
-			log.error("Something went wrong when removing flag to retrieve documents for shop [{}]", shopId);
+			log.error(String.format("Something went wrong when removing flag to retrieve documents for shop [%s]",
+					shopId), e);
 
 			reportError("Shop Id " + shopId, e);
 

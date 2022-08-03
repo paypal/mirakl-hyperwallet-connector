@@ -1,6 +1,7 @@
 package com.paypal.observability.miraklfieldschecks.diffs;
 
 import com.paypal.observability.miraklfieldschecks.model.MiraklField;
+import com.paypal.observability.miraklfieldschecks.model.MiraklFieldPermissions;
 import com.paypal.observability.miraklschemadiffs.model.MiraklSchemaItem;
 import com.paypal.observability.miraklschemadiffs.model.diff.MiraklSchemaDiffEntry;
 import com.paypal.observability.miraklschemadiffs.model.diff.MiraklSchemaDiffEntryIncorrectAttributeValue;
@@ -24,6 +25,16 @@ public class MiraklFieldSchemaDiffEntrySeverityAssigner implements MiraklSchemaD
 			"description", MiraklSchemaDiffReportSeverity.WARN,
 			"required", MiraklSchemaDiffReportSeverity.WARN
 	);
+
+	// We assign a numeric value to each permission representing the amount of rights
+	// for each of them. The bigger the value the more rights it grants.
+	// This is going to be used to compare the amount of rights granted by to different
+	// permissions.
+	private Map<MiraklFieldPermissions, Integer> permissionsLevelMap = Map.of(
+			MiraklFieldPermissions.INVISIBLE, 0,
+			MiraklFieldPermissions.READ_ONLY, 1,
+			MiraklFieldPermissions.READ_WRITE, 2
+	);
 	//@formatter:on
 
 	@Override
@@ -33,11 +44,28 @@ public class MiraklFieldSchemaDiffEntrySeverityAssigner implements MiraklSchemaD
 			severity = MiraklSchemaDiffReportSeverity.FAIL;
 		}
 		else if (MiraklSchemaDiffEntryType.INCORRECT_ATTRIBUTE_VALUE.equals(entry.getDiffType())) {
-			severity = fieldNameToSeverityMap
-					.get(((MiraklSchemaDiffEntryIncorrectAttributeValue) entry).getAttributeName());
+			MiraklSchemaDiffEntryIncorrectAttributeValue incorrectAttributeEntry = ((MiraklSchemaDiffEntryIncorrectAttributeValue) entry);
+			String fieldName = incorrectAttributeEntry.getAttributeName();
+			severity = fieldName.equals("permissions") ? getPermissionsAttributeSeverity(incorrectAttributeEntry)
+					: getGenericAttributeSeverity(incorrectAttributeEntry);
 		}
 
 		return severity;
+	}
+
+	private MiraklSchemaDiffReportSeverity getPermissionsAttributeSeverity(
+			MiraklSchemaDiffEntryIncorrectAttributeValue diffEntry) {
+		MiraklFieldPermissions actual = ((MiraklField) diffEntry.getActual()).getPermissions();
+		MiraklFieldPermissions expected = ((MiraklField) diffEntry.getExpected()).getPermissions();
+
+		return permissionsLevelMap.get(actual) >= permissionsLevelMap.get(expected)
+				? MiraklSchemaDiffReportSeverity.FAIL : MiraklSchemaDiffReportSeverity.WARN;
+	}
+
+	private MiraklSchemaDiffReportSeverity getGenericAttributeSeverity(
+			MiraklSchemaDiffEntryIncorrectAttributeValue diffEntry) {
+		String fieldName = diffEntry.getAttributeName();
+		return fieldNameToSeverityMap.get(fieldName);
 	}
 
 	@Override

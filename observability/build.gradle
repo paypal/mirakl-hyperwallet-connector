@@ -4,6 +4,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
     implementation "org.mapstruct:mapstruct:1.4.2.Final"
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'commons-beanutils:commons-beanutils:1.9.4'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
@@ -28,10 +30,12 @@ dependencies {
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
 
     runtimeOnly 'net.minidev:json-smart:2.3'
+
     api 'com.hyperwallet:sdk:2.2.5'
     api 'com.mirakl:mmp-sdk-operator:4.10.0'
 
     implementation project(":infrastructure")
+    implementation project(":notifications")
 }
 
 bootJar {

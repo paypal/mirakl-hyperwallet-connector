@@ -40,8 +40,8 @@ public class HyperWalletUpdateSellerServiceStrategy extends AbstractHyperwalletS
 			return updatedUser;
 		}
 		catch (final HyperwalletException e) {
-			logErrors(String.format("Error updating seller in hyperwallet with clientUserId [%s]: [{}]",
-					hyperwalletUser.getClientUserId()), e, log);
+			logErrors(String.format("Error updating seller in hyperwallet with clientUserId [%s].%n%s",
+					hyperwalletUser.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)), e, log);
 
 			reportError("Issue detected when updating seller in Hyperwallet",
 					String.format(ERROR_MESSAGE_PREFIX + "Seller not updated with clientId [%s]%n%s",

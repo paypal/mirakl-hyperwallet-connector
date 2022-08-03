@@ -78,7 +78,7 @@ public class BatchJobFailedItemServiceImpl implements BatchJobFailedItemService 
 		mailNotificationUtil.sendPlainTextEmail(
 				String.format("Max retry attempts reached when processing item [%s]", batchJobFailedItem.getId()),
 				String.format(
-						"Max retry attempts reached when processing item [%s], the item won't be processed anymore",
+						"Max retry attempts reached when processing item [%s], the item won't be automatically retried again. It will be processed again if the item has any changes or if a manual job execution is done.",
 						batchJobFailedItem.getId()));
 	}
 

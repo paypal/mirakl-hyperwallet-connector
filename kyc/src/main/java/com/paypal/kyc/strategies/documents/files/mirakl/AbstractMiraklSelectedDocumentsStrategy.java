@@ -81,7 +81,7 @@ public abstract class AbstractMiraklSelectedDocumentsStrategy
 			return KYCDocumentModel.builder().file(fileWrapper.getFile()).documentFieldName(fieldName).build();
 		}
 		catch (MiraklException e) {
-			log.error("Something went wrong trying to download document with id [{}]", documentId);
+			log.error(String.format("Something went wrong trying to download document with id [%s]", documentId), e);
 			log.error(e.getMessage(), e);
 		}
 
