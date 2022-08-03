@@ -3,6 +3,7 @@ package com.paypal.notifications.repository;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
+import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.notifications.service.hyperwallet.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,8 @@ public class NotificationsRepositoryImpl implements NotificationsRepository {
 			return hyperwalletInstance.getWebhookEvent(token);
 		}
 		catch (final HyperwalletException ex) {
-			log.error("Could not fetch notification [{}] due to reason [{}]", token, ex.getMessage());
+			log.error(String.format("Could not fetch notification [%s] due to reason:%n%s", token,
+					HyperwalletLoggingErrorsUtil.stringify(ex)), ex);
 			return null;
 		}
 	}

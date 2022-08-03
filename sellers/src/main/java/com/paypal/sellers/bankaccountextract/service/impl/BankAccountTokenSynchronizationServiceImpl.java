@@ -8,6 +8,7 @@ import com.mirakl.client.core.exception.MiraklApiException;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.service.TokenSynchronizationService;
+import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextract.service.MiraklBankAccountExtractService;
 import com.paypal.sellers.sellersextract.model.SellerModel;
@@ -112,8 +113,10 @@ public class BankAccountTokenSynchronizationServiceImpl implements TokenSynchron
 		}
 		catch (final HyperwalletException exception) {
 
-			log.error("Error while getting Hyperwallet bank account by clientUserId [{}]",
-					sellerModel.getClientUserId(), exception);
+			log.error(
+					String.format("Error while getting Hyperwallet bank account by clientUserId [%s].%n%s",
+							sellerModel.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(exception)),
+					exception);
 
 			throw new HMCHyperwalletAPIException(exception);
 		}

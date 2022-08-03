@@ -1,10 +1,12 @@
-package com.paypal.infrastructure.batchjob.listeners;
+package com.paypal.observability.loggingcontext.batchjobs.listeners;
 
 import com.callibrity.logging.test.LogTracker;
 import com.callibrity.logging.test.LogTrackerStub;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.infrastructure.batchjob.BatchJobItem;
 import com.paypal.infrastructure.batchjob.BatchJobItemValidationResult;
+import com.paypal.observability.batchjoblogging.listeners.BatchJobLoggingListener;
+import com.paypal.observability.batchjoblogging.service.BatchJobLoggingContextService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +23,7 @@ import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class LoggingBatchJobItemProcessingListenerTest {
+class BatchJobLoggingListenerTest {
 
 	public static final String JOB_NAME = "jobName";
 
@@ -38,11 +40,13 @@ class LoggingBatchJobItemProcessingListenerTest {
 	public static final int NUMBER_OF_ITEMS_REMAINING = 0;
 
 	@InjectMocks
-	private LoggingBatchJobItemProcessingListener testObj;
+	private BatchJobLoggingListener testObj;
+
+	@Mock
+	private BatchJobLoggingContextService batchJobLoggingContextServiceMock;
 
 	@RegisterExtension
-	final LogTrackerStub logTrackerStub = LogTrackerStub.create()
-			.recordForType(LoggingBatchJobItemProcessingListener.class);
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForType(BatchJobLoggingListener.class);
 
 	@Mock
 	private BatchJobContext batchJobContextMock;
@@ -75,7 +79,7 @@ class LoggingBatchJobItemProcessingListenerTest {
 
 		testObj.beforeItemExtraction(batchJobContextMock);
 
-		assertThat(logTrackerStub.contains("[" + JOB_NAME + "] Starting extraction of items to be processed")).isTrue();
+		assertThat(logTrackerStub.contains("Starting extraction of items to be processed")).isTrue();
 	}
 
 	@Test
@@ -83,8 +87,8 @@ class LoggingBatchJobItemProcessingListenerTest {
 
 		testObj.onItemExtractionSuccessful(batchJobContextMock, extractedItemsMock);
 
-		assertThat(logTrackerStub.contains("[" + JOB_NAME
-				+ "] Retrieved the following number of items to be processed: " + NUMBER_OF_ITEMS_TO_BE_PROCESSED))
+		assertThat(logTrackerStub.contains(
+				"Retrieved the following number of items to be processed: " + NUMBER_OF_ITEMS_TO_BE_PROCESSED))
 						.isTrue();
 	}
 
@@ -96,16 +100,14 @@ class LoggingBatchJobItemProcessingListenerTest {
 
 		testObj.onItemExtractionFailure(batchJobContextMock, exceptionMock);
 
-		assertThat(logTrackerStub.contains("[" + JOB_NAME + "] Failed retrieval of items")).isTrue();
+		assertThat(logTrackerStub.contains("Failed retrieval of items")).isTrue();
 	}
 
 	@Test
 	void beforeProcessingItem_ShouldLogAnInfoMessage() {
-
 		testObj.beforeProcessingItem(batchJobContextMock, batchJobItemMock);
 
-		assertThat(logTrackerStub
-				.contains("[" + JOB_NAME + "] Processing item of type " + ITEM_TYPE + " with id: " + ITEM_ID)).isTrue();
+		assertThat(logTrackerStub.contains("Processing item of type " + ITEM_TYPE + " with id: " + ITEM_ID)).isTrue();
 	}
 
 	@Test
@@ -116,13 +118,11 @@ class LoggingBatchJobItemProcessingListenerTest {
 
 		testObj.onItemProcessingFailure(batchJobContextMock, batchJobItemMock, exceptionMock);
 
-		assertThat(logTrackerStub
-				.contains("[" + JOB_NAME + "] Failed processing item of type " + ITEM_TYPE + " with id: " + ITEM_ID))
+		assertThat(logTrackerStub.contains("Failed processing item of type " + ITEM_TYPE + " with id: " + ITEM_ID))
+				.isTrue();
+		assertThat(logTrackerStub.contains(NUMBER_OF_ITEMS_PROCESSED + " items processed successfully. "
+				+ NUMBER_OF_ITEMS_FAILED + " items failed. " + NUMBER_OF_ITEMS_REMAINING + " items remaining"))
 						.isTrue();
-		assertThat(logTrackerStub
-				.contains("[" + JOB_NAME + "] " + NUMBER_OF_ITEMS_PROCESSED + " items processed successfully. "
-						+ NUMBER_OF_ITEMS_FAILED + " items failed. " + NUMBER_OF_ITEMS_REMAINING + " items remaining"))
-								.isTrue();
 
 	}
 
@@ -131,13 +131,11 @@ class LoggingBatchJobItemProcessingListenerTest {
 
 		testObj.onItemProcessingSuccess(batchJobContextMock, batchJobItemMock);
 
-		assertThat(logTrackerStub.contains(
-				"[" + JOB_NAME + "] Processed successfully item of type " + ITEM_TYPE + " with id: " + ITEM_ID))
+		assertThat(logTrackerStub.contains("Processed successfully item of type " + ITEM_TYPE + " with id: " + ITEM_ID))
+				.isTrue();
+		assertThat(logTrackerStub.contains(NUMBER_OF_ITEMS_PROCESSED + " items processed successfully. "
+				+ NUMBER_OF_ITEMS_FAILED + " items failed. " + NUMBER_OF_ITEMS_REMAINING + " items remaining"))
 						.isTrue();
-		assertThat(logTrackerStub
-				.contains("[" + JOB_NAME + "] " + NUMBER_OF_ITEMS_PROCESSED + " items processed successfully. "
-						+ NUMBER_OF_ITEMS_FAILED + " items failed. " + NUMBER_OF_ITEMS_REMAINING + " items remaining"))
-								.isTrue();
 
 	}
 
@@ -146,9 +144,8 @@ class LoggingBatchJobItemProcessingListenerTest {
 		testObj.onItemProcessingValidationFailure(batchJobContextMock, batchJobItemMock,
 				batchJobItemValidationResultMock);
 
-		assertThat(logTrackerStub.contains(
-				"[" + JOB_NAME + "] Validation of item of type " + ITEM_TYPE + " with id: " + ITEM_ID + " has failed"))
-						.isTrue();
+		assertThat(logTrackerStub
+				.contains("Validation of item of type " + ITEM_TYPE + " with id: " + ITEM_ID + " has failed")).isTrue();
 	}
 
 }

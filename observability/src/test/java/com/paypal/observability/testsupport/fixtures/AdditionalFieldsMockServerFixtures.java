@@ -1,27 +1,28 @@
-package com.paypal.observability.testsupport;
+package com.paypal.observability.testsupport.fixtures;
 
+import com.paypal.observability.testsupport.fixtures.AbstractMockServerFixtures;
 import org.mockserver.client.MockServerClient;
 
 public class AdditionalFieldsMockServerFixtures extends AbstractMockServerFixtures {
 
-	public AdditionalFieldsMockServerFixtures(MockServerClient mockServerClient) {
+	public AdditionalFieldsMockServerFixtures(final MockServerClient mockServerClient) {
 		super(mockServerClient);
 	}
 
 	@Override
 	protected String getFolder() {
-		return "fields";
+		return "mirakl/fields";
 	}
 
-	private void mockGetAdditionalFields(String responseFile, int statusCode) {
+	private void mockGetAdditionalFields(final String responseFile, final int statusCode) {
 		mockGet("/api/additional_fields", responseFile, statusCode);
 	}
 
-	private void mockGetAdditionalFieldsStatusOK(String responseFile) {
+	private void mockGetAdditionalFieldsStatusOK(final String responseFile) {
 		mockGetAdditionalFields(responseFile, 200);
 	}
 
-	private void mockGetAdditionalFieldsStatusServerError(String responseFile) {
+	private void mockGetAdditionalFieldsStatusServerError(final String responseFile) {
 		mockGetAdditionalFields(responseFile, 500);
 	}
 

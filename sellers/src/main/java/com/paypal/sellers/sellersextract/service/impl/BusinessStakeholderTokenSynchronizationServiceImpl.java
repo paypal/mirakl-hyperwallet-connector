@@ -10,6 +10,7 @@ import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.service.TokenSynchronizationService;
+import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
 import com.paypal.sellers.service.HyperwalletSDKService;
@@ -122,9 +123,9 @@ public class BusinessStakeholderTokenSynchronizationServiceImpl
 		}
 		catch (final MiraklException e) {
 
-			log.error("Error while updating Mirakl business stakeholder [{}] for shop [{}]",
+			log.error(String.format("Error while updating Mirakl business stakeholder [%s] for shop [%s]",
 					synchronizedBusinessStakeHolderModel.getToken(),
-					synchronizedBusinessStakeHolderModel.getClientUserId(), e);
+					synchronizedBusinessStakeHolderModel.getClientUserId()), e);
 			throw new HMCMiraklAPIException(e);
 		}
 	}
@@ -161,9 +162,8 @@ public class BusinessStakeholderTokenSynchronizationServiceImpl
 			return hyperwalletSDK.listBusinessStakeholders(businessStakeHolderModel.getUserToken());
 		}
 		catch (final HyperwalletException e) {
-
-			log.error("Error while getting Hyperwallet business stakeholders for shop [{}]",
-					businessStakeHolderModel.getClientUserId(), e);
+			log.error(String.format("Error while getting Hyperwallet business stakeholders for shop [%s].%n%s",
+					businessStakeHolderModel.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)), e);
 
 			throw new HMCHyperwalletAPIException(e);
 		}

@@ -109,7 +109,7 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 			catch (final MiraklException ex) {
 				final String errorMessage = String.format(MSG_ERROR_DETECTED, shopId,
 						MiraklLoggingErrorsUtil.stringify(ex));
-				log.error(errorMessage);
+				log.error(errorMessage, ex);
 				mailNotificationUtil.sendPlainTextEmail(MAIL_SUBJECT, ERROR_MESSAGE_PREFIX + errorMessage);
 				// Rethrow exception to handle it in AbstractNotificationListener
 				throw ex;

@@ -100,12 +100,14 @@ class StartupChecksITTest extends AbstractMockServerITTest {
 		assertThat(logTrackerStub.contains("Startup Check: <miraklCustomFieldsSchemaCheck>")).isTrue();
 		assertThat(logTrackerStub.contains("Startup Check: <miraklDocSchemaCheck>")).isTrue();
 		assertThat(logTrackerStub.contains("Startup Check: <miraklHealthCheck>")).isTrue();
+		assertThat(logTrackerStub.contains("Startup Check: <hyperwalletHealthCheck>")).isTrue();
 	}
 
 	@Test
 	void shouldShowReport_AfterApplicationStarts_WhenEverythingIsOK() {
 		additionalFieldsMockServerFixtures.mockGetAdditionalFields_kyc_correct();
 		healthMockServerFixtures.mockGetVersion_up();
+		hyperwalletHealthMockServerFixtures.mockGetHealth_up();
 		docsMockServerFixtures.mockGetDocsConfiguration_correctSchemaResponse();
 
 		startupCheckerService.setStartupChecksEnabled(true);

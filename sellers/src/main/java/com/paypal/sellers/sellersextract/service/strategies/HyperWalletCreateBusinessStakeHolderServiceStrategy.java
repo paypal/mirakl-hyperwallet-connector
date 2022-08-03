@@ -73,8 +73,8 @@ public class HyperWalletCreateBusinessStakeHolderServiceStrategy
 			return createdBusinessStakeHolderModel;
 		}
 		catch (final HyperwalletException e) {
-			log.error("Stakeholder not created for clientId [{}]", businessStakeHolderModel.getClientUserId());
-			log.error(HyperwalletLoggingErrorsUtil.stringify(e));
+			log.error(String.format("Stakeholder not created for clientId [%s].%n%s",
+					businessStakeHolderModel.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)), e);
 			mailNotificationUtil.sendPlainTextEmail("Issue detected when creating business stakeholder in Hyperwallet",
 					String.format(ERROR_MESSAGE_PREFIX + "Business stakeholder not created for clientId [%s]%n%s",
 							businessStakeHolderModel.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)));

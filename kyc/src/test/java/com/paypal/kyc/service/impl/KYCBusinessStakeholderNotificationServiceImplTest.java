@@ -32,7 +32,7 @@ class KYCBusinessStakeholderNotificationServiceImplTest {
 
 	private static final String MSG_EXCEPTION = "An error occurred";
 
-	private static final String MSG_ERROR = "Notification [%s] could not be processed - the KYC Letter of authorization for a business stakeholder could not be updated. Details [%s]";
+	private static final String MSG_ERROR = "Notification [%s] could not be processed - the KYC Letter of authorization for a business stakeholder could not be updated.%n%s";
 
 	private static final LogTrackerStub LOG_TRACKER_STUB = LogTrackerStub.create()
 			.recordForLevel(LogTracker.LogLevel.ERROR)

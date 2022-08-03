@@ -67,7 +67,8 @@ class HyperWalletUpdateSellerServiceStrategyTest extends HyperwalletSellerServic
 				.isInstanceOf(HMCHyperwalletAPIException.class);
 
 		verify(testObj).logErrors(
-				eq(String.format("Error updating seller in hyperwallet with clientUserId [%s]: [{}]", CLIENT_USER_ID)),
+				eq(String.format("Error updating seller in hyperwallet with clientUserId [%s].%n%s", CLIENT_USER_ID,
+						HyperwalletLoggingErrorsUtil.stringify(hyperwalletException))),
 				eq(hyperwalletException), any(Logger.class));
 	}
 

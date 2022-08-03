@@ -1,6 +1,6 @@
 package com.paypal.notifications.jobs;
 
-import com.paypal.notifications.service.NotificationService;
+import com.paypal.notifications.service.FailedNotificationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,7 +19,7 @@ class NotificationProcessJobTest {
 	private NotificationProcessJob testObj;
 
 	@Mock
-	protected NotificationService notificationServiceMock;
+	protected FailedNotificationService failedNotificationServiceMock;
 
 	@Mock
 	private JobExecutionContext jobExecutionContextMock;
@@ -30,7 +30,7 @@ class NotificationProcessJobTest {
 
 		testObj.execute(jobExecutionContextMock);
 
-		verify(notificationServiceMock).processFailedNotifications();
+		verify(failedNotificationServiceMock).processFailedNotifications();
 	}
 
 	@Test
@@ -39,7 +39,7 @@ class NotificationProcessJobTest {
 
 		testObj.execute(jobExecutionContextMock);
 
-		verify(notificationServiceMock, never()).processFailedNotifications();
+		verify(failedNotificationServiceMock, never()).processFailedNotifications();
 	}
 
 }

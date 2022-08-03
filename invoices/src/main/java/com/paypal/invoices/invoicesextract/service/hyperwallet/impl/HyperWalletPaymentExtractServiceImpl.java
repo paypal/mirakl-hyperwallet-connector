@@ -103,9 +103,8 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 							String.format("Something went wrong creating payment for invoice [%s]%n%s",
 									hyperwalletPayment.getClientPaymentId(),
 									HyperwalletLoggingErrorsUtil.stringify(e)));
-			log.error("Something went wrong creating payment for invoice [{}]",
-					hyperwalletPayment.getClientPaymentId());
-			log.error(HyperwalletLoggingErrorsUtil.stringify(e));
+			log.error(String.format("Something went wrong creating payment for invoice [%s].%n%s",
+					hyperwalletPayment.getClientPaymentId(), HyperwalletLoggingErrorsUtil.stringify(e)), e);
 
 			throw new HMCException("Error while invoking Hyperwallet", e);
 		}
@@ -137,8 +136,8 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 			return getFirstElement(payments);
 		}
 		catch (final HyperwalletException e) {
-			log.error("Something went wrong trying to find payment for invoice [{}]", clientPaymentId);
-			log.error(HyperwalletLoggingErrorsUtil.stringify(e));
+			log.error(String.format("Something went wrong trying to find payment for invoice [%s].%n%s",
+					clientPaymentId, HyperwalletLoggingErrorsUtil.stringify(e)), e);
 
 			throw new HMCException("Error while invoking Hyperwallet", e);
 		}

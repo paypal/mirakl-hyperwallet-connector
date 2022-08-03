@@ -15,9 +15,4 @@ public interface NotificationService {
 	 */
 	void processNotification(HyperwalletWebhookNotification incomingNotificationDTO);
 
-	/**
-	 * Processes failed notifications that have been stored in the database
-	 */
-	void processFailedNotifications();
-
 }

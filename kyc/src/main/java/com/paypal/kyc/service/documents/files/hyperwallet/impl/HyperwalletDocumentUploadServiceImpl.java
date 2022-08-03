@@ -53,7 +53,8 @@ public class HyperwalletDocumentUploadServiceImpl implements HyperwalletDocument
 			logUploadedDocuments(kycDocumentInfoModel, hyperwalletVerificationDocuments);
 		}
 		catch (final HyperwalletException e) {
-			log.error("Error uploading document to Hyperwallet: [{}]", HyperwalletLoggingErrorsUtil.stringify(e));
+			log.error(String.format("Error uploading document to Hyperwallet.%n%s",
+					HyperwalletLoggingErrorsUtil.stringify(e)), e);
 
 			reportError(kycDocumentInfoModel, e);
 

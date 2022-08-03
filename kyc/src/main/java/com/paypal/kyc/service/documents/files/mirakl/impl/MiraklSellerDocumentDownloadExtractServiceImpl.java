@@ -81,8 +81,9 @@ public class MiraklSellerDocumentDownloadExtractServiceImpl implements MiraklSel
 			return kycDocumentSellerInfoModel.toBuilder().miraklShopDocuments(shopDocuments).build();
 		}
 		catch (final MiraklException e) {
-			log.error("Something went wrong trying to receive documents from Mirakl for seller with id [{}]",
-					kycDocumentSellerInfoModel.getClientUserId());
+			log.error(String.format(
+					"Something went wrong trying to receive documents from Mirakl for seller with id [%s]",
+					kycDocumentSellerInfoModel.getClientUserId()), e);
 			kycMailNotificationUtil.sendPlainTextEmail("Issue detected getting documents from Mirakl",
 					String.format("Something went wrong getting documents from Mirakl for shop Id [%s]%n%s",
 							String.join(",", kycDocumentSellerInfoModel.getClientUserId()),

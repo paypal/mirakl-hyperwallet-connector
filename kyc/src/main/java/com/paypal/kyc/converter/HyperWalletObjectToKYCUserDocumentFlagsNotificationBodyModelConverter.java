@@ -77,7 +77,6 @@ public class HyperWalletObjectToKYCUserDocumentFlagsNotificationBodyModelConvert
 			}
 			catch (final HyperwalletException e) {
 				// Program not found for token, continue until one is found
-				break;
 			}
 		}
 

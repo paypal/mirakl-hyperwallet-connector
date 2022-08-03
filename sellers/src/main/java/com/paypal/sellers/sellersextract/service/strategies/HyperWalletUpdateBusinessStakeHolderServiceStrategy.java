@@ -62,8 +62,8 @@ public class HyperWalletUpdateBusinessStakeHolderServiceStrategy
 			return businessStakeHolderModel;
 		}
 		catch (final HyperwalletException e) {
-			log.error("Stakeholder not updated for clientId [{}]", businessStakeHolderModel.getClientUserId());
-			log.error(HyperwalletLoggingErrorsUtil.stringify(e));
+			log.error(String.format("Stakeholder not updated for clientId [%s].%n%s",
+					businessStakeHolderModel.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)), e);
 			mailNotificationUtil.sendPlainTextEmail("Issue detected when updating business stakeholder in Hyperwallet",
 					String.format(ERROR_MESSAGE_PREFIX + "Business stakeholder not updated for clientId [%s]%n%s",
 							businessStakeHolderModel.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)));

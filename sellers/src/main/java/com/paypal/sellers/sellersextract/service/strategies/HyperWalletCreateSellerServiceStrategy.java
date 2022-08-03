@@ -54,8 +54,8 @@ public class HyperWalletCreateSellerServiceStrategy extends AbstractHyperwalletS
 			return hwUser;
 		}
 		catch (final HyperwalletException e) {
-			logErrors(String.format("Error creating seller in hyperwallet with clientUserId [%s]: [{}]",
-					hyperwalletUser.getClientUserId()), e, log);
+			logErrors(String.format("Error creating seller in hyperwallet with clientUserId [%s].%n%s",
+					hyperwalletUser.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)), e, log);
 			reportError("Issue detected when creating seller in Hyperwallet",
 					String.format(ERROR_MESSAGE_PREFIX + "Seller not created with clientId [%s]%n%s",
 							hyperwalletUser.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)));
