@@ -1,0 +1,46 @@
+= Hyperwallet-Mirakl Technical Integration
+
+== Overall Architecture
+
+image:image12.jpg[Timeline Description automatically generated,width=642,height=361]
+
+== Error Handling
+
+API call failures and other unexpected errors (e.g. missing mandatory fields in the payload) are handled by the HMC. When such errors occur, the operator will receive an email message to the email address configured in the HMC properties.
+
+*+++Error Types:+++*
+
+* Mirakl: Issue detected getting shops in Mirakl
+* Mirakl: Issue detected updating KYC information in Mirakl
+* Hyperwallet: Issue detected when creating seller in Hyperwallet
+* Hyperwallet: Issue detected when updating seller in Hyperwallet
+* Hyperwallet: Issue detected when creating bank account in Hyperwallet
+* Hyperwallet: Issue detected when updating bank account in Hyperwallet
+
+*+++Error example (email to operator):+++*
+
+____
+Subject: Issue detected when updating seller in Hyperwallet
+
+Body: There was an error, please check the logs for further information: +
+Error updating user with clientUserId [2214] +
+\{exceptionMessage=A system error has occurred. Please try again. If you continue to receive this error, contact customer support for assistance (Ref ID: usr-dc7bf083-310d-4f04-a9b7-13561f011e85).,error=CONSTRAINT_VIOLATIONS[[code=CONSTRAINT_VIOLATIONS,fieldName=<null>,message=A system error has occurred. Please try again. If you continue to receive this error, contact customer support for assistance (Ref ID: usr-dc7bf083-310d-4f04-a9b7-13561f011e85).,relatedResources=<null>][code=CONSTRAINT_VIOLATIONS,fieldName=<null>,message=,relatedResources=<null>]]}
+____
+
+If the Seller Extract or Bank Account Extract jobs end in failure, any data that wasn’t processed due to the failure will be processed during next extract.
+
+*+++Re-run previously failed actions+++*
+
+HMC has built-in auto-recovery functionality for unexpected technical failures such as API timeout and IO exceptions. If any of such failures occur during creation and update of user accounts (both Individual and Busines) or bank accounts HMC will attempt to re-run the previously failed action.
+
+This action will be attempted once, and if the error occurs again on the re-run action it will be logged and communicated to the operator as described in this section above.
+
+When communicating with Hyperwallet HMC is using a default timeout set in the Hyperwallet SDK. The timeout for communicating with Mirakl API is up to 90 seconds (30 seconds for connection and 60 seconds for reading the records).
+
+== Payload Encryption
+
+Hyperwallet provides payload encryption for webhooks and API communication which is also supported by HMC. This involves a process where webhook and API data is signed and encrypted when sent from Hyperwallet to HMC and vice versa. The receiving application (Hyperwallet or HMC, depending on where the data is sent to) is then responsible for validating the signature and decrypting the data. 
+
+For further information on payload encryption please refer to the Hyperwallet Payload Encryption specification +++https://docs.hyperwallet.com/content/api/v4/overview/payload-encryption[docs.hyperwallet.com/content/api/v4/overview/payload-encryption].+++
+
+The Payload Encryption feature is by default disabled in HMC upon installation and can be enabled using the following property adding the profile encrypted to the Environment Variable PAYPAL_SPRING_PROFILE_ACTIVE.

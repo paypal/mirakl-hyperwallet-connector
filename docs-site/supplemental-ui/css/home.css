@@ -1,0 +1,18 @@
+.hljs-comment,
+.hljs-quote {
+    color: #998;
+    font-style: italic;
+}
+
+blockquote {
+    border-left: 4px solid rgba(var(--color-cloudstate-blue), .5);
+    margin: 2rem 0 4rem 0;
+    padding: 0 2rem;
+}
+
+blockquote p {
+    font-weight: 400;
+    font-size: 1.5rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+}

@@ -1,0 +1,16 @@
+= Payout
+
+The Payout feature in HMC covers payment of Mirakl accounting documents (i.e. invoices) to corresponding payees via Hyperwallet. This means that payout depends on the creation of Invoices in the Mirakl platform.
+
+Mirakl runs the regular process of creating invoices on a billing cycle. The billing cycle is configurable, and depending on the operator’s use cases can be set to run anywhere from monthly, specific day(s) of a month, or even daily. In addition, the billing cycle can be configured at the Seller level, meaning different sellers can have a different billing cycle. HMC was implemented to avoid the complexity of relying on Mirakl billing cycles. Instead, when running an invoice extract, the HMC queries for any new invoices generated since the last extract and processes the payouts for each qualifying invoice.
+
+The following criteria determine if an invoice is eligible for automated payout via HMC:
+
+* Both automatically generated invoices and manual credit notes can be extracted from Mirakl and sent for payout to Hyperwallet via HMC.
+* Invoices with DRAFT or GENERATED state are not processed, HMC will only extract/process the invoices in COMPLETE state;
+* Invoices with PAID payment_status are also omitted as no payout is required.
+
+HMC supports 2 types of payees – Marketplace Sellers and Operators:
+
+* Sellers receive payments for the goods and services sold (*_transfer_amount_* on Mirakl invoice)
+* Operator receive their operator fees from transactions placed on the marketplace (*_total_commissions_incl_tax_* + *_total_subscription_incl_tax_*).

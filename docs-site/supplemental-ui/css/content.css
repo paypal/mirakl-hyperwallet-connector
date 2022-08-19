@@ -1,0 +1,7 @@
+@media screen and (min-width: 1280px) {
+	.col-content {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+	}
+}

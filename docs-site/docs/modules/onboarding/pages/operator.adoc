@@ -1,0 +1,61 @@
+= Onboarding
+
+== Operator onboarding 
+=== Overview
+
+Onboarding of Marketplace Operators on to the Hyperwallet program(s) will be handled differently than seller onboarding. Operators do not usually exist in Mirakl or Hyperwallet as account entities.
+
+The operator details required for participation in the Hyperwallet program will be provided by the PayPal team as part of the onboarding process and configured in the HMC properties. This includes program tokens that will be used to identify the operator on the Hyperwallet platform to enable operator payouts for orders made on the marketplace.
+
+The configuration instructions in the README include the environment variables for setting the necessary program tokens. The default setup conforms to a Single-level program hierarchy structure in Hyperwallet.
+
+Refer to section 2.3 below regarding the multi-program hierarchy structure set up.
+
+For further details regarding setting up Operators in Hyperwallet and defining the required program hierarchy please refer to Hyperwallet documentation that will be provided to you by the PayPal team as part of the onboarding process.
+
+=== Webhook Processing
+
+HMC supports receiving and processing event notifications sent by Hyperwallet via webhook. This is accomplished using a built-in webhook listener that handles all supported webhook notification types and works with both basic authentication and payload encryption. The supported webhook notification types are specified in the various feature-related sections in this document.
+
+During the operator onboarding process, the Hyperwallet team will enable webhook notifications by registering the webhook listener endpoint URL.
+
+The endpoint for the webhook listener is on the path: /webhooks/notifications. This path is used by default, and no properties or configuration are used for enabling or setting up the webhook listener.
+
+The endpoint must be accessible from Hyperwallet IP ranges specified in the official documentation page https://docs.hyperwallet.com/content/webhooks/v1/integration[+++https://docs.hyperwallet.com/content/webhooks/v1/integration+++]
+
+For example, if the HMC is deployed to the URL: https://hmc.example.com, then the full webhook listener URL will be: https://hmc.example.com/webhooks/notifications[+++https://hmc.example.com/webhooks/notifications+++].
+
+
+=== Multi-program hierarchy
+
+In certain scenarios a Marketplace Operator may wish to support use cases for more complex payout structure where the operator payout can be directed to different child programs. This may depend on a number of factors including payee types, organisational structure, funding needs and regional distinctions.
+
+The appropriate setup should be defined in collaboration with the PayPal team as part of the onboarding process. For more information about supporting multiple programs in Hyperwallet please refer to Hyperwallet documentation: https://docs.hyperwallet.com/content/program-hierarchy/v1/multiple-programs[+++docs.hyperwallet.com/content/program-hierarchy/v1/multiple-programs+++].
+
+When a multi-program hierarchy structure is defined in Hyperwallet for the Operator this will need to be reflected in HMC and Mirakl as described below.
+
+*+++HMC configs for multi-program hierarchy:+++*
+
+The properties described in the above section should be updated to include multiple Issuing Store tokens. See “Multiple Issuing Store configurations” section of the README file that is distributed with the connector source code.
+
+*+++Mirakl settings for multi-program hierarchy:+++*
+
+The _“Hyperwallet Program”_ custom field in Mirakl should be updated to allow selecting the relevant program that a Seller shop will belong to. This will be done by extending the single-value list under this field to include the multiple programs defined as part of the operator program structure in Hyperwallet.
+
+For example, if a Marketplace Operator _Greenfield_ has been set up with several programs to support regional markets (e.g. UK, Europe, USA) this single value list should be extended to include the following values that will represent different child programs under the parent merchant program:
+
+* Greenfield – UK
+* Greenfield – Europe
+* Greenfield – USA
+
+When creating a new Seller shop the Operator should select which program the Seller should be linked to by selecting the relevant Hyperwallet Program from the above single-value list. This can only be done by the Operator as the Hyperwallet Program field is hidden and not displayed to the Sellers as part of the Store details in Mirakl.
+
+*Note:* it is possible to change Hyperwallet Program when updating the Seller details in the future. However, you will only be able to change to another operator child program at the same level of hierarchy and under the same parent merchant program as described in the Hyperwallet documentation (see _programToken_ field under the Update User section: https://docs.hyperwallet.com/content/api/v4/resources/users/update[+++docs.hyperwallet.com/content/api/v4/resources/users/update+++]). Please contact your Hyperwallet account representatives for any questions about setting up and managing multi-program hierarchy.
+
+*+++Bank accounts+++*
+
+It is possible to configure bank accounts for the operator child programs (e.g. Greenfield – UK, Greenfield – USA). This is defined as part of the Operator onboarding program with the PayPal team.
+
+Once the hierarchy structure is defined the appropriate TRM tokens will need to be added to the connector properties a described in “Multiple Issuing Store configurations” section.
+
+For further details how to configure this please see the “Multiple Issuing Store configurations” section of the README file that is distributed with the connector source code.

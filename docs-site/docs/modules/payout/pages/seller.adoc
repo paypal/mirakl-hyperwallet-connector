@@ -1,0 +1,46 @@
+== Seller Payout
+
+As per the Hyperwallet API spec, the TRM token (seller’s bank account) and programme token will be used to target the correct Seller account.
+
+Seller accounts and bank accounts will be created automatically via HMC, as described in section 3 link:#_heading=h.3fwokq0[+++Seller onboarding+++]. No further configuration is required for HMC to enable Seller payout.
+
+Payout is triggered through the _Extract Invoices_ job, which extracts eligible invoices from Mirakl and creates payment requests in Hyperwallet. This job handles both Seller and Operator payout.
+
+=== REST API Endpoints
+
+[width="100%",cols="15%,13%,72%",options="header",]
+|===
+|Platform |Endpoint |Documentation
+|Mirakl |*(GET) IV01* |https://help.mirakl.net/help/api-doc/operator/mmp.html#IV01[+++help.mirakl.net/help/api-doc/operator/mmp.html#IV01+++]
+|Hyperwallet |*(POST) Create Payment* |https://docs.hyperwallet.com/content/api/v4/resources/payments/create[+++docs.hyperwallet.com/content/api/v4/resources/payments/create+++]
+|===
+
+=== Data Requirements
+
+*+++Seller, Bank account and Invoice+++*
+
+* The Seller accounts should exist in Mirakl and be set up with one of the supported Bank Account payment methods and currencies, as described in section 3.3 link:#_heading=h.19c6y18[+++Create/Update Seller Bank Account+++];
+* Accounting documents (i.e. Invoices) should be created in Mirakl for the above sellers in order to trigger Payout feature.
+
+*+++Data mapping+++*
+
+[width="100%",cols="34%,20%,46%",]
+|===
+|*Mirakl IV01 API field* |*HW API field* |*Notes*
+|total_charged_amount |"amount" | 
+|invoice_id |"clientPaymentId" | 
+|"currency_iso_code" |"currency" | 
+|TRM token |"destinationToken" |The seller TRM token denoting the bank account in HW Embedded Experience.
+|Operator token in the Connector |"programToken" |Operator token
+|n/a |"purpose": "OTHER" |We will use OTHER for all payouts.
+|===
+
+=== Timed Job Frequency
+
+As with Seller extract jobs, this job is scheduled to run at certain configurable frequency, by default at 01.00 AM. The frequency can be changed if required, using the following Environment Variables (see README for further details such as format and default value):
+
+* PAYPAL_HYPERWALLET_EXTRACT_INVOICES_CRON_EXPRESSION
+
+=== Technical Flow
+
+image:image10.jpg[Diagram Description automatically generated,width=642,height=673]
