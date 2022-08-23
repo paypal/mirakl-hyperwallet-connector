@@ -4,7 +4,15 @@ HMC supports processing payments from the Operator to the Sellers via the creati
 
 This is provided only to facilitate payment testing and has important consequences when used.
 
-Since Mirakl includes manual credit notes in its billing cycle calculations, manual credit note amounts will be included in automatic invoices. *If the connector has manually paid a manual credit note and a seller has had orders/refunds in the same billing cycle, the amount in the credit note will be included and paid a second time as part of an automatic invoice*. For this reason, it is strongly urged to only use manual credit notes in test environments while testing, to ensure that payments can be made in an end-to-end setup between Mirakl, the HMC, and Hyperwallet.
+Since Mirakl includes manual credit notes in its billing cycle calculations, manual credit note amounts will be included in automatic invoices. 
+
+[WARNING]
+.Enabling manual credit notes processing on production
+====
+If the connector has manually paid a manual credit note and a seller has had orders/refunds in the same billing cycle, the amount in the credit note will be included and paid a second time as part of an automatic invoice.
+
+For this reason, it *is strongly urged to only use manual credit notes in test environments while testing*, to ensure that payments can be made in an end-to-end setup between Mirakl, the HMC, and Hyperwallet.
+====
 
 The Manual Credit Note processing feature is *disabled* by default, but can optionally be configured through the following Environment Variable (see README for further details such as format and default value):
 
