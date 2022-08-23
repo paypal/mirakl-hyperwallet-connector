@@ -1,7 +1,7 @@
 name: component-hmc
 title: Hyperwallet Mirakl Connector
 start_page: introduction:introduction.adoc
-version: 5.0
+version: 4.15.0
 nav: 
 - modules/introduction/nav.adoc 
 - modules/onboarding/nav.adoc
@@ -9,7 +9,6 @@ nav:
 - modules/payout/nav.adoc
 - modules/tech-integration/nav.adoc
 - modules/terms-acronyms/nav.adoc
-- modules/version-history/nav.adoc
 asciidoc:
   attributes:
     source-language: asciidoc@
