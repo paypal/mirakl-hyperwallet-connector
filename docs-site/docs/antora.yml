@@ -9,6 +9,7 @@ nav:
 - modules/payout/nav.adoc
 - modules/tech-integration/nav.adoc
 - modules/terms-acronyms/nav.adoc
+- modules/readme/nav.adoc
 asciidoc:
   attributes:
     source-language: asciidoc@
