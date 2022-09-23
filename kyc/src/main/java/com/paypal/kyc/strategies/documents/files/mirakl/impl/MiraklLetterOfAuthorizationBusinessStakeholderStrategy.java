@@ -1,6 +1,6 @@
 package com.paypal.kyc.strategies.documents.files.mirakl.impl;
 
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.strategies.documents.files.mirakl.AbstractMiraklSelectedDocumentsStrategy;
@@ -14,7 +14,7 @@ import static com.paypal.kyc.model.KYCConstants.HwDocuments.PROOF_OF_AUTHORIZATI
 public class MiraklLetterOfAuthorizationBusinessStakeholderStrategy extends AbstractMiraklSelectedDocumentsStrategy {
 
 	protected MiraklLetterOfAuthorizationBusinessStakeholderStrategy(
-			final MiraklMarketplacePlatformOperatorApiClient miraklApiClient) {
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklApiClient) {
 		super(miraklApiClient);
 	}
 

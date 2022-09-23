@@ -5,7 +5,8 @@ import com.paypal.observability.startupchecks.model.StartupCheckPrinterRegistry;
 import com.paypal.observability.startupchecks.model.StartupCheckProvider;
 import com.paypal.observability.startupchecks.service.StartupCheckerService;
 import com.paypal.observability.testsupport.AbstractMockServerITTest;
-import com.paypal.observability.testsupport.ObservabilityIntegrationTest;
+import com.paypal.observability.testsupport.ObservabilityWebIntegrationContext;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -22,7 +23,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@ObservabilityIntegrationTest
+@ObservabilityWebIntegrationContext
 class StartupChecksITTest extends AbstractMockServerITTest {
 
 	@Autowired

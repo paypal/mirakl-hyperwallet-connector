@@ -9,11 +9,11 @@ import com.paypal.reports.ReportsSpringContextConfiguration;
 import com.paypal.sellers.SellersSpringContextConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
@@ -24,7 +24,7 @@ import java.util.Properties;
 
 @Slf4j
 @SpringBootApplication
-@Import({ InfrastructureConnectorApplication.class, InvoicesSpringContextConfiguration.class,
+@ImportAutoConfiguration({ InfrastructureConnectorApplication.class, InvoicesSpringContextConfiguration.class,
 		SellersSpringContextConfiguration.class, NotificationsSpringContextConfiguration.class,
 		KYCNotificationsSpringContextConfiguration.class, ReportsSpringContextConfiguration.class,
 		ObservabilityConfiguration.class })

@@ -1,22 +1,22 @@
 package com.paypal.infrastructure.sdk.mirakl.impl;
 
-import com.mirakl.client.core.AbstractMiraklApiClient;
-import com.mirakl.client.core.security.Credential;
+import org.springframework.stereotype.Service;
+
+import com.mirakl.client.core.security.MiraklCredential;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.request.payment.invoice.MiraklGetInvoicesRequest;
 import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoices;
 
+@Service
 public class MiraklMarketplacePlatformOperatorApiClientWrapperImpl extends MiraklMarketplacePlatformOperatorApiClient
 		implements MiraklMarketplacePlatformOperatorApiWrapper {
 
 	/**
-	 * @param endpoint
-	 * @param credential
-	 * @see AbstractMiraklApiClient#AbstractMiraklApiClient(String, Credential)
+	 * @param config {@link MiraklApiClientConfig} bean.
 	 */
-	public MiraklMarketplacePlatformOperatorApiClientWrapperImpl(final String endpoint, final Credential credential) {
-		super(endpoint, credential);
+	public MiraklMarketplacePlatformOperatorApiClientWrapperImpl(final MiraklApiClientConfig config) {
+		super(config.getEnvironment(), new MiraklCredential(config.getOperatorApiKey()));
 	}
 
 	/**

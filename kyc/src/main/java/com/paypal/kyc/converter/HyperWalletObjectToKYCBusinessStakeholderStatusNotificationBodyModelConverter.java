@@ -30,7 +30,7 @@ public class HyperWalletObjectToKYCBusinessStakeholderStatusNotificationBodyMode
 			final Map<String, Object> notificationDetails = (Map<String, Object>) source.getObject();
 
 			//@formatter:off
-			final KYCBusinessStakeholderStatusNotificationBodyModel.KYCBusinessStakeholderStatusNotificationBodyModelBuilder builder
+			final KYCBusinessStakeholderStatusNotificationBodyModel.KYCBusinessStakeholderStatusNotificationBodyModelBuilder<?, ?> builder
 					= KYCBusinessStakeholderStatusNotificationBodyModel.builder();
 
 			Optional.ofNullable((Boolean) notificationDetails.get("isDirector")).ifPresent(builder::isDirector);

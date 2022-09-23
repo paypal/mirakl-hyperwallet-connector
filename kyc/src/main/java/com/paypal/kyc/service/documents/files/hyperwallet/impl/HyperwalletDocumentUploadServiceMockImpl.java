@@ -4,11 +4,11 @@ import com.google.gson.Gson;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -36,36 +36,37 @@ public class HyperwalletDocumentUploadServiceMockImpl extends HyperwalletDocumen
 
 	private final RestTemplate restTemplate;
 
-	public HyperwalletDocumentUploadServiceMockImpl(HyperwalletSDKService hyperwalletSDKService,
-			MailNotificationUtil kycMailNotificationUtil, @Value("${mockserver.url}") String mockServerUrl,
-			RestTemplate restTemplate) {
-		super(hyperwalletSDKService, kycMailNotificationUtil);
+	public HyperwalletDocumentUploadServiceMockImpl(final HyperwalletSDKUserService hyperwalletSDKUserService,
+			final MailNotificationUtil kycMailNotificationUtil, @Value("${mockserver.url}") final String mockServerUrl,
+			final RestTemplate restTemplate) {
+		super(hyperwalletSDKUserService, kycMailNotificationUtil);
 		this.mockServerUrl = mockServerUrl;
 		this.restTemplate = restTemplate;
 	}
 
 	@Override
-	protected void invokeHyperwalletAPI(KYCDocumentInfoModel kycDocumentInfoModel,
-			List<HyperwalletVerificationDocument> hyperwalletVerificationDocuments, Hyperwallet hyperwallet) {
+	protected void invokeHyperwalletAPI(final KYCDocumentInfoModel kycDocumentInfoModel,
+			final List<HyperwalletVerificationDocument> hyperwalletVerificationDocuments,
+			final Hyperwallet hyperwallet) {
 		final String postURL = getPostURL(kycDocumentInfoModel);
 
 		if (checkFailingFiles(hyperwalletVerificationDocuments)) {
 			throw new HyperwalletException("Something bad happened");
 		}
-		Gson gsonConverter = new Gson();
+		final Gson gsonConverter = new Gson();
 		restTemplate.postForObject(getMockServerUrl() + postURL, gsonConverter.toJson(hyperwalletVerificationDocuments),
 				Object.class);
 	}
 
-	private String getPostURL(KYCDocumentInfoModel kycDocumentInfoModel) {
+	private String getPostURL(final KYCDocumentInfoModel kycDocumentInfoModel) {
 		if (kycDocumentInfoModel instanceof KYCDocumentBusinessStakeHolderInfoModel) {
-			KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = (KYCDocumentBusinessStakeHolderInfoModel) kycDocumentInfoModel;
+			final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = (KYCDocumentBusinessStakeHolderInfoModel) kycDocumentInfoModel;
 			return HYPERWALLET_PUSH_DOCUMENTS_BSTK
 					.replace("{userToken}", kycDocumentBusinessStakeHolderInfoModel.getUserToken())
 					.replace("{bstToken}", kycDocumentBusinessStakeHolderInfoModel.getToken());
 		}
 		else {
-			KYCDocumentSellerInfoModel kycDocumentSellerInfoModel = (KYCDocumentSellerInfoModel) kycDocumentInfoModel;
+			final KYCDocumentSellerInfoModel kycDocumentSellerInfoModel = (KYCDocumentSellerInfoModel) kycDocumentInfoModel;
 			return HYPERWALLET_PUSH_DOCUMENTS_SELLER.replace("{userToken}", kycDocumentSellerInfoModel.getUserToken());
 		}
 	}

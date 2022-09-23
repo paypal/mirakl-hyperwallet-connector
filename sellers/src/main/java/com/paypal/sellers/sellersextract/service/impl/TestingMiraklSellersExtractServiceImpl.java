@@ -1,8 +1,8 @@
 package com.paypal.sellers.sellersextract.service.impl;
 
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.sellers.infrastructure.configuration.SellersMiraklApiConfig;
 import com.paypal.sellers.sellersextract.model.SellerModel;
@@ -26,7 +26,8 @@ public class TestingMiraklSellersExtractServiceImpl extends MiraklSellersExtract
 
 	private final SellersMiraklApiConfig sellersMiraklApiConfig;
 
-	public TestingMiraklSellersExtractServiceImpl(final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
+	public TestingMiraklSellersExtractServiceImpl(
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient,
 			final StrategyExecutor<MiraklShop, SellerModel> miraklShopSellerModelStrategyExecutor,
 			final SellersMiraklApiConfig sellersMiraklApiConfig, final MailNotificationUtil mailNotificationUtil) {
 		super(miraklOperatorClient, miraklShopSellerModelStrategyExecutor, mailNotificationUtil);

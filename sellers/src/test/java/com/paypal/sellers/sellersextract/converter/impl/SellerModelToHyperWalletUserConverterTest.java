@@ -1,8 +1,8 @@
 package com.paypal.sellers.sellersextract.converter.impl;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
+import com.paypal.infrastructure.hyperwallet.api.UserHyperwalletApiConfig;
 import com.paypal.infrastructure.util.DateUtil;
-import com.paypal.sellers.infrastructure.configuration.SellersHyperwalletApiConfig;
 import com.paypal.sellers.sellersextract.model.SellerBusinessType;
 import com.paypal.sellers.sellersextract.model.SellerGovernmentIdType;
 import com.paypal.sellers.sellersextract.model.SellerModel;
@@ -85,7 +85,7 @@ class SellerModelToHyperWalletUserConverterTest {
 	private SellerModel sellerModelMock;
 
 	@Mock
-	private SellersHyperwalletApiConfig sellersHyperwalletApiConfig;
+	private UserHyperwalletApiConfig sellersHyperwalletApiConfig;
 
 	@Mock
 	private Map<String, String> tokensMock;
@@ -95,7 +95,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		when(tokensMock.get(HYPERWALLET_PROGRAM)).thenReturn(PROGRAM_TOKEN);
 		when(sellerModelMock.getClientUserId()).thenReturn(CLIENT_USER_ID);
 		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
-		when(sellersHyperwalletApiConfig.getUserStoreTokens()).thenReturn(tokensMock);
+		when(sellersHyperwalletApiConfig.getTokens()).thenReturn(tokensMock);
 		when(sellerModelMock.getBusinessName()).thenReturn(BUSINESS_NAME);
 		when(sellerModelMock.getBusinessType()).thenReturn(SellerBusinessType.PRIVATE_COMPANY);
 		when(sellerModelMock.getCity()).thenReturn(CITY);

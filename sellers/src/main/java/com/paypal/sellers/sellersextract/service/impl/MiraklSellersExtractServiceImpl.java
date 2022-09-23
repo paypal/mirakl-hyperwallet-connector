@@ -4,11 +4,11 @@ import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.core.exception.MiraklApiException;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.MiraklShops;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.infrastructure.util.LoggingConstantsUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
@@ -44,7 +44,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 
 	private static final String EMAIL_SUBJECT_MESSAGE = "Issue detected getting shop information in Mirakl";
 
-	private final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient;
+	private final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient;
 
 	private final StrategyExecutor<MiraklShop, SellerModel> miraklShopSellerModelStrategyExecutor;
 
@@ -53,7 +53,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 	private static final String ERROR_MESSAGE_PREFIX = "There was an error, please check the logs for further "
 			+ "information:\n";
 
-	public MiraklSellersExtractServiceImpl(final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
+	public MiraklSellersExtractServiceImpl(final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient,
 			final StrategyExecutor<MiraklShop, SellerModel> miraklShopSellerModelStrategyExecutor,
 			final MailNotificationUtil sellerMailNotificationUtil) {
 		this.miraklOperatorClient = miraklOperatorClient;

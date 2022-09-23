@@ -3,7 +3,7 @@ package com.paypal.kyc.service.documents.files.mirakl.impl;
 import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.MiraklShops;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShopReturn;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
@@ -13,6 +13,7 @@ import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.util.LoggingConstantsUtil;
 import com.paypal.kyc.model.KYCConstants;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
@@ -43,13 +44,13 @@ public class MiraklSellerDocumentsExtractServiceImpl extends AbstractMiraklDocum
 
 	private final Converter<MiraklShop, KYCDocumentSellerInfoModel> miraklShopKYCDocumentInfoModelConverter;
 
-	private final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient;
+	private final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient;
 
 	public MiraklSellerDocumentsExtractServiceImpl(
 			final MiraklSellerDocumentDownloadExtractService miraklSellerDocumentDownloadExtractService,
 			final Converter<Date, MiraklGetShopsRequest> miraklGetShopsRequestConverter,
 			final Converter<MiraklShop, KYCDocumentSellerInfoModel> miraklShopKYCDocumentInfoModelConverter,
-			final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient,
 			final MailNotificationUtil kycMailNotificationUtil) {
 		super(miraklOperatorClient, kycMailNotificationUtil);
 		this.miraklSellerDocumentDownloadExtractService = miraklSellerDocumentDownloadExtractService;

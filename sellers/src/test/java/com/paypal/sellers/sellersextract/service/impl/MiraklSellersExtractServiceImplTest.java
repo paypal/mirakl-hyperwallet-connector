@@ -4,9 +4,9 @@ import com.mirakl.client.core.error.MiraklErrorResponseBean;
 import com.mirakl.client.core.exception.MiraklApiException;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.MiraklShops;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.SellerModel;
@@ -44,7 +44,7 @@ class MiraklSellersExtractServiceImplTest {
 	private StrategyExecutor<MiraklShop, SellerModel> miraklShopSellerModelStrategyExecutor;
 
 	@Mock
-	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
+	private MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClientMock;
 
 	@Mock
 	private Date dateMock;

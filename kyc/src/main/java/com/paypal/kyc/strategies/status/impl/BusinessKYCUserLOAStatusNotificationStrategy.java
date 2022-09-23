@@ -2,14 +2,15 @@ package com.paypal.kyc.strategies.status.impl;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.hyperwallet.clientsdk.model.HyperwalletUser.LetterOfAuthorizationStatus;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue;
-import com.paypal.kyc.infrastructure.configuration.KYCHyperwalletApiConfig;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
+import com.paypal.infrastructure.hyperwallet.api.UserHyperwalletApiConfig;
 import com.paypal.kyc.model.KYCBusinessStakeholderStatusNotificationBodyModel;
 import com.paypal.kyc.model.KYCConstants;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +21,12 @@ import java.util.Optional;
 @Slf4j
 public class BusinessKYCUserLOAStatusNotificationStrategy extends AbstractKYCBusinessStakeholderNotificationStrategy {
 
-	protected final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient;
+	protected final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient;
 
-	public BusinessKYCUserLOAStatusNotificationStrategy(final HyperwalletSDKService hyperwalletSDKService,
-			final KYCHyperwalletApiConfig kycHyperwalletApiConfig,
-			final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient) {
-		super(hyperwalletSDKService, kycHyperwalletApiConfig);
+	public BusinessKYCUserLOAStatusNotificationStrategy(final HyperwalletSDKUserService hyperwalletSDKUserService,
+			final UserHyperwalletApiConfig kycHyperwalletApiConfig,
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient) {
+		super(hyperwalletSDKUserService, kycHyperwalletApiConfig);
 		this.miraklMarketplacePlatformOperatorApiClient = miraklMarketplacePlatformOperatorApiClient;
 	}
 

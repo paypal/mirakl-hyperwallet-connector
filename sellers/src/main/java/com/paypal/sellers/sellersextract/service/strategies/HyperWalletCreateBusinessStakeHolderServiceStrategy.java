@@ -4,12 +4,12 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletBusinessStakeholder;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class HyperWalletCreateBusinessStakeHolderServiceStrategy
 
 	private final Converter<BusinessStakeHolderModel, HyperwalletBusinessStakeholder> businessStakeHolderModelHyperwalletBusinessStakeholderConverter;
 
-	private final HyperwalletSDKService hyperwalletSDKService;
+	private final HyperwalletSDKUserService hyperwalletSDKUserService;
 
 	private final MailNotificationUtil mailNotificationUtil;
 
@@ -34,10 +34,10 @@ public class HyperWalletCreateBusinessStakeHolderServiceStrategy
 
 	public HyperWalletCreateBusinessStakeHolderServiceStrategy(
 			final Converter<BusinessStakeHolderModel, HyperwalletBusinessStakeholder> businessStakeHolderModelHyperwalletBusinessStakeholderConverter,
-			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil,
+			final HyperwalletSDKUserService hyperwalletSDKUserService, final MailNotificationUtil mailNotificationUtil,
 			final MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractService) {
 		this.businessStakeHolderModelHyperwalletBusinessStakeholderConverter = businessStakeHolderModelHyperwalletBusinessStakeholderConverter;
-		this.hyperwalletSDKService = hyperwalletSDKService;
+		this.hyperwalletSDKUserService = hyperwalletSDKUserService;
 		this.mailNotificationUtil = mailNotificationUtil;
 		this.miraklBusinessStakeholderExtractService = miraklBusinessStakeholderExtractService;
 	}
@@ -58,7 +58,7 @@ public class HyperWalletCreateBusinessStakeHolderServiceStrategy
 
 		try {
 
-			final Hyperwallet hyperwallet = hyperwalletSDKService
+			final Hyperwallet hyperwallet = hyperwalletSDKUserService
 					.getHyperwalletInstanceByHyperwalletProgram(businessStakeHolderModel.getHyperwalletProgram());
 
 			final HyperwalletBusinessStakeholder hyperWalletBusinessStakeHolderResponse = hyperwallet

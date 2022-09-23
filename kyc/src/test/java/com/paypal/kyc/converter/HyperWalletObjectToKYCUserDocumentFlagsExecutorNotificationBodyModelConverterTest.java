@@ -3,8 +3,8 @@ package com.paypal.kyc.converter;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.kyc.model.KYCUserDocumentFlagsNotificationBodyModel;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,14 +39,15 @@ class HyperWalletObjectToKYCUserDocumentFlagsExecutorNotificationBodyModelConver
 	private HyperWalletObjectToKYCUserDocumentFlagsNotificationBodyModelConverter testObj;
 
 	@Mock
-	private HyperwalletSDKService hyperwalletSDKServiceMock;
+	private HyperwalletSDKUserService hyperwalletSDKUserServiceMock;
 
 	@Mock
 	private Hyperwallet hyperwalletMock;
 
 	@Test
 	void convert_whenDetailsAreNotNull_shouldTransformHyperWalletWebhookNotificationToKycUserDocumentFlagsNotificationModel() {
-		when(hyperwalletSDKServiceMock.getHyperwalletInstance(PROGRAM)).thenReturn(hyperwalletMock);
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(PROGRAM))
+				.thenReturn(hyperwalletMock);
 		doReturn(PROGRAM).when(testObj).getHyperwalletPrograms();
 
 		final Map<String, String> hyperWalletKycUserBodyNotification = createHyperWalletKycUserDocumentFlagsNotification();
@@ -62,7 +63,8 @@ class HyperWalletObjectToKYCUserDocumentFlagsExecutorNotificationBodyModelConver
 
 	@Test
 	void convert_whenProgramIsNotFound_shouldReturnNullHyperwalletProgramInKYCUserDocumentFlagsNotificationBodyModel() {
-		when(hyperwalletSDKServiceMock.getHyperwalletInstance(PROGRAM)).thenReturn(hyperwalletMock);
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(PROGRAM))
+				.thenReturn(hyperwalletMock);
 		when(hyperwalletMock.getProgram(PROGRAM_TOKEN)).thenThrow(HyperwalletException.class);
 		doReturn(PROGRAM).when(testObj).getHyperwalletPrograms();
 

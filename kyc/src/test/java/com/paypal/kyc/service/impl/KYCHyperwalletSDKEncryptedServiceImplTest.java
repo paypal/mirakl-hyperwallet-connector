@@ -2,7 +2,8 @@ package com.paypal.kyc.service.impl;
 
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.util.HyperwalletEncryption;
-import com.paypal.kyc.infrastructure.configuration.KYCHyperwalletApiConfig;
+import com.paypal.infrastructure.hyperwallet.api.DefaultHyperwalletSDKUserService;
+import com.paypal.infrastructure.hyperwallet.api.UserHyperwalletApiConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,10 +25,10 @@ class KYCHyperwalletSDKEncryptedServiceImplTest {
 	private static final String PROGRAM_TOKEN = "programToken";
 
 	@InjectMocks
-	private KYCHyperwalletSDKEncryptedServiceImpl testObj;
+	private DefaultHyperwalletSDKUserService testObj;
 
 	@Mock
-	private KYCHyperwalletApiConfig kycHyperwalletApiConfigMock;
+	private UserHyperwalletApiConfig kycHyperwalletApiConfigMock;
 
 	@Mock
 	private HyperwalletEncryption hyperwalletEncryptionMock;
@@ -38,7 +39,7 @@ class KYCHyperwalletSDKEncryptedServiceImplTest {
 		when(kycHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
 		when(kycHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final Hyperwallet result = testObj.getHyperwalletInstance(PROGRAM_TOKEN);
+		final Hyperwallet result = testObj.getHyperwalletInstanceByHyperwalletProgram(PROGRAM_TOKEN);
 
 		assertThat(result).hasFieldOrPropertyWithValue("apiClient.hyperwalletEncryption", hyperwalletEncryptionMock);
 	}

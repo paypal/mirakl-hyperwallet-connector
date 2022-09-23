@@ -1,5 +1,8 @@
 package com.paypal.observability;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
 import com.paypal.observability.batchjoblogging.BatchJobLoggingConfig;
 import com.paypal.observability.hyperwalletapichecks.HyperwalletAPIHealthCheckerConfig;
 import com.paypal.observability.loggingcontext.LoggingContextConfig;
@@ -9,14 +12,11 @@ import com.paypal.observability.miraklfieldschecks.MiraklFieldsCheckerConfig;
 import com.paypal.observability.miraklschemadiffs.MiraklSchemaDiffsConfig;
 import com.paypal.observability.notificationslogging.NotificationsLoggingConfiguration;
 import com.paypal.observability.startupchecks.StartupCheckConfig;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 //@formatter:off
-@Import({MiraklClientConfiguration.class,
-		HyperwalletClientConfiguration.class,
-		StartupCheckConfig.class,
+@Import({StartupCheckConfig.class,
 		MiraklDocsCheckerConfig.class,
 		MiraklFieldsCheckerConfig.class,
 		MiraklSchemaDiffsConfig.class,
@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Import;
 		BatchJobLoggingConfig.class,
 		NotificationsLoggingConfiguration.class})
 //@formatter:on
+@PropertySource({ "classpath:observability.properties" })
 public class ObservabilityConfiguration {
 
 }

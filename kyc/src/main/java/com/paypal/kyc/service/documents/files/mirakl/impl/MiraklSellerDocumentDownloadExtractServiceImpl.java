@@ -2,9 +2,10 @@ package com.paypal.kyc.service.documents.files.mirakl.impl;
 
 import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+
 import com.mirakl.client.mmp.request.shop.document.MiraklGetShopDocumentsRequest;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCDocumentModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
@@ -23,14 +24,14 @@ import java.util.stream.Collectors;
 @Service
 public class MiraklSellerDocumentDownloadExtractServiceImpl implements MiraklSellerDocumentDownloadExtractService {
 
-	private final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient;
+	private final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient;
 
 	private final MiraklKYCSelectionDocumentExecutor miraklKYCSelectionDocumentStrategyExecutor;
 
 	private final MailNotificationUtil kycMailNotificationUtil;
 
 	public MiraklSellerDocumentDownloadExtractServiceImpl(
-			final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient,
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient,
 			final MiraklKYCSelectionDocumentExecutor miraklKYCSelectionDocumentStrategyExecutor,
 			final MailNotificationUtil kycMailNotificationUtil) {
 		this.miraklMarketplacePlatformOperatorApiClient = miraklMarketplacePlatformOperatorApiClient;

@@ -1,11 +1,12 @@
 package com.paypal.kyc.strategies.documents.flags;
 
 import com.mirakl.client.core.exception.MiraklException;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCConstants;
@@ -20,12 +21,12 @@ public abstract class AbstractUserDocumentFlagsStrategy
 
 	protected final MailNotificationUtil mailNotificationUtil;
 
-	protected final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient;
+	protected final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient;
 
 	protected static final String EMAIL_BODY_PREFIX = "There was an error, please check the logs for further information:\n";
 
 	protected AbstractUserDocumentFlagsStrategy(final MailNotificationUtil mailNotificationUtil,
-			final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient) {
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient) {
 		this.mailNotificationUtil = mailNotificationUtil;
 		this.miraklMarketplacePlatformOperatorApiClient = miraklMarketplacePlatformOperatorApiClient;
 	}

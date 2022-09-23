@@ -2,17 +2,17 @@ package com.paypal.sellers.sellersextract.service.strategies;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.sellers.sellersextract.model.SellerModel;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import org.slf4j.Logger;
 
 public abstract class AbstractHyperwalletSellerServiceStrategy implements Strategy<SellerModel, SellerModel> {
 
 	protected final Converter<SellerModel, HyperwalletUser> sellerModelHyperwalletUserConverter;
 
-	protected final HyperwalletSDKService hyperwalletSDKService;
+	protected final HyperwalletSDKUserService hyperwalletSDKUserService;
 
 	protected final MailNotificationUtil mailNotificationUtil;
 
@@ -21,9 +21,10 @@ public abstract class AbstractHyperwalletSellerServiceStrategy implements Strate
 
 	protected AbstractHyperwalletSellerServiceStrategy(
 			final Converter<SellerModel, HyperwalletUser> sellerModelHyperwalletUserConverter,
-			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
+			final HyperwalletSDKUserService hyperwalletSDKUserService,
+			final MailNotificationUtil mailNotificationUtil) {
 		this.sellerModelHyperwalletUserConverter = sellerModelHyperwalletUserConverter;
-		this.hyperwalletSDKService = hyperwalletSDKService;
+		this.hyperwalletSDKUserService = hyperwalletSDKUserService;
 		this.mailNotificationUtil = mailNotificationUtil;
 	}
 

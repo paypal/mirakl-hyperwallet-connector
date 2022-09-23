@@ -1,8 +1,8 @@
 package com.paypal.kyc.service.documents.files.hyperwallet.impl;
 
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletDocumentUploadService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,13 +18,13 @@ import java.util.List;
 @Slf4j
 public abstract class AbstractHyperwalletDocumentExtractService<T extends KYCDocumentInfoModel> {
 
-	private final HyperwalletSDKService hyperwalletSDKService;
+	private final HyperwalletSDKUserService hyperwalletSDKUserService;
 
 	private final HyperwalletDocumentUploadService hyperwalletDocumentUploadService;
 
-	protected AbstractHyperwalletDocumentExtractService(final HyperwalletSDKService hyperwalletSDKService,
+	protected AbstractHyperwalletDocumentExtractService(final HyperwalletSDKUserService hyperwalletSDKUserService,
 			final HyperwalletDocumentUploadService hyperwalletDocumentUploadService) {
-		this.hyperwalletSDKService = hyperwalletSDKService;
+		this.hyperwalletSDKUserService = hyperwalletSDKUserService;
 		this.hyperwalletDocumentUploadService = hyperwalletDocumentUploadService;
 	}
 
@@ -46,8 +46,8 @@ public abstract class AbstractHyperwalletDocumentExtractService<T extends KYCDoc
 	protected abstract List<HyperwalletVerificationDocument> getHyperwalletVerificationDocuments(
 			T kycDocumentInfoModel);
 
-	protected HyperwalletSDKService getHyperwalletSDKService() {
-		return hyperwalletSDKService;
+	protected HyperwalletSDKUserService getHyperwalletSDKService() {
+		return hyperwalletSDKUserService;
 	}
 
 }

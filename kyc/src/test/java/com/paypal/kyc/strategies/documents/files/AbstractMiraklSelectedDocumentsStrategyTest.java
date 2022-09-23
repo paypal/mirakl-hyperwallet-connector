@@ -3,8 +3,8 @@ package com.paypal.kyc.strategies.documents.files;
 import com.mirakl.client.mmp.domain.common.FileWrapper;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.request.shop.document.MiraklDownloadShopsDocumentsRequest;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.kyc.model.*;
 import com.paypal.kyc.strategies.documents.files.mirakl.AbstractMiraklSelectedDocumentsStrategy;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class AbstractMiraklSelectedDocumentsStrategyTest {
 	private MyMiraklSelectedDocumentsStrategy testObj;
 
 	@Mock
-	private MiraklMarketplacePlatformOperatorApiClient miraklApiClientMock;
+	private MiraklMarketplacePlatformOperatorApiWrapper miraklApiClientMock;
 
 	@Mock
 	private FileWrapper documentIdentityCardFrontFileWrapperMock, documentIdentityCardBackFileWrapperMock;
@@ -80,7 +80,7 @@ class AbstractMiraklSelectedDocumentsStrategyTest {
 
 	private static class MyMiraklSelectedDocumentsStrategy extends AbstractMiraklSelectedDocumentsStrategy {
 
-		protected MyMiraklSelectedDocumentsStrategy(final MiraklMarketplacePlatformOperatorApiClient miraklApiClient) {
+		protected MyMiraklSelectedDocumentsStrategy(final MiraklMarketplacePlatformOperatorApiWrapper miraklApiClient) {
 			super(miraklApiClient);
 		}
 

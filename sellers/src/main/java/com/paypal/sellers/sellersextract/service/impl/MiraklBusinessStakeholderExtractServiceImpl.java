@@ -1,11 +1,11 @@
 package com.paypal.sellers.sellersextract.service.impl;
 
 import com.mirakl.client.core.exception.MiraklApiException;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderConstants;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
@@ -32,12 +32,12 @@ public class MiraklBusinessStakeholderExtractServiceImpl implements MiraklBusine
 
 	private static final String HYPHEN = "-";
 
-	private final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient;
+	private final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient;
 
 	private final MailNotificationUtil sellerMailNotificationUtil;
 
 	public MiraklBusinessStakeholderExtractServiceImpl(
-			final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient,
 			final MailNotificationUtil sellerMailNotificationUtil) {
 		this.miraklOperatorClient = miraklOperatorClient;
 		this.sellerMailNotificationUtil = sellerMailNotificationUtil;

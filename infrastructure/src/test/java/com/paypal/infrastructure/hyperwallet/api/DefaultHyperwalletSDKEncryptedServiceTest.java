@@ -1,8 +1,7 @@
-package com.paypal.notifications.service.hyperwallet.impl;
+package com.paypal.infrastructure.hyperwallet.api;
 
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.util.HyperwalletEncryption;
-import com.paypal.notifications.infrastructure.configuration.NotificationsHyperwalletApiConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class NotificationsHyperwalletSDKEncryptedServiceImplTest {
+class DefaultHyperwalletSDKEncryptedServiceTest {
 
 	private static final String SERVER = "server";
 
@@ -24,13 +23,13 @@ class NotificationsHyperwalletSDKEncryptedServiceImplTest {
 	private static final String PROGRAM_TOKEN = "programToken";
 
 	@InjectMocks
-	private NotificationsHyperwalletSDKEncryptedServiceImpl testObj;
+	private DefaultHyperwalletSDKUserService testObj;
 
 	@Mock
 	private HyperwalletEncryption hyperwalletEncryptionMock;
 
 	@Mock
-	private NotificationsHyperwalletApiConfig notificationsHyperwalletApiConfigMock;
+	private UserHyperwalletApiConfig notificationsHyperwalletApiConfigMock;
 
 	@Test
 	void getHyperwalletInstance_shouldReturnAnHyperwalletInstanceWithEncryptedOption() {
@@ -38,7 +37,7 @@ class NotificationsHyperwalletSDKEncryptedServiceImplTest {
 		when(notificationsHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
 		when(notificationsHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final Hyperwallet result = testObj.getHyperwalletInstance(PROGRAM_TOKEN);
+		final Hyperwallet result = testObj.getHyperwalletInstanceByHyperwalletProgram(PROGRAM_TOKEN);
 
 		assertThat(result).hasFieldOrPropertyWithValue("apiClient.hyperwalletEncryption", hyperwalletEncryptionMock);
 	}

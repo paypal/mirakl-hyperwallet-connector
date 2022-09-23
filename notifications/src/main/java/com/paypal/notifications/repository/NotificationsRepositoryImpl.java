@@ -3,8 +3,8 @@ package com.paypal.notifications.repository;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
-import com.paypal.notifications.service.hyperwallet.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -16,15 +16,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class NotificationsRepositoryImpl implements NotificationsRepository {
 
-	private final HyperwalletSDKService hyperwalletSDKService;
+	private final HyperwalletSDKUserService hyperwalletSDKUserService;
 
-	public NotificationsRepositoryImpl(final HyperwalletSDKService hyperwalletSDKService) {
-		this.hyperwalletSDKService = hyperwalletSDKService;
+	public NotificationsRepositoryImpl(final HyperwalletSDKUserService hyperwalletSDKUserService) {
+		this.hyperwalletSDKUserService = hyperwalletSDKUserService;
 	}
 
 	@Override
 	public HyperwalletWebhookNotification getHyperwalletWebhookNotification(final String program, final String token) {
-		final Hyperwallet hyperwalletInstance = hyperwalletSDKService.getHyperwalletInstance(program);
+		final Hyperwallet hyperwalletInstance = hyperwalletSDKUserService
+				.getHyperwalletInstanceByHyperwalletProgram(program);
 		try {
 			return hyperwalletInstance.getWebhookEvent(token);
 		}

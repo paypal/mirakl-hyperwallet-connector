@@ -9,7 +9,6 @@ import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.MiraklShopKyc;
 import com.mirakl.client.mmp.domain.shop.MiraklShopKycStatus;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShopWithErrors;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShopReturn;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
@@ -19,6 +18,7 @@ import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFiel
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.exceptions.HMCException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.*;
 import com.paypal.kyc.service.KYCRejectionReasonService;
@@ -70,7 +70,7 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 	private MiraklSellerDocumentsExtractService miraklSellerDocumentsExtractServiceMock;
 
 	@Mock
-	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
+	private MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClientMock;
 
 	@Mock
 	private Converter<KYCDocumentNotificationModel, List<String>> kycDocumentNotificationModelListConverterMock;
@@ -437,7 +437,7 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 	private static class MyAbstractKYCUserStatusNotificationStrategy extends AbstractKYCUserStatusNotificationStrategy {
 
 		public MyAbstractKYCUserStatusNotificationStrategy(
-				final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
+				final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient,
 				final MailNotificationUtil mailNotificationUtil,
 				final KYCRejectionReasonService kycRejectionReasonService,
 				final MiraklSellerDocumentsExtractService miraklSellerDocumentsExtractService,

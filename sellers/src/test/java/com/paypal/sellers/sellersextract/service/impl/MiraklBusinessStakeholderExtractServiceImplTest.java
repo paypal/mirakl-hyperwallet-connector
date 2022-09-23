@@ -2,11 +2,11 @@ package com.paypal.sellers.sellersextract.service.impl;
 
 import com.mirakl.client.core.error.MiraklErrorResponseBean;
 import com.mirakl.client.core.exception.MiraklApiException;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.model.SellerModel;
@@ -38,7 +38,7 @@ class MiraklBusinessStakeholderExtractServiceImplTest {
 	private MiraklBusinessStakeholderExtractServiceImpl testObj;
 
 	@Mock
-	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
+	private MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClientMock;
 
 	@Mock
 	private SellerModel sellerModelMock;

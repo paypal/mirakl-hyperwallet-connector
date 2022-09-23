@@ -1,17 +1,22 @@
 package com.paypal.observability.hyperwalletapichecks;
 
-import com.paypal.observability.testsupport.AbstractMockServerITTest;
-import com.paypal.observability.testsupport.ObservabilityWebIntegrationContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import com.paypal.infrastructure.hyperwallet.api.UserHyperwalletApiConfig;
+import com.paypal.observability.testsupport.AbstractMockServerITTest;
+import com.paypal.observability.testsupport.ObservabilityWebIntegrationContext;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ObservabilityWebIntegrationContext
 class HyperwalletAPIChecksActuatorAdapterITTest extends AbstractMockServerITTest {
+
+	@Autowired
+	private UserHyperwalletApiConfig userHyperwalletApiConfig;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -25,7 +30,8 @@ class HyperwalletAPIChecksActuatorAdapterITTest extends AbstractMockServerITTest
 		mockMvc.perform(MockMvcRequestBuilders.get("/actuator/health"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.components.hyperwalletAPIHealthCheck.status").value("UP"))
-				.andExpect(jsonPath("$.components.hyperwalletAPIHealthCheck.details.location").value("http://localhost"));
+				.andExpect(jsonPath("$.components.hyperwalletAPIHealthCheck.details.location")
+					.value(userHyperwalletApiConfig.getServer()));
 		//@formatter:on
 	}
 
@@ -39,7 +45,8 @@ class HyperwalletAPIChecksActuatorAdapterITTest extends AbstractMockServerITTest
 				.andExpect(status().is5xxServerError())
 				.andExpect(jsonPath("$.components.hyperwalletAPIHealthCheck.status").value("DOWN"))
 				.andExpect(jsonPath("$.components.hyperwalletAPIHealthCheck.details.error").value("Error message"))
-				.andExpect(jsonPath("$.components.hyperwalletAPIHealthCheck.details.location").value("http://localhost"));
+				.andExpect(jsonPath("$.components.hyperwalletAPIHealthCheck.details.location")
+					.value(userHyperwalletApiConfig.getServer()));
 		//@formatter:on
 	}
 

@@ -177,7 +177,7 @@ public class BankAccountModel {
 		public abstract T getThis();
 
 		public T transferMethodCountry(final String transferMethodCountry) {
-			final Locale countryLocale = CountriesUtil.getLocaleByThreeLettersIsocode(transferMethodCountry)
+			final Locale countryLocale = CountriesUtil.getLocaleByIsocode(transferMethodCountry)
 					.orElseThrow(() -> new IllegalStateException(
 							String.format("Country with isocode: [%s] not valid", transferMethodCountry)));
 
@@ -239,7 +239,7 @@ public class BankAccountModel {
 		}
 
 		public T country(final String country) {
-			final Locale countryLocale = CountriesUtil.getLocaleByThreeLettersIsocode(country).orElseThrow(
+			final Locale countryLocale = CountriesUtil.getLocaleByIsocode(country).orElseThrow(
 					() -> new IllegalStateException(String.format("Country with isocode: [%s] not valid", country)));
 
 			this.country = countryLocale.getCountry();

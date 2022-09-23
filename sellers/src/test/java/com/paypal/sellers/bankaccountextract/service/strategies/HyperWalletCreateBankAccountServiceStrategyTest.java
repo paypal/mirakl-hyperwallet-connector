@@ -2,10 +2,10 @@ package com.paypal.sellers.bankaccountextract.service.strategies;
 
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextract.service.MiraklBankAccountExtractService;
 import com.paypal.sellers.sellersextract.model.SellerModel;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,7 +39,7 @@ class HyperWalletCreateBankAccountServiceStrategyTest {
 	private Hyperwallet hyperwalletMock;
 
 	@Mock
-	private HyperwalletSDKService hyperwalletSDKServiceMock;
+	private HyperwalletSDKUserService hyperwalletSDKUserServiceMock;
 
 	@Mock
 	private MiraklBankAccountExtractService miraklBankAccountExtractServiceMock;
@@ -64,13 +64,13 @@ class HyperWalletCreateBankAccountServiceStrategyTest {
 		when(hyperwalletMock.createBankAccount(hyperwalletBankAccountRequestMock))
 				.thenReturn(hyperwalletBankAccountResultMock);
 
-		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletMock);
 
 		final HyperwalletBankAccount result = testObj.callHyperwalletAPI(HYPERWALLET_PROGRAM,
 				hyperwalletBankAccountRequestMock);
 
-		verify(hyperwalletSDKServiceMock).getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
+		verify(hyperwalletSDKUserServiceMock).getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
 		verify(hyperwalletMock).createBankAccount(hyperwalletBankAccountRequestMock);
 		assertThat(result).isEqualTo(hyperwalletBankAccountResultMock);
 	}

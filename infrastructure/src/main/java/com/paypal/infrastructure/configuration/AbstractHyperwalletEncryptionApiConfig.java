@@ -38,13 +38,20 @@ public abstract class AbstractHyperwalletEncryptionApiConfig {
 	@Value("#{'${hyperwallet.api.qaKeySetLocation}'}")
 	protected String qaKeySetLocation;
 
+	@Profile({ "!encrypted && !qaEncrypted" })
+	@Bean
+	public HyperwalletEncryption hyperwalletEncryptionEmpty() {
+		return null;
+	}
+
 	@Primary
+	@Profile({ "encrypted", "qaEncrypted" })
 	@Bean(name = "hyperwalletEncryptionWrapper")
 	public HyperwalletEncryption hyperwalletEncryptionWrapper() {
 		//@formatter:off
 		return new HyperwalletEncryption(JWEAlgorithm.parse(getEncryptionAlgorithm()), JWSAlgorithm.parse(getSignAlgorithm()),
-				EncryptionMethod.parse(getEncryptionMethod()), getHmcKeySetLocation(), getHwKeySetLocation(),
-				getExpirationMinutes());
+			EncryptionMethod.parse(getEncryptionMethod()), getHmcKeySetLocation(), getHwKeySetLocation(),
+			getExpirationMinutes());
 		//@formatter:on
 	}
 

@@ -5,10 +5,10 @@ import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.SellerModel;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,15 +23,16 @@ public class HyperWalletUpdateSellerServiceStrategy extends AbstractHyperwalletS
 
 	protected HyperWalletUpdateSellerServiceStrategy(
 			final Converter<SellerModel, HyperwalletUser> sellerModelHyperwalletUserConverter,
-			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
-		super(sellerModelHyperwalletUserConverter, hyperwalletSDKService, mailNotificationUtil);
+			final HyperwalletSDKUserService hyperwalletSDKUserService,
+			final MailNotificationUtil mailNotificationUtil) {
+		super(sellerModelHyperwalletUserConverter, hyperwalletSDKUserService, mailNotificationUtil);
 	}
 
 	@Override
 	protected HyperwalletUser pushToHyperwallet(final HyperwalletUser hyperwalletUser) {
 
 		try {
-			final Hyperwallet hyperwallet = hyperwalletSDKService
+			final Hyperwallet hyperwallet = hyperwalletSDKUserService
 					.getHyperwalletInstanceByProgramToken(hyperwalletUser.getProgramToken());
 			final HyperwalletUser updatedUser = hyperwallet.updateUser(hyperwalletUser);
 

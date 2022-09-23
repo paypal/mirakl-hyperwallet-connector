@@ -5,13 +5,13 @@ import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
 import com.mirakl.client.core.exception.MiraklApiException;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.entity.FailedBankAccountInformation;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.service.FailedEntityInformationService;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -100,8 +100,9 @@ class AbstractHyperwalletBankAccountRetryApiStrategyTest {
 		public MyAbstractHyperwalletBankAccountRetryApiStrategy(
 				final FailedEntityInformationService<FailedBankAccountInformation> failedEntityInformationService,
 				final StrategyExecutor<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyExecutor,
-				final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
-			super(sellerModelToHyperwalletBankAccountStrategyExecutor, hyperwalletSDKService, mailNotificationUtil);
+				final HyperwalletSDKUserService hyperwalletSDKUserService,
+				final MailNotificationUtil mailNotificationUtil) {
+			super(sellerModelToHyperwalletBankAccountStrategyExecutor, hyperwalletSDKUserService, mailNotificationUtil);
 		}
 
 		@Override

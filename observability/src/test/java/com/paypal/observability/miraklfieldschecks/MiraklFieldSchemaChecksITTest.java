@@ -1,20 +1,21 @@
 package com.paypal.observability.miraklfieldschecks;
 
-import com.paypal.observability.miraklfieldschecks.services.MiraklFieldSchemaCheckerService;
-import com.paypal.observability.miraklschemadiffs.model.diff.MiraklSchemaDiffEntryType;
-import com.paypal.observability.miraklschemadiffs.model.report.MiraklSchemaDiffReport;
-import com.paypal.observability.miraklschemadiffs.model.report.MiraklSchemaDiffReportSeverity;
-import com.paypal.observability.testsupport.AbstractSchemaChecksITTest;
-import com.paypal.observability.testsupport.ObservabilityIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import com.paypal.observability.miraklfieldschecks.services.MiraklFieldSchemaCheckerService;
+import com.paypal.observability.miraklschemadiffs.model.diff.MiraklSchemaDiffEntryType;
+import com.paypal.observability.miraklschemadiffs.model.report.MiraklSchemaDiffReport;
+import com.paypal.observability.miraklschemadiffs.model.report.MiraklSchemaDiffReportSeverity;
+import com.paypal.observability.testsupport.AbstractSchemaChecksITTest;
+import com.paypal.observability.testsupport.ObservabilityWebIntegrationContext;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ObservabilityIntegrationTest
+@ObservabilityWebIntegrationContext
 class MiraklFieldSchemaChecksITTest extends AbstractSchemaChecksITTest {
 
 	@Value("${hyperwallet.kycAutomated}")

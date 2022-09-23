@@ -4,10 +4,10 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import com.paypal.kyc.service.KYCReadyForReviewService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -24,18 +24,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class KYCReadyForReviewServiceImpl implements KYCReadyForReviewService {
 
-	private final HyperwalletSDKService hyperwalletSDKService;
+	private final HyperwalletSDKUserService hyperwalletSDKUserService;
 
 	private final MailNotificationUtil kycMailNotificationUtil;
 
-	public KYCReadyForReviewServiceImpl(final HyperwalletSDKService hyperwalletSDKService,
+	public KYCReadyForReviewServiceImpl(final HyperwalletSDKUserService hyperwalletSDKUserService,
 			final MailNotificationUtil kycMailNotificationUtil) {
-		this.hyperwalletSDKService = hyperwalletSDKService;
+		this.hyperwalletSDKUserService = hyperwalletSDKUserService;
 		this.kycMailNotificationUtil = kycMailNotificationUtil;
 	}
 
 	@Override
-	public void notifyReadyForReview(KYCDocumentInfoModel kycDocumentInfoModel) {
+	public void notifyReadyForReview(final KYCDocumentInfoModel kycDocumentInfoModel) {
 		final String token = kycDocumentInfoModel.getUserToken();
 		final HyperwalletUser user = new HyperwalletUser();
 		user.setToken(token);
@@ -45,7 +45,8 @@ public class KYCReadyForReviewServiceImpl implements KYCReadyForReviewService {
 		try {
 			final String hyperwalletProgram = kycDocumentInfoModel.getHyperwalletProgram();
 			if (StringUtils.isNotEmpty(hyperwalletProgram)) {
-				final Hyperwallet hyperwallet = hyperwalletSDKService.getHyperwalletInstance(hyperwalletProgram);
+				final Hyperwallet hyperwallet = hyperwalletSDKUserService
+						.getHyperwalletInstanceByHyperwalletProgram(hyperwalletProgram);
 				final HyperwalletUser hyperwalletUser = hyperwallet.updateUser(user);
 				log.info("Seller with id [{}] has been set as Ready for review", hyperwalletUser.getClientUserId());
 			}
@@ -62,7 +63,8 @@ public class KYCReadyForReviewServiceImpl implements KYCReadyForReviewService {
 		}
 	}
 
-	private void reportHyperwalletAPIError(KYCDocumentInfoModel kycDocumentInfoModel, HyperwalletException e) {
+	private void reportHyperwalletAPIError(final KYCDocumentInfoModel kycDocumentInfoModel,
+			final HyperwalletException e) {
 		log.error(String.format("Error notifying to Hyperwallet that all documents were sent.%n%s",
 				HyperwalletLoggingErrorsUtil.stringify(e)), e);
 

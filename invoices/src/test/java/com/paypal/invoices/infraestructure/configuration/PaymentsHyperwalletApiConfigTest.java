@@ -15,13 +15,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class InvoicesHyperwalletApiConfigTest {
+class PaymentsHyperwalletApiConfigTest {
 
 	private static final String PREFIX = "invoices.hyperwallet.api.hyperwalletprogram.token.";
 
 	@Spy
 	@InjectMocks
-	private InvoicesHyperwalletApiConfig testObj;
+	private PaymentsHyperwalletApiConfig testObj;
 
 	@Mock
 	private Environment environmentMock;
@@ -44,8 +44,8 @@ class InvoicesHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenBothAreEquals() {
-		final InvoicesHyperwalletApiConfig invoiceApiConfigOne = createInvoiceApiConfig();
-		final InvoicesHyperwalletApiConfig invoiceApiConfigTwo = createInvoiceApiConfig();
+		final PaymentsHyperwalletApiConfig invoiceApiConfigOne = createInvoiceApiConfig();
+		final PaymentsHyperwalletApiConfig invoiceApiConfigTwo = createInvoiceApiConfig();
 
 		final boolean result = invoiceApiConfigOne.equals(invoiceApiConfigTwo);
 
@@ -54,8 +54,8 @@ class InvoicesHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenBothAreNotEquals() {
-		final InvoicesHyperwalletApiConfig invoiceApiConfigOne = createInvoiceApiConfig();
-		final InvoicesHyperwalletApiConfig invoiceApiConfigTwo = createAnotherInvoiceApiConfig();
+		final PaymentsHyperwalletApiConfig invoiceApiConfigOne = createInvoiceApiConfig();
+		final PaymentsHyperwalletApiConfig invoiceApiConfigTwo = createAnotherInvoiceApiConfig();
 
 		final boolean result = invoiceApiConfigOne.equals(invoiceApiConfigTwo);
 
@@ -64,7 +64,7 @@ class InvoicesHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnTrueWhenSameObjectIsCompared() {
-		final InvoicesHyperwalletApiConfig invoiceApiConfigOne = createInvoiceApiConfig();
+		final PaymentsHyperwalletApiConfig invoiceApiConfigOne = createInvoiceApiConfig();
 
 		final boolean result = invoiceApiConfigOne.equals(invoiceApiConfigOne);
 
@@ -73,7 +73,7 @@ class InvoicesHyperwalletApiConfigTest {
 
 	@Test
 	void equals_shouldReturnFalseWhenComparedWithAnotherInstanceObject() {
-		final InvoicesHyperwalletApiConfig invoiceApiConfigOne = createInvoiceApiConfig();
+		final PaymentsHyperwalletApiConfig invoiceApiConfigOne = createInvoiceApiConfig();
 
 		final Object o = new Object();
 
@@ -82,29 +82,29 @@ class InvoicesHyperwalletApiConfigTest {
 		assertThat(result).isFalse();
 	}
 
-	private InvoicesHyperwalletApiConfig createInvoiceApiConfig() {
-		InvoicesHyperwalletApiConfig invoicesHyperwalletApiConfig = new InvoicesHyperwalletApiConfig();
-		invoicesHyperwalletApiConfig.setEnvironment(environmentMock);
-		invoicesHyperwalletApiConfig.setHyperwalletPrograms("test1,test2,test3");
-		invoicesHyperwalletApiConfig.setPassword("password");
-		invoicesHyperwalletApiConfig.setServer("server");
-		invoicesHyperwalletApiConfig.setUsername("username");
-		invoicesHyperwalletApiConfig
+	private PaymentsHyperwalletApiConfig createInvoiceApiConfig() {
+		final PaymentsHyperwalletApiConfig paymentsHyperwalletApiConfig = new PaymentsHyperwalletApiConfig();
+		paymentsHyperwalletApiConfig.setEnvironment(environmentMock);
+		paymentsHyperwalletApiConfig.setHyperwalletPrograms("test1,test2,test3");
+		paymentsHyperwalletApiConfig.setPassword("password");
+		paymentsHyperwalletApiConfig.setServer("server");
+		paymentsHyperwalletApiConfig.setUsername("username");
+		paymentsHyperwalletApiConfig
 				.setPaymentStoreTokens(Map.of("test1", "token1", "test2", "token2", "test3", "token3"));
 
-		return invoicesHyperwalletApiConfig;
+		return paymentsHyperwalletApiConfig;
 	}
 
-	private InvoicesHyperwalletApiConfig createAnotherInvoiceApiConfig() {
-		InvoicesHyperwalletApiConfig invoicesHyperwalletApiConfig = new InvoicesHyperwalletApiConfig();
-		invoicesHyperwalletApiConfig.setEnvironment(environmentMock);
-		invoicesHyperwalletApiConfig.setHyperwalletPrograms("test1,test2,test3");
-		invoicesHyperwalletApiConfig.setPassword("password");
-		invoicesHyperwalletApiConfig.setServer("server");
-		invoicesHyperwalletApiConfig.setUsername("username");
-		invoicesHyperwalletApiConfig.setPaymentStoreTokens(Map.of());
+	private PaymentsHyperwalletApiConfig createAnotherInvoiceApiConfig() {
+		final PaymentsHyperwalletApiConfig paymentsHyperwalletApiConfig = new PaymentsHyperwalletApiConfig();
+		paymentsHyperwalletApiConfig.setEnvironment(environmentMock);
+		paymentsHyperwalletApiConfig.setHyperwalletPrograms("test1,test2,test3");
+		paymentsHyperwalletApiConfig.setPassword("password");
+		paymentsHyperwalletApiConfig.setServer("server");
+		paymentsHyperwalletApiConfig.setUsername("username");
+		paymentsHyperwalletApiConfig.setPaymentStoreTokens(Map.of());
 
-		return invoicesHyperwalletApiConfig;
+		return paymentsHyperwalletApiConfig;
 	}
 
 }

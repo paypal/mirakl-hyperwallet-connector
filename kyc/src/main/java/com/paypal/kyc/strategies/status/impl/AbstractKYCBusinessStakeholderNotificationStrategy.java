@@ -3,10 +3,10 @@ package com.paypal.kyc.strategies.status.impl;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.paypal.infrastructure.exceptions.HMCException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
+import com.paypal.infrastructure.hyperwallet.api.UserHyperwalletApiConfig;
 import com.paypal.infrastructure.strategy.Strategy;
-import com.paypal.kyc.infrastructure.configuration.KYCHyperwalletApiConfig;
 import com.paypal.kyc.model.KYCBusinessStakeholderStatusNotificationBodyModel;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -18,20 +18,21 @@ import java.util.stream.Collectors;
 public abstract class AbstractKYCBusinessStakeholderNotificationStrategy
 		implements Strategy<KYCBusinessStakeholderStatusNotificationBodyModel, Void> {
 
-	protected final HyperwalletSDKService hyperwalletSDKService;
+	protected final HyperwalletSDKUserService hyperwalletSDKUserService;
 
-	protected final KYCHyperwalletApiConfig kycHyperwalletApiConfig;
+	protected final UserHyperwalletApiConfig kycHyperwalletApiConfig;
 
-	protected AbstractKYCBusinessStakeholderNotificationStrategy(final HyperwalletSDKService hyperwalletSDKService,
-			final KYCHyperwalletApiConfig kycHyperwalletApiConfig) {
-		this.hyperwalletSDKService = hyperwalletSDKService;
+	protected AbstractKYCBusinessStakeholderNotificationStrategy(
+			final HyperwalletSDKUserService hyperwalletSDKUserService,
+			final UserHyperwalletApiConfig kycHyperwalletApiConfig) {
+		this.hyperwalletSDKUserService = hyperwalletSDKUserService;
 		this.kycHyperwalletApiConfig = kycHyperwalletApiConfig;
 	}
 
 	protected HyperwalletUser getHyperWalletUser(
 			final KYCBusinessStakeholderStatusNotificationBodyModel kycBusinessStakeholderStatusNotificationBodyModel) {
-		final List<HyperwalletUser> hyperWalletUser = kycHyperwalletApiConfig.getUserStoreTokens().keySet().stream()
-				.map(hyperwalletSDKService::getHyperwalletInstance)
+		final List<HyperwalletUser> hyperWalletUser = kycHyperwalletApiConfig.getTokens().keySet().stream()
+				.map(hyperwalletSDKUserService::getHyperwalletInstanceByHyperwalletProgram)
 				.map(hyperwallet -> callHyperwalletSDKCatchingException(hyperwallet,
 						kycBusinessStakeholderStatusNotificationBodyModel.getUserToken()))
 				.filter(Objects::nonNull).collect(Collectors.toList());

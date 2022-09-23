@@ -1,7 +1,8 @@
 package com.paypal.kyc.service.impl;
 
 import com.hyperwallet.clientsdk.Hyperwallet;
-import com.paypal.kyc.infrastructure.configuration.KYCHyperwalletApiConfig;
+import com.paypal.infrastructure.hyperwallet.api.DefaultHyperwalletSDKUserService;
+import com.paypal.infrastructure.hyperwallet.api.UserHyperwalletApiConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class KYCHyperwalletSDKServiceImplTest {
+class KYCHyperwalletSDKUserServiceImplTest {
 
 	private static final String PROGRAM_TOKEN = "programToken";
 
@@ -29,19 +30,19 @@ class KYCHyperwalletSDKServiceImplTest {
 
 	@Spy
 	@InjectMocks
-	private KYCHyperwalletSDKServiceImpl testObj;
+	private DefaultHyperwalletSDKUserService testObj;
 
 	@Mock
-	private KYCHyperwalletApiConfig kycHyperwalletApiConfigMock;
+	private UserHyperwalletApiConfig kycHyperwalletApiConfigMock;
 
 	@Test
 	void getHyperwalletInstance_shouldReturnAnHyperwalletInstance() {
-		when(kycHyperwalletApiConfigMock.getUserStoreTokens()).thenReturn(Map.of(HYPERWALLET_PROGRAM, PROGRAM_TOKEN));
+		when(kycHyperwalletApiConfigMock.getTokens()).thenReturn(Map.of(HYPERWALLET_PROGRAM, PROGRAM_TOKEN));
 		when(kycHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
 		when(kycHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
 		when(kycHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final Hyperwallet result = testObj.getHyperwalletInstance(HYPERWALLET_PROGRAM);
+		final Hyperwallet result = testObj.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
 
 		assertThat(result).hasFieldOrPropertyWithValue("programToken", PROGRAM_TOKEN)
 				.hasFieldOrPropertyWithValue("apiClient.username", USER_NAME)
@@ -54,7 +55,7 @@ class KYCHyperwalletSDKServiceImplTest {
 		when(kycHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
 		when(kycHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final Hyperwallet result = testObj.getHyperwalletInstance(PROGRAM_TOKEN);
+		final Hyperwallet result = testObj.getHyperwalletInstanceByHyperwalletProgram(PROGRAM_TOKEN);
 
 		assertThat(result).hasFieldOrPropertyWithValue("apiClient.hyperwalletEncryption", null);
 	}

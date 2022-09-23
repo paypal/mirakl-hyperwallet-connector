@@ -7,10 +7,10 @@ import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.kyc.model.*;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -44,7 +44,7 @@ class HyperwalletDocumentUploadServiceImplTest {
 	private HyperwalletDocumentUploadServiceImpl testObj;
 
 	@Mock
-	private HyperwalletSDKService hyperwalletSDKServiceMock;
+	private HyperwalletSDKUserService hyperwalletSDKUserServiceMock;
 
 	@Mock
 	private MailNotificationUtil kycMailNotificationUtilMock;
@@ -94,7 +94,7 @@ class HyperwalletDocumentUploadServiceImplTest {
 
 		final List<HyperwalletVerificationDocument> usrOneBstOneFilesOneDataList = List
 				.of(usrOneBstOneFilesOneDataMock);
-		when(hyperwalletSDKServiceMock.getHyperwalletInstance(HYPERWALLET_PROGRAM))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletApiClientMock);
 
 		testObj.uploadDocument(userOneBstkOne, usrOneBstOneFilesOneDataList);
@@ -116,7 +116,7 @@ class HyperwalletDocumentUploadServiceImplTest {
 
 		final List<HyperwalletVerificationDocument> sellerOneBstOneFilesOneDataList = List
 				.of(usrOneBstOneFilesOneDataMock);
-		when(hyperwalletSDKServiceMock.getHyperwalletInstance(HYPERWALLET_PROGRAM))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletApiClientMock);
 
 		testObj.uploadDocument(kycDocumentSellerInfoModelOneStub, sellerOneBstOneFilesOneDataList);
@@ -156,7 +156,7 @@ class HyperwalletDocumentUploadServiceImplTest {
 
 		final List<HyperwalletVerificationDocument> usrOneBstOneFilesOneDataList = List
 				.of(usrOneBstOneFilesOneDataMock);
-		when(hyperwalletSDKServiceMock.getHyperwalletInstance(HYPERWALLET_PROGRAM))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletApiClientMock);
 
 		final HyperwalletException expectedException = new HyperwalletException("Something went wrong");

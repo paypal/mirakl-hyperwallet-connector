@@ -7,12 +7,12 @@ import com.mirakl.client.core.exception.MiraklException;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.MiraklSellersExtractService;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +29,9 @@ public class HyperWalletCreateSellerServiceStrategy extends AbstractHyperwalletS
 
 	protected HyperWalletCreateSellerServiceStrategy(
 			final Converter<SellerModel, HyperwalletUser> sellerModelHyperwalletUserConverter,
-			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil,
+			final HyperwalletSDKUserService hyperwalletSDKUserService, final MailNotificationUtil mailNotificationUtil,
 			final MiraklSellersExtractService miraklSellersExtractService) {
-		super(sellerModelHyperwalletUserConverter, hyperwalletSDKService, mailNotificationUtil);
+		super(sellerModelHyperwalletUserConverter, hyperwalletSDKUserService, mailNotificationUtil);
 		this.miraklSellersExtractService = miraklSellersExtractService;
 	}
 
@@ -42,7 +42,7 @@ public class HyperWalletCreateSellerServiceStrategy extends AbstractHyperwalletS
 	 */
 	@Override
 	protected HyperwalletUser pushToHyperwallet(final HyperwalletUser hyperwalletUser) {
-		final Hyperwallet hyperwallet = hyperwalletSDKService
+		final Hyperwallet hyperwallet = hyperwalletSDKUserService
 				.getHyperwalletInstanceByProgramToken(hyperwalletUser.getProgramToken());
 		try {
 			final HyperwalletUser hwUser = hyperwallet.createUser(hyperwalletUser);

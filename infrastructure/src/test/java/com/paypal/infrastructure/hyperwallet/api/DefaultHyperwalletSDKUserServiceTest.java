@@ -1,7 +1,6 @@
-package com.paypal.notifications.service.hyperwallet.impl;
+package com.paypal.infrastructure.hyperwallet.api;
 
 import com.hyperwallet.clientsdk.Hyperwallet;
-import com.paypal.notifications.infrastructure.configuration.NotificationsHyperwalletApiConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class NotificationsHyperwalletSDKServiceImplTest {
+class DefaultHyperwalletSDKUserServiceTest {
 
 	private static final String SERVER = "server";
 
@@ -27,20 +26,19 @@ class NotificationsHyperwalletSDKServiceImplTest {
 	private static final String HYPERWALLET_PROGRAM = "hyperwalletProgram";
 
 	@InjectMocks
-	private NotificationsHyperwalletSDKServiceImpl testObj;
+	private DefaultHyperwalletSDKUserService testObj;
 
 	@Mock
-	private NotificationsHyperwalletApiConfig notificationsHyperwalletApiConfigMock;
+	private UserHyperwalletApiConfig notificationsHyperwalletApiConfigMock;
 
 	@Test
 	void getHyperwalletInstance_shouldReturnAnHyperwalletInstance() {
-		when(notificationsHyperwalletApiConfigMock.getUserStoreTokens())
-				.thenReturn(Map.of(HYPERWALLET_PROGRAM, PROGRAM_TOKEN));
+		when(notificationsHyperwalletApiConfigMock.getTokens()).thenReturn(Map.of(HYPERWALLET_PROGRAM, PROGRAM_TOKEN));
 		when(notificationsHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
 		when(notificationsHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
 		when(notificationsHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final Hyperwallet result = testObj.getHyperwalletInstance(HYPERWALLET_PROGRAM);
+		final Hyperwallet result = testObj.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
 
 		assertThat(result).hasFieldOrPropertyWithValue("programToken", PROGRAM_TOKEN)
 				.hasFieldOrPropertyWithValue("apiClient.username", USER_NAME)
@@ -53,7 +51,7 @@ class NotificationsHyperwalletSDKServiceImplTest {
 		when(notificationsHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
 		when(notificationsHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
-		final Hyperwallet result = testObj.getHyperwalletInstance(PROGRAM_TOKEN);
+		final Hyperwallet result = testObj.getHyperwalletInstanceByHyperwalletProgram(PROGRAM_TOKEN);
 
 		assertThat(result).hasFieldOrPropertyWithValue("apiClient.hyperwalletEncryption", null);
 	}

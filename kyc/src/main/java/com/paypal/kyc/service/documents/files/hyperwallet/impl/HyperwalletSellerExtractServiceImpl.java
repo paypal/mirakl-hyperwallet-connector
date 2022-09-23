@@ -1,8 +1,8 @@
 package com.paypal.kyc.service.documents.files.hyperwallet.impl;
 
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletDocumentUploadService;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletSellerExtractService;
 import com.paypal.kyc.strategies.documents.files.hyperwallet.seller.impl.KYCDocumentInfoToHWVerificationDocumentExecutor;
@@ -26,16 +26,16 @@ public class HyperwalletSellerExtractServiceImpl
 
 	private final KYCDocumentInfoToHWVerificationDocumentExecutor kycDocumentInfoToHWVerificationDocumentExecutor;
 
-	public HyperwalletSellerExtractServiceImpl(HyperwalletSDKService hyperwalletSDKService,
-			HyperwalletDocumentUploadService hyperwalletDocumentUploadService,
-			KYCDocumentInfoToHWVerificationDocumentExecutor kycDocumentInfoToHWVerificationDocumentExecutor) {
-		super(hyperwalletSDKService, hyperwalletDocumentUploadService);
+	public HyperwalletSellerExtractServiceImpl(final HyperwalletSDKUserService hyperwalletSDKUserService,
+			final HyperwalletDocumentUploadService hyperwalletDocumentUploadService,
+			final KYCDocumentInfoToHWVerificationDocumentExecutor kycDocumentInfoToHWVerificationDocumentExecutor) {
+		super(hyperwalletSDKUserService, hyperwalletDocumentUploadService);
 		this.kycDocumentInfoToHWVerificationDocumentExecutor = kycDocumentInfoToHWVerificationDocumentExecutor;
 	}
 
 	@Override
 	protected List<HyperwalletVerificationDocument> getHyperwalletVerificationDocuments(
-			KYCDocumentSellerInfoModel kycDocumentSellerInfoModel) {
+			final KYCDocumentSellerInfoModel kycDocumentSellerInfoModel) {
 		return kycDocumentInfoToHWVerificationDocumentExecutor.execute(kycDocumentSellerInfoModel);
 	}
 

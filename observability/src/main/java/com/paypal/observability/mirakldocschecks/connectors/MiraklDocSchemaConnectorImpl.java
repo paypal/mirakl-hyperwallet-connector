@@ -1,9 +1,10 @@
 package com.paypal.observability.mirakldocschecks.connectors;
 
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.documents.MiraklDocumentsConfiguration;
 import com.mirakl.client.mmp.operator.domain.documents.MiraklDocumentsConfigurations;
 import com.mirakl.client.mmp.operator.request.documents.MiraklGetDocumentsConfigurationRequest;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
+
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,9 +12,9 @@ import java.util.List;
 @Component
 public class MiraklDocSchemaConnectorImpl implements MiraklDocSchemaConnector {
 
-	private final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient;
+	private final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient;
 
-	public MiraklDocSchemaConnectorImpl(final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient) {
+	public MiraklDocSchemaConnectorImpl(final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient) {
 		this.miraklOperatorClient = miraklOperatorClient;
 	}
 

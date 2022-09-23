@@ -6,7 +6,7 @@ import com.mirakl.client.domain.common.error.ErrorBean;
 import com.mirakl.client.mmp.domain.shop.MiraklShopKyc;
 import com.mirakl.client.mmp.domain.shop.MiraklShopKycStatus;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShopWithErrors;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShopReturn;
@@ -17,6 +17,7 @@ import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFiel
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.exceptions.HMCException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
@@ -60,14 +61,14 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 
 	protected final KYCRejectionReasonService kycRejectionReasonService;
 
-	protected final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient;
+	protected final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient;
 
 	protected final MiraklSellerDocumentsExtractService miraklSellerDocumentsExtractService;
 
 	protected final Converter<KYCDocumentNotificationModel, List<String>> kycDocumentNotificationModelListConverter;
 
 	protected AbstractKYCUserStatusNotificationStrategy(
-			final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient,
 			final MailNotificationUtil mailNotificationUtil, final KYCRejectionReasonService kycRejectionReasonService,
 			final MiraklSellerDocumentsExtractService miraklSellerDocumentsExtractService,
 			final Converter<KYCDocumentNotificationModel, List<String>> kycDocumentNotificationModelListConverter) {

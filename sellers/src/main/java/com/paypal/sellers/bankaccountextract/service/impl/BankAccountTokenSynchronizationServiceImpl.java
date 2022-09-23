@@ -7,12 +7,12 @@ import com.hyperwallet.clientsdk.model.HyperwalletList;
 import com.mirakl.client.core.exception.MiraklApiException;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.service.TokenSynchronizationService;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextract.service.MiraklBankAccountExtractService;
 import com.paypal.sellers.sellersextract.model.SellerModel;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,14 +29,14 @@ import java.util.Optional;
 @Service("bankAccountTokenSynchronizationService")
 public class BankAccountTokenSynchronizationServiceImpl implements TokenSynchronizationService<SellerModel> {
 
-	private final HyperwalletSDKService hyperwalletSDKService;
+	private final HyperwalletSDKUserService hyperwalletSDKUserService;
 
 	private final MiraklBankAccountExtractService miraklBankAccountExtractService;
 
-	public BankAccountTokenSynchronizationServiceImpl(final HyperwalletSDKService hyperwalletSDKService,
+	public BankAccountTokenSynchronizationServiceImpl(final HyperwalletSDKUserService hyperwalletSDKUserService,
 			final MiraklBankAccountExtractService miraklBankAccountExtractService) {
 
-		this.hyperwalletSDKService = hyperwalletSDKService;
+		this.hyperwalletSDKUserService = hyperwalletSDKUserService;
 		this.miraklBankAccountExtractService = miraklBankAccountExtractService;
 	}
 
@@ -103,7 +103,7 @@ public class BankAccountTokenSynchronizationServiceImpl implements TokenSynchron
 
 	private HyperwalletList<HyperwalletBankAccount> getHwBankAccountByClientUserId(final SellerModel sellerModel) {
 
-		final Hyperwallet hyperwalletSDK = hyperwalletSDKService
+		final Hyperwallet hyperwalletSDK = hyperwalletSDKUserService
 				.getHyperwalletInstanceByProgramToken(sellerModel.getProgramToken());
 
 		try {
