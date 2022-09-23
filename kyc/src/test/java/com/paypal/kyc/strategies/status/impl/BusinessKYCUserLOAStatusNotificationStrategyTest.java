@@ -2,15 +2,15 @@ package com.paypal.kyc.strategies.status.impl;
 
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.paypal.infrastructure.exceptions.HMCException;
-import com.paypal.kyc.infrastructure.configuration.KYCHyperwalletApiConfig;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
+import com.paypal.infrastructure.hyperwallet.api.UserHyperwalletApiConfig;
 import com.paypal.kyc.model.KYCBusinessStakeholderStatusNotificationBodyModel;
 import com.paypal.kyc.model.KYCConstants;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -48,13 +48,13 @@ class BusinessKYCUserLOAStatusNotificationStrategyTest {
 	private BusinessKYCUserLOAStatusNotificationStrategy testObj;
 
 	@Mock
-	private HyperwalletSDKService hyperwalletSDKServiceMock;
+	private HyperwalletSDKUserService hyperwalletSDKUserServiceMock;
 
 	@Mock
-	private KYCHyperwalletApiConfig kycHyperwalletApiConfigMock;
+	private UserHyperwalletApiConfig kycHyperwalletApiConfigMock;
 
 	@Mock
-	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
+	private MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClientMock;
 
 	@Mock
 	private KYCBusinessStakeholderStatusNotificationBodyModel kycBusinessStakeholderStatusNotificationBodyModelMock;
@@ -73,8 +73,9 @@ class BusinessKYCUserLOAStatusNotificationStrategyTest {
 
 	@Test
 	void execute_shouldCallUpdateMiraklLOAStatus() {
-		when(kycHyperwalletApiConfigMock.getUserStoreTokens()).thenReturn(USER_STORE_TOKENS);
-		when(hyperwalletSDKServiceMock.getHyperwalletInstance(anyString())).thenReturn(hyperwalletMock);
+		when(kycHyperwalletApiConfigMock.getTokens()).thenReturn(USER_STORE_TOKENS);
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(anyString()))
+				.thenReturn(hyperwalletMock);
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getUserToken()).thenReturn(USER_TOKEN);
 		when(hyperwalletMock.getUser(USER_TOKEN)).thenReturn(hyperwalletUserMock);
 		when(hyperwalletUserMock.getClientUserId()).thenReturn(MIRAKL_SHOP_ID);
@@ -98,7 +99,7 @@ class BusinessKYCUserLOAStatusNotificationStrategyTest {
 	@Test
 	void execute_whenNoHyperwalletUsersMatchTheGivenToken_shouldReturnNull() {
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getUserToken()).thenReturn(USER_TOKEN);
-		when(kycHyperwalletApiConfigMock.getUserStoreTokens()).thenReturn(Collections.emptyMap());
+		when(kycHyperwalletApiConfigMock.getTokens()).thenReturn(Collections.emptyMap());
 
 		final Throwable throwable = catchThrowable(
 				() -> testObj.execute(kycBusinessStakeholderStatusNotificationBodyModelMock));

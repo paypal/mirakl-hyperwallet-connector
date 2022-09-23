@@ -35,8 +35,9 @@ public class MiraklShopToIBANBankAccountModelConverterStrategy implements Strate
 		final MiraklContactInformation contactInformation = source.getContactInformation();
 
 		//@formatter:off
+		final String bankCountryIsoCode = extractCountryFromIban(source, miraklIbanBankAccountInformation);
 		return IBANBankAccountModel.builder()
-				.transferMethodCountry(contactInformation.getCountry())
+				.transferMethodCountry(bankCountryIsoCode)
 				.transferMethodCurrency(source.getCurrencyIsoCode().name())
 				.transferType(TransferType.BANK_ACCOUNT)
 				.type(BankAccountType.IBAN)
@@ -57,6 +58,15 @@ public class MiraklShopToIBANBankAccountModelConverterStrategy implements Strate
 				.hyperwalletProgram(source.getAdditionalFieldValues())
 				.build();
 		//@formatter:on
+	}
+
+	private String extractCountryFromIban(final MiraklShop source, final MiraklIbanBankAccountInformation ibanInfo) {
+		final String iban = ibanInfo.getIban();
+		if (StringUtils.isBlank(iban) || iban.length() < 2) {
+			throw new IllegalStateException(String.format("IBAN invalid on shop: %s", source.getId()));
+		}
+
+		return iban.substring(0, 2);
 	}
 
 	/**

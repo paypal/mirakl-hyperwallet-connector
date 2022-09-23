@@ -2,9 +2,9 @@ package com.paypal.sellers.sellersextract.service.strategies;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.sellers.sellersextract.model.SellerModel;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,8 +56,9 @@ class AbstractHyperwalletSellerServiceStrategyTest {
 
 		protected MyAbstractHyperwalletSellerServiceStrategy(
 				final Converter<SellerModel, HyperwalletUser> sellerModelHyperwalletUserConverter,
-				final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
-			super(sellerModelHyperwalletUserConverter, hyperwalletSDKService, mailNotificationUtil);
+				final HyperwalletSDKUserService hyperwalletSDKUserService,
+				final MailNotificationUtil mailNotificationUtil) {
+			super(sellerModelHyperwalletUserConverter, hyperwalletSDKUserService, mailNotificationUtil);
 		}
 
 		@Override

@@ -1,16 +1,19 @@
 package com.paypal.observability.hyperwalletapichecks.services.converters;
 
 import com.hyperwallet.clientsdk.model.HyperwalletProgram;
+import com.paypal.infrastructure.hyperwallet.api.UserHyperwalletApiConfig;
 import com.paypal.observability.hyperwalletapichecks.model.HyperwalletAPICheck;
 import com.paypal.observability.hyperwalletapichecks.model.HyperwalletAPICheckStatus;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HyperwalletAPIHealthCheckConnectorConverterImpl implements HyperwalletAPIHealthCheckConnectorConverter {
 
-	@Value("${hyperwallet.environment}")
-	private String hyperwalletEnvironment;
+	private final String hyperwalletEnvironment;
+
+	public HyperwalletAPIHealthCheckConnectorConverterImpl(final UserHyperwalletApiConfig config) {
+		this.hyperwalletEnvironment = config.getServer();
+	}
 
 	@Override
 	public HyperwalletAPICheck from(final HyperwalletProgram hyperwalletProgram) {

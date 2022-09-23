@@ -2,11 +2,12 @@ package com.paypal.kyc.strategies.documents.flags.impl;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.core.exception.MiraklException;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCUserDocumentFlagsNotificationBodyModel;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletBusinessStakeholderExtractService;
@@ -31,7 +32,7 @@ public class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy extends
 
 	protected KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy(
 			final MailNotificationUtil mailNotificationUtil,
-			final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient,
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient,
 			final HyperwalletBusinessStakeholderExtractService hyperwalletBusinessStakeholderExtractService,
 			final MiraklBusinessStakeholderDocumentsExtractService miraklBusinessStakeholderDocumentsExtractService) {
 		super(mailNotificationUtil, miraklMarketplacePlatformOperatorApiClient);

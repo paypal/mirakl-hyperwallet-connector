@@ -4,11 +4,11 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletBusinessStakeholder;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class HyperWalletUpdateBusinessStakeHolderServiceStrategy
 
 	private final Converter<BusinessStakeHolderModel, HyperwalletBusinessStakeholder> businessStakeHolderModelHyperwalletBusinessStakeholderConverter;
 
-	private final HyperwalletSDKService hyperwalletSDKService;
+	private final HyperwalletSDKUserService hyperwalletSDKUserService;
 
 	private final MailNotificationUtil mailNotificationUtil;
 
@@ -30,9 +30,10 @@ public class HyperWalletUpdateBusinessStakeHolderServiceStrategy
 
 	public HyperWalletUpdateBusinessStakeHolderServiceStrategy(
 			final Converter<BusinessStakeHolderModel, HyperwalletBusinessStakeholder> businessStakeHolderModelHyperwalletBusinessStakeholderConverter,
-			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
+			final HyperwalletSDKUserService hyperwalletSDKUserService,
+			final MailNotificationUtil mailNotificationUtil) {
 		this.businessStakeHolderModelHyperwalletBusinessStakeholderConverter = businessStakeHolderModelHyperwalletBusinessStakeholderConverter;
-		this.hyperwalletSDKService = hyperwalletSDKService;
+		this.hyperwalletSDKUserService = hyperwalletSDKUserService;
 		this.mailNotificationUtil = mailNotificationUtil;
 	}
 
@@ -53,7 +54,7 @@ public class HyperWalletUpdateBusinessStakeHolderServiceStrategy
 			log.info("Updating stakeholder [{}] for user [{}]", hyperWalletBusinessStakeHolder.getToken(),
 					businessStakeHolderModel.getUserToken());
 
-			final Hyperwallet hyperwallet = hyperwalletSDKService
+			final Hyperwallet hyperwallet = hyperwalletSDKUserService
 					.getHyperwalletInstanceByHyperwalletProgram(businessStakeHolderModel.getHyperwalletProgram());
 
 			hyperwallet.updateBusinessStakeholder(businessStakeHolderModel.getUserToken(),

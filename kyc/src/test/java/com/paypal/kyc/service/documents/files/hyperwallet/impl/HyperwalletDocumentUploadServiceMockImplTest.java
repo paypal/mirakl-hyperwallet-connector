@@ -2,10 +2,10 @@ package com.paypal.kyc.service.documents.files.hyperwallet.impl;
 
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,7 +52,7 @@ class HyperwalletDocumentUploadServiceMockImplTest {
 	private RestTemplate restTemplatemock;
 
 	@Mock
-	private HyperwalletSDKService hyperwalletSDKServiceMock;
+	private HyperwalletSDKUserService hyperwalletSDKUserServiceMock;
 
 	@Mock
 	private MailNotificationUtil kycMailNotificationUtilMock;
@@ -68,8 +68,8 @@ class HyperwalletDocumentUploadServiceMockImplTest {
 	@BeforeEach
 	void setUp() {
 
-		testObj = new HyperwalletDocumentUploadServiceMockImpl(hyperwalletSDKServiceMock, kycMailNotificationUtilMock,
-				MOCK_SERVER_URL, restTemplatemock);
+		testObj = new HyperwalletDocumentUploadServiceMockImpl(hyperwalletSDKUserServiceMock,
+				kycMailNotificationUtilMock, MOCK_SERVER_URL, restTemplatemock);
 		lenient().when(kycDocumentBusinessStakeHolderInfoModelMock.getUserToken()).thenReturn(BST_USER_TOKEN);
 		lenient().when(kycDocumentBusinessStakeHolderInfoModelMock.getToken()).thenReturn(BST_TOKEN);
 		lenient().when(kycDocumentSellerInfoModelMock.getUserToken()).thenReturn(SELLER_USER_TOKEN);

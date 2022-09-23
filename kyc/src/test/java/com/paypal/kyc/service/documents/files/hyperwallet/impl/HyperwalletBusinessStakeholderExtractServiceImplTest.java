@@ -4,8 +4,8 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.model.HyperwalletBusinessStakeholder;
 import com.hyperwallet.clientsdk.model.HyperwalletList;
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletDocumentUploadService;
 import com.paypal.kyc.strategies.documents.files.hyperwallet.businessstakeholder.impl.KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ class HyperwalletBusinessStakeholderExtractServiceImplTest {
 	private HyperwalletBusinessStakeholderExtractServiceImpl testObj;
 
 	@Mock
-	private HyperwalletSDKService hyperwalletSDKServiceMock;
+	private HyperwalletSDKUserService hyperwalletSDKUserServiceMock;
 
 	@Mock
 	private Hyperwallet hyperwalletApiClientMock;
@@ -62,19 +62,19 @@ class HyperwalletBusinessStakeholderExtractServiceImplTest {
 
 	@Test
 	void getKYCRequiredVerificationBusinessStakeHolders_whenNoBusinessStakeholdersAreReceived_shouldReturnEmptyList() {
-		when(hyperwalletSDKServiceMock.getHyperwalletInstance(HYPERWALLET_PROGRAM))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletApiClientMock);
 
 		final List<String> result = testObj.getKYCRequiredVerificationBusinessStakeHolders(HYPERWALLET_PROGRAM,
 				USER_TOKEN);
 
-		verify(hyperwalletSDKServiceMock).getHyperwalletInstance(HYPERWALLET_PROGRAM);
+		verify(hyperwalletSDKUserServiceMock).getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
 		assertThat(result).isEmpty();
 	}
 
 	@Test
 	void getKYCRequiredVerificationBusinessStakeHolders_whenNoDataIsReceived_shouldReturnEmptyList() {
-		when(hyperwalletSDKServiceMock.getHyperwalletInstance(HYPERWALLET_PROGRAM))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletApiClientMock);
 		when(hyperwalletApiClientMock.listBusinessStakeholders(USER_TOKEN)).thenReturn(businessStakeholders);
 		when(businessStakeholders.getData()).thenReturn(Collections.emptyList());
@@ -82,7 +82,7 @@ class HyperwalletBusinessStakeholderExtractServiceImplTest {
 		final List<String> result = testObj.getKYCRequiredVerificationBusinessStakeHolders(HYPERWALLET_PROGRAM,
 				USER_TOKEN);
 
-		verify(hyperwalletSDKServiceMock).getHyperwalletInstance(HYPERWALLET_PROGRAM);
+		verify(hyperwalletSDKUserServiceMock).getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
 		assertThat(result).isEmpty();
 	}
 
@@ -91,13 +91,13 @@ class HyperwalletBusinessStakeholderExtractServiceImplTest {
 		when(businessStakeHolderRequiredVerificationMock.getVerificationStatus()).thenReturn(VERIFIED);
 		when(businessStakeholders.getData()).thenReturn(List.of(businessStakeHolderRequiredVerificationMock));
 		when(hyperwalletApiClientMock.listBusinessStakeholders(USER_TOKEN)).thenReturn(businessStakeholders);
-		when(hyperwalletSDKServiceMock.getHyperwalletInstance(HYPERWALLET_PROGRAM))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletApiClientMock);
 
 		final List<String> result = testObj.getKYCRequiredVerificationBusinessStakeHolders(HYPERWALLET_PROGRAM,
 				USER_TOKEN);
 
-		verify(hyperwalletSDKServiceMock).getHyperwalletInstance(HYPERWALLET_PROGRAM);
+		verify(hyperwalletSDKUserServiceMock).getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
 		assertThat(result).isEmpty();
 	}
 
@@ -109,13 +109,13 @@ class HyperwalletBusinessStakeholderExtractServiceImplTest {
 		when(businessStakeholders.getData())
 				.thenReturn(List.of(businessStakeHolderRequiredVerificationMock, businessStakeHolderVerifiedMock));
 		when(hyperwalletApiClientMock.listBusinessStakeholders(USER_TOKEN)).thenReturn(businessStakeholders);
-		when(hyperwalletSDKServiceMock.getHyperwalletInstance(HYPERWALLET_PROGRAM))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletApiClientMock);
 
 		final List<String> result = testObj.getKYCRequiredVerificationBusinessStakeHolders(HYPERWALLET_PROGRAM,
 				USER_TOKEN);
 
-		verify(hyperwalletSDKServiceMock).getHyperwalletInstance(HYPERWALLET_PROGRAM);
+		verify(hyperwalletSDKUserServiceMock).getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
 		assertThat(result).containsExactlyInAnyOrder(BUSINESS_STAKE_HOLDER_ONE_TOKEN);
 	}
 

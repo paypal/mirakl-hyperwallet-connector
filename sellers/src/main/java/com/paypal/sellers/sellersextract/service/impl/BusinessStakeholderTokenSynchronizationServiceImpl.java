@@ -8,12 +8,12 @@ import com.mirakl.client.core.exception.MiraklException;
 import com.paypal.infrastructure.exceptions.HMCException;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.service.TokenSynchronizationService;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,16 +36,16 @@ public class BusinessStakeholderTokenSynchronizationServiceImpl
 	@Value("${sellers.stk.mandatory.email}")
 	private boolean isStkEmailMandatory;
 
-	private final HyperwalletSDKService hyperwalletSDKService;
+	private final HyperwalletSDKUserService hyperwalletSDKUserService;
 
 	private final MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractService;
 
 	private final MailNotificationUtil mailNotificationUtil;
 
-	public BusinessStakeholderTokenSynchronizationServiceImpl(final HyperwalletSDKService hyperwalletSDKService,
+	public BusinessStakeholderTokenSynchronizationServiceImpl(final HyperwalletSDKUserService hyperwalletSDKUserService,
 			final MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractService,
 			final MailNotificationUtil mailNotificationUtil) {
-		this.hyperwalletSDKService = hyperwalletSDKService;
+		this.hyperwalletSDKUserService = hyperwalletSDKUserService;
 		this.miraklBusinessStakeholderExtractService = miraklBusinessStakeholderExtractService;
 		this.mailNotificationUtil = mailNotificationUtil;
 	}
@@ -154,7 +154,7 @@ public class BusinessStakeholderTokenSynchronizationServiceImpl
 	private HyperwalletList<HyperwalletBusinessStakeholder> getHwBusinessStakeHoldersByUserToken(
 			final BusinessStakeHolderModel businessStakeHolderModel) {
 
-		final Hyperwallet hyperwalletSDK = hyperwalletSDKService
+		final Hyperwallet hyperwalletSDK = hyperwalletSDKUserService
 				.getHyperwalletInstanceByHyperwalletProgram(businessStakeHolderModel.getHyperwalletProgram());
 
 		try {

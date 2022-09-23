@@ -4,7 +4,7 @@ HMC supports processing payments from the Operator to the Sellers via the creati
 
 This is provided only to facilitate payment testing and has important consequences when used.
 
-Since Mirakl includes manual credit notes in its billing cycle calculations, manual credit note amounts will be included in automatic invoices. 
+Since Mirakl includes manual credit notes in its billing cycle calculations, manual credit note amounts will be included in automatic invoices.
 
 [WARNING]
 .Enabling manual credit notes processing on production

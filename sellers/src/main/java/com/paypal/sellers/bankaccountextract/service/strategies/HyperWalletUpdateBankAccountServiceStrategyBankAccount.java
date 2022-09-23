@@ -2,10 +2,10 @@ package com.paypal.sellers.bankaccountextract.service.strategies;
 
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.sellers.sellersextract.model.SellerModel;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -19,8 +19,9 @@ public class HyperWalletUpdateBankAccountServiceStrategyBankAccount
 
 	protected HyperWalletUpdateBankAccountServiceStrategyBankAccount(
 			final StrategyExecutor<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyExecutor,
-			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
-		super(sellerModelToHyperwalletBankAccountStrategyExecutor, hyperwalletSDKService, mailNotificationUtil);
+			final HyperwalletSDKUserService hyperwalletSDKUserService,
+			final MailNotificationUtil mailNotificationUtil) {
+		super(sellerModelToHyperwalletBankAccountStrategyExecutor, hyperwalletSDKUserService, mailNotificationUtil);
 	}
 
 	/**
@@ -36,7 +37,7 @@ public class HyperWalletUpdateBankAccountServiceStrategyBankAccount
 	@Override
 	protected HyperwalletBankAccount callHyperwalletAPI(final String hyperwalletProgram,
 			final HyperwalletBankAccount hyperwalletBankAccount) {
-		final Hyperwallet hyperwallet = hyperwalletSDKService
+		final Hyperwallet hyperwallet = hyperwalletSDKUserService
 				.getHyperwalletInstanceByHyperwalletProgram(hyperwalletProgram);
 		return hyperwallet.updateBankAccount(hyperwalletBankAccount);
 	}

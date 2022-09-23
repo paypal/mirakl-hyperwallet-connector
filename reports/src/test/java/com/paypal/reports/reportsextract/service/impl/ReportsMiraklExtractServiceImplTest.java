@@ -3,10 +3,10 @@ package com.paypal.reports.reportsextract.service.impl;
 import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.domain.payment.MiraklTransactionLog;
 import com.mirakl.client.mmp.domain.payment.MiraklTransactionLogs;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.request.payment.MiraklGetTransactionLogsRequest;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.util.DateUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.reports.reportsextract.model.HmcMiraklTransactionLine;
@@ -44,7 +44,7 @@ class ReportsMiraklExtractServiceImplTest {
 	private ReportsMiraklExtractServiceImpl testObj;
 
 	@Mock
-	private MiraklMarketplacePlatformOperatorApiClient reportsMiraklApiClientMock;
+	private MiraklMarketplacePlatformOperatorApiWrapper reportsMiraklApiClientMock;
 
 	@Mock
 	private Converter<MiraklTransactionLog, HmcMiraklTransactionLine> miraklTransactionLogHMCMiraklTransactionLineConverterMock;

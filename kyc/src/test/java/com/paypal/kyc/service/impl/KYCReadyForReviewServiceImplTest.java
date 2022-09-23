@@ -7,11 +7,11 @@ import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCConstants;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -19,7 +19,6 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -32,8 +31,6 @@ class KYCReadyForReviewServiceImplTest {
 
 	private static final String USER_TOKEN_1 = "userToken1";
 
-	private static final String USER_TOKEN_2 = "userToken2";
-
 	private static final String HYPERWALLET_PROGRAM = "hyperwalletProgram";
 
 	@Spy
@@ -41,7 +38,7 @@ class KYCReadyForReviewServiceImplTest {
 	private KYCReadyForReviewServiceImpl testObj;
 
 	@Mock
-	private HyperwalletSDKService hyperwalletSDKServiceMock;
+	private HyperwalletSDKUserService hyperwalletSDKUserServiceMock;
 
 	@Mock
 	private MailNotificationUtil kycMailNotificationUtilMock;
@@ -71,7 +68,7 @@ class KYCReadyForReviewServiceImplTest {
 
 		when(hyperwalletApiClientMock.updateUser(Mockito.any(HyperwalletUser.class))).thenReturn(hyperwalletUserMock);
 		when(hyperwalletUserMock.getClientUserId()).thenReturn(SHOP_ID);
-		when(hyperwalletSDKServiceMock.getHyperwalletInstance(HYPERWALLET_PROGRAM))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletApiClientMock);
 
 		testObj.notifyReadyForReview(kycDocumentOne);
@@ -96,15 +93,15 @@ class KYCReadyForReviewServiceImplTest {
 				.build();
 		//@formatter:on
 
-		when(hyperwalletSDKServiceMock.getHyperwalletInstance(HYPERWALLET_PROGRAM))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletApiClientMock);
-		HyperwalletException hwException = new HyperwalletException("Something bad happened");
+		final HyperwalletException hwException = new HyperwalletException("Something bad happened");
 		doThrow(hwException).when(hyperwalletApiClientMock).updateUser(Mockito.any(HyperwalletUser.class));
 
 		assertThatThrownBy(() -> testObj.notifyReadyForReview(kycDocumentSent))
 				.isInstanceOf(HMCHyperwalletAPIException.class);
 
-		verify(hyperwalletSDKServiceMock).getHyperwalletInstance(HYPERWALLET_PROGRAM);
+		verify(hyperwalletSDKUserServiceMock).getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
 		verify(hyperwalletApiClientMock).updateUser(hyperwalletUserCaptor.capture());
 		verify(testObj).notifyReadyForReview(kycDocumentSent);
 		verify(kycMailNotificationUtilMock).sendPlainTextEmail("Issue in Hyperwallet status notification",

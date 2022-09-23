@@ -1,17 +1,18 @@
 package com.paypal.observability.miraklapichecks;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.paypal.observability.miraklapichecks.startup.MiraklHealthCheckStartupCheckPrinter;
 import com.paypal.observability.miraklapichecks.startup.MiraklHealthCheckStartupProvider;
 import com.paypal.observability.startupchecks.model.StartupCheck;
 import com.paypal.observability.startupchecks.model.StartupCheckStatus;
 import com.paypal.observability.testsupport.AbstractMockServerITTest;
-import com.paypal.observability.testsupport.ObservabilityIntegrationTest;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.paypal.observability.testsupport.ObservabilityWebIntegrationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ObservabilityIntegrationTest
+@ObservabilityWebIntegrationContext
 class MiraklAPIChecksStartupAdapterITTest extends AbstractMockServerITTest {
 
 	@Autowired

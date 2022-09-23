@@ -1,7 +1,7 @@
 package com.paypal.kyc.service.documents.files.hyperwallet.impl;
 
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletDocumentUploadService;
 import com.paypal.kyc.strategies.documents.files.hyperwallet.seller.impl.KYCDocumentInfoToHWVerificationDocumentExecutor;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ class HyperwalletSellerExtractServiceImplTest {
 	private HyperwalletSellerExtractServiceImpl testObj;
 
 	@Mock
-	private HyperwalletSDKService hyperwalletSDKServiceMock;
+	private HyperwalletSDKUserService hyperwalletSDKUserServiceMock;
 
 	@Mock
 	private HyperwalletDocumentUploadService hyperwalletDocumentUploadServiceMock;

@@ -1,8 +1,8 @@
 package com.paypal.invoices.invoicesextract.service.hmc.impl;
 
 import com.hyperwallet.clientsdk.Hyperwallet;
-import com.paypal.invoices.infraestructure.configuration.InvoicesHyperwalletApiConfig;
-import com.paypal.invoices.invoicesextract.service.hyperwallet.impl.InvoiceHyperwalletSDKServiceImpl;
+import com.paypal.invoices.infraestructure.configuration.PaymentsHyperwalletApiConfig;
+import com.paypal.invoices.invoicesextract.service.hyperwallet.impl.PaymentsHyperwalletSDKServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class InvoiceHyperwalletSDKServiceImplTest {
+class InvoiceHyperwalletSDKUserServiceImplTest {
 
 	private static final String PROGRAM_TOKEN = "programToken";
 
@@ -30,16 +30,16 @@ class InvoiceHyperwalletSDKServiceImplTest {
 	private static final String API_CLIENT_HYPERWALLET_ENCRYPTION = "apiClient.hyperwalletEncryption";
 
 	@InjectMocks
-	private InvoiceHyperwalletSDKServiceImpl testObj;
+	private PaymentsHyperwalletSDKServiceImpl testObj;
 
 	@Mock
-	private InvoicesHyperwalletApiConfig invoicesHyperwalletApiConfigMock;
+	private PaymentsHyperwalletApiConfig paymentsHyperwalletApiConfigMock;
 
 	@Test
 	void getHyperwalletInstanceWithProgramToken_shouldReturnAnHyperwalletInstance() {
-		when(invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(paymentsHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(paymentsHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(paymentsHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
 		final Hyperwallet result = testObj.getHyperwalletInstanceWithProgramToken(PROGRAM_TOKEN);
 
@@ -50,11 +50,11 @@ class InvoiceHyperwalletSDKServiceImplTest {
 
 	@Test
 	void getHyperwalletInstanceByHyperwalletProgram_shouldReturnAnHyperwalletInstance() {
-		when(invoicesHyperwalletApiConfigMock.getPaymentStoreTokens())
+		when(paymentsHyperwalletApiConfigMock.getPaymentStoreTokens())
 				.thenReturn(Map.of(HYPERWALLET_PROGRAM, PROGRAM_TOKEN));
-		when(invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(paymentsHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(paymentsHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(paymentsHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
 		final Hyperwallet result = testObj.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
 
@@ -65,7 +65,7 @@ class InvoiceHyperwalletSDKServiceImplTest {
 
 	@Test
 	void getProgramTokenByHyperwalletProgram_shouldReturnAnHyperwalletInstance() {
-		when(invoicesHyperwalletApiConfigMock.getPaymentStoreTokens())
+		when(paymentsHyperwalletApiConfigMock.getPaymentStoreTokens())
 				.thenReturn(Map.of(HYPERWALLET_PROGRAM, PROGRAM_TOKEN));
 
 		final String result = testObj.getProgramTokenByHyperwalletProgram(HYPERWALLET_PROGRAM);
@@ -75,9 +75,9 @@ class InvoiceHyperwalletSDKServiceImplTest {
 
 	@Test
 	void getHyperwalletInstanceWithProgramToken_shouldReturnAnHyperwalletInstanceWithNOTEncryptedOption() {
-		when(invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(paymentsHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(paymentsHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(paymentsHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
 		final Hyperwallet result = testObj.getHyperwalletInstanceWithProgramToken(PROGRAM_TOKEN);
 

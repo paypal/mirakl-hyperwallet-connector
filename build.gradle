@@ -105,7 +105,8 @@ subprojects {
         environment =
             environment = ["BP_JVM_VERSION"              : "17",
                            "BPE_DELIM_JAVA_TOOL_OPTIONS" : " ",
-                           "BPE_APPEND_JAVA_TOOL_OPTIONS": "-Xms256m -Xmx1g -XX:MaxDirectMemorySize=200m"
+                           "BPE_APPEND_JAVA_TOOL_OPTIONS": "-Xms256m -Xmx1g -XX:MaxDirectMemorySize=200m -Dfile.encoding=UTF8"
+
             ]
     }
 

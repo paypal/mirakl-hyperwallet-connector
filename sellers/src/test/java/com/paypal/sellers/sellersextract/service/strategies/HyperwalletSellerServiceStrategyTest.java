@@ -4,8 +4,8 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.core.exception.MiraklException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.sellers.sellersextract.model.SellerModel;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import org.mockito.Mock;
 
 import static org.mockito.Mockito.when;
@@ -29,7 +29,7 @@ public abstract class HyperwalletSellerServiceStrategyTest {
 	protected HyperwalletUser hyperwalletUserRequestMock, hyperwalletUserResponseMock;
 
 	@Mock
-	protected HyperwalletSDKService hyperwalletSDKServiceMock;
+	protected HyperwalletSDKUserService hyperwalletSDKUserServiceMock;
 
 	@Mock
 	protected Hyperwallet hyperwalletMock;
@@ -41,7 +41,7 @@ public abstract class HyperwalletSellerServiceStrategyTest {
 	protected void prepareHyperwalletSDKInstance() {
 		when(hyperwalletUserRequestMock.getClientUserId()).thenReturn(CLIENT_USER_ID);
 		when(hyperwalletUserRequestMock.getProgramToken()).thenReturn(PROGRAM_TOKEN_VALUE);
-		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN_VALUE))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN_VALUE))
 				.thenReturn(hyperwalletMock);
 	}
 

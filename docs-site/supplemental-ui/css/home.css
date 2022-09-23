@@ -5,6 +5,7 @@
 }
 
 blockquote {
+    background-color: var(--color-lb-light-grey-ltr);
     border-left: 4px solid rgba(var(--color-cloudstate-blue), .5);
     margin: 2rem 0 4rem 0;
     padding: 0 2rem;

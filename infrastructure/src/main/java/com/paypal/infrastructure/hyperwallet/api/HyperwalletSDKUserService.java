@@ -1,12 +1,13 @@
-package com.paypal.sellers.service;
+package com.paypal.infrastructure.hyperwallet.api;
 
 import com.hyperwallet.clientsdk.Hyperwallet;
+import com.hyperwallet.clientsdk.model.HyperwalletProgram;
 
 /**
  * Service that provides the correct Hyperwallet instance according to Hyperwallet
  * hierarchy and based on the parameter received
  */
-public interface HyperwalletSDKService {
+public interface HyperwalletSDKUserService {
 
 	/**
 	 * Return Hyperwallet instance based on the hyperwallet program received as parameter
@@ -21,5 +22,7 @@ public interface HyperwalletSDKService {
 	 * @return {@link Hyperwallet} object
 	 */
 	Hyperwallet getHyperwalletInstanceByProgramToken(String programToken);
+
+	HyperwalletProgram getRootProgram();
 
 }

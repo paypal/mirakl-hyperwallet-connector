@@ -1,7 +1,8 @@
 package com.paypal.sellers.service.impl;
 
 import com.hyperwallet.clientsdk.Hyperwallet;
-import com.paypal.sellers.infrastructure.configuration.SellersHyperwalletApiConfig;
+import com.paypal.infrastructure.hyperwallet.api.DefaultHyperwalletSDKUserService;
+import com.paypal.infrastructure.hyperwallet.api.UserHyperwalletApiConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class SellerHyperwalletSDKServiceImplTest {
+class SellerHyperwalletSDKUserServiceImplTest {
 
 	private static final String PROGRAM_TOKEN = "programToken";
 
@@ -29,15 +30,14 @@ class SellerHyperwalletSDKServiceImplTest {
 
 	@Spy
 	@InjectMocks
-	private SellerHyperwalletSDKServiceImpl testObj;
+	private DefaultHyperwalletSDKUserService testObj;
 
 	@Mock
-	private SellersHyperwalletApiConfig sellersHyperwalletApiConfigMock;
+	private UserHyperwalletApiConfig sellersHyperwalletApiConfigMock;
 
 	@Test
 	void getHyperwalletInstanceByHyperwalletProgram_shouldReturnAnHyperwalletInstance() {
-		when(sellersHyperwalletApiConfigMock.getUserStoreTokens())
-				.thenReturn(Map.of(HYPERWALLET_PROGRAM, PROGRAM_TOKEN));
+		when(sellersHyperwalletApiConfigMock.getTokens()).thenReturn(Map.of(HYPERWALLET_PROGRAM, PROGRAM_TOKEN));
 		when(sellersHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
 		when(sellersHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
 		when(sellersHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);

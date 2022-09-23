@@ -250,33 +250,22 @@ For example:
 In that case, we need to setup the following variables as described:
 
 * Environment:
-    ** Define variable `PAYPAL_HYPERWALLET_PROGRAM_TOKENS` with value `UK,EUROPE`
+** Define variable `PAYPAL_HYPERWALLET_PROGRAM_TOKENS` with value `UK,EUROPE`
 
 * File: `invoices.properties`:
-    ** Remove `invoices.hyperwallet.api.hyperwalletprogram.token.DEFAULT` property
-    ** Remove `invoices.operator.commissions.bankAccount.token.DEFAULT` property
-    ** Define token for UK: `invoices.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
-    ** Define token for EUROPE: `invoices.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
-    ** Define the operator bank account token for UK: `invoices.operator.commissions.bankAccount.token.UK = <YOUR_UK_BANK_ACCOUNT_TOKEN>`
-    ** Define the operator bank account token for EUROPE: `invoices.operator.commissions.bankAccount.token.EUROPE = <YOUR_EUROPE_BANK_ACCOUNT_TOKEN>`
+** Remove `invoices.hyperwallet.api.hyperwalletprogram.token.DEFAULT` property
+** Remove `invoices.operator.commissions.bankAccount.token.DEFAULT` property
+** Define token for UK: `invoices.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
+** Define token for EUROPE: `invoices.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
+** Define the operator bank account token for UK: `invoices.operator.commissions.bankAccount.token.UK = <YOUR_UK_BANK_ACCOUNT_TOKEN>`
+** Define the operator bank account token for EUROPE: `invoices.operator.commissions.bankAccount.token.EUROPE = <YOUR_EUROPE_BANK_ACCOUNT_TOKEN>`
 
-* File: `kyc.properties`:
-    ** Remove `kyc.hyperwallet.api.hyperwalletprogram.token.DEFAULT`
-    ** Define token for UK: `kyc.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
-    ** Define token for EUROPE: `kyc.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
+* File: `infrastructure.properties`:
+** Remove `infrastructure.hyperwallet.api.hyperwalletprogram.token.DEFAULT`
+** Define token for UK: `infrastructure.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
+** Define token for EUROPE: `infrastructure.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
 
-* File: `seller.properties`:
-    ** Remove `sellers.hyperwallet.api.hyperwalletprogram.token.DEFAULT`
-    ** Define token for UK: `sellers.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
-    ** Define token for EUROPE: `sellers.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
-
-* File: `notification.properties`:
-    ** Remove `notifications.hyperwallet.api.hyperwalletprogram.token.DEFAULT`
-    ** Define token for UK: `notifications.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
-    ** Define token for EUROPE: `notifications.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
-
-If you're using Docker, remember to update the Docker Compose template file to reflect the existence of these 2 new
-environments. Add them into the Docker Compose template file you're using (`docker-compose.prod.yml.template`
+If you're using Docker, remember to update the Docker Compose template file to reflect the existence of these 2 new environments.Add them into the Docker Compose template file you're using (`docker-compose.prod.yml.template`
 or `docker-compose.yml.template`), for example with UK and Europe:
 
 - `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_PAYMENTS_UK`
@@ -284,8 +273,7 @@ or `docker-compose.yml.template`), for example with UK and Europe:
 - `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_PAYMENTS_EUROPE`
 - `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_USERS_EUROPE`
 
-Besides, if you had the necessity of adapting the property files to accommodate this kind of hierarchy you can make use
-of https://docs.spring.io/spring-boot/docs/2.4.5/reference/html/howto.html#howto-externalize-configuration[environment variables substitution feature built in with Spring
+Besides, if you had the necessity of adapting the property files to accommodate this kind of hierarchy you can make use of https://docs.spring.io/spring-boot/docs/2.4.5/reference/html/howto.html#howto-externalize-configuration[environment variables substitution feature built in with Spring
 Boot]
 
 This way the tokens would be store in a safe manner.

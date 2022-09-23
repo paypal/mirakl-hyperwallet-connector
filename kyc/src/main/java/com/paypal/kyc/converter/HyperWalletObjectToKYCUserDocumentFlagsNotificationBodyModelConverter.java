@@ -4,8 +4,8 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.paypal.infrastructure.converter.Converter;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.kyc.model.KYCUserDocumentFlagsNotificationBodyModel;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,11 +25,11 @@ public class HyperWalletObjectToKYCUserDocumentFlagsNotificationBodyModelConvert
 	@Value("#{'${hyperwallet.api.hyperwalletprograms}'}")
 	private String hyperwalletPrograms;
 
-	private final HyperwalletSDKService hyperwalletSDKService;
+	private final HyperwalletSDKUserService hyperwalletSDKUserService;
 
 	public HyperWalletObjectToKYCUserDocumentFlagsNotificationBodyModelConverter(
-			final HyperwalletSDKService hyperwalletSDKService) {
-		this.hyperwalletSDKService = hyperwalletSDKService;
+			final HyperwalletSDKUserService hyperwalletSDKUserService) {
+		this.hyperwalletSDKUserService = hyperwalletSDKUserService;
 	}
 
 	/**
@@ -71,7 +71,8 @@ public class HyperWalletObjectToKYCUserDocumentFlagsNotificationBodyModelConvert
 	private String getHyperwalletProgramForProgramToken(final String programToken) {
 		for (final String program : getHyperwalletPrograms().split(",")) {
 			try {
-				final Hyperwallet instance = hyperwalletSDKService.getHyperwalletInstance(program);
+				final Hyperwallet instance = hyperwalletSDKUserService
+						.getHyperwalletInstanceByHyperwalletProgram(program);
 				instance.getProgram(programToken);
 				return program;
 			}

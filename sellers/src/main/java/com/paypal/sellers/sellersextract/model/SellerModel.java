@@ -320,7 +320,7 @@ public class SellerModel {
 		}
 
 		private String transform3CharIsocodeTo2CharIsocode(final String country) {
-			final Locale countryLocale = CountriesUtil.getLocaleByThreeLettersIsocode(country).orElseThrow(
+			final Locale countryLocale = CountriesUtil.getLocaleByIsocode(country).orElseThrow(
 					() -> new IllegalStateException(String.format("Country with isocode: [%s] not valid", country)));
 
 			return countryLocale.getCountry();

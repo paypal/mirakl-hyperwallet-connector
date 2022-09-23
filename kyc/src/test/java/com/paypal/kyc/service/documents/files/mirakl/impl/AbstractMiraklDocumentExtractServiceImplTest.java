@@ -1,10 +1,7 @@
 package com.paypal.kyc.service.documents.files.mirakl.impl;
 
-import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
-import com.mirakl.client.mmp.request.shop.document.MiraklDeleteShopDocumentRequest;
-import com.paypal.infrastructure.mail.MailNotificationUtil;
-import com.paypal.kyc.model.KYCDocumentInfoModel;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,9 +9,17 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
+import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
+import com.mirakl.client.mmp.request.shop.document.MiraklDeleteShopDocumentRequest;
+import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
+import com.paypal.kyc.model.KYCDocumentInfoModel;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.isA;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractMiraklDocumentExtractServiceImplTest {
@@ -27,7 +32,7 @@ class AbstractMiraklDocumentExtractServiceImplTest {
 	private MyAbstractMiraklDocumentExtractServiceImpl testObj;
 
 	@Mock
-	private MiraklMarketplacePlatformOperatorApiClient miraklOperatorClientMock;
+	private MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClientMock;
 
 	@Mock
 	private KYCDocumentInfoModel kycDocumentInfoModelOneMock, kycDocumentInfoModelTwoMock;
@@ -74,7 +79,7 @@ class AbstractMiraklDocumentExtractServiceImplTest {
 	public static class MyAbstractMiraklDocumentExtractServiceImpl extends AbstractMiraklDocumentExtractServiceImpl {
 
 		protected MyAbstractMiraklDocumentExtractServiceImpl(
-				final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
+				final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient,
 				final MailNotificationUtil mailNotificationUtil) {
 			super(miraklOperatorClient, mailNotificationUtil);
 		}

@@ -4,11 +4,11 @@ import com.callibrity.logging.test.LogTracker;
 import com.callibrity.logging.test.LogTrackerStub;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.core.exception.MiraklException;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCUserDocumentFlagsNotificationBodyModel;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +43,7 @@ class AbstractUserDocumentFlagsStrategyTest {
 	private MyAbstractUserDocumentFlagsStrategy testObj;
 
 	@Mock
-	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
+	private MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClientMock;
 
 	@Mock
 	private MailNotificationUtil mailNotificationMock;
@@ -122,7 +122,7 @@ class AbstractUserDocumentFlagsStrategyTest {
 	private static class MyAbstractUserDocumentFlagsStrategy extends AbstractUserDocumentFlagsStrategy {
 
 		private MyAbstractUserDocumentFlagsStrategy(final MailNotificationUtil mailNotificationUtil,
-				final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient) {
+				final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient) {
 			super(mailNotificationUtil, miraklMarketplacePlatformOperatorApiClient);
 		}
 

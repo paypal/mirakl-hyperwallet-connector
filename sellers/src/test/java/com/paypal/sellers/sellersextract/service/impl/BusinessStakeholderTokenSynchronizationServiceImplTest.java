@@ -10,10 +10,10 @@ import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.paypal.infrastructure.exceptions.HMCException;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.service.MiraklBusinessStakeholderExtractService;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,7 +49,7 @@ class BusinessStakeholderTokenSynchronizationServiceImplTest {
 	private BusinessStakeholderTokenSynchronizationServiceImpl testObj;
 
 	@Mock
-	private HyperwalletSDKService hyperwalletSDKServiceMock;
+	private HyperwalletSDKUserService hyperwalletSDKUserServiceMock;
 
 	@Mock
 	private MiraklBusinessStakeholderExtractService miraklBusinessStakeholderExtractServiceMock;
@@ -128,7 +128,7 @@ class BusinessStakeholderTokenSynchronizationServiceImplTest {
 
 		doReturn(false).when(testObj).isStkEmailMandatory();
 
-		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletMock);
 		when(hyperwalletMock.listBusinessStakeholders(USER_TOKEN)).thenThrow(HyperwalletException.class);
 
@@ -152,7 +152,7 @@ class BusinessStakeholderTokenSynchronizationServiceImplTest {
 
 		doReturn(false).when(testObj).isStkEmailMandatory();
 
-		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletMock);
 
 		final HyperwalletBusinessStakeholder hyperwalletBusinessStakeholder = new HyperwalletBusinessStakeholder();
@@ -184,7 +184,7 @@ class BusinessStakeholderTokenSynchronizationServiceImplTest {
 
 		doReturn(false).when(testObj).isStkEmailMandatory();
 
-		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
 				.thenReturn(hyperwalletMock);
 
 		final HyperwalletBusinessStakeholder hyperwalletBusinessStakeholder = new HyperwalletBusinessStakeholder();

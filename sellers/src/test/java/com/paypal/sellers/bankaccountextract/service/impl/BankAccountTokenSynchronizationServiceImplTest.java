@@ -4,28 +4,23 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
 import com.hyperwallet.clientsdk.model.HyperwalletList;
-import com.hyperwallet.clientsdk.model.HyperwalletUser;
-import com.hyperwallet.clientsdk.model.HyperwalletUsersListPaginationOptions;
 import com.mirakl.client.core.exception.MiraklApiException;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextract.service.MiraklBankAccountExtractService;
 import com.paypal.sellers.sellersextract.model.SellerModel;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import org.assertj.core.api.AssertionsForClassTypes;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,7 +36,7 @@ class BankAccountTokenSynchronizationServiceImplTest {
 	private BankAccountTokenSynchronizationServiceImpl testObj;
 
 	@Mock
-	private HyperwalletSDKService hyperwalletSDKServiceMock;
+	private HyperwalletSDKUserService hyperwalletSDKUserServiceMock;
 
 	@Mock
 	private MiraklBankAccountExtractService miraklBankAccountExtractServiceMock;
@@ -84,7 +79,7 @@ class BankAccountTokenSynchronizationServiceImplTest {
 	@Test
 	void synchronizeToken_ShouldThrowHMCHyperwalletAPIException_WhenHWRequestThrowAHyperwalletException() {
 
-		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
 				.thenReturn(hyperwalletSDKMock);
 		final SellerModel originalSellerModel = SellerModel.builder().token(SELLER_TOKEN_VALUE)
 				.programToken(PROGRAM_TOKEN).bankAccountDetails(BankAccountModel.builder().build()).build();
@@ -105,7 +100,7 @@ class BankAccountTokenSynchronizationServiceImplTest {
 		bankAccount.setToken(BANK_ACCOUNT_TOKEN_VALUE);
 		bankAccountHyperwalletList.setData(List.of(bankAccount));
 
-		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
 				.thenReturn(hyperwalletSDKMock);
 		when(hyperwalletSDKMock.listBankAccounts(SELLER_TOKEN_VALUE)).thenReturn(bankAccountHyperwalletList);
 
@@ -128,7 +123,7 @@ class BankAccountTokenSynchronizationServiceImplTest {
 		bankAccount.setToken(BANK_ACCOUNT_TOKEN_VALUE);
 		bankAccountHyperwalletList.setData(List.of(bankAccount));
 
-		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
 				.thenReturn(hyperwalletSDKMock);
 		when(hyperwalletSDKMock.listBankAccounts(SELLER_TOKEN_VALUE)).thenReturn(bankAccountHyperwalletList);
 

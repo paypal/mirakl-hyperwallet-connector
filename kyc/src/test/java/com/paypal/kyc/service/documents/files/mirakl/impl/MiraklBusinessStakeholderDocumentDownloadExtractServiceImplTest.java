@@ -2,9 +2,9 @@ package com.paypal.kyc.service.documents.files.mirakl.impl;
 
 import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.request.shop.document.MiraklGetShopDocumentsRequest;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCConstants;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
@@ -37,7 +37,7 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 	private MiraklBusinessStakeholderDocumentDownloadExtractServiceImpl testObj;
 
 	@Mock
-	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
+	private MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClientMock;
 
 	@Mock
 	private MiraklKYCSelectionDocumentExecutor proofOfIdentityStrategyExecutorMock;

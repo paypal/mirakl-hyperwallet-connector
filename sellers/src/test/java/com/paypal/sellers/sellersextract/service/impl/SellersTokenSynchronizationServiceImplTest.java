@@ -8,9 +8,9 @@ import com.hyperwallet.clientsdk.model.HyperwalletUsersListPaginationOptions;
 import com.mirakl.client.core.exception.MiraklException;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.MiraklSellersExtractService;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ class SellersTokenSynchronizationServiceImplTest {
 	private SellersTokenSynchronizationServiceImpl testObj;
 
 	@Mock
-	private HyperwalletSDKService hyperwalletSDKServiceMock;
+	private HyperwalletSDKUserService hyperwalletSDKUserServiceMock;
 
 	@Mock
 	private MiraklSellersExtractService miraklSellersExtractServiceMock;
@@ -157,7 +157,7 @@ class SellersTokenSynchronizationServiceImplTest {
 	}
 
 	private void prepareHyperwalletSDKInstance(final SellerModel sellerModel) {
-		when(hyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(sellerModel.getProgramToken()))
+		when(hyperwalletSDKUserServiceMock.getHyperwalletInstanceByProgramToken(sellerModel.getProgramToken()))
 				.thenReturn(hyperwalletMock);
 	}
 

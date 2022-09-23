@@ -1,7 +1,7 @@
 package com.paypal.kyc.strategies.documents.files.mirakl.impl;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.kyc.model.KYCConstants;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
@@ -26,7 +26,7 @@ class MiraklProofOfBusinessStrategyTest {
 	private MiraklProofOfBusinessStrategy testObj;
 
 	@Mock
-	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClientMock;
+	private MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClientMock;
 
 	private KYCDocumentSellerInfoModel kycDocumentSellerInfoModel;
 

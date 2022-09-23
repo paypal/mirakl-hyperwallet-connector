@@ -1,5 +1,15 @@
 package com.paypal.sellers.bankaccountextract.converter.impl.miraklshop;
 
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.common.currency.MiraklIsoCurrencyCode;
 import com.mirakl.client.mmp.domain.shop.MiraklContactInformation;
@@ -11,14 +21,6 @@ import com.paypal.sellers.bankaccountextract.model.BankAccountType;
 import com.paypal.sellers.bankaccountextract.model.IBANBankAccountModel;
 import com.paypal.sellers.bankaccountextract.model.TransferType;
 import com.paypal.sellers.sellersextract.model.SellerModelConstants;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
 
 import static com.paypal.sellers.sellersextract.model.SellerModelConstants.HYPERWALLET_BANK_ACCOUNT_STATE;
 import static com.paypal.sellers.sellersextract.model.SellerModelConstants.HYPERWALLET_BANK_ACCOUNT_TOKEN;
@@ -42,11 +44,15 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 
 	private static final String BIC_CODE = "BIC";
 
-	private static final String IBAN_ACCOUNT = "IBAN";
+	private static final String ES_IBAN_ACCOUNT = "ESIBAN";
+
+	private static final String UK_IBAN_ACCOUNT = "GBIBAN";
 
 	private static final String BUSINESS_NAME = "business_name";
 
 	private static final String ES_COUNTRY_ISO = "ES";
+
+	private static final String UK_COUNTRY_ISO = "GB";
 
 	private static final String EUR_CURRENCY = "EUR";
 
@@ -100,11 +106,11 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 		when(contactInformationMock.getLastname()).thenReturn(LAST_NAME);
 		when(contactInformationMock.getStreet1()).thenReturn(STREET_1);
 		when(contactInformationMock.getStreet2()).thenReturn(STREET_2);
-		when(miraklIbanBankAccountInformationMock.getBankCity()).thenReturn(CITY_NAME);
 		when(contactInformationMock.getCountry()).thenReturn(SPAIN_COUNTRY);
 
+		when(miraklIbanBankAccountInformationMock.getBankCity()).thenReturn(CITY_NAME);
 		when(miraklIbanBankAccountInformationMock.getBic()).thenReturn(BIC_CODE);
-		when(miraklIbanBankAccountInformationMock.getIban()).thenReturn(IBAN_ACCOUNT);
+		when(miraklIbanBankAccountInformationMock.getIban()).thenReturn(ES_IBAN_ACCOUNT);
 
 		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
 
@@ -115,7 +121,7 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 				.hasFieldOrPropertyWithValue("transferType", TransferType.BANK_ACCOUNT)
 				.hasFieldOrPropertyWithValue("type", BankAccountType.IBAN)
 				.hasFieldOrPropertyWithValue("bankBic", BIC_CODE)
-				.hasFieldOrPropertyWithValue("bankAccountNumber", IBAN_ACCOUNT)
+				.hasFieldOrPropertyWithValue("bankAccountNumber", ES_IBAN_ACCOUNT)
 				.hasFieldOrPropertyWithValue("businessName", BUSINESS_NAME)
 				.hasFieldOrPropertyWithValue("firstName", FIRST_NAME)
 				.hasFieldOrPropertyWithValue("lastName", LAST_NAME)
@@ -148,16 +154,17 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 		when(contactInformationMock.getLastname()).thenReturn(LAST_NAME);
 		when(contactInformationMock.getStreet1()).thenReturn(STREET_1);
 		when(contactInformationMock.getStreet2()).thenReturn(STREET_2);
-		when(miraklIbanBankAccountInformationMock.getBankCity()).thenReturn(CITY_NAME);
 		when(contactInformationMock.getCountry()).thenReturn(SPAIN_COUNTRY);
 
+		when(miraklIbanBankAccountInformationMock.getBankCity()).thenReturn(CITY_NAME);
+		when(miraklIbanBankAccountInformationMock.getIban()).thenReturn(UK_IBAN_ACCOUNT);
 		when(miraklIbanBankAccountInformationMock.getBic()).thenReturn(BIC_CODE);
 
 		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
 
 		final IBANBankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off
-		assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", ES_COUNTRY_ISO)
+		assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", UK_COUNTRY_ISO)
 				.hasFieldOrPropertyWithValue("transferType", TransferType.BANK_ACCOUNT)
 				.hasFieldOrPropertyWithValue("type", BankAccountType.IBAN)
 				.hasFieldOrPropertyWithValue("bankBic", BIC_CODE)
@@ -195,7 +202,7 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 		when(contactInformationMock.getCountry()).thenReturn(SPAIN_COUNTRY);
 
 		when(miraklIbanBankAccountInformationMock.getBic()).thenReturn(BIC_CODE);
-		when(miraklIbanBankAccountInformationMock.getIban()).thenReturn(IBAN_ACCOUNT);
+		when(miraklIbanBankAccountInformationMock.getIban()).thenReturn(ES_IBAN_ACCOUNT);
 		when(miraklIbanBankAccountInformationMock.getBankCity()).thenReturn(CITY_NAME);
 
 		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
@@ -207,7 +214,7 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 				.hasFieldOrPropertyWithValue("transferType", TransferType.BANK_ACCOUNT)
 				.hasFieldOrPropertyWithValue("type", BankAccountType.IBAN)
 				.hasFieldOrPropertyWithValue("bankBic", BIC_CODE)
-				.hasFieldOrPropertyWithValue("bankAccountNumber", IBAN_ACCOUNT)
+				.hasFieldOrPropertyWithValue("bankAccountNumber", ES_IBAN_ACCOUNT)
 				.hasFieldOrPropertyWithValue("businessName", BUSINESS_NAME)
 				.hasFieldOrPropertyWithValue("firstName", FIRST_NAME)
 				.hasFieldOrPropertyWithValue("lastName", LAST_NAME)
@@ -218,6 +225,56 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 				.hasFieldOrPropertyWithValue("token", TOKEN)
 				.hasFieldOrPropertyWithValue("hyperwalletProgram", HYPERWALLET_PROGRAM);
 		//@formatter:on
+	}
+
+	@Test
+	void convert_shouldThrowErrorWhenCountryNotExists() {
+		final MiraklIbanBankAccountInformation ibanAccount = defaultMiraklIbanBankAccount();
+		ibanAccount.setIban("100");
+		when(miraklShopMock.getPaymentInformation()).thenReturn(ibanAccount);
+
+		when(miraklShopMock.getContactInformation()).thenReturn(defaultMiraklContanctInformation());
+
+		Assertions.assertThrows(IllegalStateException.class, () -> testObj.execute(miraklShopMock),
+				"Country with isocode: [10] not valid");
+	}
+
+	@Test
+	void convert_shouldThrowErrorWhenIBANIsNotFilledProperly() {
+		final String id_mock = "id_mock";
+		final MiraklIbanBankAccountInformation ibanAccount = defaultMiraklIbanBankAccount();
+		ibanAccount.setIban("x");
+		when(miraklShopMock.getPaymentInformation()).thenReturn(ibanAccount);
+
+		when(miraklShopMock.getId()).thenReturn(id_mock);
+		when(miraklShopMock.getContactInformation()).thenReturn(defaultMiraklContanctInformation());
+
+		Assertions.assertThrows(IllegalStateException.class, () -> testObj.execute(miraklShopMock),
+				"IBAN invalid on shop: id_mock");
+	}
+
+	private MiraklContactInformation defaultMiraklContanctInformation() {
+		final MiraklContactInformation contactInformation = new MiraklContactInformation();
+		contactInformation.setFirstname(FIRST_NAME);
+		contactInformation.setLastname(LAST_NAME);
+		contactInformation.setStreet1(STREET_1);
+		contactInformation.setStreet2(null);
+		contactInformation.setCountry(SPAIN_COUNTRY);
+		return contactInformation;
+	}
+
+	private MiraklIbanBankAccountInformation defaultMiraklIbanBankAccount() {
+		final MiraklIbanBankAccountInformation ibanAccountInfo = new MiraklIbanBankAccountInformation();
+		ibanAccountInfo.setIban(ES_IBAN_ACCOUNT);
+		ibanAccountInfo.setBic(BIC_CODE);
+		ibanAccountInfo.setBankCity(CITY_NAME);
+		return ibanAccountInfo;
+	}
+
+	private MiraklProfessionalInformation defaultProfessionalInformation() {
+		final MiraklProfessionalInformation professionalInformation = new MiraklProfessionalInformation();
+		professionalInformation.setCorporateName(BUSINESS_NAME);
+		return professionalInformation;
 	}
 
 	@Test

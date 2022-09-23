@@ -2,11 +2,11 @@ package com.paypal.sellers.bankaccountextract.service.impl;
 
 import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
 import com.mirakl.client.core.exception.MiraklApiException;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.bankaccountextract.service.MiraklBankAccountExtractService;
 import com.paypal.sellers.sellersextract.model.SellerModel;
@@ -21,14 +21,14 @@ import static com.paypal.sellers.sellersextract.model.SellerModelConstants.HYPER
 @Service
 public class MiraklBankAccountExtractServiceImpl implements MiraklBankAccountExtractService {
 
-	private final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient;
+	private final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient;
 
 	private final MailNotificationUtil sellerMailNotificationUtil;
 
 	private static final String ERROR_MESSAGE_PREFIX = "There was an error, please check the logs for further "
 			+ "information:\n";
 
-	public MiraklBankAccountExtractServiceImpl(final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
+	public MiraklBankAccountExtractServiceImpl(final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient,
 			final MailNotificationUtil sellerMailNotificationUtil) {
 		this.miraklOperatorClient = miraklOperatorClient;
 		this.sellerMailNotificationUtil = sellerMailNotificationUtil;

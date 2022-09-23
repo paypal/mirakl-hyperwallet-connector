@@ -216,29 +216,19 @@ In that case, we need to setup the following variables as described:
     * Define variable `PAYPAL_HYPERWALLET_PROGRAM_TOKENS` with value `UK,EUROPE`
 
 * File: `invoices.properties`:
-    * Remove `invoices.hyperwallet.api.hyperwalletprogram.token.DEFAULT` property
-    * Remove `invoices.operator.commissions.bankAccount.token.DEFAULT` property
-    * Define token for UK: `invoices.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
-    * Define token for EUROPE: `invoices.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
-    * Define the operator bank account token for
-      UK: `invoices.operator.commissions.bankAccount.token.UK = <YOUR_UK_BANK_ACCOUNT_TOKEN>`
-    * Define the operator bank account token for
-      EUROPE: `invoices.operator.commissions.bankAccount.token.EUROPE = <YOUR_EUROPE_BANK_ACCOUNT_TOKEN>`
+  * Remove `invoices.hyperwallet.api.hyperwalletprogram.token.DEFAULT` property
+  * Remove `invoices.operator.commissions.bankAccount.token.DEFAULT` property
+  * Define token for UK: `invoices.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
+  * Define token for EUROPE: `invoices.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
+  * Define the operator bank account token for
+    UK: `invoices.operator.commissions.bankAccount.token.UK = <YOUR_UK_BANK_ACCOUNT_TOKEN>`
+  * Define the operator bank account token for
+    EUROPE: `invoices.operator.commissions.bankAccount.token.EUROPE = <YOUR_EUROPE_BANK_ACCOUNT_TOKEN>`
 
-* File: `kyc.properties`:
-    * Remove `kyc.hyperwallet.api.hyperwalletprogram.token.DEFAULT`
-    * Define token for UK: `kyc.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
-    * Define token for EUROPE: `kyc.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
-
-* File: `seller.properties`:
-    * Remove `sellers.hyperwallet.api.hyperwalletprogram.token.DEFAULT`
-    * Define token for UK: `sellers.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
-    * Define token for EUROPE: `sellers.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
-
-* File: `notification.properties`:
-    * Remove `notifications.hyperwallet.api.hyperwalletprogram.token.DEFAULT`
-    * Define token for UK: `notifications.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
-    * Define token for EUROPE: `notifications.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
+* File: `infrastructure.properties`:
+  * Remove `infrastructure.hyperwallet.api.hyperwalletprogram.token.DEFAULT`
+  * Define token for UK: `infrastructure.hyperwallet.api.hyperwalletprogram.token.UK=<YOUR_UK_TOKEN>`
+  * Define token for EUROPE: `infrastructure.hyperwallet.api.hyperwalletprogram.token.EUROPE=<YOUR_EUROPE_TOKEN>`
 
 If you're using Docker, remember to update the Docker Compose template file to reflect the existence of these 2 new
 environments. Add them into the Docker Compose template file you're using (`docker-compose.prod.yml.template`
@@ -276,13 +266,13 @@ The Hyperwallet Mirakl Connector runs jobs to perform various integrations betwe
 
 Those jobs are currently setup across the properties file as this table follows:
 
-|                       Property                                        |  Cron expression  | Properties file                                             |
-| --------------------------------------------------------------------- | ----------------- |-------------------------------------------------------------|
-| `sellers.extractsellers.scheduling.cronexpression`                    | 0 0 0 1/1 * ? *   | `sellers/src/main/resources/sellers.properties`             |
-| `sellers.extractprofessionalsellers.scheduling.cronexpression`        | 0 0 0 1/1 * ? *   | `sellers/src/main/resources/sellers.properties`             |
-| `sellers.bankaccountextract.scheduling.cronexpression`                | 0 30 0 1/1 * ? *  | `sellers/src/main/resources/sellers.properties`             |
-| `invoices.extractinvoices.scheduling.cronexpression`                  | 1 0 0 1/1 * ? *   | `invoices/src/main/resources/invoices.properties`           |
-| `notifications.retryfailed.scheduling.cronexpression`                 | 0 0/15 * * * ? *  | `notifications/src/main/resources/notifications.properties` |
+|                       Property                                        | Cron expression  | Properties file                                             |
+| --------------------------------------------------------------------- |------------------|-------------------------------------------------------------|
+| `sellers.extractsellers.scheduling.cronexpression`                    | 0 0 0 1/1 * ? * | `sellers/src/main/resources/sellers.properties`             |
+| `sellers.extractprofessionalsellers.scheduling.cronexpression`        | 0 0 0 1/1 * ? *  | `sellers/src/main/resources/sellers.properties`             |
+| `sellers.bankaccountextract.scheduling.cronexpression`                | 0 30 0 1/1 * ? * | `sellers/src/main/resources/sellers.properties`             |
+| `invoices.extractinvoices.scheduling.cronexpression`                  | 1 0 0 1/1 * ? *  | `invoices/src/main/resources/invoices.properties`           |
+| `notifications.retryfailed.scheduling.cronexpression`                 | 0 0/15 * * * ? * | `notifications/src/main/resources/notifications.properties` |
 
 The existing jobs can be executed manually through their endpoints. Except for notification retry job, which doesn't receive
 any parameter, all endpoints support 2 optional parameters:
@@ -335,14 +325,14 @@ Retry jobs executes periodically with a higher frequency than standard jobs, so 
 soon as possible respecting the calculated time of the next retry. The periodicity of these jobs can be customized
 modifying this properties, althoug is recommended to keep the default values:
 
-| Property                                         |  Cron expression  | Properties file                                             |
-|--------------------------------------------------| ----------------- |-------------------------------------------------------------|
-| `sellers.retrysellers.scheduling.cronexpression` | 0 0/15 * ? * * *  | `sellers/src/main/resources/sellers.properties`             |
-| `sellers.retryprofessionalsellers.scheduling.cronexpression` | 0 0/15 * ? * * *  | `sellers/src/main/resources/sellers.properties`             |
-| `sellers.retrybusinessstakeholders.scheduling.cronexpression` | 0 0/15 * ? * * *  | `sellers/src/main/resources/sellers.properties`             |
-| `sellers.bankaccountretry.scheduling.cronexpression` | 0 0/15 * ? * * *  | `sellers/src/main/resources/sellers.properties`             |
-| `invoices.retryinvoices.scheduling.cronexpression`  | 0 0/15 * ? * * *  | `sellers/src/main/resources/sellers.properties`             |
-| `creditnotes.retryinvoices.scheduling.cronexpression`  | 0 0/15 * ? * * *  | `sellers/src/main/resources/sellers.properties`             |
+| Property                                         |  Cron expression  | Properties file                                   |
+|--------------------------------------------------| ----------------- |---------------------------------------------------|
+| `sellers.retrysellers.scheduling.cronexpression` | 0 0/15 * ? * * *  | `sellers/src/main/resources/sellers.properties`   |
+| `sellers.retryprofessionalsellers.scheduling.cronexpression` | 0 0/15 * ? * * *  | `sellers/src/main/resources/sellers.properties`   |
+| `sellers.retrybusinessstakeholders.scheduling.cronexpression` | 0 0/15 * ? * * *  | `sellers/src/main/resources/sellers.properties`   |
+| `sellers.bankaccountretry.scheduling.cronexpression` | 0 0/15 * ? * * *  | `sellers/src/main/resources/sellers.properties`   |
+| `invoices.retryinvoices.scheduling.cronexpression`  | 0 0/15 * ? * * *  | `invoices/src/main/resources/invoices.properties` |
+| `creditnotes.retryinvoices.scheduling.cronexpression`  | 0 0/15 * ? * * *  | `invoices/src/main/resources/invoices.properties` |
 
 
 

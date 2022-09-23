@@ -3,10 +3,10 @@ package com.paypal.reports.reportsextract.service.impl;
 import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.domain.payment.MiraklTransactionLog;
 import com.mirakl.client.mmp.domain.payment.MiraklTransactionLogs;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.request.payment.MiraklGetTransactionLogsRequest;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.reports.reportsextract.model.HmcMiraklTransactionLine;
 import com.paypal.reports.reportsextract.service.ReportsMiraklExtractService;
@@ -31,14 +31,14 @@ public class ReportsMiraklExtractServiceImpl implements ReportsMiraklExtractServ
 
 	private static final String ERROR_MESSAGE_PREFIX = "There was an error, please check the logs for further information:\n";
 
-	private final MiraklMarketplacePlatformOperatorApiClient reportsMiraklMarketplacePlatformOperatorApiClient;
+	private final MiraklMarketplacePlatformOperatorApiWrapper reportsMiraklMarketplacePlatformOperatorApiClient;
 
 	private final Converter<MiraklTransactionLog, HmcMiraklTransactionLine> miraklTransactionLogMiraklTransactionLineConverter;
 
 	private final MailNotificationUtil mailNotificationUtil;
 
 	public ReportsMiraklExtractServiceImpl(
-			final MiraklMarketplacePlatformOperatorApiClient reportsMiraklMarketplacePlatformOperatorApiClient,
+			final MiraklMarketplacePlatformOperatorApiWrapper reportsMiraklMarketplacePlatformOperatorApiClient,
 			final Converter<MiraklTransactionLog, HmcMiraklTransactionLine> miraklTransactionLogMiraklTransactionLineConverter,
 			final MailNotificationUtil mailNotificationUtil) {
 		this.reportsMiraklMarketplacePlatformOperatorApiClient = reportsMiraklMarketplacePlatformOperatorApiClient;

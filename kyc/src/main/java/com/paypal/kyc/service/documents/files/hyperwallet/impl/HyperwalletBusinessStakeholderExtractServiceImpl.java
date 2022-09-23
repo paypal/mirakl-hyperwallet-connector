@@ -4,8 +4,8 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.model.HyperwalletBusinessStakeholder;
 import com.hyperwallet.clientsdk.model.HyperwalletList;
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletBusinessStakeholderExtractService;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletDocumentUploadService;
 import com.paypal.kyc.strategies.documents.files.hyperwallet.businessstakeholder.impl.KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor;
@@ -35,10 +35,10 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl
 
 	private final KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor;
 
-	public HyperwalletBusinessStakeholderExtractServiceImpl(HyperwalletSDKService hyperwalletSDKService,
-			HyperwalletDocumentUploadService hyperwalletDocumentUploadService,
-			KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor) {
-		super(hyperwalletSDKService, hyperwalletDocumentUploadService);
+	public HyperwalletBusinessStakeholderExtractServiceImpl(final HyperwalletSDKUserService hyperwalletSDKUserService,
+			final HyperwalletDocumentUploadService hyperwalletDocumentUploadService,
+			final KYCBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor) {
+		super(hyperwalletSDKUserService, hyperwalletDocumentUploadService);
 		this.kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor = kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor;
 	}
 
@@ -48,7 +48,8 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl
 	@Override
 	public List<String> getKYCRequiredVerificationBusinessStakeHolders(final String hyperwalletProgram,
 			final String userToken) {
-		final Hyperwallet hyperwallet = getHyperwalletSDKService().getHyperwalletInstance(hyperwalletProgram);
+		final Hyperwallet hyperwallet = getHyperwalletSDKService()
+				.getHyperwalletInstanceByHyperwalletProgram(hyperwalletProgram);
 		final List<HyperwalletBusinessStakeholder> businessStakeholders = getBusinessStakeholders(userToken,
 				hyperwallet);
 
@@ -69,7 +70,7 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl
 
 	@Override
 	protected List<HyperwalletVerificationDocument> getHyperwalletVerificationDocuments(
-			KYCDocumentBusinessStakeHolderInfoModel kycBusinessStakeHolderInfoModel) {
+			final KYCDocumentBusinessStakeHolderInfoModel kycBusinessStakeHolderInfoModel) {
 		return kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor
 				.execute(kycBusinessStakeHolderInfoModel);
 	}

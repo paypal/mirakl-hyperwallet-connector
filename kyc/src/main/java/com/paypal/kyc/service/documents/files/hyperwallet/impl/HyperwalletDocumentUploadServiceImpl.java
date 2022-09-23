@@ -4,13 +4,13 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.infrastructure.util.LoggingConstantsUtil;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import com.paypal.kyc.service.documents.files.hyperwallet.HyperwalletDocumentUploadService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -28,13 +28,13 @@ import java.util.stream.Collectors;
 @Service
 public class HyperwalletDocumentUploadServiceImpl implements HyperwalletDocumentUploadService {
 
-	private final HyperwalletSDKService hyperwalletSDKService;
+	private final HyperwalletSDKUserService hyperwalletSDKUserService;
 
 	private final MailNotificationUtil kycMailNotificationUtil;
 
-	public HyperwalletDocumentUploadServiceImpl(final HyperwalletSDKService hyperwalletSDKService,
+	public HyperwalletDocumentUploadServiceImpl(final HyperwalletSDKUserService hyperwalletSDKUserService,
 			final MailNotificationUtil kycMailNotificationUtil) {
-		this.hyperwalletSDKService = hyperwalletSDKService;
+		this.hyperwalletSDKUserService = hyperwalletSDKUserService;
 		this.kycMailNotificationUtil = kycMailNotificationUtil;
 	}
 
@@ -42,11 +42,11 @@ public class HyperwalletDocumentUploadServiceImpl implements HyperwalletDocument
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void uploadDocument(KYCDocumentInfoModel kycDocumentInfoModel,
-			List<HyperwalletVerificationDocument> hyperwalletVerificationDocuments) {
+	public void uploadDocument(final KYCDocumentInfoModel kycDocumentInfoModel,
+			final List<HyperwalletVerificationDocument> hyperwalletVerificationDocuments) {
 		try {
-			final Hyperwallet hyperwallet = hyperwalletSDKService
-					.getHyperwalletInstance(kycDocumentInfoModel.getHyperwalletProgram());
+			final Hyperwallet hyperwallet = hyperwalletSDKUserService
+					.getHyperwalletInstanceByHyperwalletProgram(kycDocumentInfoModel.getHyperwalletProgram());
 
 			invokeHyperwalletAPI(kycDocumentInfoModel, hyperwalletVerificationDocuments, hyperwallet);
 
@@ -62,21 +62,22 @@ public class HyperwalletDocumentUploadServiceImpl implements HyperwalletDocument
 		}
 	}
 
-	protected void invokeHyperwalletAPI(KYCDocumentInfoModel kycDocumentInfoModel,
-			List<HyperwalletVerificationDocument> hyperwalletVerificationDocuments, Hyperwallet hyperwallet) {
+	protected void invokeHyperwalletAPI(final KYCDocumentInfoModel kycDocumentInfoModel,
+			final List<HyperwalletVerificationDocument> hyperwalletVerificationDocuments,
+			final Hyperwallet hyperwallet) {
 		if (kycDocumentInfoModel instanceof KYCDocumentBusinessStakeHolderInfoModel) {
-			KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = (KYCDocumentBusinessStakeHolderInfoModel) kycDocumentInfoModel;
+			final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = (KYCDocumentBusinessStakeHolderInfoModel) kycDocumentInfoModel;
 			hyperwallet.uploadStakeholderDocuments(kycDocumentInfoModel.getUserToken(),
 					kycDocumentBusinessStakeHolderInfoModel.getToken(), hyperwalletVerificationDocuments);
 		}
 		else {
-			KYCDocumentSellerInfoModel kycDocumentSellerInfoModel = (KYCDocumentSellerInfoModel) kycDocumentInfoModel;
+			final KYCDocumentSellerInfoModel kycDocumentSellerInfoModel = (KYCDocumentSellerInfoModel) kycDocumentInfoModel;
 			hyperwallet.uploadUserDocuments(kycDocumentSellerInfoModel.getUserToken(),
 					hyperwalletVerificationDocuments);
 		}
 	}
 
-	private void reportError(KYCDocumentInfoModel kycDocumentInfoModel, HyperwalletException e) {
+	private void reportError(final KYCDocumentInfoModel kycDocumentInfoModel, final HyperwalletException e) {
 		kycMailNotificationUtil.sendPlainTextEmail("Issue detected pushing documents into Hyperwallet",
 				String.format("Something went wrong pushing documents to Hyperwallet for %s%n%s",
 						kycDocumentInfoModel.getDocumentTracingIdentifier(),

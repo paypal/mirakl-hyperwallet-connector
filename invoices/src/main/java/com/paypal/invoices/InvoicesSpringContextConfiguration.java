@@ -1,14 +1,14 @@
 package com.paypal.invoices;
 
 import com.paypal.infrastructure.InfrastructureConnectorApplication;
-import com.paypal.invoices.infraestructure.configuration.InvoicesHyperwalletApiConfig;
 import com.paypal.invoices.infraestructure.configuration.InvoicesMiraklApiConfig;
+import com.paypal.invoices.infraestructure.configuration.PaymentsHyperwalletApiConfig;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan
-@EnableConfigurationProperties({ InvoicesMiraklApiConfig.class, InvoicesHyperwalletApiConfig.class })
+@EnableConfigurationProperties({ InvoicesMiraklApiConfig.class, PaymentsHyperwalletApiConfig.class })
 @ImportAutoConfiguration({ InfrastructureConnectorApplication.class })
 public class InvoicesSpringContextConfiguration {
 

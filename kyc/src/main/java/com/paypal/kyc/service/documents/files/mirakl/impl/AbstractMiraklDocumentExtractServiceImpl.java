@@ -1,30 +1,31 @@
 package com.paypal.kyc.service.documents.files.mirakl.impl;
 
-import com.mirakl.client.core.exception.MiraklException;
-import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
-import com.mirakl.client.mmp.request.shop.document.MiraklDeleteShopDocumentRequest;
-import com.paypal.infrastructure.mail.MailNotificationUtil;
-import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
-import com.paypal.kyc.model.KYCDocumentInfoModel;
-import com.paypal.kyc.service.documents.files.mirakl.MiraklDocumentsExtractService;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.mirakl.client.core.exception.MiraklException;
+import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
+import com.mirakl.client.mmp.request.shop.document.MiraklDeleteShopDocumentRequest;
+import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
+import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
+import com.paypal.kyc.model.KYCDocumentInfoModel;
+import com.paypal.kyc.service.documents.files.mirakl.MiraklDocumentsExtractService;
+
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 public abstract class AbstractMiraklDocumentExtractServiceImpl implements MiraklDocumentsExtractService {
 
-	private final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient;
+	private final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient;
 
 	private final MailNotificationUtil kycMailNotificationUtil;
 
 	protected AbstractMiraklDocumentExtractServiceImpl(
-			final MiraklMarketplacePlatformOperatorApiClient miraklOperatorClient,
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklOperatorClient,
 			final MailNotificationUtil kycMailNotificationUtil) {
 		this.miraklOperatorClient = miraklOperatorClient;
 		this.kycMailNotificationUtil = kycMailNotificationUtil;

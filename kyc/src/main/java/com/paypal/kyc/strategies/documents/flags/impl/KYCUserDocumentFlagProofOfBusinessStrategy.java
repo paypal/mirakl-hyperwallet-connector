@@ -1,8 +1,9 @@
 package com.paypal.kyc.strategies.documents.flags.impl;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+
 import com.paypal.infrastructure.mail.MailNotificationUtil;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.kyc.model.KYCUserDocumentFlagsNotificationBodyModel;
 import com.paypal.kyc.strategies.documents.flags.AbstractUserDocumentFlagsStrategy;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class KYCUserDocumentFlagProofOfBusinessStrategy extends AbstractUserDocumentFlagsStrategy {
 
 	public KYCUserDocumentFlagProofOfBusinessStrategy(
-			final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient,
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient,
 			final MailNotificationUtil mailNotificationUtil) {
 		super(mailNotificationUtil, miraklMarketplacePlatformOperatorApiClient);
 	}

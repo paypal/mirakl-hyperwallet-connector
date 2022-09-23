@@ -2,8 +2,8 @@ package com.paypal.invoices.invoicesextract.service.hmc.impl;
 
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.util.HyperwalletEncryption;
-import com.paypal.invoices.infraestructure.configuration.InvoicesHyperwalletApiConfig;
-import com.paypal.invoices.invoicesextract.service.hyperwallet.impl.InvoiceHyperwalletSDKEncryptedServiceImpl;
+import com.paypal.invoices.infraestructure.configuration.PaymentsHyperwalletApiConfig;
+import com.paypal.invoices.invoicesextract.service.hyperwallet.impl.PaymentsHyperwalletSDKServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,19 +33,19 @@ class InvoiceHyperwalletSDKEncryptedServiceImplTest {
 
 	@Spy
 	@InjectMocks
-	private InvoiceHyperwalletSDKEncryptedServiceImpl testObj;
+	private PaymentsHyperwalletSDKServiceImpl testObj;
 
 	@Mock
 	private HyperwalletEncryption hyperwalletEncryptionMock;
 
 	@Mock
-	private InvoicesHyperwalletApiConfig invoicesHyperwalletApiConfigMock;
+	private PaymentsHyperwalletApiConfig paymentsHyperwalletApiConfigMock;
 
 	@Test
 	void getHyperwalletInstanceWithProgramToken_shouldReturnAnHyperwalletInstanceWithEncryptedOption() {
-		when(invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(paymentsHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(paymentsHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(paymentsHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
 		final Hyperwallet result = testObj.getHyperwalletInstanceWithProgramToken(PROGRAM_TOKEN);
 
@@ -54,14 +54,14 @@ class InvoiceHyperwalletSDKEncryptedServiceImplTest {
 
 	@Test
 	void getHyperwalletInstanceByIssuingStore_shouldReturnAnHyperwalletInstance() {
-		when(invoicesHyperwalletApiConfigMock.getPaymentStoreTokens()).thenReturn(Map.of(ISSUING_STORE, PROGRAM_TOKEN));
-		when(invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
-		when(invoicesHyperwalletApiConfigMock.getPaymentStoreTokens()).thenReturn(Map.of(ISSUING_STORE, PROGRAM_TOKEN));
-		when(invoicesHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
-		when(invoicesHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
-		when(invoicesHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(paymentsHyperwalletApiConfigMock.getPaymentStoreTokens()).thenReturn(Map.of(ISSUING_STORE, PROGRAM_TOKEN));
+		when(paymentsHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(paymentsHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(paymentsHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
+		when(paymentsHyperwalletApiConfigMock.getPaymentStoreTokens()).thenReturn(Map.of(ISSUING_STORE, PROGRAM_TOKEN));
+		when(paymentsHyperwalletApiConfigMock.getUsername()).thenReturn(USER_NAME);
+		when(paymentsHyperwalletApiConfigMock.getPassword()).thenReturn(PASSWORD);
+		when(paymentsHyperwalletApiConfigMock.getServer()).thenReturn(SERVER);
 
 		final Hyperwallet result = testObj.getHyperwalletInstanceByHyperwalletProgram(ISSUING_STORE);
 

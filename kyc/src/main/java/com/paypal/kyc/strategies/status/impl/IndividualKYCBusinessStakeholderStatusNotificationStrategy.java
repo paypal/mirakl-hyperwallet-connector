@@ -2,14 +2,15 @@ package com.paypal.kyc.strategies.status.impl;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mchange.v2.lang.StringUtils;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
-import com.paypal.kyc.infrastructure.configuration.KYCHyperwalletApiConfig;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
+import com.paypal.infrastructure.hyperwallet.api.UserHyperwalletApiConfig;
 import com.paypal.kyc.model.KYCBusinessStakeholderStatusNotificationBodyModel;
 import com.paypal.kyc.model.KYCConstants;
-import com.paypal.kyc.service.HyperwalletSDKService;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklBusinessStakeholderDocumentsExtractService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -27,13 +28,14 @@ public class IndividualKYCBusinessStakeholderStatusNotificationStrategy
 
 	protected final MiraklBusinessStakeholderDocumentsExtractService miraklBusinessStakeholderDocumentsExtractService;
 
-	protected final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient;
+	protected final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient;
 
-	public IndividualKYCBusinessStakeholderStatusNotificationStrategy(final HyperwalletSDKService hyperwalletSDKService,
-			final KYCHyperwalletApiConfig kycHyperwalletApiConfig,
+	public IndividualKYCBusinessStakeholderStatusNotificationStrategy(
+			final HyperwalletSDKUserService hyperwalletSDKUserService,
+			final UserHyperwalletApiConfig kycHyperwalletApiConfig,
 			final MiraklBusinessStakeholderDocumentsExtractService miraklBusinessStakeholderDocumentsExtractService,
-			final MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient) {
-		super(hyperwalletSDKService, kycHyperwalletApiConfig);
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklMarketplacePlatformOperatorApiClient) {
+		super(hyperwalletSDKUserService, kycHyperwalletApiConfig);
 		this.miraklBusinessStakeholderDocumentsExtractService = miraklBusinessStakeholderDocumentsExtractService;
 		this.miraklMarketplacePlatformOperatorApiClient = miraklMarketplacePlatformOperatorApiClient;
 	}

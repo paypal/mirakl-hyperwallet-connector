@@ -18,14 +18,14 @@ import java.util.Map;
 @Configuration
 @ConfigurationProperties(prefix = "infrastructure.hyperwallet.api")
 @PropertySource({ "classpath:infrastructure.properties" })
-public class DefaultHyperwalletApiConfig extends AbstractHyperwalletApiConfig {
+public class UserHyperwalletApiConfig extends AbstractHyperwalletApiConfig {
+
+	private static final String HYPERWALLET_PROGRAM_PREFIX = "infrastructure.hyperwallet.api.hyperwalletprogram.token.";
 
 	private Map<String, String> tokens = new HashMap<>();
 
 	@Value("#{'${infrastructure.hyperwallet.api.hyperwalletprogram.rootToken}'}")
 	private String rootProgramToken;
-
-	private static final String HYPERWALLET_PROGRAM_PREFIX = "infrastructure.hyperwallet.api.hyperwalletprogram.token.";
 
 	/**
 	 * Loads Hyperwallet Program token architecture

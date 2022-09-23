@@ -1,6 +1,6 @@
 package com.paypal.kyc.strategies.documents.files.mirakl.impl;
 
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.model.KYCProofOfAddressEnum;
@@ -15,7 +15,7 @@ import java.util.Objects;
 @Service
 public class MiraklProofOfAddressStrategy extends AbstractMiraklSelectedDocumentsStrategy {
 
-	protected MiraklProofOfAddressStrategy(final MiraklMarketplacePlatformOperatorApiClient miraklApiClient) {
+	protected MiraklProofOfAddressStrategy(final MiraklMarketplacePlatformOperatorApiWrapper miraklApiClient) {
 		super(miraklApiClient);
 	}
 

@@ -2,7 +2,7 @@ package com.paypal.sellers.sellersextract.converter.impl;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.paypal.infrastructure.converter.Converter;
-import com.paypal.sellers.infrastructure.configuration.SellersHyperwalletApiConfig;
+import com.paypal.infrastructure.hyperwallet.api.UserHyperwalletApiConfig;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Service;
@@ -12,9 +12,9 @@ import java.util.Optional;
 @Service
 public class SellerModelToHyperWalletUserConverter implements Converter<SellerModel, HyperwalletUser> {
 
-	protected final SellersHyperwalletApiConfig sellersHyperwalletApiConfig;
+	protected final UserHyperwalletApiConfig sellersHyperwalletApiConfig;
 
-	public SellerModelToHyperWalletUserConverter(final SellersHyperwalletApiConfig sellersHyperwalletApiConfig) {
+	public SellerModelToHyperWalletUserConverter(final UserHyperwalletApiConfig sellersHyperwalletApiConfig) {
 		this.sellersHyperwalletApiConfig = sellersHyperwalletApiConfig;
 	}
 
@@ -39,8 +39,8 @@ public class SellerModelToHyperWalletUserConverter implements Converter<SellerMo
 		hyperwalletUser.setStateProvince(sellerModel.getStateProvince());
 		hyperwalletUser.setPostalCode(sellerModel.getPostalCode());
 		hyperwalletUser.setCountry(sellerModel.getCountry());
-		hyperwalletUser.setProgramToken(
-				sellersHyperwalletApiConfig.getUserStoreTokens().get(sellerModel.getHyperwalletProgram()));
+		hyperwalletUser
+				.setProgramToken(sellersHyperwalletApiConfig.getTokens().get(sellerModel.getHyperwalletProgram()));
 		hyperwalletUser.setToken(sellerModel.getToken());
 		hyperwalletUser.setEmail(sellerModel.getEmail());
 		hyperwalletUser.setBusinessRegistrationCountry(sellerModel.getCompanyRegistrationCountry());

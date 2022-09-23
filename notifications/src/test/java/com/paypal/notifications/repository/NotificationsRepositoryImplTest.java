@@ -5,8 +5,8 @@ import com.callibrity.logging.test.LogTrackerStub;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
-import com.paypal.notifications.service.hyperwallet.HyperwalletSDKService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -30,7 +30,7 @@ class NotificationsRepositoryImplTest {
 	private NotificationsRepositoryImpl testObj;
 
 	@Mock
-	private HyperwalletSDKService hyperwalletSDKService;
+	private HyperwalletSDKUserService hyperwalletSDKUserService;
 
 	@Mock
 	private HyperwalletWebhookNotification hyperwalletWebhookNotificationMock;
@@ -44,7 +44,7 @@ class NotificationsRepositoryImplTest {
 
 	@Test
 	void getHyperwalletWebhookNotification_shouldReturnAnHyperwalletNotification_WhenTokenExists() {
-		when(hyperwalletSDKService.getHyperwalletInstance(HYPERWALLET_NOTIFICATION_PROGRAM))
+		when(hyperwalletSDKUserService.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_NOTIFICATION_PROGRAM))
 				.thenReturn(hyperwalletInstanceMock);
 		when(hyperwalletInstanceMock.getWebhookEvent(HYPERWALLET_NOTIFICATION_TOKEN))
 				.thenReturn(hyperwalletWebhookNotificationMock);
@@ -57,7 +57,7 @@ class NotificationsRepositoryImplTest {
 
 	@Test
 	void getHyperwalletWebhookNotification_shouldReturnNull_WhenTokenNotExists() {
-		when(hyperwalletSDKService.getHyperwalletInstance(HYPERWALLET_NOTIFICATION_PROGRAM))
+		when(hyperwalletSDKUserService.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_NOTIFICATION_PROGRAM))
 				.thenReturn(hyperwalletInstanceMock);
 		when(hyperwalletInstanceMock.getWebhookEvent(HYPERWALLET_NOTIFICATION_TOKEN)).thenReturn(null);
 
@@ -69,9 +69,9 @@ class NotificationsRepositoryImplTest {
 
 	@Test
 	void getHyperwalletWebhookNotification_shouldReturnNull_andLogException_WhenExceptionIsThrown() {
-		when(hyperwalletSDKService.getHyperwalletInstance(HYPERWALLET_NOTIFICATION_PROGRAM))
+		when(hyperwalletSDKUserService.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_NOTIFICATION_PROGRAM))
 				.thenReturn(hyperwalletInstanceMock);
-		HyperwalletException hyperwalletException = new HyperwalletException(MSG_ERROR);
+		final HyperwalletException hyperwalletException = new HyperwalletException(MSG_ERROR);
 		when(hyperwalletInstanceMock.getWebhookEvent(HYPERWALLET_NOTIFICATION_TOKEN)).thenThrow(hyperwalletException);
 
 		final HyperwalletWebhookNotification result = testObj

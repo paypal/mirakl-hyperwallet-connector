@@ -19,9 +19,6 @@ class MiraklMarketplacePlatformOperatorApiClientWrapperImplTest {
 	private MiraklMarketplacePlatformOperatorApiClientWrapperImpl testObj;
 
 	@Mock
-	private Credential credentialMock;
-
-	@Mock
 	private HMCMiraklInvoices hmcMiraklInvoicesMock;
 
 	@Mock
@@ -29,7 +26,10 @@ class MiraklMarketplacePlatformOperatorApiClientWrapperImplTest {
 
 	@BeforeEach
 	void setUp() {
-		testObj = Mockito.spy(new MiraklMarketplacePlatformOperatorApiClientWrapperImpl("endPoint", credentialMock));
+		final MiraklApiClientConfig config = new MiraklApiClientConfig();
+		config.setOperatorApiKey("OPERATOR-KEY");
+		config.setEnvironment("environment");
+		testObj = Mockito.spy(new MiraklMarketplacePlatformOperatorApiClientWrapperImpl(config));
 	}
 
 	@Test

@@ -3,8 +3,9 @@ package com.paypal.kyc.strategies.documents.files.mirakl;
 import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.domain.common.FileWrapper;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
+
 import com.mirakl.client.mmp.request.shop.document.MiraklDownloadShopsDocumentsRequest;
+import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentModel;
@@ -21,10 +22,10 @@ import java.util.stream.Collectors;
 public abstract class AbstractMiraklSelectedDocumentsStrategy
 		implements Strategy<KYCDocumentInfoModel, List<KYCDocumentModel>> {
 
-	private final MiraklMarketplacePlatformOperatorApiClient miraklApiClient;
+	private final MiraklMarketplacePlatformOperatorApiWrapper miraklApiClient;
 
 	protected AbstractMiraklSelectedDocumentsStrategy(
-			final MiraklMarketplacePlatformOperatorApiClient miraklApiClient) {
+			final MiraklMarketplacePlatformOperatorApiWrapper miraklApiClient) {
 		this.miraklApiClient = miraklApiClient;
 	}
 

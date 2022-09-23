@@ -5,13 +5,13 @@ import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
 import com.mirakl.client.core.exception.MiraklApiException;
 import com.paypal.infrastructure.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
+import com.paypal.infrastructure.hyperwallet.api.HyperwalletSDKUserService;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.strategy.Strategy;
 import com.paypal.infrastructure.strategy.StrategyExecutor;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellersextract.model.SellerModel;
-import com.paypal.sellers.service.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -23,7 +23,7 @@ public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
 
 	protected final StrategyExecutor<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyExecutor;
 
-	protected final HyperwalletSDKService hyperwalletSDKService;
+	protected final HyperwalletSDKUserService hyperwalletSDKUserService;
 
 	protected final MailNotificationUtil mailNotificationUtil;
 
@@ -32,9 +32,10 @@ public abstract class AbstractHyperwalletBankAccountRetryApiStrategy
 
 	protected AbstractHyperwalletBankAccountRetryApiStrategy(
 			final StrategyExecutor<SellerModel, HyperwalletBankAccount> sellerModelToHyperwalletBankAccountStrategyExecutor,
-			final HyperwalletSDKService hyperwalletSDKService, final MailNotificationUtil mailNotificationUtil) {
+			final HyperwalletSDKUserService hyperwalletSDKUserService,
+			final MailNotificationUtil mailNotificationUtil) {
 		this.sellerModelToHyperwalletBankAccountStrategyExecutor = sellerModelToHyperwalletBankAccountStrategyExecutor;
-		this.hyperwalletSDKService = hyperwalletSDKService;
+		this.hyperwalletSDKUserService = hyperwalletSDKUserService;
 		this.mailNotificationUtil = mailNotificationUtil;
 	}
 
