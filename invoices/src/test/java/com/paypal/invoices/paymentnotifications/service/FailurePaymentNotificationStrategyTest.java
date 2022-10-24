@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -47,7 +48,7 @@ class FailurePaymentNotificationStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnTrue_whenPaymentNotificationBodyModelHasFailed() {
-		when(paymentNotificationConfigMock.getFailureStatuses()).thenReturn(List.of(FAILED));
+		when(paymentNotificationConfigMock.getFailureStatuses()).thenReturn(Set.of(FAILED));
 		when(paymentNotificationBodyModelMock.getStatus()).thenReturn(FAILED);
 
 		final boolean result = testObj.isApplicable(paymentNotificationBodyModelMock);
@@ -57,7 +58,7 @@ class FailurePaymentNotificationStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnFalse_whenPaymentNotificationBodyModelHasNotFailed() {
-		when(paymentNotificationConfigMock.getFailureStatuses()).thenReturn(List.of(FAILED));
+		when(paymentNotificationConfigMock.getFailureStatuses()).thenReturn(Set.of(FAILED));
 		when(paymentNotificationBodyModelMock.getStatus()).thenReturn(NOT_FAILED);
 
 		final boolean result = testObj.isApplicable(paymentNotificationBodyModelMock);
