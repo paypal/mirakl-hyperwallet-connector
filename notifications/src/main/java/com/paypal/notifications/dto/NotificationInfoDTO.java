@@ -1,7 +1,6 @@
 package com.paypal.notifications.dto;
 
 import lombok.Data;
-
 import java.util.Date;
 
 @Data

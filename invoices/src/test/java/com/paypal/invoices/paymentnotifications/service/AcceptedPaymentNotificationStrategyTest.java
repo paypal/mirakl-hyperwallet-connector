@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -87,7 +88,7 @@ class AcceptedPaymentNotificationStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnTrue_whenPaymentNotificationBodyModelIsAcceptedAndIsNotOperatorFee() {
-		when(paymentNotificationConfigMock.getAcceptedStatuses()).thenReturn(List.of(COMPLETED));
+		when(paymentNotificationConfigMock.getAcceptedStatuses()).thenReturn(Set.of(COMPLETED));
 		when(paymentNotificationBodyModelMock.getStatus()).thenReturn(COMPLETED);
 		when(paymentNotificationBodyModelMock.getClientPaymentId()).thenReturn("290320");
 
@@ -98,7 +99,7 @@ class AcceptedPaymentNotificationStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnFalse_whenPaymentNotificationBodyModelIsAcceptedAndIsOperatorFee() {
-		when(paymentNotificationConfigMock.getAcceptedStatuses()).thenReturn(List.of(COMPLETED));
+		when(paymentNotificationConfigMock.getAcceptedStatuses()).thenReturn(Set.of(COMPLETED));
 		when(paymentNotificationBodyModelMock.getStatus()).thenReturn(COMPLETED);
 		when(paymentNotificationBodyModelMock.getClientPaymentId()).thenReturn("290320-operatorFee");
 
@@ -109,7 +110,7 @@ class AcceptedPaymentNotificationStrategyTest {
 
 	@Test
 	void isApplicable_shouldReturnFalse_whenPaymentNotificationBodyModelIsNotAccepted() {
-		when(paymentNotificationConfigMock.getAcceptedStatuses()).thenReturn(List.of(COMPLETED));
+		when(paymentNotificationConfigMock.getAcceptedStatuses()).thenReturn(Set.of(COMPLETED));
 		when(paymentNotificationBodyModelMock.getStatus()).thenReturn(NOT_COMPLETED);
 
 		final boolean result = testObj.isApplicable(paymentNotificationBodyModelMock);

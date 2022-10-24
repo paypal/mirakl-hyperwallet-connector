@@ -1,25 +1,23 @@
 package com.paypal.invoices.invoicesextract.service.hyperwallet.impl;
 
-import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletList;
 import com.hyperwallet.clientsdk.model.HyperwalletPayment;
-import com.hyperwallet.clientsdk.model.HyperwalletPaymentListOptions;
 import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.exceptions.HMCException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
+import com.paypal.invoices.infraestructure.configuration.PaymentNotificationConfig;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
 import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 import com.paypal.invoices.invoicesextract.service.hyperwallet.HyperWalletPaymentExtractService;
-import com.paypal.invoices.invoicesextract.service.hyperwallet.HyperwalletSDKService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Objects;
-import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -37,19 +35,22 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 
 	protected final MailNotificationUtil mailNotificationUtil;
 
-	protected final HyperwalletSDKService invoicesHyperwalletSDKService;
+	protected final PaymentHyperwalletApiClient client;
+
+	protected final PaymentNotificationConfig paymentNotificationConfig;
 
 	public HyperWalletPaymentExtractServiceImpl(
 			final Converter<InvoiceModel, HyperwalletPayment> payeeInvoiceModelToHyperwalletPaymentConverter,
 			final Converter<InvoiceModel, HyperwalletPayment> operatorInvoiceModelToHyperwalletPaymentConverter,
 			final Converter<CreditNoteModel, HyperwalletPayment> payeeCreditModelToHyperwalletPaymentConverter,
-			final HyperwalletSDKService invoicesHyperwalletSDKService,
-			final MailNotificationUtil mailNotificationUtil) {
+			final MailNotificationUtil mailNotificationUtil, final PaymentHyperwalletApiClient client,
+			final PaymentNotificationConfig paymentNotificationConfig) {
 		this.payeeInvoiceModelToHyperwalletPaymentConverter = payeeInvoiceModelToHyperwalletPaymentConverter;
 		this.operatorInvoiceModelToHyperwalletPaymentConverter = operatorInvoiceModelToHyperwalletPaymentConverter;
 		this.payeeCreditModelToHyperwalletPaymentConverter = payeeCreditModelToHyperwalletPaymentConverter;
 		this.mailNotificationUtil = mailNotificationUtil;
-		this.invoicesHyperwalletSDKService = invoicesHyperwalletSDKService;
+		this.client = client;
+		this.paymentNotificationConfig = paymentNotificationConfig;
 	}
 
 	/**
@@ -57,7 +58,7 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 	 * @return
 	 */
 	@Override
-	public void payPayeeInvoice(InvoiceModel invoice) {
+	public void payPayeeInvoice(final InvoiceModel invoice) {
 		payInvoice(invoice, payeeInvoiceModelToHyperwalletPaymentConverter);
 	}
 
@@ -67,13 +68,13 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 	}
 
 	@Override
-	public void payInvoiceOperator(InvoiceModel invoice) {
+	public void payInvoiceOperator(final InvoiceModel invoice) {
 		payInvoice(invoice, operatorInvoiceModelToHyperwalletPaymentConverter);
 	}
 
 	protected <T extends AccountingDocumentModel> void payInvoice(final T invoice,
 			final Converter<T, HyperwalletPayment> invoiceConverter) {
-		HyperwalletPayment pendingPayment = invoiceConverter.convert(invoice);
+		final HyperwalletPayment pendingPayment = invoiceConverter.convert(invoice);
 
 		if (isInvoiceCreated(pendingPayment)) {
 			log.warn("Invoice {} already sent to Hyperwallet", pendingPayment.getClientPaymentId());
@@ -82,7 +83,7 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 
 		log.info("Pending invoices to pay: [{}]", pendingPayment.getClientPaymentId());
 
-		HyperwalletPayment paidInvoice = createPayment(pendingPayment);
+		final HyperwalletPayment paidInvoice = createPayment(pendingPayment);
 
 		log.info("Paid invoices: [{}]", paidInvoice.getClientPaymentId());
 	}
@@ -90,9 +91,7 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 	protected HyperwalletPayment createPayment(final HyperwalletPayment hyperwalletPayment) {
 		try {
 			log.info("Trying to create payment for invoice [{}]", hyperwalletPayment.getClientPaymentId());
-			final Hyperwallet hyperwalletAPIClient = invoicesHyperwalletSDKService
-					.getHyperwalletInstanceWithProgramToken(hyperwalletPayment.getProgramToken());
-			final HyperwalletPayment payment = hyperwalletAPIClient.createPayment(hyperwalletPayment);
+			final HyperwalletPayment payment = client.createPayment(hyperwalletPayment);
 			log.info("Payment successfully created for invoice [{}]", hyperwalletPayment.getClientPaymentId());
 
 			return payment;
@@ -110,11 +109,13 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 		}
 	}
 
-	protected boolean isInvoiceCreated(HyperwalletPayment payment) {
+	protected boolean isInvoiceCreated(final HyperwalletPayment payment) {
 		try {
-			return getPayment(payment.getProgramToken(), payment.getClientPaymentId()).isPresent();
+			return getPayments(payment.getProgramToken(), payment.getClientPaymentId()).stream()
+					.map(HyperwalletPayment::getStatus)
+					.anyMatch(status -> !paymentNotificationConfig.getFailureStatuses().contains(status));
 		}
-		catch (Exception e) {
+		catch (final Exception e) {
 			// Let the flow of execution continue. Checking the existence of the payment
 			// shouldn't abort
 			// the payment creation process. If something is wrong the payment creation
@@ -124,16 +125,11 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 		}
 	}
 
-	protected Optional<HyperwalletPayment> getPayment(final String programToken, final String clientPaymentId) {
+	protected Collection<HyperwalletPayment> getPayments(final String programToken, final String clientPaymentId) {
 		try {
-			final Hyperwallet hyperwalletAPIClient = invoicesHyperwalletSDKService
-					.getHyperwalletInstanceWithProgramToken(programToken);
-			HyperwalletPaymentListOptions hyperwalletPaymentListOptions = new HyperwalletPaymentListOptions();
-			hyperwalletPaymentListOptions.setClientPaymentId(clientPaymentId);
-			final HyperwalletList<HyperwalletPayment> payments = hyperwalletAPIClient
-					.listPayments(hyperwalletPaymentListOptions);
+			final HyperwalletList<HyperwalletPayment> payments = client.listPayments(programToken, clientPaymentId);
 
-			return getFirstElement(payments);
+			return extractPaymentsFromQueryDTO(payments);
 		}
 		catch (final HyperwalletException e) {
 			log.error(String.format("Something went wrong trying to find payment for invoice [%s].%n%s",
@@ -143,9 +139,10 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 		}
 	}
 
-	private Optional<HyperwalletPayment> getFirstElement(HyperwalletList<HyperwalletPayment> payments) {
+	private Collection<HyperwalletPayment> extractPaymentsFromQueryDTO(
+			final HyperwalletList<HyperwalletPayment> payments) {
 		return Stream.ofNullable(payments).map(HyperwalletList::getData).filter(Objects::nonNull)
-				.flatMap(Collection::stream).findFirst();
+				.flatMap(Collection::stream).collect(Collectors.toUnmodifiableList());
 	}
 
 }

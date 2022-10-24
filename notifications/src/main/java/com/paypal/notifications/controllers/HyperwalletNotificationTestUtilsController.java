@@ -6,6 +6,7 @@ import com.paypal.infrastructure.repository.FailedNotificationInformationReposit
 import com.paypal.notifications.dto.NotificationInfoDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,8 +21,10 @@ import static org.springframework.http.HttpStatus.*;
 @Slf4j
 @RestController
 @RequestMapping("/test")
-@Profile({ "qa", "qaEncrypted" })
+@Profile({ "qa", "qaEncrypted", "k6" })
 public class HyperwalletNotificationTestUtilsController {
+
+	public static final String NOTIFICATION_NOT_FOUND = "Notification not found";
 
 	private FailedNotificationInformationRepository failedNotificationInformationRepository;
 
@@ -39,26 +42,27 @@ public class HyperwalletNotificationTestUtilsController {
 	}
 
 	@GetMapping("/failed-notifications/{notificationToken}")
-	public NotificationInfoDTO checkNotificationExistsInDatabaseByToken(@PathVariable final String notificationToken) {
+	public ResponseEntity<Object> checkNotificationExistsInDatabaseByToken(
+			@PathVariable final String notificationToken) {
 		final NotificationInfoEntity notification = failedNotificationInformationRepository
 				.findByNotificationToken(notificationToken);
 		if (notification == null) {
-			throw new ResponseStatusException(NOT_FOUND);
+			return new ResponseEntity<>(NOTIFICATION_NOT_FOUND, NOT_FOUND);
 		}
 
-		return notificationInfoEntityToNotificationInfoDTOConverter.convert(notification);
+		return new ResponseEntity<>(notificationInfoEntityToNotificationInfoDTOConverter.convert(notification), OK);
 	}
 
 	@GetMapping("/failed-notification-types/{notificationType}/targets/{targetToken}")
-	public NotificationInfoDTO checkNotificationExistsInDatabaseByTypeAndTarget(
+	public ResponseEntity<Object> checkNotificationExistsInDatabaseByTypeAndTarget(
 			@PathVariable final String notificationType, @PathVariable final String targetToken) {
 		final NotificationInfoEntity notification = failedNotificationInformationRepository
 				.findByTypeAndTarget(notificationType, targetToken);
 		if (notification == null) {
-			throw new ResponseStatusException(NOT_FOUND);
+			return new ResponseEntity<>(NOTIFICATION_NOT_FOUND, NOT_FOUND);
 		}
 
-		return notificationInfoEntityToNotificationInfoDTOConverter.convert(notification);
+		return new ResponseEntity<>(notificationInfoEntityToNotificationInfoDTOConverter.convert(notification), OK);
 	}
 
 	@PostMapping("/failed-notifications/")

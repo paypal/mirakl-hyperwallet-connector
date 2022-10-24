@@ -11,15 +11,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static com.paypal.notifications.controllers.HyperwalletNotificationTestUtilsController.NOTIFICATION_NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @ExtendWith(MockitoExtension.class)
 class HyperwalletNotificationTestUtilsControllerTest {
@@ -61,19 +62,18 @@ class HyperwalletNotificationTestUtilsControllerTest {
 		when(notificationInfoEntityToNotificationInfoDTOConverterMock.convert(notificationInfoEntity1Mock))
 				.thenReturn(notificationInfoDTO1Mock);
 
-		final NotificationInfoDTO result = testObj.checkNotificationExistsInDatabaseByToken(NOTIFICATION_TOKEN);
+		final ResponseEntity<Object> result = testObj.checkNotificationExistsInDatabaseByToken(NOTIFICATION_TOKEN);
 
-		assertThat(result).isEqualTo(notificationInfoDTO1Mock);
+		assertThat(result).extracting("status").isEqualTo(OK);
+		assertThat(result.getBody()).isEqualTo(notificationInfoDTO1Mock);
 	}
 
 	@Test
-	void checkNotificationExistsInDatabaseByToken_whenNotificationDoesNotExist_shouldThrow() {
-		when(failedNotificationInformationRepositoryMock.findByNotificationToken(NOTIFICATION_TOKEN)).thenReturn(null);
+	void checkNotificationExistsInDatabaseByToken_whenNotificationDoesNotExist_shouldReturnNoFound() {
+		final ResponseEntity<Object> result = testObj.checkNotificationExistsInDatabaseByToken(NOTIFICATION_TOKEN);
 
-		final Throwable throwable = catchThrowable(
-				() -> testObj.checkNotificationExistsInDatabaseByToken(NOTIFICATION_TOKEN));
-
-		checkExceptionWithType(throwable, NOT_FOUND);
+		assertThat(result).extracting("status").isEqualTo(NOT_FOUND);
+		assertThat(result.getBody()).isEqualTo(NOTIFICATION_NOT_FOUND);
 	}
 
 	@Test
@@ -83,21 +83,19 @@ class HyperwalletNotificationTestUtilsControllerTest {
 		when(notificationInfoEntityToNotificationInfoDTOConverterMock.convert(notificationInfoEntity1Mock))
 				.thenReturn(notificationInfoDTO1Mock);
 
-		final NotificationInfoDTO result = testObj.checkNotificationExistsInDatabaseByTypeAndTarget(NOTIFICATION_TYPE,
-				TARGET_TOKEN);
+		final ResponseEntity<Object> result = testObj
+				.checkNotificationExistsInDatabaseByTypeAndTarget(NOTIFICATION_TYPE, TARGET_TOKEN);
 
-		assertThat(result).isEqualTo(notificationInfoDTO1Mock);
+		assertThat(result).extracting("status").isEqualTo(OK);
+		assertThat(result.getBody()).isEqualTo(notificationInfoDTO1Mock);
 	}
 
 	@Test
-	void checkNotificationExistsInDatabaseByTypeAndTarget_whenNotificationDoesNotExist_shouldThrowException() {
-		when(failedNotificationInformationRepositoryMock.findByTypeAndTarget(NOTIFICATION_TYPE, TARGET_TOKEN))
-				.thenReturn(null);
+	void checkNotificationExistsInDatabaseByTypeAndTarget_whenNotificationDoesNotExist_shouldReturnNoTFound() {
+		final ResponseEntity<Object> result = testObj.checkNotificationExistsInDatabaseByToken(NOTIFICATION_TOKEN);
 
-		final Throwable throwable = catchThrowable(
-				() -> testObj.checkNotificationExistsInDatabaseByTypeAndTarget(NOTIFICATION_TYPE, TARGET_TOKEN));
-
-		checkExceptionWithType(throwable, NOT_FOUND);
+		assertThat(result).extracting("status").isEqualTo(NOT_FOUND);
+		assertThat(result.getBody()).isEqualTo(NOTIFICATION_NOT_FOUND);
 	}
 
 	@Test
@@ -149,9 +147,9 @@ class HyperwalletNotificationTestUtilsControllerTest {
 		checkExceptionWithType(throwable, INTERNAL_SERVER_ERROR);
 	}
 
-	private void checkExceptionWithType(final Throwable throwable, final HttpStatus notFound) {
+	private void checkExceptionWithType(final Throwable throwable, final HttpStatus httpStatus) {
 		assertThat(throwable).isInstanceOf(ResponseStatusException.class);
-		assertThat(((ResponseStatusException) throwable).getStatus()).isEqualTo(notFound);
+		assertThat(((ResponseStatusException) throwable).getStatus()).isEqualTo(httpStatus);
 	}
 
 }
