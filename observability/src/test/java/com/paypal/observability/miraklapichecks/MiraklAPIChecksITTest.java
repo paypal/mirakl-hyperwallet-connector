@@ -1,19 +1,16 @@
 package com.paypal.observability.miraklapichecks;
 
+import com.paypal.observability.ObservabilityIntegrationTest;
+import com.paypal.observability.miraklapichecks.model.MiraklAPICheck;
+import com.paypal.observability.miraklapichecks.model.MiraklAPICheckStatus;
+import com.paypal.observability.miraklapichecks.services.MiraklHealthCheckService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.paypal.observability.miraklapichecks.model.MiraklAPICheck;
-import com.paypal.observability.miraklapichecks.model.MiraklAPICheckStatus;
-import com.paypal.observability.miraklapichecks.services.MiraklHealthCheckService;
-import com.paypal.observability.testsupport.AbstractMockServerITTest;
-import com.paypal.observability.testsupport.ObservabilityWebIntegrationContext;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ObservabilityWebIntegrationContext
-class MiraklAPIChecksITTest extends AbstractMockServerITTest {
+class MiraklAPIChecksITTest extends ObservabilityIntegrationTest {
 
 	@Value("${server.url}")
 	private String serverUrl;

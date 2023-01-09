@@ -8,6 +8,7 @@ dependencies {
     implementation 'org.javamoney:moneta:1.4.2'
     implementation 'org.json:json:20201115'
     implementation 'org.apache.commons:commons-collections4:4.4'
+//    implementation 'com.google.code.gson:gson:2.10'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -18,9 +19,12 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.mockito:mockito-junit-jupiter'
+    testImplementation 'org.mock-server:mockserver-spring-test-listener:5.14.0'
     testImplementation 'com.callibrity.logging:log-tracker:1.0.1'
 
     implementation project(":infrastructure")
+    testImplementation project(":infrastructure-test")
+
 }
 
 bootJar {

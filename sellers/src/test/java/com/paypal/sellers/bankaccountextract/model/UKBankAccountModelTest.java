@@ -8,7 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static com.paypal.sellers.sellersextract.model.SellerModelConstants.*;
-import static com.paypal.sellers.sellersextract.model.SellerModelConstants.HYPERWALLET_PROGRAM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

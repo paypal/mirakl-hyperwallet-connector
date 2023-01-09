@@ -1,5 +1,7 @@
 package com.paypal.sellers.infrastructure.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -32,7 +34,11 @@ public final class CountriesUtil {
 	 * @return the {@link Locale}
 	 */
 	public static Optional<Locale> getLocaleByIsocode(final String isocode) {
-		return Optional.ofNullable(localeMap.get(isocode));
+		if (StringUtils.isBlank(isocode)) {
+			return Optional.empty();
+		}
+
+		return Optional.ofNullable(localeMap.get(isocode.toUpperCase()));
 	}
 
 }

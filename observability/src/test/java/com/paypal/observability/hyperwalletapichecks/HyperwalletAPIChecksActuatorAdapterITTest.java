@@ -1,19 +1,16 @@
 package com.paypal.observability.hyperwalletapichecks;
 
+import com.paypal.infrastructure.hyperwallet.api.UserHyperwalletApiConfig;
+import com.paypal.observability.ObservabilityIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.paypal.infrastructure.hyperwallet.api.UserHyperwalletApiConfig;
-import com.paypal.observability.testsupport.AbstractMockServerITTest;
-import com.paypal.observability.testsupport.ObservabilityWebIntegrationContext;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ObservabilityWebIntegrationContext
-class HyperwalletAPIChecksActuatorAdapterITTest extends AbstractMockServerITTest {
+class HyperwalletAPIChecksActuatorAdapterITTest extends ObservabilityIntegrationTest {
 
 	@Autowired
 	private UserHyperwalletApiConfig userHyperwalletApiConfig;

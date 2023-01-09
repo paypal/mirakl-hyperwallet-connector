@@ -3,6 +3,8 @@ package com.paypal.sellers.bankaccountextract.model;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Objects;
+
 /**
  * Creates an object of type {@link ABABankAccountModel}
  */
@@ -47,6 +49,26 @@ public class ABABankAccountModel extends BankAccountModel {
 				.branchId(branchId)
 				.bankAccountPurpose(bankAccountPurpose);
 		//@formatter:on
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		ABABankAccountModel that = (ABABankAccountModel) o;
+		return Objects.equals(branchId, that.branchId) && Objects.equals(bankAccountPurpose, that.bankAccountPurpose);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), branchId, bankAccountPurpose);
 	}
 
 	public static class Builder extends BankAccountModel.Builder<Builder> {

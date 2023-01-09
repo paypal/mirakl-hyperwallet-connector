@@ -67,7 +67,7 @@ public class HyperwalletDocumentUploadServiceImpl implements HyperwalletDocument
 			final Hyperwallet hyperwallet) {
 		if (kycDocumentInfoModel instanceof KYCDocumentBusinessStakeHolderInfoModel) {
 			final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = (KYCDocumentBusinessStakeHolderInfoModel) kycDocumentInfoModel;
-			hyperwallet.uploadStakeholderDocuments(kycDocumentInfoModel.getUserToken(),
+			hyperwallet.uploadStakeholderDocuments(kycDocumentBusinessStakeHolderInfoModel.getUserToken(),
 					kycDocumentBusinessStakeHolderInfoModel.getToken(), hyperwalletVerificationDocuments);
 		}
 		else {

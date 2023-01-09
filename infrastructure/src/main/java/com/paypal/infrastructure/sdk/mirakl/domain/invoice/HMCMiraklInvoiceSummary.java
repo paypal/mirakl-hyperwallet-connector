@@ -10,10 +10,12 @@ public class HMCMiraklInvoiceSummary extends MiraklInvoiceSummary {
 	@JsonProperty("amount_transferred_to_operator")
 	private BigDecimal amountTransferredToOperator;
 
+	@Override
 	public BigDecimal getAmountTransferredToOperator() {
 		return amountTransferredToOperator;
 	}
 
+	@Override
 	public void setAmountTransferredToOperator(final BigDecimal amountTransferredToOperator) {
 		this.amountTransferredToOperator = amountTransferredToOperator;
 	}

@@ -42,7 +42,7 @@ public class BusinessStakeholdersExtractBatchJobItemsExtractor
 	 * @return a {@link Collection} of {@link BusinessStakeholderExtractJobItem}
 	 */
 	@Override
-	protected Collection<BusinessStakeholderExtractJobItem> getItems(final Date delta) {
+	protected Collection<BusinessStakeholderExtractJobItem> getItems(BatchJobContext ctx, final Date delta) {
 		final List<SellerModel> miraklProfessionalSellers = miraklSellersExtractService.extractProfessionals(delta);
 		final List<BusinessStakeHolderModel> businessStakeHolderModels = businessStakeholderExtractService
 				.extractBusinessStakeHolders(miraklProfessionalSellers);

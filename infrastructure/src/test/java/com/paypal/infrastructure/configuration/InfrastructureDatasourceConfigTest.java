@@ -1,9 +1,6 @@
 package com.paypal.infrastructure.configuration;
 
 import com.paypal.infrastructure.InfrastructureConnectorApplication;
-import com.paypal.infrastructure.batchjob.BatchJobFailedItem;
-import com.paypal.infrastructure.model.entity.JobExecutionInformationEntity;
-import com.paypal.infrastructure.model.entity.NotificationInfoEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;

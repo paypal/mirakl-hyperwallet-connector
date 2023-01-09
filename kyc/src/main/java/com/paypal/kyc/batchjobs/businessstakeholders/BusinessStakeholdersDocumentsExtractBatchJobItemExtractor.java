@@ -3,6 +3,8 @@ package com.paypal.kyc.batchjobs.businessstakeholders;
 import com.paypal.infrastructure.batchjob.AbstractDeltaBatchJobItemsExtractor;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.infrastructure.batchjob.BatchJobTrackingService;
+import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
+import com.paypal.kyc.model.KYCDocumentsExtractionResult;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklBusinessStakeholderDocumentsExtractService;
 import org.springframework.stereotype.Service;
 
@@ -36,9 +38,18 @@ public class BusinessStakeholdersDocumentsExtractBatchJobItemExtractor
 	 * {@link BusinessStakeholdersDocumentsExtractBatchJobItem}
 	 */
 	@Override
-	protected Collection<BusinessStakeholdersDocumentsExtractBatchJobItem> getItems(final Date delta) {
-		return miraklBusinessStakeholderDocumentsExtractService.extractBusinessStakeholderDocuments(delta).stream()
-				.map(BusinessStakeholdersDocumentsExtractBatchJobItem::new).collect(Collectors.toList());
+	protected Collection<BusinessStakeholdersDocumentsExtractBatchJobItem> getItems(BatchJobContext ctx,
+			final Date delta) {
+		//@formatter:off
+		KYCDocumentsExtractionResult<KYCDocumentBusinessStakeHolderInfoModel> kycDocumentsExtractionResult =
+				miraklBusinessStakeholderDocumentsExtractService.extractBusinessStakeholderDocuments(delta);
+		ctx.setPartialItemExtraction(kycDocumentsExtractionResult.hasFailed());
+		ctx.setNumberOfItemsNotSuccessfullyExtracted(kycDocumentsExtractionResult.getNumberOfFailures());
+
+		return kycDocumentsExtractionResult.getExtractedDocuments().stream()
+				.map(BusinessStakeholdersDocumentsExtractBatchJobItem::new)
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 }

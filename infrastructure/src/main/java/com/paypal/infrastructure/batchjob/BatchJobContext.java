@@ -2,6 +2,8 @@ package com.paypal.infrastructure.batchjob;
 
 import org.quartz.JobExecutionContext;
 
+import java.util.Optional;
+
 /**
  * Holds batch job context info.
  */
@@ -18,6 +20,34 @@ public interface BatchJobContext {
 	 * @return the job unique identifier.
 	 */
 	String getJobUuid();
+
+	/**
+	 * Returns if the item extraction has not been fully successful and only a part of all
+	 * the potential items to be processed were retrieved.
+	 * @return whether the item extraction has been partial or fully successful.
+	 */
+	boolean isPartialItemExtraction();
+
+	/**
+	 * Sets if the extraction has not been fully successful and only a part of all the
+	 * potential items to be processed were retrieved.
+	 * @param partialItemExtraction whether the item extraction has been partial or fully
+	 * successful.
+	 */
+	void setPartialItemExtraction(boolean partialItemExtraction);
+
+	/**
+	 * Returns the number of items that couldn't be extracted, if this number is known.
+	 * @return the number of items that couldn't be extracted.
+	 */
+	Optional<Integer> getNumberOfItemsNotSuccessfullyExtracted();
+
+	/**
+	 * Sets the number of items that couldn't be extracted.
+	 * @param numberOfItemsNotSuccessfullyExtracted the number of items that couldn't be
+	 * extracted.
+	 */
+	void setNumberOfItemsNotSuccessfullyExtracted(int numberOfItemsNotSuccessfullyExtracted);
 
 	/**
 	 * Sets the number of items to be processed.
@@ -73,6 +103,11 @@ public interface BatchJobContext {
 	 * Set job {@link BatchJobStatus#FINISHED} status.
 	 */
 	void setFinishedStatus();
+
+	/**
+	 * Set job {@link BatchJobStatus#FINISHED_WITH_FAILURES} status.
+	 */
+	void setFinishedWithFailuresStatus();
 
 	/**
 	 * Set job {@link BatchJobStatus#FAILED} status.

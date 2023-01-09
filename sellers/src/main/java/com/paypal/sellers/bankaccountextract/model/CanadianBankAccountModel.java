@@ -2,6 +2,8 @@ package com.paypal.sellers.bankaccountextract.model;
 
 import lombok.Getter;
 
+import java.util.Objects;
+
 /**
  * Creates an object of type {@link CanadianBankAccountModel}
  */
@@ -45,6 +47,26 @@ public class CanadianBankAccountModel extends BankAccountModel {
 				.bankId(bankId)
 				.branchId(branchId);
 		//@formatter:on
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		CanadianBankAccountModel that = (CanadianBankAccountModel) o;
+		return Objects.equals(bankId, that.bankId) && Objects.equals(branchId, that.branchId);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), bankId, branchId);
 	}
 
 	public static class Builder extends BankAccountModel.Builder<CanadianBankAccountModel.Builder> {

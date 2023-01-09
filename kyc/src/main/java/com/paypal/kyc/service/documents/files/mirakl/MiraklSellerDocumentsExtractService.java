@@ -2,9 +2,9 @@ package com.paypal.kyc.service.documents.files.mirakl;
 
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
+import com.paypal.kyc.model.KYCDocumentsExtractionResult;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Interface that manages logic of getting seller information related to KYC in Mirakl
@@ -15,10 +15,12 @@ public interface MiraklSellerDocumentsExtractService extends MiraklDocumentsExtr
 	 * Obtains valid and requiresKYC flagged proof of identity/business sellers since a
 	 * delta time
 	 * @param delta
-	 * @return {@link List< KYCDocumentSellerInfoModel >} valids to be sent to other
-	 * system for KYC verification
+	 * @return {@link KYCDocumentsExtractionResult< KYCDocumentSellerInfoModel >} valids
+	 * to be sent to other system for KYC verification, including information about
+	 * failures during the extraction process
 	 */
-	List<KYCDocumentSellerInfoModel> extractProofOfIdentityAndBusinessSellerDocuments(Date delta);
+	KYCDocumentsExtractionResult<KYCDocumentSellerInfoModel> extractProofOfIdentityAndBusinessSellerDocuments(
+			Date delta);
 
 	/**
 	 * Retrieves a KYCDocumentInfoModel filled with all the information from a MiraklShop

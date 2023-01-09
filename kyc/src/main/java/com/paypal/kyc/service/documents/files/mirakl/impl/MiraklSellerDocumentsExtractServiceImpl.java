@@ -3,7 +3,6 @@ package com.paypal.kyc.service.documents.files.mirakl.impl;
 import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.MiraklShops;
-
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShopReturn;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
@@ -18,6 +17,7 @@ import com.paypal.infrastructure.util.LoggingConstantsUtil;
 import com.paypal.kyc.model.KYCConstants;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
+import com.paypal.kyc.model.KYCDocumentsExtractionResult;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklSellerDocumentDownloadExtractService;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklSellerDocumentsExtractService;
 import lombok.extern.slf4j.Slf4j;
@@ -63,7 +63,8 @@ public class MiraklSellerDocumentsExtractServiceImpl extends AbstractMiraklDocum
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<KYCDocumentSellerInfoModel> extractProofOfIdentityAndBusinessSellerDocuments(final Date delta) {
+	public KYCDocumentsExtractionResult<KYCDocumentSellerInfoModel> extractProofOfIdentityAndBusinessSellerDocuments(
+			final Date delta) {
 		final MiraklGetShopsRequest miraklGetShopsRequest = miraklGetShopsRequestConverter.convert(delta);
 		log.info("Retrieving modified shops for proof of identity/business sellers documents since [{}]", delta);
 		final MiraklShops shops = miraklOperatorClient.getShops(miraklGetShopsRequest);
@@ -119,11 +120,14 @@ public class MiraklSellerDocumentsExtractServiceImpl extends AbstractMiraklDocum
 				.collect(Collectors.toList());
 		//@formatter:on
 
+		KYCDocumentsExtractionResult<KYCDocumentSellerInfoModel> kycDocumentsExtractionResult = new KYCDocumentsExtractionResult<>();
 		//@formatter:off
-		return shopsWithSelectedVerificationDocuments.stream()
+		shopsWithSelectedVerificationDocuments.stream()
 				.filter(kycDocumentInfoModel -> !ObjectUtils.isEmpty(kycDocumentInfoModel.getUserToken()))
-				.map(miraklSellerDocumentDownloadExtractService::getDocumentsSelectedBySeller)
-				.collect(Collectors.toList());
+				.forEach(kycDocumentSellerInfoModel -> kycDocumentsExtractionResult.addDocument(
+						() -> miraklSellerDocumentDownloadExtractService.getDocumentsSelectedBySeller(kycDocumentSellerInfoModel)));
+
+		return kycDocumentsExtractionResult;
 		//@formatter:on
 	}
 

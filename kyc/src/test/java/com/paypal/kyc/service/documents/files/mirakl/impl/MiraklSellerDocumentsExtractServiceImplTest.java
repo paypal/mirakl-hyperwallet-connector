@@ -15,6 +15,7 @@ import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApi
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
+import com.paypal.kyc.model.KYCDocumentsExtractionResult;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklSellerDocumentDownloadExtractService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -124,7 +125,7 @@ class MiraklSellerDocumentsExtractServiceImplTest {
 				.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCSellerMock))
 						.thenReturn(kycDocumentInfoModelRequiringKYCPopulatedSellerMock);
 
-		final List<KYCDocumentSellerInfoModel> result = testObj
+		final KYCDocumentsExtractionResult<KYCDocumentSellerInfoModel> result = testObj
 				.extractProofOfIdentityAndBusinessSellerDocuments(deltaMock);
 
 		verify(miraklSellerDocumentDownloadExtractServiceMock)
@@ -135,7 +136,8 @@ class MiraklSellerDocumentsExtractServiceImplTest {
 				.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCWithoutTokenSellerMock);
 		verify(miraklSellerDocumentDownloadExtractServiceMock, never())
 				.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCWithoutValidationSellerMock);
-		assertThat(result).containsExactlyInAnyOrder(kycDocumentInfoModelRequiringKYCPopulatedSellerMock);
+		assertThat(result.getExtractedDocuments())
+				.containsExactlyInAnyOrder(kycDocumentInfoModelRequiringKYCPopulatedSellerMock);
 	}
 
 	@Test
@@ -145,10 +147,10 @@ class MiraklSellerDocumentsExtractServiceImplTest {
 				.thenReturn(miraklShopsResponseMock);
 		when(miraklShopsResponseMock.getShops()).thenReturn(null);
 
-		final List<KYCDocumentSellerInfoModel> result = testObj
+		final KYCDocumentsExtractionResult<KYCDocumentSellerInfoModel> result = testObj
 				.extractProofOfIdentityAndBusinessSellerDocuments(deltaMock);
 
-		assertThat(result).isEmpty();
+		assertThat(result.getExtractedDocuments()).isEmpty();
 	}
 
 	@Test

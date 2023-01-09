@@ -1,4 +1,3 @@
 rootProject.name = 'hyperwallet-mirakl-connector'
 
-include 'infrastructure', 'sellers', 'invoices', 'web', 'notifications','kyc','reports', 'observability'
-
+include 'infrastructure', 'sellers', 'invoices', 'web', 'notifications','kyc','reports', 'observability', 'infrastructure-test'

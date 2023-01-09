@@ -158,6 +158,14 @@ class QuartzBatchJobContextAdapterTest {
 	}
 
 	@Test
+	void setFinishedWithFailureStatus_ShouldSetFinishedStatusInJobDataMap() {
+
+		testObj.setFinishedWithFailuresStatus();
+
+		verify(jobDataMapMock).put(KEY_BATCH_JOB_STATUS, BatchJobStatus.FINISHED_WITH_FAILURES);
+	}
+
+	@Test
 	void setFailedStatus_ShouldSetFailedStatusInJobDataMap() {
 
 		testObj.setFailedStatus();

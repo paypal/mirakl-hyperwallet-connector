@@ -31,11 +31,10 @@ dependencies {
 
     runtimeOnly 'net.minidev:json-smart:2.3'
 
-    api 'com.hyperwallet:sdk:2.2.5'
-    api 'com.mirakl:mmp-sdk-operator:4.10.0'
-
     implementation project(":infrastructure")
     implementation project(":notifications")
+	testImplementation project(":infrastructure-test")
+
 }
 
 bootJar {

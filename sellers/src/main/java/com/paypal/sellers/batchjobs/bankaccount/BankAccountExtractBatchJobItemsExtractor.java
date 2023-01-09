@@ -33,7 +33,7 @@ public class BankAccountExtractBatchJobItemsExtractor
 	 * @return a {@link Collection} of {@link BankAccountExtractJobItem}
 	 */
 	@Override
-	protected Collection<BankAccountExtractJobItem> getItems(Date delta) {
+	protected Collection<BankAccountExtractJobItem> getItems(BatchJobContext ctx, final Date delta) {
 		Collection<BankAccountExtractJobItem> individualBankAccounts = miraklSellersExtractService
 				.extractIndividuals(delta).stream().map(BankAccountExtractJobItem::new).collect(Collectors.toList());
 		Collection<BankAccountExtractJobItem> professionalBankAccounts = miraklSellersExtractService

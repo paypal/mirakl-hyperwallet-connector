@@ -10,6 +10,7 @@ buildscript {
         classpath 'io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.31'
         classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.1'
         classpath "com.palantir.gradle.gitversion:gradle-git-version:0.12.3"
+		classpath "io.spring.gradle:dependency-management-plugin:1.0.10.RELEASE"
     }
 }
 
@@ -22,94 +23,113 @@ plugins {
 }
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 allprojects {
-    group = 'com.paypal'
-    version = projectVersion
+	group = 'com.paypal'
+	version = projectVersion
 }
 
+
 subprojects {
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'java-library'
-    apply plugin: 'java'
-    apply plugin: 'io.spring.javaformat'
-    apply plugin: 'jacoco'
-    apply plugin: 'checkstyle'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'java-library'
+	apply plugin: 'java'
+	apply plugin: 'io.spring.javaformat'
+	apply plugin: 'jacoco'
+	apply plugin: 'checkstyle'
 
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(15)
-        }
-    }
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(15)
+		}
+	}
 
-    ext {
-        set('springCloudVersion', "Hoxton.SR8")
-    }
+	ext {
+		set('springCloudVersion', "2021.0.5")
+	}
 
-    repositories {
-        mavenCentral()
-        maven {
-            credentials {
-                username "$System.env.PAYPAL_MIRAKL_SDK_USER"
-                password "$System.env.PAYPAL_MIRAKL_SDK_PASSWORD"
-            }
-            url "https://artifactory.mirakl.net/artifactory/mirakl-ext-repo/"
-        }
-    }
+	repositories {
+		mavenCentral()
+		maven {
+			credentials {
+				username "$System.env.PAYPAL_MIRAKL_SDK_USER"
+				password "$System.env.PAYPAL_MIRAKL_SDK_PASSWORD"
+			}
+			url "https://artifactory.mirakl.net/artifactory/mirakl-ext-repo/"
+		}
+	}
 
-    test {
-        useJUnitPlatform()
-    }
+	task noParallelTest(type: Test) {
+		group = 'verification'
+		description = "Runs tests that can't be ran in parallel."
+		maxParallelForks = 1
 
-    dependencyManagement {
-        overriddenByDependencies = false
-        imports {
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-        }
-        dependencies {
-            dependency 'com.github.ben-manes.caffeine:caffeine:3.1.0'
-            dependency 'org.awaitility:awaitility:4.2.0'
-        }
-    }
+		useJUnitPlatform {
+			includeTags("noParallel")
+		}
 
-    compileJava {
-        dependsOn format
-    }
+	}
 
-    jacoco {
-        toolVersion = "0.8.6"
-        reportsDirectory = file("$buildDir/reports/jacoco") // Default value
-    }
+	noParallelTest.mustRunAfter('test')
 
-    jacocoTestReport {
-        dependsOn test
 
-        reports {
-            xml.enabled true
-            csv.enabled false
-            html.enabled true
-        }
-    }
+	test {
+		maxParallelForks = Runtime.runtime.availableProcessors()
 
-    checkstyle {
-        toolVersion = "8.45.1"
-        configDirectory = file("${rootDir}/src/config/checkstyle")
-        checkstyleTest.enabled = false
-    }
+		useJUnitPlatform {
+			excludeTags("noParallel")
+		}
+	}
 
-    bootBuildImage {
-        environment =
-                environment = ["BP_JVM_VERSION"              : "17",
-                               "BPE_DELIM_JAVA_TOOL_OPTIONS" : " ",
-                               "BPE_APPEND_JAVA_TOOL_OPTIONS": "-Xms256m -Xmx1g -XX:MaxDirectMemorySize=200m -Dfile.encoding=UTF8"]
-    }
+	dependencyManagement {
+		overriddenByDependencies = false
+		imports {
+			mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+		}
+		dependencies {
+			dependency 'com.github.ben-manes.caffeine:caffeine:3.1.0'
+			dependency 'org.awaitility:awaitility:4.2.0'
+		}
+	}
 
-    springBoot {
-        buildInfo()
-    }
+	compileJava {
+		dependsOn format
+	}
+
+	jacoco {
+		toolVersion = "0.8.6"
+		reportsDirectory = file("$buildDir/reports/jacoco") // Default value
+	}
+
+	jacocoTestReport {
+		dependsOn test
+
+		reports {
+			xml.enabled true
+			csv.enabled false
+			html.enabled true
+		}
+	}
+
+	checkstyle {
+		toolVersion = "8.45.1"
+		configDirectory = file("${rootDir}/src/config/checkstyle")
+		checkstyleTest.enabled = false
+	}
+
+	bootBuildImage {
+		environment =
+				environment = ["BP_JVM_VERSION"              : "17",
+							   "BPE_DELIM_JAVA_TOOL_OPTIONS" : " ",
+							   "BPE_APPEND_JAVA_TOOL_OPTIONS": "-Xms256m -Xmx2g -XX:MaxDirectMemorySize=200m -Dfile.encoding=UTF8"]
+	}
+
+	springBoot {
+		buildInfo()
+	}
 }
 
 bootJar {

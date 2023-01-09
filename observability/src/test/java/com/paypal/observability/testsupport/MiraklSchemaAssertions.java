@@ -12,9 +12,9 @@ import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public abstract class AbstractSchemaChecksITTest extends AbstractMockServerITTest {
+public class MiraklSchemaAssertions {
 
-	protected void assertThatContainsEntry(final MiraklSchemaDiffReport diffReport,
+	public static void assertThatContainsEntry(final MiraklSchemaDiffReport diffReport,
 			final MiraklSchemaDiffEntryType entryType, final String affectedItem) {
 		//@formatter:off
 		final Condition<MiraklSchemaDiffReportEntry> condition = new Condition<>(entry -> {
@@ -28,7 +28,7 @@ public abstract class AbstractSchemaChecksITTest extends AbstractMockServerITTes
 		assertThat(diffReport.getDiffs()).haveAtLeast(1, condition);
 	}
 
-	protected void assertThatContainsEntry(final MiraklSchemaDiffReport diffReport,
+	public static void assertThatContainsEntry(final MiraklSchemaDiffReport diffReport,
 			final MiraklSchemaDiffEntryType entryType, final String affectedItem, String affectedField) {
 		//@formatter:off
 		final Condition<MiraklSchemaDiffReportEntry> condition = new Condition<>(entry -> {
@@ -42,12 +42,12 @@ public abstract class AbstractSchemaChecksITTest extends AbstractMockServerITTes
 		assertThat(diffReport.getDiffs()).haveAtLeast(1, condition);
 	}
 
-	private boolean matchsField(MiraklSchemaDiffReportEntry entry, String affectedField) {
+	private static boolean matchsField(MiraklSchemaDiffReportEntry entry, String affectedField) {
 		return ((MiraklSchemaDiffEntryIncorrectAttributeValue) entry.getDiff()).getAttributeName()
 				.equals(affectedField);
 	}
 
-	private boolean matchsItem(MiraklSchemaDiffReportEntry entry, String affectedItem) {
+	private static boolean matchsItem(MiraklSchemaDiffReportEntry entry, String affectedItem) {
 		if (ReflectionUtils.findField(entry.getDiff().getClass(), "expected") != null) {
 			final MiraklSchemaItem item = (MiraklSchemaItem) ReflectionTestUtils.getField(entry.getDiff(),
 					entry.getDiff().getClass(), "expected");
@@ -60,7 +60,7 @@ public abstract class AbstractSchemaChecksITTest extends AbstractMockServerITTes
 		}
 	}
 
-	protected void assertSeverityForDiffType(final MiraklSchemaDiffReport diffReport,
+	public static void assertSeverityForDiffType(final MiraklSchemaDiffReport diffReport,
 			final MiraklSchemaDiffReportSeverity severity, final MiraklSchemaDiffEntryType miraklSchemaDiffEntryType) {
 		//@formatter:off
 		diffReport.getDiffs().stream()
@@ -70,7 +70,7 @@ public abstract class AbstractSchemaChecksITTest extends AbstractMockServerITTes
 		//@formatter:on
 	}
 
-	protected void assertSeverityForDiffType(final MiraklSchemaDiffReport diffReport,
+	public static void assertSeverityForDiffType(final MiraklSchemaDiffReport diffReport,
 			final MiraklSchemaDiffReportSeverity severity, String affectedField) {
 		//@formatter:off
 		diffReport.getDiffs().stream()

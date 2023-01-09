@@ -1,0 +1,841 @@
+{
+  "shops": [
+	{
+	  "applicable_taxes": [
+		{
+		  "code": "TAXDEFAULT",
+		  "label": "Default VAT"
+		}
+	  ],
+	  "approval_delay": null,
+	  "approval_rate": null,
+	  "banner": null,
+	  "billing_info": {
+		"bank_city": "Barcelona",
+		"bank_name": "Santander",
+		"bank_street": "115 W 42nd St",
+		"bic": "CAIXESBBXXX",
+		"iban": "ES3920956580417064096726",
+		"owner": "John Doe",
+		"zip_code": null
+	  },
+	  "channels": [
+		"INIT"
+	  ],
+	  "closed_from": null,
+	  "closed_to": null,
+	  "contact_informations": {
+		"city": "Valencia",
+		"civility": "Mr",
+		"country": "ESP",
+		"email": "fakeMail27470@e2ycommerce.com",
+		"fax": null,
+		"firstname": "Fake",
+		"lastname": "Name",
+		"phone": null,
+		"phone_secondary": null,
+		"state": null,
+		"street1": "30 King Street",
+		"street2": null,
+		"web_site": null,
+		"zip_code": "46001"
+	  },
+	  "currency_iso_code": "EUR",
+	  "date_created": "2022-11-28T12:00:51Z",
+	  "description": null,
+	  "domains": [
+		"PRODUCT"
+	  ],
+	  "evaluations_count": 0,
+	  "free_shipping": false,
+	  "grade": null,
+	  "immunity_date": null,
+	  "is_professional": true,
+	  "kyc": {
+		"reason": null,
+		"status": "PENDING_SUBMISSION"
+	  },
+	  "last_updated_date": "2022-11-28T12:00:51Z",
+	  "logo": null,
+	  "model": "MARKETPLACE",
+	  "offers_count": 0,
+	  "operator_internal_id": null,
+	  "order_messages_response_delay": null,
+	  "orders_count": 0,
+	  "payment_details": {
+		"paid_balance": 0.00,
+		"pay_subscription": true,
+		"payable_balance": 0.00,
+		"payment_blocked": false,
+		"pending_balance": 0.00,
+		"subscription_free_from": null,
+		"subscription_free_to": null
+	  },
+	  "payment_info": {
+		"@type": "IBAN",
+		"bank_city": "Barcelona",
+		"bank_name": "Santander",
+		"bank_street": "115 W 42nd St",
+		"bic": "CAIXESBBXXX",
+		"iban": "ES3920956580417064096726",
+		"owner": "John Doe"
+	  },
+	  "premium": false,
+	  "premium_state": "DEFAULT",
+	  "pro_details": {
+		"VAT_number": null,
+		"corporate_name": "My test shop",
+		"identification_number": "012327470",
+		"tax_identification_number": null
+	  },
+	  "return_policy": null,
+	  "shipping_country": null,
+	  "shipping_types": [
+		"STANDARD"
+	  ],
+	  "shipping_zones": [
+		"DE"
+	  ],
+	  "shippings": [
+		{
+		  "additional_fields": [],
+		  "shipping_free_amount": null,
+		  "shipping_type_code": "STANDARD",
+		  "shipping_type_label": "Standard",
+		  "shipping_zone_code": "DE",
+		  "shipping_zone_label": "GER"
+		}
+	  ],
+	  "shop_additional_fields": [
+		{
+		  "code": "hw-bankaccount-state",
+		  "type": "STRING",
+		  "value": "Spain"
+		},
+		{
+		  "code": "hw-business-reg-country",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-business-reg-state-province",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-business-type",
+		  "type": "LIST",
+		  "value": "CORPORATION"
+		},
+		{
+		  "code": "hw-country-of-birth",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-country-of-nationality",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-date-of-birth",
+		  "type": "DATE",
+		  "value": "1990-10-10T08:00:00Z"
+		},
+		{
+		  "code": "hw-government-id-type",
+		  "type": "LIST",
+		  "value": "GOVERNMENT_ID"
+		},
+		{
+		  "code": "hw-GOVERNMENT_ID-id",
+		  "type": "STRING",
+		  "value": "XCV537831G27470"
+		},
+		{
+		  "code": "hw-prof-proof-business-type",
+		  "type": "LIST",
+		  "value": "INCORPORATION"
+		},
+		{
+		  "code": "hw-program",
+		  "type": "LIST",
+		  "value": "DEFAULT"
+		},
+		{
+		  "code": "hw-stakeholder-address-line1-1",
+		  "type": "STRING",
+		  "value": "C Llucmajor 141a"
+		},
+		{
+		  "code": "hw-stakeholder-address-line1-2",
+		  "type": "STRING",
+		  "value": "C Escao 162b"
+		},
+		{
+		  "code": "hw-stakeholder-business-contact-1",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-stakeholder-business-contact-2",
+		  "type": "BOOLEAN",
+		  "value": "false"
+		},
+		{
+		  "code": "hw-stakeholder-city-1",
+		  "type": "STRING",
+		  "value": "Mallorca"
+		},
+		{
+		  "code": "hw-stakeholder-city-2",
+		  "type": "STRING",
+		  "value": "Getafe"
+		},
+		{
+		  "code": "hw-stakeholder-country-1",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-country-2",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-country-of-birth-1",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-country-of-birth-2",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-director-1",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-stakeholder-director-2",
+		  "type": "BOOLEAN",
+		  "value": "false"
+		},
+		{
+		  "code": "hw-stakeholder-dob-1",
+		  "type": "DATE",
+		  "value": "1990-10-10T08:00:00Z"
+		},
+		{
+		  "code": "hw-stakeholder-dob-2",
+		  "type": "DATE",
+		  "value": "1990-10-10T08:00:00Z"
+		},
+		{
+		  "code": "hw-stakeholder-email-1",
+		  "type": "STRING",
+		  "value": "a.g21@mailgen.pro"
+		},
+		{
+		  "code": "hw-stakeholder-email-2",
+		  "type": "STRING",
+		  "value": "alexiabernal@mailgen.fun"
+		},
+		{
+		  "code": "hw-stakeholder-first-name-1",
+		  "type": "STRING",
+		  "value": "Angela"
+		},
+		{
+		  "code": "hw-stakeholder-first-name-2",
+		  "type": "STRING",
+		  "value": "Alexia"
+		},
+		{
+		  "code": "hw-stakeholder-gender-1",
+		  "type": "LIST",
+		  "value": "FEMALE"
+		},
+		{
+		  "code": "hw-stakeholder-gender-2",
+		  "type": "LIST",
+		  "value": "FEMALE"
+		},
+		{
+		  "code": "hw-stakeholder-government-id-count-1",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-government-id-count-2",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-government-id-num-1",
+		  "type": "STRING",
+		  "value": "CLC876517R27470"
+		},
+		{
+		  "code": "hw-stakeholder-government-id-num-2",
+		  "type": "STRING",
+		  "value": "GPQ509673F27470"
+		},
+		{
+		  "code": "hw-stakeholder-government-id-type-1",
+		  "type": "LIST",
+		  "value": "GOVERNMENT_ID"
+		},
+		{
+		  "code": "hw-stakeholder-government-id-type-2",
+		  "type": "LIST",
+		  "value": "GOVERNMENT_ID"
+		},
+		{
+		  "code": "hw-stakeholder-last-name-1",
+		  "type": "STRING",
+		  "value": "Granados"
+		},
+		{
+		  "code": "hw-stakeholder-last-name-2",
+		  "type": "STRING",
+		  "value": "Bernal"
+		},
+		{
+		  "code": "hw-stakeholder-nationality-1",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-nationality-2",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-phone-number-1",
+		  "type": "STRING",
+		  "value": "663558604"
+		},
+		{
+		  "code": "hw-stakeholder-phone-number-2",
+		  "type": "STRING",
+		  "value": "940-84-6575"
+		},
+		{
+		  "code": "hw-stakeholder-post-code-1",
+		  "type": "STRING",
+		  "value": "7006"
+		},
+		{
+		  "code": "hw-stakeholder-post-code-2",
+		  "type": "STRING",
+		  "value": "28901"
+		},
+		{
+		  "code": "hw-stakeholder-proof-identity-ctry-1",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-proof-identity-ctry-2",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-proof-identity-type-1",
+		  "type": "LIST",
+		  "value": "GOVERNMENT_ID"
+		},
+		{
+		  "code": "hw-stakeholder-proof-identity-type-2",
+		  "type": "LIST",
+		  "value": "GOVERNMENT_ID"
+		},
+		{
+		  "code": "hw-stakeholder-smo-1",
+		  "type": "BOOLEAN",
+		  "value": "false"
+		},
+		{
+		  "code": "hw-stakeholder-smo-2",
+		  "type": "BOOLEAN",
+		  "value": "false"
+		},
+		{
+		  "code": "hw-stakeholder-ubo-1",
+		  "type": "BOOLEAN",
+		  "value": "false"
+		},
+		{
+		  "code": "hw-stakeholder-ubo-2",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-terms-consent",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-kyc-req-proof-authorization",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-kyc-req-proof-identity-business",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-stakeholder-req-proof-identity-1",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-stakeholder-req-proof-identity-2",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-user-token",
+		  "type": "STRING",
+		  "value": "usr-bbb82b9a-f312-491c-ddfb-b587d03c4d56"
+		},
+		{
+		  "code": "hw-stakeholder-token-1",
+		  "type": "STRING",
+		  "value": "stk-4cf62592-fef8-4926-9b6e-8c31955af3a1"
+		},
+		{
+		  "code": "hw-stakeholder-token-2",
+		  "type": "STRING",
+		  "value": "stk-4cf62592-fef8-4926-9b6e-8c31955af3a2"
+		}
+	  ],
+	  "shop_id": 1,
+	  "shop_name": "My test shop 27470",
+	  "shop_state": "OPEN",
+	  "suspension_type": null
+	},
+	{
+	  "applicable_taxes": [
+		{
+		  "code": "TAXDEFAULT",
+		  "label": "Default VAT"
+		}
+	  ],
+	  "approval_delay": null,
+	  "approval_rate": null,
+	  "banner": null,
+	  "billing_info": {
+		"bank_city": "Barcelona",
+		"bank_name": "Santander",
+		"bank_street": "115 W 42nd St",
+		"bic": "CAIXESBBXXX",
+		"iban": "ES1521000009783161542158",
+		"owner": "John Doe",
+		"zip_code": null
+	  },
+	  "channels": [
+		"INIT"
+	  ],
+	  "closed_from": null,
+	  "closed_to": null,
+	  "contact_informations": {
+		"city": "Valencia",
+		"civility": "Mr",
+		"country": "ESP",
+		"email": "fakeMail36778@e2ycommerce.com",
+		"fax": null,
+		"firstname": "Fake",
+		"lastname": "Name",
+		"phone": null,
+		"phone_secondary": null,
+		"state": null,
+		"street1": "30 King Street",
+		"street2": null,
+		"web_site": null,
+		"zip_code": "46001"
+	  },
+	  "currency_iso_code": "EUR",
+	  "date_created": "2022-11-28T11:59:33Z",
+	  "description": null,
+	  "domains": [
+		"PRODUCT"
+	  ],
+	  "evaluations_count": 0,
+	  "free_shipping": false,
+	  "grade": null,
+	  "immunity_date": null,
+	  "is_professional": true,
+	  "kyc": {
+		"reason": null,
+		"status": "PENDING_SUBMISSION"
+	  },
+	  "last_updated_date": "2022-11-28T11:59:33Z",
+	  "logo": null,
+	  "model": "MARKETPLACE",
+	  "offers_count": 0,
+	  "operator_internal_id": null,
+	  "order_messages_response_delay": null,
+	  "orders_count": 0,
+	  "payment_details": {
+		"paid_balance": 0.00,
+		"pay_subscription": true,
+		"payable_balance": 0.00,
+		"payment_blocked": false,
+		"pending_balance": 0.00,
+		"subscription_free_from": null,
+		"subscription_free_to": null
+	  },
+	  "payment_info": {
+		"@type": "IBAN",
+		"bank_city": "Barcelona",
+		"bank_name": "Santander",
+		"bank_street": "115 W 42nd St",
+		"bic": "CAIXESBBXXX",
+		"iban": "ES1521000009783161542158",
+		"owner": "John Doe"
+	  },
+	  "premium": false,
+	  "premium_state": "DEFAULT",
+	  "pro_details": {
+		"VAT_number": null,
+		"corporate_name": "My test shop",
+		"identification_number": "012336778",
+		"tax_identification_number": null
+	  },
+	  "return_policy": null,
+	  "shipping_country": null,
+	  "shipping_types": [
+		"STANDARD"
+	  ],
+	  "shipping_zones": [
+		"DE"
+	  ],
+	  "shippings": [
+		{
+		  "additional_fields": [],
+		  "shipping_free_amount": null,
+		  "shipping_type_code": "STANDARD",
+		  "shipping_type_label": "Standard",
+		  "shipping_zone_code": "DE",
+		  "shipping_zone_label": "GER"
+		}
+	  ],
+	  "shop_additional_fields": [
+		{
+		  "code": "hw-bankaccount-state",
+		  "type": "STRING",
+		  "value": "Spain"
+		},
+		{
+		  "code": "hw-business-reg-country",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-business-reg-state-province",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-business-type",
+		  "type": "LIST",
+		  "value": "CORPORATION"
+		},
+		{
+		  "code": "hw-country-of-birth",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-country-of-nationality",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-date-of-birth",
+		  "type": "DATE",
+		  "value": "1990-10-10T08:00:00Z"
+		},
+		{
+		  "code": "hw-government-id-type",
+		  "type": "LIST",
+		  "value": "GOVERNMENT_ID"
+		},
+		{
+		  "code": "hw-GOVERNMENT_ID-id",
+		  "type": "STRING",
+		  "value": "ZXN497798G36778"
+		},
+		{
+		  "code": "hw-prof-proof-business-type",
+		  "type": "LIST",
+		  "value": "INCORPORATION"
+		},
+		{
+		  "code": "hw-program",
+		  "type": "LIST",
+		  "value": "DEFAULT"
+		},
+		{
+		  "code": "hw-stakeholder-address-line1-1",
+		  "type": "STRING",
+		  "value": "C Llucmajor 141a"
+		},
+		{
+		  "code": "hw-stakeholder-address-line1-2",
+		  "type": "STRING",
+		  "value": "C Escao 162b"
+		},
+		{
+		  "code": "hw-stakeholder-business-contact-1",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-stakeholder-business-contact-2",
+		  "type": "BOOLEAN",
+		  "value": "false"
+		},
+		{
+		  "code": "hw-stakeholder-city-1",
+		  "type": "STRING",
+		  "value": "Mallorca"
+		},
+		{
+		  "code": "hw-stakeholder-city-2",
+		  "type": "STRING",
+		  "value": "Getafe"
+		},
+		{
+		  "code": "hw-stakeholder-country-1",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-country-2",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-country-of-birth-1",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-country-of-birth-2",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-director-1",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-stakeholder-director-2",
+		  "type": "BOOLEAN",
+		  "value": "false"
+		},
+		{
+		  "code": "hw-stakeholder-dob-1",
+		  "type": "DATE",
+		  "value": "1990-10-10T08:00:00Z"
+		},
+		{
+		  "code": "hw-stakeholder-dob-2",
+		  "type": "DATE",
+		  "value": "1990-10-10T08:00:00Z"
+		},
+		{
+		  "code": "hw-stakeholder-email-1",
+		  "type": "STRING",
+		  "value": "a.g21@mailgen.pro"
+		},
+		{
+		  "code": "hw-stakeholder-email-2",
+		  "type": "STRING",
+		  "value": "alexiabernal@mailgen.fun"
+		},
+		{
+		  "code": "hw-stakeholder-first-name-1",
+		  "type": "STRING",
+		  "value": "Angela"
+		},
+		{
+		  "code": "hw-stakeholder-first-name-2",
+		  "type": "STRING",
+		  "value": "Alexia"
+		},
+		{
+		  "code": "hw-stakeholder-gender-1",
+		  "type": "LIST",
+		  "value": "FEMALE"
+		},
+		{
+		  "code": "hw-stakeholder-gender-2",
+		  "type": "LIST",
+		  "value": "FEMALE"
+		},
+		{
+		  "code": "hw-stakeholder-government-id-count-1",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-government-id-count-2",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-government-id-num-1",
+		  "type": "STRING",
+		  "value": "AIZ368006T36778"
+		},
+		{
+		  "code": "hw-stakeholder-government-id-num-2",
+		  "type": "STRING",
+		  "value": "VRI034065R36778"
+		},
+		{
+		  "code": "hw-stakeholder-government-id-type-1",
+		  "type": "LIST",
+		  "value": "GOVERNMENT_ID"
+		},
+		{
+		  "code": "hw-stakeholder-government-id-type-2",
+		  "type": "LIST",
+		  "value": "GOVERNMENT_ID"
+		},
+		{
+		  "code": "hw-stakeholder-last-name-1",
+		  "type": "STRING",
+		  "value": "Granados"
+		},
+		{
+		  "code": "hw-stakeholder-last-name-2",
+		  "type": "STRING",
+		  "value": "Bernal"
+		},
+		{
+		  "code": "hw-stakeholder-nationality-1",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-nationality-2",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-phone-number-1",
+		  "type": "STRING",
+		  "value": "663558604"
+		},
+		{
+		  "code": "hw-stakeholder-phone-number-2",
+		  "type": "STRING",
+		  "value": "940-84-6575"
+		},
+		{
+		  "code": "hw-stakeholder-post-code-1",
+		  "type": "STRING",
+		  "value": "7006"
+		},
+		{
+		  "code": "hw-stakeholder-post-code-2",
+		  "type": "STRING",
+		  "value": "28901"
+		},
+		{
+		  "code": "hw-stakeholder-proof-identity-ctry-1",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-proof-identity-ctry-2",
+		  "type": "STRING",
+		  "value": "ES"
+		},
+		{
+		  "code": "hw-stakeholder-proof-identity-type-1",
+		  "type": "LIST",
+		  "value": "GOVERNMENT_ID"
+		},
+		{
+		  "code": "hw-stakeholder-proof-identity-type-2",
+		  "type": "LIST",
+		  "value": "GOVERNMENT_ID"
+		},
+		{
+		  "code": "hw-stakeholder-smo-1",
+		  "type": "BOOLEAN",
+		  "value": "false"
+		},
+		{
+		  "code": "hw-stakeholder-smo-2",
+		  "type": "BOOLEAN",
+		  "value": "false"
+		},
+		{
+		  "code": "hw-stakeholder-ubo-1",
+		  "type": "BOOLEAN",
+		  "value": "false"
+		},
+		{
+		  "code": "hw-stakeholder-ubo-2",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-terms-consent",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-kyc-req-proof-authorization",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-kyc-req-proof-identity-business",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-stakeholder-req-proof-identity-1",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-stakeholder-req-proof-identity-2",
+		  "type": "BOOLEAN",
+		  "value": "true"
+		},
+		{
+		  "code": "hw-user-token",
+		  "type": "STRING",
+		  "value": "usr-bbb82b9a-f312-491c-bafb-b587d03c4db7"
+		},
+		{
+		  "code": "hw-stakeholder-token-1",
+		  "type": "STRING",
+		  "value": "stk-4cf62592-fef8-4926-9b6e-9c31955af3b1"
+		},
+		{
+		  "code": "hw-stakeholder-token-2",
+		  "type": "STRING",
+		  "value": "stk-4cf62592-fef8-4926-9b6e-9c31955af3b2"
+		}
+	  ],
+	  "shop_id": 2,
+	  "shop_name": "My test shop 36778",
+	  "shop_state": "OPEN",
+	  "suspension_type": null
+	}
+  ],
+  "total_count": 2
+}

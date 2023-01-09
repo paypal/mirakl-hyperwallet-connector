@@ -46,6 +46,7 @@ public class ReportsMiraklExtractServiceImpl implements ReportsMiraklExtractServ
 		this.mailNotificationUtil = mailNotificationUtil;
 	}
 
+	@SuppressWarnings("java:S1874")
 	@Override
 	public List<HmcMiraklTransactionLine> getAllTransactionLinesByDate(final Date startDate, final Date endDate) {
 		log.info("Retrieving Mirakl transaction logs from {} to {}", startDate, endDate);

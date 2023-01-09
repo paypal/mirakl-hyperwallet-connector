@@ -34,10 +34,26 @@ public class BatchJobLoggingListener extends AbstractBatchJobProcessingListenerS
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("java:S3655")
 	@Override
 	public void onItemExtractionSuccessful(final BatchJobContext ctx,
 			final Collection<BatchJobItem<?>> extractedItems) {
-		log.info("Retrieved the following number of items to be processed: {}", ctx.getNumberOfItemsToBeProcessed());
+		if (ctx.isPartialItemExtraction() && !ctx.getNumberOfItemsNotSuccessfullyExtracted().isPresent()) {
+			log.warn(
+					"Some of the items to be processed couldn't be retrieved. "
+							+ "Only the following number of items were retrieved and are going to be processed {}",
+					ctx.getNumberOfItemsToBeProcessed());
+		}
+		else if (ctx.isPartialItemExtraction() && ctx.getNumberOfItemsNotSuccessfullyExtracted().isPresent()) {
+			log.warn(
+					"Retrieved the following number of items to be processed: {}. "
+							+ "Additionally there are {} items that couldn't be retrieved and can't be processed",
+					ctx.getNumberOfItemsToBeProcessed(), ctx.getNumberOfItemsNotSuccessfullyExtracted().get());
+		}
+		else {
+			log.info("Retrieved the following number of items to be processed: {}",
+					ctx.getNumberOfItemsToBeProcessed());
+		}
 	}
 
 	/**
@@ -108,9 +124,20 @@ public class BatchJobLoggingListener extends AbstractBatchJobProcessingListenerS
 		batchJobLoggingContextService.removeBatchJobInformation();
 	}
 
+	@SuppressWarnings("java:S3655")
 	private void logBatchProgress(final BatchJobContext ctx) {
 		log.info("{} items processed successfully. {} items failed. {} items remaining",
 				ctx.getNumberOfItemsProcessed(), ctx.getNumberOfItemsFailed(), ctx.getNumberOfItemsRemaining());
+		if (ctx.getNumberOfItemsRemaining() == 0 && ctx.isPartialItemExtraction()
+				&& !ctx.getNumberOfItemsNotSuccessfullyExtracted().isPresent()) {
+			log.warn("Not all items were able to be retrieved during the extraction phase,"
+					+ " so there are additional items that couldn't be processed since they weren't retrieved.");
+		}
+		else if (ctx.getNumberOfItemsRemaining() == 0 && ctx.isPartialItemExtraction()
+				&& ctx.getNumberOfItemsNotSuccessfullyExtracted().isPresent()) {
+			log.warn("Additionally there were {} items that couldn't be retrieved during the extraction phase,"
+					+ " so they were not processed.", ctx.getNumberOfItemsNotSuccessfullyExtracted().get());
+		}
 	}
 
 }

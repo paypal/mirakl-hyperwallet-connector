@@ -2,7 +2,6 @@ package com.paypal.invoices.invoicesextract.service.mirakl.impl;
 
 import com.mirakl.client.core.error.MiraklErrorResponseBean;
 import com.mirakl.client.core.exception.MiraklApiException;
-import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.MiraklShops;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
@@ -11,29 +10,24 @@ import com.paypal.infrastructure.itemlinks.model.HyperwalletItemLinkLocator;
 import com.paypal.infrastructure.itemlinks.model.HyperwalletItemTypes;
 import com.paypal.infrastructure.itemlinks.model.MiraklItemLinkLocator;
 import com.paypal.infrastructure.itemlinks.model.MiraklItemTypes;
-import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
-import com.paypal.infrastructure.util.DateUtil;
-import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
-import com.paypal.infrastructure.util.TimeMachine;
 import com.paypal.invoices.invoicesextract.model.AccountingDocumentModel;
-import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.InjectMocks;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
@@ -91,14 +85,14 @@ class MiraklInvoiceLinksServiceImplTest {
 						.thenReturn(miraklShopsMock);
 		when(miraklShopsMock.getShops()).thenReturn(List.of(miraklShop1Mock, miraklShop2Mock));
 
-		Map<MiraklItemLinkLocator, Collection<HyperwalletItemLinkLocator>> result = testObj
+		final Map<MiraklItemLinkLocator, Collection<HyperwalletItemLinkLocator>> result = testObj
 				.getInvoiceRelatedShopLinks(Set.of("1", "2"));
 
 		//@formatter:off
-		MiraklItemLinkLocator miraklItemLinkLocator1 = new MiraklItemLinkLocator(SHOP_ID_1, MiraklItemTypes.SHOP);
-		MiraklItemLinkLocator miraklItemLinkLocator2 = new MiraklItemLinkLocator(SHOP_ID_2, MiraklItemTypes.SHOP);
+		final MiraklItemLinkLocator miraklItemLinkLocator1 = new MiraklItemLinkLocator(SHOP_ID_1, MiraklItemTypes.SHOP);
+		final MiraklItemLinkLocator miraklItemLinkLocator2 = new MiraklItemLinkLocator(SHOP_ID_2, MiraklItemTypes.SHOP);
 		assertThat(result.entrySet()).hasSize(2);
-		assertThat(result.keySet()).containsExactlyInAnyOrder(miraklItemLinkLocator1,miraklItemLinkLocator2);
+		assertThat(result.keySet()).containsExactlyInAnyOrder(miraklItemLinkLocator1, miraklItemLinkLocator2);
 		assertThat(result.get(miraklItemLinkLocator1)).containsExactlyInAnyOrder(
 				new HyperwalletItemLinkLocator(PROGRAM_TOKEN_1, HyperwalletItemTypes.PROGRAM),
 				new HyperwalletItemLinkLocator(BANK_TOKEN_1, HyperwalletItemTypes.BANK_ACCOUNT));
@@ -128,14 +122,14 @@ class MiraklInvoiceLinksServiceImplTest {
 						.thenReturn(miraklShopsMock);
 		when(miraklShopsMock.getShops()).thenReturn(List.of(miraklShop1Mock, miraklShop2Mock));
 
-		Map<MiraklItemLinkLocator, Collection<HyperwalletItemLinkLocator>> result = testObj
+		final Map<MiraklItemLinkLocator, Collection<HyperwalletItemLinkLocator>> result = testObj
 				.getInvoiceRelatedShopLinks(Set.of("1", "2"));
 
 		//@formatter:off
-		MiraklItemLinkLocator miraklItemLinkLocator1 = new MiraklItemLinkLocator(SHOP_ID_1, MiraklItemTypes.SHOP);
-		MiraklItemLinkLocator miraklItemLinkLocator2 = new MiraklItemLinkLocator(SHOP_ID_2, MiraklItemTypes.SHOP);
+		final MiraklItemLinkLocator miraklItemLinkLocator1 = new MiraklItemLinkLocator(SHOP_ID_1, MiraklItemTypes.SHOP);
+		final MiraklItemLinkLocator miraklItemLinkLocator2 = new MiraklItemLinkLocator(SHOP_ID_2, MiraklItemTypes.SHOP);
 		assertThat(result.entrySet()).hasSize(2);
-		assertThat(result.keySet()).containsExactlyInAnyOrder(miraklItemLinkLocator1,miraklItemLinkLocator2);
+		assertThat(result.keySet()).containsExactlyInAnyOrder(miraklItemLinkLocator1, miraklItemLinkLocator2);
 		assertThat(result.get(miraklItemLinkLocator1)).containsExactlyInAnyOrder(
 				new HyperwalletItemLinkLocator(PROGRAM_TOKEN_1, HyperwalletItemTypes.PROGRAM));
 		assertThat(result.get(miraklItemLinkLocator2)).containsExactlyInAnyOrder(
@@ -147,13 +141,13 @@ class MiraklInvoiceLinksServiceImplTest {
 	void getShopLinks_shouldIgnoreWhenMiraklHttpRequestFailAndReturnEmptyShopList() {
 		when(miraklMarketplacePlatformOperatorApiClientMock
 				.getShops(argThat(req -> req.getShopIds().containsAll(Set.of(SHOP_ID_1, SHOP_ID_2)))))
-						.thenThrow(new MiraklApiException(new MiraklErrorResponseBean(1, "Error")));
+						.thenThrow(new MiraklApiException(new MiraklErrorResponseBean(1, "Error", "correlation-id")));
 
-		Map<MiraklItemLinkLocator, Collection<HyperwalletItemLinkLocator>> result = testObj
+		final Map<MiraklItemLinkLocator, Collection<HyperwalletItemLinkLocator>> result = testObj
 				.getInvoiceRelatedShopLinks(Set.of("1", "2"));
 
-		MiraklItemLinkLocator miraklItemLinkLocator1 = new MiraklItemLinkLocator(SHOP_ID_1, MiraklItemTypes.SHOP);
-		MiraklItemLinkLocator miraklItemLinkLocator2 = new MiraklItemLinkLocator(SHOP_ID_2, MiraklItemTypes.SHOP);
+		final MiraklItemLinkLocator miraklItemLinkLocator1 = new MiraklItemLinkLocator(SHOP_ID_1, MiraklItemTypes.SHOP);
+		final MiraklItemLinkLocator miraklItemLinkLocator2 = new MiraklItemLinkLocator(SHOP_ID_2, MiraklItemTypes.SHOP);
 		assertThat(result.entrySet()).hasSize(2);
 		assertThat(result.keySet()).containsExactlyInAnyOrder(miraklItemLinkLocator1, miraklItemLinkLocator2);
 		assertThat(result.get(miraklItemLinkLocator1)).isEmpty();
@@ -163,7 +157,7 @@ class MiraklInvoiceLinksServiceImplTest {
 	@Test
 	void getAllShops_shouldSplitRequestInBatchesOfFixedSize_AndContinueOnErrorsInIndividualBatches() {
 		final MiraklApiException miraklApiException = new MiraklApiException(
-				new MiraklErrorResponseBean(1, "Something went wrong"));
+				new MiraklErrorResponseBean(1, "Something went wrong", "correlation-id"));
 		//@formatter:on
 		when(miraklMarketplacePlatformOperatorApiClientMock
 				.getShops(argThat(request -> request.getShopIds().size() <= 100))).thenReturn(miraklShopsMock)
@@ -174,19 +168,19 @@ class MiraklInvoiceLinksServiceImplTest {
 		when(miraklShop1Mock.getId()).thenReturn("1");
 		when(miraklShop2Mock.getId()).thenReturn("2");
 
-		Set<String> invoiceIds = Stream.iterate(1, n -> n + 1)
+		final Set<String> invoiceIds = Stream.iterate(1, n -> n + 1)
 				.limit(250)
 				.map(String::valueOf)
 				.collect(Collectors.toSet());
 
-		Map<String, MiraklShop> result = testObj.getAllShops(invoiceIds);
+		final Map<String, MiraklShop> result = testObj.getAllShops(invoiceIds);
 
 		assertThat(result).hasSize(2);
 		assertThat(result.values()).containsExactlyInAnyOrder(miraklShop1Mock, miraklShop2Mock);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock, times(3))
 				.getShops(miraklGetShopsRequestArgumentCaptor.capture());
-		MiraklGetShopsRequest failedRequest = miraklGetShopsRequestArgumentCaptor.getAllValues().get(1);
+		final MiraklGetShopsRequest failedRequest = miraklGetShopsRequestArgumentCaptor.getAllValues().get(1);
 	}
 
 }

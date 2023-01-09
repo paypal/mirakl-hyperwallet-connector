@@ -25,6 +25,8 @@ class HyperWalletObjectToPaymentNotificationBodyModelConverterTest {
 
 	private static final String TOKEN = "Token";
 
+	private static final String PROGRAM_TOKEN = "ProgramToken";
+
 	private static final String STATUS = "Status";
 
 	private static final String AMOUNT = "Amount";
@@ -57,6 +59,7 @@ class HyperWalletObjectToPaymentNotificationBodyModelConverterTest {
 
 		//@formatter:off
 		assertThat(result).hasFieldOrPropertyWithValue("token", TOKEN)
+				.hasFieldOrPropertyWithValue("programToken", PROGRAM_TOKEN)
 				.hasFieldOrPropertyWithValue("status", STATUS)
 				.hasFieldOrPropertyWithValue("createdOn", nowAsDate.toString())
 				.hasFieldOrPropertyWithValue("amount", AMOUNT)
@@ -117,6 +120,7 @@ class HyperWalletObjectToPaymentNotificationBodyModelConverterTest {
 	private LinkedHashMap<String, String> createHyperWalletPaymentBodyNotification(final Date nowAsDate) {
 		final LinkedHashMap<String, String> detailInfo = new LinkedHashMap<>();
 		detailInfo.put("token", TOKEN);
+		detailInfo.put("programToken", PROGRAM_TOKEN);
 		detailInfo.put("status", STATUS);
 		detailInfo.put("createdOn", nowAsDate.toString());
 		detailInfo.put("amount", AMOUNT);

@@ -1,20 +1,17 @@
 package com.paypal.observability.miraklapichecks;
 
+import com.paypal.infrastructure.sdk.mirakl.impl.MiraklApiClientConfig;
+import com.paypal.observability.ObservabilityIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.paypal.infrastructure.sdk.mirakl.impl.MiraklApiClientConfig;
-import com.paypal.observability.testsupport.AbstractMockServerITTest;
-import com.paypal.observability.testsupport.ObservabilityWebIntegrationContext;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ObservabilityWebIntegrationContext
-class MiraklAPIChecksActuatorAdapterITTest extends AbstractMockServerITTest {
+class MiraklAPIChecksActuatorAdapterITTest extends ObservabilityIntegrationTest {
 
 	@Autowired
 	private MockMvc mockMvc;

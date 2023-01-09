@@ -3,6 +3,7 @@ package com.paypal.infrastructure.mail.impl;
 import com.paypal.infrastructure.configuration.MailConfiguration;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import javax.annotation.Resource;
 /**
  * Default implementation of {@link MailNotificationUtil}
  */
+@ConditionalOnProperty(prefix = "mail.notifications", name = "enabled", havingValue = "true")
 @Slf4j
 @Service
 public class MailNotificationUtilImpl implements MailNotificationUtil {

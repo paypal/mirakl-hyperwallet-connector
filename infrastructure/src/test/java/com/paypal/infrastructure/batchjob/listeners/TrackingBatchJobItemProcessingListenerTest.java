@@ -130,6 +130,17 @@ class TrackingBatchJobItemProcessingListenerTest {
 	}
 
 	@Test
+	void onBatchJobFinished_ShouldCallBatchJobTrackingServiceTrackJobFinishedAsFailed_WhenThereWasAPartialExtraction() {
+
+		when(batchJobContextMock.getJobUuid()).thenReturn(JOB_ID);
+		when(batchJobContextMock.isPartialItemExtraction()).thenReturn(true);
+
+		testObj.onBatchJobFinished(batchJobContextMock);
+
+		verify(batchJobTrackingServiceMock).trackJobFinished(JOB_ID, false);
+	}
+
+	@Test
 	void onBatchJobFailure_ShouldCallBatchJobTrackingServiceTrackJobFailure() {
 
 		when(batchJobContextMock.getJobUuid()).thenReturn(JOB_ID);

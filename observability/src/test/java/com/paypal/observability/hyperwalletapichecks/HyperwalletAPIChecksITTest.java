@@ -1,18 +1,15 @@
 package com.paypal.observability.hyperwalletapichecks;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import com.paypal.observability.ObservabilityIntegrationTest;
 import com.paypal.observability.hyperwalletapichecks.model.HyperwalletAPICheck;
 import com.paypal.observability.hyperwalletapichecks.model.HyperwalletAPICheckStatus;
 import com.paypal.observability.hyperwalletapichecks.services.HyperwalletHealthCheckService;
-import com.paypal.observability.testsupport.AbstractMockServerITTest;
-import com.paypal.observability.testsupport.ObservabilityWebIntegrationContext;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ObservabilityWebIntegrationContext
-class HyperwalletAPIChecksITTest extends AbstractMockServerITTest {
+class HyperwalletAPIChecksITTest extends ObservabilityIntegrationTest {
 
 	@Autowired
 	private HyperwalletHealthCheckService hyperwalletHealthCheckService;

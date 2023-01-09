@@ -55,9 +55,9 @@ public abstract class AbstractDeltaBatchJobItemsExtractor<C extends BatchJobCont
 	 */
 	@Override
 	public Collection<T> getItems(C ctx) {
-		return getItems(getDelta(ctx));
+		return getItems(ctx, getDelta(ctx));
 	}
 
-	protected abstract Collection<T> getItems(Date delta);
+	protected abstract Collection<T> getItems(C ctx, Date delta);
 
 }

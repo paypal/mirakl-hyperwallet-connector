@@ -2,7 +2,7 @@ package com.paypal.invoices.invoicesextract.service.hyperwallet.impl;
 
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.util.HyperwalletEncryption;
-import com.paypal.invoices.infraestructure.configuration.PaymentsHyperwalletApiConfig;
+import com.paypal.infrastructure.hyperwallet.api.PaymentsHyperwalletApiConfig;
 import com.paypal.invoices.invoicesextract.service.hyperwallet.HyperwalletSDKService;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;

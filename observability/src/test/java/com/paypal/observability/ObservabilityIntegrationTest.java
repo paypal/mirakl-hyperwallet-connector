@@ -1,15 +1,19 @@
-package com.paypal.observability.testsupport;
+package com.paypal.observability;
 
+import com.paypal.infrastructure.test.InfrastructureIntegrationTest;
 import com.paypal.observability.testsupport.fixtures.AdditionalFieldsMockServerFixtures;
 import com.paypal.observability.testsupport.fixtures.DocsMockServerFixtures;
 import com.paypal.observability.testsupport.fixtures.HealthMockServerFixtures;
 import com.paypal.observability.testsupport.fixtures.HyperwalletHealthMockServerFixtures;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockserver.client.MockServerClient;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.context.annotation.ComponentScan;
 
-public abstract class AbstractMockServerITTest {
-
-	protected MockServerClient mockServerClient;
+@AutoConfigureMockMvc
+@EnableAutoConfiguration
+@ComponentScan
+public abstract class ObservabilityIntegrationTest extends InfrastructureIntegrationTest {
 
 	protected AdditionalFieldsMockServerFixtures additionalFieldsMockServerFixtures;
 

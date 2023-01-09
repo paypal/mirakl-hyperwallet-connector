@@ -3,6 +3,8 @@ package com.paypal.kyc.batchjobs.sellers;
 import com.paypal.infrastructure.batchjob.AbstractDeltaBatchJobItemsExtractor;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.infrastructure.batchjob.BatchJobTrackingService;
+import com.paypal.kyc.model.KYCDocumentSellerInfoModel;
+import com.paypal.kyc.model.KYCDocumentsExtractionResult;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklSellerDocumentsExtractService;
 import org.springframework.stereotype.Service;
 
@@ -34,9 +36,17 @@ public class SellersDocumentsExtractBatchJobItemExtractor
 	 * @return a {@link Collection} of {@link SellersDocumentsExtractBatchJobItem}
 	 */
 	@Override
-	protected Collection<SellersDocumentsExtractBatchJobItem> getItems(final Date delta) {
-		return miraklSellerDocumentsExtractService.extractProofOfIdentityAndBusinessSellerDocuments(delta).stream()
-				.map(SellersDocumentsExtractBatchJobItem::new).collect(Collectors.toList());
+	protected Collection<SellersDocumentsExtractBatchJobItem> getItems(BatchJobContext ctx, final Date delta) {
+		//@formatter:off
+		KYCDocumentsExtractionResult<KYCDocumentSellerInfoModel> kycDocumentsExtractionResult =
+				miraklSellerDocumentsExtractService.extractProofOfIdentityAndBusinessSellerDocuments(delta);
+		ctx.setPartialItemExtraction(kycDocumentsExtractionResult.hasFailed());
+		ctx.setNumberOfItemsNotSuccessfullyExtracted(kycDocumentsExtractionResult.getNumberOfFailures());
+
+		return kycDocumentsExtractionResult.getExtractedDocuments().stream()
+				.map(SellersDocumentsExtractBatchJobItem::new)
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
 
 }

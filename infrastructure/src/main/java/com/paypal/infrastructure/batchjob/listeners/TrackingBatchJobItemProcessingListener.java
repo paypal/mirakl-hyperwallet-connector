@@ -82,7 +82,8 @@ public class TrackingBatchJobItemProcessingListener extends AbstractBatchJobProc
 	 */
 	@Override
 	public void onBatchJobFinished(final BatchJobContext ctx) {
-		batchJobTrackingService.trackJobFinished(ctx.getJobUuid(), ctx.getNumberOfItemsFailed() == 0);
+		batchJobTrackingService.trackJobFinished(ctx.getJobUuid(),
+				ctx.getNumberOfItemsFailed() == 0 && !ctx.isPartialItemExtraction());
 	}
 
 	/**

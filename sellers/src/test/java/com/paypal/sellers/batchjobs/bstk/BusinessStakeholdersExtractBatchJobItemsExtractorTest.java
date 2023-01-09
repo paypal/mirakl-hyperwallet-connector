@@ -1,5 +1,6 @@
 package com.paypal.sellers.batchjobs.bstk;
 
+import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.sellers.sellersextract.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.BusinessStakeholderExtractService;
@@ -38,6 +39,9 @@ class BusinessStakeholdersExtractBatchJobItemsExtractorTest {
 	@Mock
 	private BusinessStakeHolderModel businessStakeHolderModelMock1, businessStakeHolderModelMock2;
 
+	@Mock
+	private BatchJobContext batchJobContextMock;
+
 	@Test
 	void getItems_ShouldReturnBusinessStakeholderExtractJobItems() {
 		when(miraklSellersExtractServiceMock.extractProfessionals(DELTA))
@@ -46,7 +50,7 @@ class BusinessStakeholdersExtractBatchJobItemsExtractorTest {
 				.extractBusinessStakeHolders(List.of(sellerModelMock1, sellerModelMock2)))
 						.thenReturn(List.of(businessStakeHolderModelMock1, businessStakeHolderModelMock2));
 
-		final Collection<BusinessStakeholderExtractJobItem> result = testObj.getItems(DELTA);
+		final Collection<BusinessStakeholderExtractJobItem> result = testObj.getItems(batchJobContextMock, DELTA);
 
 		assertThat(result.stream().map(BusinessStakeholderExtractJobItem::getItem).collect(Collectors.toList()))
 				.containsExactlyInAnyOrder(businessStakeHolderModelMock1, businessStakeHolderModelMock2);

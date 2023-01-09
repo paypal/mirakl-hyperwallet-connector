@@ -26,6 +26,7 @@ public class HyperWalletObjectToPaymentNotificationBodyModelConverter
 			final Map<String, String> notificationDetails = (Map<String, String>) source;
 			//@formatter:off
 			return PaymentNotificationBodyModel.builder()
+					.programToken(Optional.ofNullable(notificationDetails.get("programToken")).orElse(null))
 					.token(Optional.ofNullable(notificationDetails.get("token")).orElse(null))
 					.status(Optional.ofNullable(notificationDetails.get("status")).orElse(null))
 					.createdOn(Optional.ofNullable(notificationDetails.get("createdOn")).orElse(null))

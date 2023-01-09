@@ -1,0 +1,45 @@
+{
+  "shop_documents": [
+	{
+	  "date_deleted": null,
+	  "date_uploaded": "2022-11-28T13:14:48Z",
+	  "file_name": "government-id-front.jpg",
+	  "id": 2001,
+	  "shop_id": 2,
+	  "type": "hw-bsh1-proof-identity-front"
+	},
+	{
+	  "date_deleted": null,
+	  "date_uploaded": "2022-11-28T13:14:48Z",
+	  "file_name": "government-id-back.jpg",
+	  "id": 2002,
+	  "shop_id": 2,
+	  "type": "hw-bsh1-proof-identity-back"
+	},
+	{
+	  "date_deleted": null,
+	  "date_uploaded": "2022-11-28T13:14:48Z",
+	  "file_name": "drivers-license-front.png",
+	  "id": 2003,
+	  "shop_id": 2,
+	  "type": "hw-bsh2-proof-identity-front"
+	},
+	{
+	  "date_deleted": null,
+	  "date_uploaded": "2022-11-28T13:14:49Z",
+	  "file_name": "drivers-license-back.png",
+	  "id": 2004,
+	  "shop_id": 2,
+	  "type": "hw-bsh2-proof-identity-back"
+	},
+	{
+	  "date_deleted": null,
+	  "date_uploaded": "2022-11-28T13:14:49Z",
+	  "file_name": "proof-business.png",
+	  "id": 2005,
+	  "shop_id": 2,
+	  "type": "hw-prof-proof-business-front"
+	}
+  ],
+  "total_count": 5
+}

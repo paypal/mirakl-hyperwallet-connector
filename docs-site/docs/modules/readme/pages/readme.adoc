@@ -34,6 +34,7 @@ Ensure there are not blanks when copying environment variables from the document
 |`PAYPAL_HYPERWALLET_API_USERNAME`|YES |Hyperwallet environment username (provided by Hyperwallet). | restapiuser@000001
 |`PAYPAL_HYPERWALLET_API_PASSWORD`|YES|Hyperwallet environment password (provided by Hyperwallet).| yourSecret
 |`PAYPAL_HYPERWALLET_PROGRAM_TOKENS`|YES|A set of comma separated values based on the program hierarchy provided by Hyperwallet (See the Program Configuration section below).|DEFAULT
+|`PAYPAL_HYPERWALLET_IGNORED_PROGRAM_TOKENS`|YES| A set of comma separated values with the programs to be ignored. Sellers belonging to programs in this list won't be processed by the connector.|<empty>
 |`PAYPAL_HYPERWALLET_PROGRAM_
 TOKEN_USERS_DEFAULT`|YES|The program token for contacting the Hyperwallet API on the `/users` path for `DEFAULT` program.|prg-6541532-as1a23s242-12as124-as2454
 |`PAYPAL_HYPERWALLET_PROGRAM_
@@ -277,6 +278,21 @@ Besides, if you had the necessity of adapting the property files to accommodate 
 Boot]
 
 This way the tokens would be store in a safe manner.
+
+### Ignoring Programs
+
+Sometimes we don't want the connector to process all the shops from Mirakl (and their associated invoices). In that case
+we can use programs to exclude those shops from being processed.
+
+To do this, we need to set up the following environment variable:
+
+- `PAYPAL_HYPERWALLET_IGNORED_PROGRAM_TOKENS`
+
+with the list of programs that we want to ignore. The programs in this list must be a subset of the programs defined
+in `PAYPAL_HYPERWALLET_PROGRAM_TOKENS`.
+
+Continuing with the same example described in the _Multiple Programs_ section, if we would like to exclude `UK` shops
+for being processed by the connector, we should simply set `PAYPAL_HYPERWALLET_IGNORED_PROGRAM_TOKENS` to `UK`.
 
 ## Financial Reporting
 
