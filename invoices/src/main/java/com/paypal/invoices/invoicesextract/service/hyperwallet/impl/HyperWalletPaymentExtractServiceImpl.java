@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -58,27 +59,27 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 	 * @return
 	 */
 	@Override
-	public void payPayeeInvoice(final InvoiceModel invoice) {
-		payInvoice(invoice, payeeInvoiceModelToHyperwalletPaymentConverter);
+	public Optional<HyperwalletPayment> payPayeeInvoice(final InvoiceModel invoice) {
+		return payInvoice(invoice, payeeInvoiceModelToHyperwalletPaymentConverter);
 	}
 
 	@Override
-	public void payPayeeCreditNotes(final CreditNoteModel creditNote) {
-		payInvoice(creditNote, payeeCreditModelToHyperwalletPaymentConverter);
+	public Optional<HyperwalletPayment> payPayeeCreditNotes(final CreditNoteModel creditNote) {
+		return payInvoice(creditNote, payeeCreditModelToHyperwalletPaymentConverter);
 	}
 
 	@Override
-	public void payInvoiceOperator(final InvoiceModel invoice) {
-		payInvoice(invoice, operatorInvoiceModelToHyperwalletPaymentConverter);
+	public Optional<HyperwalletPayment> payInvoiceOperator(final InvoiceModel invoice) {
+		return payInvoice(invoice, operatorInvoiceModelToHyperwalletPaymentConverter);
 	}
 
-	protected <T extends AccountingDocumentModel> void payInvoice(final T invoice,
+	protected <T extends AccountingDocumentModel> Optional<HyperwalletPayment> payInvoice(final T invoice,
 			final Converter<T, HyperwalletPayment> invoiceConverter) {
 		final HyperwalletPayment pendingPayment = invoiceConverter.convert(invoice);
 
 		if (isInvoiceCreated(pendingPayment)) {
 			log.warn("Invoice {} already sent to Hyperwallet", pendingPayment.getClientPaymentId());
-			return;
+			return Optional.empty();
 		}
 
 		log.info("Pending invoices to pay: [{}]", pendingPayment.getClientPaymentId());
@@ -86,6 +87,8 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 		final HyperwalletPayment paidInvoice = createPayment(pendingPayment);
 
 		log.info("Paid invoices: [{}]", paidInvoice.getClientPaymentId());
+
+		return Optional.of(paidInvoice);
 	}
 
 	protected HyperwalletPayment createPayment(final HyperwalletPayment hyperwalletPayment) {

@@ -1,19 +1,18 @@
 package com.paypal.observability.mirakldocschecks;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import com.paypal.observability.ObservabilityIntegrationTest;
 import com.paypal.observability.mirakldocschecks.startup.MiraklDocSchemaStartupCheckPrinter;
 import com.paypal.observability.mirakldocschecks.startup.MiraklDocSchemaStartupCheckProvider;
 import com.paypal.observability.startupchecks.model.StartupCheck;
 import com.paypal.observability.startupchecks.model.StartupCheckStatus;
-import com.paypal.observability.testsupport.AbstractSchemaStartupAdapterITTest;
-import com.paypal.observability.testsupport.ObservabilityWebIntegrationContext;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.paypal.observability.testsupport.MiraklReportAssertions.assertThatContainsMessage;
+import static com.paypal.observability.testsupport.MiraklReportAssertions.assertThatContainsSetMessage;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ObservabilityWebIntegrationContext
-class MiraklDocSchemaStartupAdapterITTest extends AbstractSchemaStartupAdapterITTest {
+class MiraklDocSchemaStartupAdapterITTest extends ObservabilityIntegrationTest {
 
 	@Autowired
 	private MiraklDocSchemaStartupCheckProvider miraklDocSchemaStartupCheckProvider;

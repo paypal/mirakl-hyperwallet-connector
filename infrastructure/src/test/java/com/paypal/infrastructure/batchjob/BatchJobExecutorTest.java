@@ -228,4 +228,21 @@ class BatchJobExecutorTest {
 		assertThat(logTrackerStub.contains(MSG_ERROR_WHILE_INVOKING_BATCH_JOB_LISTENER)).isTrue();
 	}
 
+	@Test
+	void execute_ShouldSetBatchJobAsFinished_WhenJobFinishesWithoutErrors() {
+		testObj.execute(batchJobMock, batchJobContextMock);
+
+		verify(batchJobContextMock, times(1)).setFinishedStatus();
+	}
+
+	@Test
+	void execute_ShouldSetBatchJobAsFinishedWithErrors_WhenThereIsAPartialExtraction() {
+		when(batchJobContextMock.isPartialItemExtraction()).thenReturn(true);
+
+		testObj.execute(batchJobMock, batchJobContextMock);
+
+		verify(batchJobContextMock, times(0)).setFinishedStatus();
+		verify(batchJobContextMock, times(1)).setFinishedWithFailuresStatus();
+	}
+
 }

@@ -25,18 +25,18 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testImplementation 'org.mockito:mockito-junit-jupiter'
-    testImplementation 'org.mockito:mockito-inline'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params'
-    testImplementation 'com.callibrity.logging:log-tracker:1.0.1'
-    testImplementation 'org.awaitility:awaitility'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api'
+	testImplementation 'org.mockito:mockito-junit-jupiter'
+	testImplementation 'org.mockito:mockito-inline'
+	testImplementation 'org.junit.jupiter:junit-jupiter-params'
+	testImplementation 'com.callibrity.logging:log-tracker:1.0.1'
+	testImplementation 'org.awaitility:awaitility'
 
-    testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+	testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
 
-    runtimeOnly 'net.minidev:json-smart:2.3'
-    api 'com.hyperwallet:sdk:2.2.5'
-    api 'com.mirakl:mmp-sdk-operator:4.38.0'
+	runtimeOnly 'net.minidev:json-smart:2.3'
+	api 'com.hyperwallet:sdk:2.4.3'
+	api 'com.mirakl:mmp-sdk-operator:6.8.0'
 }
 
 bootJar {

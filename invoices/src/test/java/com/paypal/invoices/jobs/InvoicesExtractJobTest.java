@@ -8,7 +8,6 @@ import com.paypal.invoices.batchjobs.creditnotes.CreditNotesExtractBatchJob;
 import com.paypal.invoices.batchjobs.invoices.InvoicesExtractBatchJob;
 import com.paypal.invoices.infraestructure.configuration.CreditNotesConfig;
 import com.paypal.invoices.infraestructure.configuration.InvoicesOperatorCommissionsConfig;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;

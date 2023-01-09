@@ -34,7 +34,7 @@ public class InvoicesExtractBatchJobItemsExtractor
 	 * @return a {@link Collection} of {@link InvoiceExtractJobItem}
 	 */
 	@Override
-	protected Collection<InvoiceExtractJobItem> getItems(Date delta) {
+	protected Collection<InvoiceExtractJobItem> getItems(BatchJobContext ctx, final Date delta) {
 		return miraklAccountingDocumentInvoicesExtractService.extractAccountingDocuments(delta).stream()
 				.map(InvoiceExtractJobItem::new).collect(Collectors.toList());
 	}

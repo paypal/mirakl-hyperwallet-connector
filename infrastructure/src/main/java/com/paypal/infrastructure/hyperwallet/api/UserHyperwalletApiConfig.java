@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
@@ -17,7 +16,6 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = true)
 @Configuration
 @ConfigurationProperties(prefix = "infrastructure.hyperwallet.api")
-@PropertySource({ "classpath:infrastructure.properties" })
 public class UserHyperwalletApiConfig extends AbstractHyperwalletApiConfig {
 
 	private static final String HYPERWALLET_PROGRAM_PREFIX = "infrastructure.hyperwallet.api.hyperwalletprogram.token.";

@@ -29,6 +29,7 @@ public class KYCRejectionReasonServiceImpl implements KYCRejectionReasonService 
 
 	private static final String PROFILE_TYPE = "profileType";
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<KYCRejectionReasonTypeEnum> getReasonTypes(final Object notificationObject) {
 		final List<KYCRejectionReasonTypeEnum> reasons = new ArrayList<>();
@@ -80,9 +81,10 @@ public class KYCRejectionReasonServiceImpl implements KYCRejectionReasonService 
 		return reasons;
 	}
 
+	@Override
 	public String getRejectionReasonDescriptions(final List<KYCRejectionReasonTypeEnum> reasonsType) {
 		if (Objects.isNull(reasonsType) || CollectionUtils.isEmpty(reasonsType)) {
-			return null;
+			return "";
 		}
 		final String reasonsDescription = reasonsType.stream().map(KYCRejectionReasonTypeEnum::getReason)
 				.collect(Collectors.joining(""));

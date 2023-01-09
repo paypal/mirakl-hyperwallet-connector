@@ -33,4 +33,6 @@ public class PaymentNotificationBodyModel implements NotificationBodyModel {
 
 	private final String destinationToken;
 
+	private final String programToken;
+
 }

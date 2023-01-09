@@ -5,8 +5,10 @@ import com.mirakl.client.mmp.domain.common.FileWrapper;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
 
 import com.mirakl.client.mmp.request.shop.document.MiraklDownloadShopsDocumentsRequest;
+import com.paypal.infrastructure.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApiWrapper;
 import com.paypal.infrastructure.strategy.Strategy;
+import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
 import com.paypal.kyc.model.KYCDocumentModel;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +48,6 @@ public abstract class AbstractMiraklSelectedDocumentsStrategy
 		// @formatter:off
 		return miraklDownloadShopRequests.stream()
 				.map(this::downloadDocument)
-				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
 		// @formatter:on
 	}
@@ -83,10 +84,9 @@ public abstract class AbstractMiraklSelectedDocumentsStrategy
 		}
 		catch (MiraklException e) {
 			log.error(String.format("Something went wrong trying to download document with id [%s]", documentId), e);
-			log.error(e.getMessage(), e);
+			log.error(MiraklLoggingErrorsUtil.stringify(e), e);
+			throw new HMCMiraklAPIException(e);
 		}
-
-		return null;
 	}
 
 }

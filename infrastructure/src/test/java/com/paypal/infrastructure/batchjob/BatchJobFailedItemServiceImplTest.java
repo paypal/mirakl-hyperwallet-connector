@@ -1,6 +1,5 @@
 package com.paypal.infrastructure.batchjob;
 
-import com.paypal.infrastructure.batchjob.cache.BatchJobFailedItemCacheService;
 import com.paypal.infrastructure.batchjob.entities.BatchJobItemTrackInfoEntity;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
 import com.paypal.infrastructure.util.TimeMachine;

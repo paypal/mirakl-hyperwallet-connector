@@ -2,11 +2,9 @@ package com.paypal.observability.miraklfieldschecks.diffs;
 
 import com.paypal.observability.miraklfieldschecks.model.MiraklField;
 import com.paypal.observability.miraklfieldschecks.model.MiraklFieldPermissions;
-import com.paypal.observability.miraklschemadiffs.model.diff.MiraklSchemaDiffEntry;
 import com.paypal.observability.miraklschemadiffs.model.diff.MiraklSchemaDiffEntryIncorrectAttributeValue;
 import com.paypal.observability.miraklschemadiffs.model.diff.MiraklSchemaDiffEntryType;
 import com.paypal.observability.miraklschemadiffs.model.report.MiraklSchemaDiffReportSeverity;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

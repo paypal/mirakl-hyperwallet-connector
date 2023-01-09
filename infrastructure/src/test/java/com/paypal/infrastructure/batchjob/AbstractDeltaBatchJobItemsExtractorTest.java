@@ -127,7 +127,7 @@ class AbstractDeltaBatchJobItemsExtractorTest {
 		}
 
 		@Override
-		protected Collection<BatchJobItem<Object>> getItems(final Date delta) {
+		protected Collection<BatchJobItem<Object>> getItems(BatchJobContext ctx, final Date delta) {
 			return List.of();
 		}
 

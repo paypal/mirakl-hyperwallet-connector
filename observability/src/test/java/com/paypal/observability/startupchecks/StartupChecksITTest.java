@@ -1,12 +1,10 @@
 package com.paypal.observability.startupchecks;
 
 import com.callibrity.logging.test.LogTrackerStub;
+import com.paypal.observability.ObservabilityIntegrationTest;
 import com.paypal.observability.startupchecks.model.StartupCheckPrinterRegistry;
 import com.paypal.observability.startupchecks.model.StartupCheckProvider;
 import com.paypal.observability.startupchecks.service.StartupCheckerService;
-import com.paypal.observability.testsupport.AbstractMockServerITTest;
-import com.paypal.observability.testsupport.ObservabilityWebIntegrationContext;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -23,8 +21,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@ObservabilityWebIntegrationContext
-class StartupChecksITTest extends AbstractMockServerITTest {
+class StartupChecksITTest extends ObservabilityIntegrationTest {
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -145,7 +142,7 @@ class StartupChecksITTest extends AbstractMockServerITTest {
 		startupCheckerService.setStartupChecksEnabled(true);
 		publisher.publishEvent(new ContextRefreshedEvent(applicationContext));
 		assertThat(logTrackerStub.contains("Startup Check Report -> Status: <UNKNOWN>")).isTrue();
-		assertThat(logTrackerStub.contains(startupCheckerService.LOGMSG_STATUS_UNKNOWN)).isTrue();
+		assertThat(logTrackerStub.contains(StartupCheckerService.LOGMSG_STATUS_UNKNOWN)).isTrue();
 	}
 
 	@Qualifier("startupCheckerService")

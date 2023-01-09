@@ -1,5 +1,6 @@
 package com.paypal.sellers.batchjobs.individuals;
 
+import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.MiraklSellersExtractService;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,9 @@ class IndividualSellersExtractBatchJobItemsExtractorTest {
 	@Mock
 	private MiraklSellersExtractService miraklSellersExtractServiceMock;
 
+	@Mock
+	private BatchJobContext batchJobContextMock;
+
 	@Test
 	void getItems_ShouldRetrieveAllSellersAndMapThemIntoIndividualSellersExtractJobItems() {
 
@@ -34,7 +38,8 @@ class IndividualSellersExtractBatchJobItemsExtractorTest {
 
 		when(miraklSellersExtractServiceMock.extractIndividuals(DELTA)).thenReturn(List.of(sellerModel1, sellerModel2));
 
-		final Collection<IndividualSellersExtractJobItem> individualSellersExtractJobItems = testObj.getItems(DELTA);
+		final Collection<IndividualSellersExtractJobItem> individualSellersExtractJobItems = testObj
+				.getItems(batchJobContextMock, DELTA);
 
 		assertThat(individualSellersExtractJobItems.stream().map(IndividualSellersExtractJobItem::getItem))
 				.containsExactly(sellerModel1, sellerModel2);

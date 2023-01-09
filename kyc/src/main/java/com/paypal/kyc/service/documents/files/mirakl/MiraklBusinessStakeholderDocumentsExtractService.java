@@ -1,6 +1,7 @@
 package com.paypal.kyc.service.documents.files.mirakl;
 
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
+import com.paypal.kyc.model.KYCDocumentsExtractionResult;
 
 import java.util.Date;
 import java.util.List;
@@ -14,10 +15,12 @@ public interface MiraklBusinessStakeholderDocumentsExtractService extends Mirakl
 	/**
 	 * Obtains valids and requiresKYC flagged business stakeholders since a delta time
 	 * @param delta
-	 * @return {@link List<KYCDocumentBusinessStakeHolderInfoModel>} valids to be sent to
-	 * other system for KYC verification
+	 * @return {@link KYCDocumentsExtractionResult<KYCDocumentBusinessStakeHolderInfoModel>}
+	 * with documents valids to be sent to other system for KYC verification, including
+	 * information about failures during the extraction process
 	 */
-	List<KYCDocumentBusinessStakeHolderInfoModel> extractBusinessStakeholderDocuments(Date delta);
+	KYCDocumentsExtractionResult<KYCDocumentBusinessStakeHolderInfoModel> extractBusinessStakeholderDocuments(
+			Date delta);
 
 	/**
 	 * Obtains a list of business stakeholders defined in Mirakl based on a specific

@@ -18,6 +18,8 @@ dependencies {
     testImplementation 'org.mockito:mockito-inline'
 
     implementation project(":infrastructure")
+    testImplementation project(":infrastructure-test")
+
 }
 
 bootJar {

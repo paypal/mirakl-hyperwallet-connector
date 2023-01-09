@@ -88,7 +88,7 @@ class MiraklBusinessStakeholderExtractServiceImplTest {
 		when(sellerModelMock.getClientUserId()).thenReturn("12345");
 		when(sellerModelMock.getBusinessStakeHolderDetails()).thenReturn(List.of(businessStakeHolderModelMock));
 		final MiraklApiException miraklApiException = new MiraklApiException(
-				new MiraklErrorResponseBean(1, "Something went wrong"));
+				new MiraklErrorResponseBean(1, "Something went wrong", "correlation-id"));
 		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
 				.updateShops(any(MiraklUpdateShopsRequest.class));
 

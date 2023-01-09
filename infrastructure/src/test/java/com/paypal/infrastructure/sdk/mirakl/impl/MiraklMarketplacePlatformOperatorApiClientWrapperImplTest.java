@@ -1,6 +1,5 @@
 package com.paypal.infrastructure.sdk.mirakl.impl;
 
-import com.mirakl.client.core.security.Credential;
 import com.mirakl.client.mmp.operator.request.payment.invoice.MiraklGetInvoicesRequest;
 import com.paypal.infrastructure.sdk.mirakl.domain.invoice.HMCMiraklInvoices;
 import org.junit.jupiter.api.BeforeEach;

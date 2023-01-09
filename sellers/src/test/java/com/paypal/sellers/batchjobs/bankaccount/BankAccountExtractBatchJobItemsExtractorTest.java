@@ -1,5 +1,6 @@
 package com.paypal.sellers.batchjobs.bankaccount;
 
+import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import com.paypal.sellers.sellersextract.service.MiraklSellersExtractService;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,9 @@ class BankAccountExtractBatchJobItemsExtractorTest {
 	@Mock
 	private SellerModel sellerModelMock1, sellerModelMock2, sellerModelMock3, sellerModelMock4;
 
+	@Mock
+	private BatchJobContext batchJobContextMock;
+
 	@Test
 	void getItems_ShouldRetrieveAllBankAccountExtractJobItemForTheGivenDelta() {
 
@@ -37,7 +41,7 @@ class BankAccountExtractBatchJobItemsExtractorTest {
 		when(miraklSellersExtractServiceMock.extractProfessionals(DELTA))
 				.thenReturn(List.of(sellerModelMock3, sellerModelMock4));
 
-		final Collection<BankAccountExtractJobItem> result = testObj.getItems(DELTA);
+		final Collection<BankAccountExtractJobItem> result = testObj.getItems(batchJobContextMock, DELTA);
 
 		assertThat(result.stream().map(BankAccountExtractJobItem::getItem)).containsExactlyInAnyOrder(sellerModelMock1,
 				sellerModelMock2, sellerModelMock3, sellerModelMock4);

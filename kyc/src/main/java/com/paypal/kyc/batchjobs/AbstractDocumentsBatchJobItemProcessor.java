@@ -35,13 +35,16 @@ public abstract class AbstractDocumentsBatchJobItemProcessor<T extends BatchJobI
 	 */
 	@Override
 	public void processItem(final BatchJobContext ctx, final T jobItem) {
-		boolean areDocumentsPushedToHW = pushAndFlagDocuments(jobItem);
+		try {
+			boolean areDocumentsPushedToHW = pushAndFlagDocuments(jobItem);
 
-		if (areDocumentsPushedToHW) {
-			notifyReadyToReviewDocuments(jobItem.getItem());
+			if (areDocumentsPushedToHW) {
+				notifyReadyToReviewDocuments(jobItem.getItem());
+			}
 		}
-
-		cleanUpDocumentsFiles(jobItem.getItem());
+		finally {
+			cleanUpDocumentsFiles(jobItem.getItem());
+		}
 	}
 
 	protected abstract boolean pushAndFlagDocuments(T jobItem);

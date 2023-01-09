@@ -1,12 +1,11 @@
 package com.paypal.infrastructure.batchjob.cache;
 
 import com.paypal.infrastructure.batchjob.BatchJobFailedItem;
-import com.paypal.infrastructure.batchjob.BatchJobFailedItemStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.InjectMocks;
 
 import java.util.List;
 

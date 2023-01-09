@@ -1,260 +1,161 @@
 package com.paypal.invoices.invoicesextract.service.hyperwallet.impl;
 
-import com.hyperwallet.clientsdk.HyperwalletException;
-import com.hyperwallet.clientsdk.model.HyperwalletList;
 import com.hyperwallet.clientsdk.model.HyperwalletPayment;
-import com.paypal.infrastructure.converter.Converter;
 import com.paypal.infrastructure.exceptions.HMCException;
 import com.paypal.infrastructure.mail.MailNotificationUtil;
-import com.paypal.infrastructure.util.HyperwalletLoggingErrorsUtil;
-import com.paypal.invoices.infraestructure.configuration.PaymentNotificationConfig;
+import com.paypal.invoices.InvoicesIntegrationTests;
 import com.paypal.invoices.invoicesextract.model.CreditNoteModel;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.ArgumentMatchers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-class HyperWalletPaymentExtractServiceImplTest {
+class HyperWalletPaymentExtractServiceImplTest extends InvoicesIntegrationTests {
 
-	private static final String PROGRAM_TOKEN = "programToken";
+	private static final String DEFAULT_INVOICE_NUMBER = "invoiceNumber";
 
-	public static final String PAYMENT_ID = "paymentId";
+	private static final String DEFAULT_HYPERWALLET_PROGRAM = "DEFAULT";
 
+	private static final String DEFAULT_DESTINATION_TOKEN = "testDestinationToken";
+
+	private static final double DEFAULT_TRANSFER_AMOUNT = 11.1D;
+
+	private static final String GB_ISOCODE = "GB";
+
+	@Autowired
 	private HyperWalletPaymentExtractServiceImpl testObj;
 
-	@Mock
-	private InvoiceModel invoiceModelOneMock;
-
-	@Mock
-	private HyperwalletPayment paymentOneMock, createdPaymentOneMock;
-
-	@Mock
-	private HyperwalletList<HyperwalletPayment> paymentHyperwalletListMock;
-
-	@Mock
-	private Converter<InvoiceModel, HyperwalletPayment> invoiceModelToHyperwalletPaymentConverterMock;
-
-	@Mock
-	private Converter<CreditNoteModel, HyperwalletPayment> creditNoteModelHyperwalletPaymentConverterMock;
-
-	@Mock
-	private CreditNoteModel creditNoteModelOneMock;
-
-	@Mock
+	@SpyBean
 	private MailNotificationUtil mailNotificationUtil;
 
-	@Mock
-	private PaymentHyperwalletApiClient paymentHyperwalletApiClient;
+	@Test
+	void payInvoice_shouldCreateAPayment_WhenNotExistAnotherCorrectPayment() {
+		final HyperwalletPayment expected = defaultHyperwalletPayment();
+		final InvoiceModel invoice = defaultInvoice();
 
-	@Mock
-	private PaymentNotificationConfig paymentNotificationConfig;
+		mockToCreatePayment(expected);
 
-	@BeforeEach
-	void setUp() {
-		testObj = new HyperWalletPaymentExtractServiceImpl(invoiceModelToHyperwalletPaymentConverterMock,
-				invoiceModelToHyperwalletPaymentConverterMock, creditNoteModelHyperwalletPaymentConverterMock,
-				mailNotificationUtil, paymentHyperwalletApiClient, paymentNotificationConfig);
-		testObj = Mockito.spy(testObj);
+		Optional<HyperwalletPayment> result = testObj.payPayeeInvoice(invoice);
+
+		Assertions.assertThat(result.get()).usingRecursiveComparison().isEqualTo(expected);
 	}
 
 	@Test
-	void payInvoice_shouldConvertInvoicesToHyperwalletPaymentCreatesOnePaymentPerInvoiceAndReturnsThemWhenInvoiceIsNotNull() {
-		final HyperwalletPayment payment = defaultHyperwalletPayment();
-		when(invoiceModelToHyperwalletPaymentConverterMock.convert(invoiceModelOneMock)).thenReturn(payment);
-		when(paymentHyperwalletApiClient.createPayment(payment)).thenReturn(createdPaymentOneMock);
-		doReturn(false).when(testObj).isInvoiceCreated(payment);
+	void payInvoice_shouldSendAnEmail_WhenAnExceptionIsThrownInCreationPaymentRequest() {
+		final HyperwalletPayment payment = defaultHyperwalletPayment().clientPaymentId("000001234");
+		final InvoiceModel invoice = defaultInvoice().toBuilder().invoiceNumber("000001234").build();
 
-		testObj.payInvoice(invoiceModelOneMock, invoiceModelToHyperwalletPaymentConverterMock);
+		paymentsEndpointMock.listPaymentsRequest(invoice.getInvoiceNumber(), Collections.emptyList());
+		paymentsEndpointMock.createPaymentErrorRequest(payment);
 
-		verify(invoiceModelToHyperwalletPaymentConverterMock).convert(invoiceModelOneMock);
-	}
-
-	@Test
-	void payInvoice_shouldReturnNullWhenPaymentNotSuccessfullyCreatedOnHyperwallet() {
-		final HyperwalletPayment payment = defaultHyperwalletPayment();
-		when(invoiceModelToHyperwalletPaymentConverterMock.convert(invoiceModelOneMock)).thenReturn(payment);
-		when(paymentHyperwalletApiClient.createPayment(payment))
-				.thenThrow(new HyperwalletException("Something went wrong"));
-		doReturn(false).when(testObj).isInvoiceCreated(payment);
-
-		assertThatThrownBy(() -> testObj.payInvoice(invoiceModelOneMock, invoiceModelToHyperwalletPaymentConverterMock))
-				.isInstanceOf(HMCException.class);
-
-		verify(invoiceModelToHyperwalletPaymentConverterMock).convert(invoiceModelOneMock);
-	}
-
-	@Test
-	void payPayee_shouldCallPayInvoiceWithTheProperConverter() {
-		doNothing().when(testObj).payInvoice(invoiceModelOneMock, invoiceModelToHyperwalletPaymentConverterMock);
-
-		testObj.payPayeeInvoice(invoiceModelOneMock);
-
-		verify(testObj).payInvoice(invoiceModelOneMock, invoiceModelToHyperwalletPaymentConverterMock);
-	}
-
-	@Test
-	void payOperator_shouldCallPayInvoiceWithTheProperConverter() {
-		doNothing().when(testObj).payInvoice(invoiceModelOneMock, invoiceModelToHyperwalletPaymentConverterMock);
-
-		testObj.payInvoiceOperator(invoiceModelOneMock);
-
-		verify(testObj).payInvoice(invoiceModelOneMock, invoiceModelToHyperwalletPaymentConverterMock);
-	}
-
-	@Test
-	void createPayment_shouldSendAnEmailWhenAnExceptionIsThrown() {
-		final HyperwalletException hyperwalletException = new HyperwalletException("Something went wrong");
-		final HyperwalletPayment payment = defaultHyperwalletPayment();
-		when(invoiceModelToHyperwalletPaymentConverterMock.convert(invoiceModelOneMock)).thenReturn(payment);
-		when(paymentHyperwalletApiClient.createPayment(payment)).thenThrow(hyperwalletException);
-		doReturn(false).when(testObj).isInvoiceCreated(payment);
-		payment.setClientPaymentId("000001234");
-		assertThatThrownBy(() -> testObj.payInvoice(invoiceModelOneMock, invoiceModelToHyperwalletPaymentConverterMock))
-				.isInstanceOf(HMCException.class);
-
+		assertThatThrownBy(() -> testObj.payPayeeInvoice(invoice)).isInstanceOf(HMCException.class);
 		verify(mailNotificationUtil).sendPlainTextEmail(
-				"Issue detected when creating payment for an invoice in Hyperwallet",
-				String.format("Something went wrong creating payment " + "for" + " invoice [000001234]%n%s",
-						HyperwalletLoggingErrorsUtil.stringify(hyperwalletException)));
+				ArgumentMatchers.eq("Issue detected when creating payment for an invoice in Hyperwallet"),
+				ArgumentMatchers.contains("Something went wrong creating payment for invoice [000001234]"));
 	}
 
 	@Test
-	void payPayeeCreditNote_shouldConvertCreditNotesToHyperwalletPaymentCreatesOnePaymentPerCreditNoteAndReturnsThemWhenCreditNotesAreNotEmptyOrNull() {
-		final HyperwalletPayment payment = defaultHyperwalletPayment();
-		when(creditNoteModelHyperwalletPaymentConverterMock.convert(creditNoteModelOneMock)).thenReturn(payment);
-		when(paymentHyperwalletApiClient.createPayment(payment)).thenReturn(createdPaymentOneMock);
-		doReturn(false).when(testObj).isInvoiceCreated(payment);
+	void payInvoice_shouldContinueWithCreationPayment_WhenGetPaymentFails() {
+		final HyperwalletPayment expected = defaultHyperwalletPayment();
+		final InvoiceModel invoice = defaultInvoice();
 
-		testObj.payPayeeCreditNotes(creditNoteModelOneMock);
+		paymentsEndpointMock.listPaymentsErrorRequest(invoice.getInvoiceNumber());
+		paymentsEndpointMock.createPaymentRequest(expected);
 
-		verify(creditNoteModelHyperwalletPaymentConverterMock).convert(creditNoteModelOneMock);
-		verify(paymentHyperwalletApiClient).createPayment(payment);
+		Optional<HyperwalletPayment> result = testObj.payPayeeInvoice(invoice);
+
+		Assertions.assertThat(result.get()).usingRecursiveComparison().isEqualTo(expected);
+
+	}
+
+	@Test
+	void payInvoice_willStopCreation_WhenSomePaymentHasAGoodStatus() {
+
+		final InvoiceModel invoice = defaultInvoice();
+
+		paymentsEndpointMock.listPaymentsRequest(invoice.getInvoiceNumber(),
+				Arrays.asList("FAILED", "NO_FAILURE_STATUS", "RETURNED"));
+
+		Optional<HyperwalletPayment> result = testObj.payPayeeInvoice(invoice);
+
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	void payPayeeCreditNote_shouldCreateAPayment_WhenNotExistAnotherCorrectPayment() {
+		final HyperwalletPayment expected = defaultHyperwalletPayment();
+		final CreditNoteModel creditNote = defaultCreditModel();
+
+		mockToCreatePayment(expected);
+		Optional<HyperwalletPayment> result = testObj.payPayeeCreditNotes(creditNote);
+
+		Assertions.assertThat(result.get()).usingRecursiveComparison().isEqualTo(expected);
 	}
 
 	@Test
 	void payPayeeCreditNote_shouldThrowExceptionWhenPaymentNotSuccessfullyCreatedOnHyperwallet() {
 		final HyperwalletPayment payment = defaultHyperwalletPayment();
-		when(creditNoteModelHyperwalletPaymentConverterMock.convert(creditNoteModelOneMock)).thenReturn(payment);
-		doReturn(false).when(testObj).isInvoiceCreated(payment);
+		final CreditNoteModel creditNote = defaultCreditModel();
 
-		when(paymentHyperwalletApiClient.createPayment(payment))
-				.thenThrow(new HyperwalletException("Something went wrong"));
+		paymentsEndpointMock.listPaymentsRequest(creditNote.getInvoiceNumber(), Collections.emptyList());
+		paymentsEndpointMock.createPaymentErrorRequest(payment);
 
-		assertThatThrownBy(() -> testObj.payPayeeCreditNotes(creditNoteModelOneMock)).isInstanceOf(HMCException.class);
-
-		verify(creditNoteModelHyperwalletPaymentConverterMock).convert(creditNoteModelOneMock);
-		verify(paymentHyperwalletApiClient).createPayment(payment);
+		assertThatThrownBy(() -> testObj.payPayeeCreditNotes(creditNote)).isInstanceOf(HMCException.class);
 	}
 
 	@Test
-	void payInvoice_shouldNotCreateInvoice_WhenInvoiceExists() {
-		final HyperwalletPayment payment = defaultHyperwalletPayment();
-		when(invoiceModelToHyperwalletPaymentConverterMock.convert(invoiceModelOneMock)).thenReturn(payment);
+	void payInvoiceOperator_shouldCreateAPayment_WhenNotExistAnotherCorrectPayment() {
+		final HyperwalletPayment expected = defaultHyperwalletPayment().clientPaymentId("invoiceNumber-operatorFee")
+				.destinationToken("test2");
+		final InvoiceModel invoice = defaultInvoiceOperator();
 
-		doReturn(true).when(testObj).isInvoiceCreated(payment);
+		mockToCreatePayment(expected);
+		Optional<HyperwalletPayment> result = testObj.payInvoiceOperator(invoice);
 
-		testObj.payInvoice(invoiceModelOneMock, invoiceModelToHyperwalletPaymentConverterMock);
-
-		verify(testObj, times(0)).createPayment(any());
+		Assertions.assertThat(result.get()).usingRecursiveComparison().isEqualTo(expected);
 	}
 
-	@Test
-	void payInvoice_shouldCheckIfInvoiceExistsAndCreateInvoice_WhenInvoiceNotExists() {
-		final HyperwalletPayment payment = defaultHyperwalletPayment();
-		when(invoiceModelToHyperwalletPaymentConverterMock.convert(invoiceModelOneMock)).thenReturn(payment);
-		when(paymentHyperwalletApiClient.createPayment(payment)).thenReturn(createdPaymentOneMock);
-		when(paymentHyperwalletApiClient.listPayments(anyString(), anyString())).thenReturn(paymentHyperwalletListMock);
-
-		testObj.payInvoice(invoiceModelOneMock, invoiceModelToHyperwalletPaymentConverterMock);
-
-		verify(paymentHyperwalletApiClient).listPayments(PROGRAM_TOKEN, PAYMENT_ID);
+	private HyperwalletPayment defaultHyperwalletPayment() {
+		return new HyperwalletPayment().programToken("test").clientPaymentId(DEFAULT_INVOICE_NUMBER)
+				.destinationToken(DEFAULT_DESTINATION_TOKEN).amount(DEFAULT_TRANSFER_AMOUNT).currency(GB_ISOCODE)
+				.purpose("OTHER");
 	}
 
-	@Test
-	void payInvoice_shouldCheckIfInvoiceExistsAndNotCreateInvoice_WhenInvoiceExists() {
-		final HyperwalletPayment payment = defaultHyperwalletPayment();
-		when(invoiceModelToHyperwalletPaymentConverterMock.convert(invoiceModelOneMock)).thenReturn(payment);
-		when(paymentHyperwalletApiClient.listPayments(PROGRAM_TOKEN, PAYMENT_ID))
-				.thenReturn(paymentHyperwalletListMock);
-		when(paymentHyperwalletListMock.getData()).thenReturn(List.of(payment));
-
-		testObj.payInvoice(invoiceModelOneMock, invoiceModelToHyperwalletPaymentConverterMock);
-
-		verify(paymentHyperwalletApiClient).listPayments(PROGRAM_TOKEN, PAYMENT_ID);
+	private InvoiceModel defaultInvoice() {
+		return InvoiceModel.builder().hyperwalletProgram(DEFAULT_HYPERWALLET_PROGRAM)
+				.destinationToken(DEFAULT_DESTINATION_TOKEN).invoiceNumber(DEFAULT_INVOICE_NUMBER)
+				.transferAmount(DEFAULT_TRANSFER_AMOUNT).currencyIsoCode(GB_ISOCODE).build();
 	}
 
-	@Test
-	void payInvoice_shouldContinueWithCreation_WhenGetPaymentFails() {
-		when(invoiceModelOneMock.getHyperwalletProgram()).thenReturn(PROGRAM_TOKEN);
-		when(invoiceModelToHyperwalletPaymentConverterMock.convert(invoiceModelOneMock)).thenReturn(paymentOneMock);
-		doReturn(paymentOneMock).when(testObj).createPayment(any());
-
-		when(paymentHyperwalletApiClient.listPayments(anyString(), anyString()))
-				.thenThrow(new RuntimeException("Something went wrong"));
-
-		testObj.payInvoice(invoiceModelOneMock, invoiceModelToHyperwalletPaymentConverterMock);
-
-		verify(testObj).createPayment(any());
+	private InvoiceModel defaultInvoiceOperator() {
+		return InvoiceModel.builder().hyperwalletProgram(DEFAULT_HYPERWALLET_PROGRAM)
+				.destinationToken(DEFAULT_DESTINATION_TOKEN).invoiceNumber(DEFAULT_INVOICE_NUMBER)
+				.transferAmountToOperator(DEFAULT_TRANSFER_AMOUNT).currencyIsoCode(GB_ISOCODE).build();
 	}
 
-	@Test
-	void isInvoiceCreated_isCreated_whenPaymentsReceivedContainsOneGoodStatus() {
-		mockPaymentNotificationConfig();
-
-		final HyperwalletList<HyperwalletPayment> response = new HyperwalletList<>();
-		final List<HyperwalletPayment> dataWithOneCorrectStatus = Stream.of("FAILED", "NO_FAILURE_STATUS", "RETURNED")
-				.map(status -> new HyperwalletPayment().status(status)).collect(Collectors.toUnmodifiableList());
-		response.setData(dataWithOneCorrectStatus);
-		when(paymentHyperwalletApiClient.listPayments(PROGRAM_TOKEN, PAYMENT_ID)).thenReturn(response);
-
-		boolean result = testObj.isInvoiceCreated(defaultHyperwalletPayment());
-
-		Assertions.assertTrue(result, "The invoice seems not created");
+	private CreditNoteModel defaultCreditModel() {
+		return CreditNoteModel.builder().hyperwalletProgram(DEFAULT_HYPERWALLET_PROGRAM)
+				.destinationToken(DEFAULT_DESTINATION_TOKEN).invoiceNumber(DEFAULT_INVOICE_NUMBER)
+				.creditAmount(DEFAULT_TRANSFER_AMOUNT).currencyIsoCode(GB_ISOCODE).build();
 	}
 
-	@Test
-	void isInvoiceCreated_isNotCreated_whenAllPaymentsReceivedContainsFailStatus() {
-		mockPaymentNotificationConfig();
+	private void mockToCreatePayment(HyperwalletPayment payment) {
+		final Collection<String> statuses = Arrays.asList("FAILED", "RECALLED", "RETURNED");
 
-		final HyperwalletList<HyperwalletPayment> response = new HyperwalletList<>();
-		final List<HyperwalletPayment> dataWithAllFailures = Stream.of("FAILED", "RECALLED", "RETURNED")
-				.map(status -> new HyperwalletPayment().status(status)).collect(Collectors.toUnmodifiableList());
-		response.setData(dataWithAllFailures);
-		when(paymentHyperwalletApiClient.listPayments(PROGRAM_TOKEN, PAYMENT_ID)).thenReturn(response);
+		paymentsEndpointMock.listPaymentsRequest(payment.getClientPaymentId(), statuses);
 
-		boolean result = testObj.isInvoiceCreated(defaultHyperwalletPayment());
-
-		Assertions.assertFalse(result, "The invoice seems created");
-	}
-
-	private static HyperwalletPayment defaultHyperwalletPayment() {
-		final HyperwalletPayment payment = new HyperwalletPayment().programToken(PROGRAM_TOKEN)
-				.clientPaymentId(PAYMENT_ID);
-		return payment;
-	}
-
-	private void mockPaymentNotificationConfig() {
-		when(paymentNotificationConfig.getFailureStatuses())
-				.thenReturn(Set.of("FAILED", "RECALLED", "RETURNED", "EXPIRED"));
+		paymentsEndpointMock.createPaymentRequest(payment);
 	}
 
 }

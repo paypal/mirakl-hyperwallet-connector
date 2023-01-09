@@ -3,12 +3,11 @@ package com.paypal.invoices.batchjobs.common;
 import com.paypal.infrastructure.batchjob.BatchJobContext;
 import com.paypal.invoices.invoicesextract.model.InvoiceModel;
 import com.paypal.invoices.invoicesextract.service.hmc.AccountingDocumentsLinksService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.InjectMocks;
 
 import java.util.List;
 

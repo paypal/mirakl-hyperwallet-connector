@@ -5,7 +5,6 @@ import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.shop.AbstractMiraklShop;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.MiraklShops;
-
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShopReturn;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
@@ -20,6 +19,7 @@ import com.paypal.infrastructure.util.LoggingConstantsUtil;
 import com.paypal.kyc.converter.KYCBusinessStakeHolderConverter;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.model.KYCDocumentInfoModel;
+import com.paypal.kyc.model.KYCDocumentsExtractionResult;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklBusinessStakeholderDocumentDownloadExtractService;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklBusinessStakeholderDocumentsExtractService;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +68,8 @@ public class MiraklBusinessStakeholderDocumentsExtractServiceImpl extends Abstra
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<KYCDocumentBusinessStakeHolderInfoModel> extractBusinessStakeholderDocuments(final Date delta) {
+	public KYCDocumentsExtractionResult<KYCDocumentBusinessStakeHolderInfoModel> extractBusinessStakeholderDocuments(
+			final Date delta) {
 		final MiraklGetShopsRequest miraklGetShopsRequest = miraklGetShopsRequestConverter.convert(delta);
 		log.info("Retrieving modified shops since [{}]", delta);
 		final MiraklShops shops = miraklOperatorClient.getShops(miraklGetShopsRequest);
@@ -110,11 +111,13 @@ public class MiraklBusinessStakeholderDocumentsExtractServiceImpl extends Abstra
 						KYCDocumentBusinessStakeHolderInfoModel::hasSelectedDocumentsControlFieldsInBusinessStakeholder))
 				.flatMap(Collection::stream).collect(Collectors.toList());
 
+		KYCDocumentsExtractionResult<KYCDocumentBusinessStakeHolderInfoModel> kycDocumentsExtractionResult = new KYCDocumentsExtractionResult<>();
 		//@formatter:off
-		return shopsWithBusinessSelectedVerificationDocuments.stream()
+		shopsWithBusinessSelectedVerificationDocuments.stream()
 				.filter(kycBusinessStakeHolderInfoModel -> !ObjectUtils.isEmpty(kycBusinessStakeHolderInfoModel.getUserToken()))
-				.map(miraklBusinessStakeholderDocumentDownloadExtractService::getBusinessStakeholderDocumentsSelectedBySeller)
-				.collect(Collectors.toList());
+				.forEach(kycBusinessStakeHolderInfoModel -> kycDocumentsExtractionResult.addDocument(
+						() -> miraklBusinessStakeholderDocumentDownloadExtractService.getBusinessStakeholderDocumentsSelectedBySeller(kycBusinessStakeHolderInfoModel)));
+		return kycDocumentsExtractionResult;
 		//@formatter:on
 	}
 

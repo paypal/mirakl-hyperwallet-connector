@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
 
+import java.util.List;
 import java.util.Map;
 
 import static java.util.Map.entry;
@@ -40,7 +41,7 @@ class AbstractProgramHierarchyHyperwalletApiConfigTest {
 	void setUp() {
 		testObj = new MyAbstractProgramHierarchyHyperwalletApiConfig();
 		testObj.setEnvironment(environmentMock);
-		testObj.setHyperwalletPrograms("TEST1,TEST2,TEST3");
+		testObj.setHyperwalletPrograms(List.of("TEST1", "TEST2", "TEST3"));
 	}
 
 	@Test
@@ -105,15 +106,15 @@ class AbstractProgramHierarchyHyperwalletApiConfigTest {
 	}
 
 	private MyAbstractProgramHierarchyHyperwalletApiConfig createApiConfig() {
-		MyAbstractProgramHierarchyHyperwalletApiConfig apiConfigOne = new MyAbstractProgramHierarchyHyperwalletApiConfig();
-		apiConfigOne.setHyperwalletPrograms("test1,test2,test3");
+		final MyAbstractProgramHierarchyHyperwalletApiConfig apiConfigOne = new MyAbstractProgramHierarchyHyperwalletApiConfig();
+		apiConfigOne.setHyperwalletPrograms(List.of("test1", "test2", "test3"));
 
 		return apiConfigOne;
 	}
 
 	private MyAbstractProgramHierarchyHyperwalletApiConfig createAnotherApiConfig() {
-		MyAbstractProgramHierarchyHyperwalletApiConfig apiConfigOne = new MyAbstractProgramHierarchyHyperwalletApiConfig();
-		apiConfigOne.setHyperwalletPrograms("test1,test2,test4");
+		final MyAbstractProgramHierarchyHyperwalletApiConfig apiConfigOne = new MyAbstractProgramHierarchyHyperwalletApiConfig();
+		apiConfigOne.setHyperwalletPrograms(List.of("test1", "test2", "test4"));
 
 		return apiConfigOne;
 	}

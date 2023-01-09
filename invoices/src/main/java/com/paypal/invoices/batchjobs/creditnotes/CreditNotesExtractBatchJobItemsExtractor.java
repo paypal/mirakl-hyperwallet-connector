@@ -35,7 +35,7 @@ public class CreditNotesExtractBatchJobItemsExtractor
 	 * @return a {@link Collection} of {@link CreditNoteExtractJobItem}
 	 */
 	@Override
-	protected Collection<CreditNoteExtractJobItem> getItems(Date delta) {
+	protected Collection<CreditNoteExtractJobItem> getItems(BatchJobContext ctx, final Date delta) {
 		return miraklAccountingDocumentCreditNotesExtractService.extractAccountingDocuments(delta).stream()
 				.map(CreditNoteExtractJobItem::new).collect(Collectors.toList());
 	}

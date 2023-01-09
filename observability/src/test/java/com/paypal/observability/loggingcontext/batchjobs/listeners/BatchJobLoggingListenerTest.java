@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import static org.apache.commons.lang3.ArrayUtils.EMPTY_THROWABLE_ARRAY;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,6 +39,8 @@ class BatchJobLoggingListenerTest {
 	public static final int NUMBER_OF_ITEMS_FAILED = 2;
 
 	public static final int NUMBER_OF_ITEMS_REMAINING = 0;
+
+	public static final int NUMBER_OF_ITEMS_FAILED_DURING_EXTRACTION = 5;
 
 	@InjectMocks
 	private BatchJobLoggingListener testObj;
@@ -72,6 +75,8 @@ class BatchJobLoggingListenerTest {
 		lenient().when(batchJobContextMock.getNumberOfItemsRemaining()).thenReturn(NUMBER_OF_ITEMS_REMAINING);
 		lenient().when(batchJobItemMock.getItemType()).thenReturn(ITEM_TYPE);
 		lenient().when(batchJobItemMock.getItemId()).thenReturn(ITEM_ID);
+		lenient().when(batchJobContextMock.isPartialItemExtraction()).thenReturn(false);
+
 	}
 
 	@Test
@@ -83,13 +88,40 @@ class BatchJobLoggingListenerTest {
 	}
 
 	@Test
-	void onItemExtractionSuccessful_ShouldLogAnInfoMessage() {
-
+	void onItemExtractionSuccessful_ShouldLogAnInfoMessage_WhenExtractionIsNotPartial() {
 		testObj.onItemExtractionSuccessful(batchJobContextMock, extractedItemsMock);
 
 		assertThat(logTrackerStub.contains(
 				"Retrieved the following number of items to be processed: " + NUMBER_OF_ITEMS_TO_BE_PROCESSED))
 						.isTrue();
+	}
+
+	@Test
+	void onItemExtractionSuccessful_ShouldLogWarnMessage_WhenExtractionIsPartial() {
+		when(batchJobContextMock.isPartialItemExtraction()).thenReturn(true);
+		testObj.onItemExtractionSuccessful(batchJobContextMock, extractedItemsMock);
+
+		assertThat(logTrackerStub.contains("Some of the items to be processed couldn't be retrieved. "
+				+ "Only the following number of items were retrieved and are going to be processed "
+				+ NUMBER_OF_ITEMS_TO_BE_PROCESSED)).isTrue();
+	}
+
+	@Test
+	void onItemExtractionSuccessful_ShouldLogWarnMessage_WhenExtractionIsPartial_AndNumberOfFailedItemsIsKnown() {
+		when(batchJobContextMock.isPartialItemExtraction()).thenReturn(true);
+		when(batchJobContextMock.getNumberOfItemsNotSuccessfullyExtracted())
+				.thenReturn(Optional.of(NUMBER_OF_ITEMS_FAILED_DURING_EXTRACTION));
+
+		testObj.onItemExtractionSuccessful(batchJobContextMock, extractedItemsMock);
+
+		assertThat(logTrackerStub.contains("Some of the items to be processed couldn't be retrieved. "
+				+ "Only the following number of items were retrieved and is going to be processed "
+				+ NUMBER_OF_ITEMS_TO_BE_PROCESSED)).isFalse();
+		assertThat(logTrackerStub
+				.contains("Retrieved the following number of items to be processed: " + NUMBER_OF_ITEMS_TO_BE_PROCESSED
+						+ ". " + "Additionally there are " + NUMBER_OF_ITEMS_FAILED_DURING_EXTRACTION
+						+ " items that couldn't be retrieved and can't be processed")).isTrue();
+
 	}
 
 	@Test
@@ -127,6 +159,49 @@ class BatchJobLoggingListenerTest {
 	}
 
 	@Test
+	void onItemProcessingFailure_ShouldLogAnInfoAnErrorAndWarnMessage_WhenExtractionWasPartial() {
+		when(exceptionMock.getSuppressed()).thenReturn(EMPTY_THROWABLE_ARRAY);
+		when(batchJobContextMock.isPartialItemExtraction()).thenReturn(true);
+
+		logTrackerStub.recordForLevel(LogTracker.LogLevel.ERROR).recordForLevel(LogTracker.LogLevel.INFO);
+
+		testObj.onItemProcessingFailure(batchJobContextMock, batchJobItemMock, exceptionMock);
+
+		assertThat(logTrackerStub.contains("Failed processing item of type " + ITEM_TYPE + " with id: " + ITEM_ID))
+				.isTrue();
+		assertThat(logTrackerStub.contains(NUMBER_OF_ITEMS_PROCESSED + " items processed successfully. "
+				+ NUMBER_OF_ITEMS_FAILED + " items failed. " + NUMBER_OF_ITEMS_REMAINING + " items remaining"))
+						.isTrue();
+
+		assertThat(logTrackerStub.contains("Not all items were able to be retrieved during the extraction phase,"
+				+ " so there are additional items that couldn't be processed since they weren't retrieved.")).isTrue();
+	}
+
+	@Test
+	void onItemProcessingFailure_ShouldLogAnInfoAnErrorAndWarnMessage_WhenExtractionWasPartialAndFailedItemsAreKnown() {
+		when(exceptionMock.getSuppressed()).thenReturn(EMPTY_THROWABLE_ARRAY);
+		when(batchJobContextMock.isPartialItemExtraction()).thenReturn(true);
+		when(batchJobContextMock.getNumberOfItemsNotSuccessfullyExtracted())
+				.thenReturn(Optional.of(NUMBER_OF_ITEMS_FAILED_DURING_EXTRACTION));
+
+		logTrackerStub.recordForLevel(LogTracker.LogLevel.ERROR).recordForLevel(LogTracker.LogLevel.INFO);
+
+		testObj.onItemProcessingFailure(batchJobContextMock, batchJobItemMock, exceptionMock);
+
+		assertThat(logTrackerStub.contains("Failed processing item of type " + ITEM_TYPE + " with id: " + ITEM_ID))
+				.isTrue();
+		assertThat(logTrackerStub.contains(NUMBER_OF_ITEMS_PROCESSED + " items processed successfully. "
+				+ NUMBER_OF_ITEMS_FAILED + " items failed. " + NUMBER_OF_ITEMS_REMAINING + " items remaining"))
+						.isTrue();
+
+		assertThat(logTrackerStub.contains("Not all items were able to be retrieved during the extraction phase,"
+				+ " so there are additional items that couldn't be processed since they weren't retrieved.")).isFalse();
+		assertThat(logTrackerStub.contains("Additionally there were " + NUMBER_OF_ITEMS_FAILED_DURING_EXTRACTION
+				+ " items that couldn't be retrieved during the extraction phase," + " so they were not processed."))
+						.isTrue();
+	}
+
+	@Test
 	void onItemProcessingSuccess_ShouldLogInfoMessages() {
 
 		testObj.onItemProcessingSuccess(batchJobContextMock, batchJobItemMock);
@@ -137,6 +212,60 @@ class BatchJobLoggingListenerTest {
 				+ NUMBER_OF_ITEMS_FAILED + " items failed. " + NUMBER_OF_ITEMS_REMAINING + " items remaining"))
 						.isTrue();
 
+	}
+
+	@Test
+	void onItemProcessingSuccess_ShouldLogInfoMessagesAndWarnMessage_WhenExtractionWasPartialAndIsLastItem() {
+		when(batchJobContextMock.isPartialItemExtraction()).thenReturn(true);
+		when(batchJobContextMock.getNumberOfItemsRemaining()).thenReturn(1);
+		testObj.onItemProcessingSuccess(batchJobContextMock, batchJobItemMock);
+
+		assertThat(logTrackerStub.contains("Processed successfully item of type " + ITEM_TYPE + " with id: " + ITEM_ID))
+				.isTrue();
+		assertThat(logTrackerStub.contains(NUMBER_OF_ITEMS_PROCESSED + " items processed successfully. "
+				+ NUMBER_OF_ITEMS_FAILED + " items failed. " + 1 + " items remaining")).isTrue();
+		assertThat(logTrackerStub.contains("Not all items were able to be retrieved during the extraction phase,"
+				+ " so there are additional items that couldn't be processed since they weren't retrieved.")).isFalse();
+
+		when(batchJobContextMock.getNumberOfItemsRemaining()).thenReturn(0);
+		testObj.onItemProcessingSuccess(batchJobContextMock, batchJobItemMock);
+
+		assertThat(logTrackerStub.contains("Processed successfully item of type " + ITEM_TYPE + " with id: " + ITEM_ID))
+				.isTrue();
+		assertThat(logTrackerStub.contains(NUMBER_OF_ITEMS_PROCESSED + " items processed successfully. "
+				+ NUMBER_OF_ITEMS_FAILED + " items failed. " + 0 + " items remaining")).isTrue();
+		assertThat(logTrackerStub.contains("Not all items were able to be retrieved during the extraction phase,"
+				+ " so there are additional items that couldn't be processed since they weren't retrieved.")).isTrue();
+	}
+
+	@Test
+	void onItemProcessingSuccess_ShouldLogInfoMessagesAndWarnMessage_WhenExtractionWasPartialAndIsLastItemAndNumberOfFailedItemsIsKnown() {
+		when(batchJobContextMock.isPartialItemExtraction()).thenReturn(true);
+		when(batchJobContextMock.getNumberOfItemsRemaining()).thenReturn(1);
+		when(batchJobContextMock.getNumberOfItemsNotSuccessfullyExtracted())
+				.thenReturn(Optional.of(NUMBER_OF_ITEMS_FAILED_DURING_EXTRACTION));
+
+		testObj.onItemProcessingSuccess(batchJobContextMock, batchJobItemMock);
+
+		assertThat(logTrackerStub.contains("Processed successfully item of type " + ITEM_TYPE + " with id: " + ITEM_ID))
+				.isTrue();
+		assertThat(logTrackerStub.contains(NUMBER_OF_ITEMS_PROCESSED + " items processed successfully. "
+				+ NUMBER_OF_ITEMS_FAILED + " items failed. " + 1 + " items remaining")).isTrue();
+		assertThat(logTrackerStub.contains("Not all items were able to be retrieved during the extraction phase,"
+				+ " so there are additional items that couldn't be processed since they weren't retrieved.")).isFalse();
+
+		when(batchJobContextMock.getNumberOfItemsRemaining()).thenReturn(0);
+		testObj.onItemProcessingSuccess(batchJobContextMock, batchJobItemMock);
+
+		assertThat(logTrackerStub.contains("Processed successfully item of type " + ITEM_TYPE + " with id: " + ITEM_ID))
+				.isTrue();
+		assertThat(logTrackerStub.contains(NUMBER_OF_ITEMS_PROCESSED + " items processed successfully. "
+				+ NUMBER_OF_ITEMS_FAILED + " items failed. " + 0 + " items remaining")).isTrue();
+		assertThat(logTrackerStub.contains("Not all items were able to be retrieved during the extraction phase,"
+				+ " so there are additional items that couldn't be processed since they weren't retrieved.")).isFalse();
+		assertThat(logTrackerStub.contains("Additionally there were " + NUMBER_OF_ITEMS_FAILED_DURING_EXTRACTION
+				+ " items that couldn't be retrieved during the extraction phase," + " so they were not processed."))
+						.isTrue();
 	}
 
 	@Test

@@ -35,7 +35,7 @@ public class ProfessionalSellersExtractBatchJobItemsExtractor
 	 * @return a {@link Collection} of {@link ProfessionalSellerExtractJobItem}
 	 */
 	@Override
-	protected Collection<ProfessionalSellerExtractJobItem> getItems(final Date delta) {
+	protected Collection<ProfessionalSellerExtractJobItem> getItems(BatchJobContext ctx, final Date delta) {
 		final List<SellerModel> miraklProfessionalSellers = this.miraklSellersExtractService
 				.extractProfessionals(delta);
 		return miraklProfessionalSellers.stream().map(ProfessionalSellerExtractJobItem::new)

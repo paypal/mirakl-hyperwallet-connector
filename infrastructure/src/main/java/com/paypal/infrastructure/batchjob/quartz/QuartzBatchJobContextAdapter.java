@@ -25,6 +25,10 @@ public class QuartzBatchJobContextAdapter implements BatchJobContext {
 
 	protected static final String KEY_NUMBER_OF_ITEMS_TO_BE_PROCESSED = "numberOfItemsToBeProcessed";
 
+	protected static final String KEY_PARTIAL_ITEM_EXTRACTION = "partialItemExtraction";
+
+	public static final String KEY_NUMBER_OF_ITEMS_NOT_SUCCESFULLY_EXTRACTED = "numberOfItemsNotSuccesfullyExtracted";
+
 	private final JobExecutionContext jobExecutionContext;
 
 	public QuartzBatchJobContextAdapter(final JobExecutionContext jobExecutionContext) {
@@ -49,6 +53,25 @@ public class QuartzBatchJobContextAdapter implements BatchJobContext {
 	@Override
 	public String getJobUuid() {
 		return getStringValue(KEY_BATCH_JOB_EXECUTION_UUID);
+	}
+
+	@Override
+	public boolean isPartialItemExtraction() {
+		return getBooleanValue(KEY_PARTIAL_ITEM_EXTRACTION);
+	}
+
+	public void setPartialItemExtraction(boolean partialItemExtraction) {
+		setBooleanValue(KEY_PARTIAL_ITEM_EXTRACTION, partialItemExtraction);
+	}
+
+	@Override
+	public Optional<Integer> getNumberOfItemsNotSuccessfullyExtracted() {
+		return getOptionalIntValue(KEY_NUMBER_OF_ITEMS_NOT_SUCCESFULLY_EXTRACTED);
+	}
+
+	@Override
+	public void setNumberOfItemsNotSuccessfullyExtracted(int numberOfItemsNotSuccessfullyExtracted) {
+		setIntValue(KEY_NUMBER_OF_ITEMS_NOT_SUCCESFULLY_EXTRACTED, numberOfItemsNotSuccessfullyExtracted);
 	}
 
 	protected void initializeBatchJobUuid() {
@@ -137,6 +160,11 @@ public class QuartzBatchJobContextAdapter implements BatchJobContext {
 		setStatusValue(BatchJobStatus.FINISHED);
 	}
 
+	@Override
+	public void setFinishedWithFailuresStatus() {
+		setStatusValue(BatchJobStatus.FINISHED_WITH_FAILURES);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -198,6 +226,10 @@ public class QuartzBatchJobContextAdapter implements BatchJobContext {
 				.orElse(defaultValue);
 	}
 
+	private Optional<Integer> getOptionalIntValue(final String key) {
+		return Optional.ofNullable((Integer) jobExecutionContext.getJobDetail().getJobDataMap().get(key));
+	}
+
 	private void increment(final String key) {
 		final int value = getIntValue(key);
 		setIntValue(key, value + 1);
@@ -218,6 +250,15 @@ public class QuartzBatchJobContextAdapter implements BatchJobContext {
 	}
 
 	private void setStringValue(final String key, String value) {
+		jobExecutionContext.getJobDetail().getJobDataMap().put(key, value);
+	}
+
+	private boolean getBooleanValue(final String key) {
+		return jobExecutionContext.getJobDetail().getJobDataMap().get(key) != null
+				&& (Boolean) jobExecutionContext.getJobDetail().getJobDataMap().get(key);
+	}
+
+	private void setBooleanValue(final String key, boolean value) {
 		jobExecutionContext.getJobDetail().getJobDataMap().put(key, value);
 	}
 

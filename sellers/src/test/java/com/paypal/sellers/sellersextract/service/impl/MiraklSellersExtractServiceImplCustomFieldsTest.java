@@ -77,15 +77,15 @@ class MiraklSellersExtractServiceImplCustomFieldsTest {
 		when(hyperwalletUserMock.getToken()).thenReturn(TOKEN_VALUE);
 		when(hyperwalletUserMock.getClientUserId()).thenReturn("12345");
 		final MiraklApiException miraklApiException = new MiraklApiException(
-				new MiraklErrorResponseBean(1, "Something went wrong"));
+				new MiraklErrorResponseBean(1, "Something went wrong", "correlation-id"));
 		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
 				.updateShops(any(MiraklUpdateShopsRequest.class));
 
 		testObj.updateUserToken(hyperwalletUserMock);
 
-		verify(mailNotificationUtilMock).sendPlainTextEmail(eq("Issue detected getting shop information in Mirakl"),
-				eq(String.format(ERROR_MESSAGE_PREFIX + "Something went wrong getting information of shop [12345]%n%s",
-						MiraklLoggingErrorsUtil.stringify(miraklApiException))));
+		verify(mailNotificationUtilMock).sendPlainTextEmail("Issue detected getting shop information in Mirakl",
+				String.format(ERROR_MESSAGE_PREFIX + "Something went wrong getting information of shop [12345]%n%s",
+						MiraklLoggingErrorsUtil.stringify(miraklApiException)));
 	}
 
 }

@@ -282,7 +282,7 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 	void updateShop_whenMiraklAPIReturnsAnException_shouldLogTheErrorAndSendAnEmail() {
 		when(kycUserStatusNotificationBodyModelMock.getClientUserId()).thenReturn(SHOP_ID);
 		final MiraklApiException exception = new MiraklApiException(
-				new MiraklErrorResponseBean(100, "Something went wrong"));
+				new MiraklErrorResponseBean(100, "Something went wrong", "correlation-id"));
 		when(testObj.expectedKycMiraklStatus(kycUserStatusNotificationBodyModelMock))
 				.thenReturn(MiraklShopKycStatus.APPROVED);
 		when(miraklMarketplacePlatformOperatorApiClientMock.updateShops(any(MiraklUpdateShopsRequest.class)))

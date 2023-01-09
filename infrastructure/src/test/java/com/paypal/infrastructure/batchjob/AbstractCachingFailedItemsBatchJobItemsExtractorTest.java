@@ -3,7 +3,6 @@ package com.paypal.infrastructure.batchjob;
 import com.paypal.infrastructure.batchjob.cache.BatchJobFailedItemCacheFailureResolvePolicy;
 import com.paypal.infrastructure.batchjob.cache.BatchJobFailedItemCacheFailureResolver;
 import com.paypal.infrastructure.batchjob.cache.BatchJobFailedItemCacheService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;

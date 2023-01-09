@@ -16,6 +16,7 @@ import com.paypal.infrastructure.sdk.mirakl.MiraklMarketplacePlatformOperatorApi
 import com.paypal.infrastructure.util.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.converter.KYCBusinessStakeHolderConverter;
 import com.paypal.kyc.model.KYCDocumentBusinessStakeHolderInfoModel;
+import com.paypal.kyc.model.KYCDocumentsExtractionResult;
 import com.paypal.kyc.service.documents.files.mirakl.MiraklBusinessStakeholderDocumentDownloadExtractService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -235,7 +236,7 @@ class MiraklBusinessStakeholderDocumentsExtractServiceImplTest {
 						kycDocumentBusinessStakeholderInfoModelRequiringLOASellerMock))
 								.thenReturn(kycDocumentBusinessStakeholderInfoModelRequiringLOAPopulatedSellerMock);
 
-		final List<KYCDocumentBusinessStakeHolderInfoModel> result = testObj
+		final KYCDocumentsExtractionResult<KYCDocumentBusinessStakeHolderInfoModel> result = testObj
 				.extractBusinessStakeholderDocuments(deltaMock);
 
 		verify(miraklBusinessStakeholderDocumentDownloadExtractServiceMock)
@@ -247,7 +248,7 @@ class MiraklBusinessStakeholderDocumentsExtractServiceImplTest {
 		verify(miraklBusinessStakeholderDocumentDownloadExtractServiceMock, never())
 				.getBusinessStakeholderDocumentsSelectedBySeller(
 						kycDocumentBusinessStakeholderInfoModelNonRequiringKYCSellerMock);
-		assertThat(result).containsExactlyInAnyOrder(
+		assertThat(result.getExtractedDocuments()).containsExactlyInAnyOrder(
 				kycDocumentBusinessStakeholderInfoModelRequiringKYCPopulatedSellerMock,
 				kycDocumentBusinessStakeholderInfoModelRequiringLOAPopulatedSellerMock);
 	}
@@ -259,10 +260,10 @@ class MiraklBusinessStakeholderDocumentsExtractServiceImplTest {
 				.thenReturn(miraklShopsResponseMock);
 		when(miraklShopsResponseMock.getShops()).thenReturn(null);
 
-		final List<KYCDocumentBusinessStakeHolderInfoModel> result = testObj
+		final KYCDocumentsExtractionResult<KYCDocumentBusinessStakeHolderInfoModel> result = testObj
 				.extractBusinessStakeholderDocuments(deltaMock);
 
-		assertThat(result).isEmpty();
+		assertThat(result.getExtractedDocuments()).isEmpty();
 	}
 
 	@Test

@@ -102,7 +102,7 @@ class MiraklSellersExtractServiceImplTest {
 	@Test
 	void extractSellers_shouldSendEmailNotification_whenMiraklExceptionIsThrown() {
 		final MiraklApiException miraklApiException = new MiraklApiException(
-				new MiraklErrorResponseBean(1, "Something went wrong"));
+				new MiraklErrorResponseBean(1, "Something went wrong", "correlation-id"));
 		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
 				.getShops(any(MiraklGetShopsRequest.class));
 
@@ -117,7 +117,7 @@ class MiraklSellersExtractServiceImplTest {
 	@Test
 	void extractSellers_shouldSendEmailNotification_whenMiraklExceptionIsThrownAndShopIdsAreReceived() {
 		final MiraklApiException miraklApiException = new MiraklApiException(
-				new MiraklErrorResponseBean(1, "Something went wrong"));
+				new MiraklErrorResponseBean(1, "Something went wrong", "correlation-id"));
 		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
 				.getShops(any(MiraklGetShopsRequest.class));
 

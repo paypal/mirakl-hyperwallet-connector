@@ -107,7 +107,12 @@ public class BatchJobExecutor {
 	}
 
 	private <C extends BatchJobContext> void reportBatchJobFinished(final C ctx) {
-		ctx.setFinishedStatus();
+		if (!ctx.isPartialItemExtraction() && ctx.getNumberOfItemsFailed() == 0) {
+			ctx.setFinishedStatus();
+		}
+		else {
+			ctx.setFinishedWithFailuresStatus();
+		}
 
 		for (final var batchJobProcessingListener : batchJobProcessingListeners) {
 			try {

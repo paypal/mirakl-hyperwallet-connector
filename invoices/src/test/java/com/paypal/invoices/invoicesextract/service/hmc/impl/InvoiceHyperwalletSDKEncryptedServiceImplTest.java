@@ -2,7 +2,7 @@ package com.paypal.invoices.invoicesextract.service.hmc.impl;
 
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.util.HyperwalletEncryption;
-import com.paypal.invoices.infraestructure.configuration.PaymentsHyperwalletApiConfig;
+import com.paypal.infrastructure.hyperwallet.api.PaymentsHyperwalletApiConfig;
 import com.paypal.invoices.invoicesextract.service.hyperwallet.impl.PaymentsHyperwalletSDKServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

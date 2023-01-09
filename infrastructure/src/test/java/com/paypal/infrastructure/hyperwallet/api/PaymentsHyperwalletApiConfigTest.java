@@ -1,4 +1,4 @@
-package com.paypal.invoices.infraestructure.configuration;
+package com.paypal.infrastructure.hyperwallet.api;
 
 import com.paypal.infrastructure.exceptions.InvalidConfigurationException;
 import org.junit.jupiter.api.Test;
@@ -9,6 +9,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,7 +18,7 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class PaymentsHyperwalletApiConfigTest {
 
-	private static final String PREFIX = "invoices.hyperwallet.api.hyperwalletprogram.token.";
+	private static final String PREFIX = "payment.hyperwallet.api.hyperwalletprogram.token.";
 
 	@Spy
 	@InjectMocks
@@ -85,7 +86,7 @@ class PaymentsHyperwalletApiConfigTest {
 	private PaymentsHyperwalletApiConfig createInvoiceApiConfig() {
 		final PaymentsHyperwalletApiConfig paymentsHyperwalletApiConfig = new PaymentsHyperwalletApiConfig();
 		paymentsHyperwalletApiConfig.setEnvironment(environmentMock);
-		paymentsHyperwalletApiConfig.setHyperwalletPrograms("test1,test2,test3");
+		paymentsHyperwalletApiConfig.setHyperwalletPrograms(List.of("test1", "test2", "test3"));
 		paymentsHyperwalletApiConfig.setPassword("password");
 		paymentsHyperwalletApiConfig.setServer("server");
 		paymentsHyperwalletApiConfig.setUsername("username");
@@ -98,7 +99,7 @@ class PaymentsHyperwalletApiConfigTest {
 	private PaymentsHyperwalletApiConfig createAnotherInvoiceApiConfig() {
 		final PaymentsHyperwalletApiConfig paymentsHyperwalletApiConfig = new PaymentsHyperwalletApiConfig();
 		paymentsHyperwalletApiConfig.setEnvironment(environmentMock);
-		paymentsHyperwalletApiConfig.setHyperwalletPrograms("test1,test2,test3");
+		paymentsHyperwalletApiConfig.setHyperwalletPrograms(List.of("test1", "test2", "test3"));
 		paymentsHyperwalletApiConfig.setPassword("password");
 		paymentsHyperwalletApiConfig.setServer("server");
 		paymentsHyperwalletApiConfig.setUsername("username");
