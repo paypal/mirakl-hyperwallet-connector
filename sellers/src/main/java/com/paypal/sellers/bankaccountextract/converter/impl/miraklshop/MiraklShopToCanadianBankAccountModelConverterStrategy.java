@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -37,7 +38,7 @@ public class MiraklShopToCanadianBankAccountModelConverterStrategy implements St
 		return CanadianBankAccountModel.builder()
 				.bankId(miraklCanadianBankAccountInformation.getInstitutionNumber())
 				.branchId(miraklCanadianBankAccountInformation.getTransitNumber())
-				.transferMethodCountry(contactInformation.getCountry())
+				.transferMethodCountry(Locale.CANADA.getCountry())
 				.transferMethodCurrency(source.getCurrencyIsoCode().name())
 				.transferType(TransferType.BANK_ACCOUNT)
 				.type(BankAccountType.CANADIAN)

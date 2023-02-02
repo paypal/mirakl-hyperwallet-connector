@@ -36,11 +36,13 @@ class MiraklShopToCanadianBankAccountModelConverterStrategyTest {
 
 	private static final String STREET_2 = "street2";
 
-	private static final String COUNTRY = "USA";
+	private static final String CONTACT_COUNTRY = "FRA";
+
+	private static final String FR_COUNTRY_ISO = "FR";
 
 	private static final String BUSINESS_NAME = "business_name";
 
-	private static final String USA_COUNTRY_ISO = "US";
+	private static final String CA_COUNTRY_ISO = "CA";
 
 	private static final String USD_CURRENCY = "USD";
 
@@ -103,7 +105,7 @@ class MiraklShopToCanadianBankAccountModelConverterStrategyTest {
 		when(contactInformationMock.getLastname()).thenReturn(LAST_NAME);
 		when(contactInformationMock.getStreet1()).thenReturn(STREET_1);
 		when(contactInformationMock.getStreet2()).thenReturn(STREET_2);
-		when(contactInformationMock.getCountry()).thenReturn(COUNTRY);
+		when(contactInformationMock.getCountry()).thenReturn(CONTACT_COUNTRY);
 
 		when(miraklCanadianBankAccountInformationMock.getInstitutionNumber()).thenReturn(INSTITUTION_NUMBER);
 		when(miraklCanadianBankAccountInformationMock.getTransitNumber()).thenReturn(TRANSIT_NUMBER);
@@ -115,14 +117,14 @@ class MiraklShopToCanadianBankAccountModelConverterStrategyTest {
 		final BankAccountModel result = testObj.execute(miraklShopMock);
 
 		//@formatter:off
-		assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", USA_COUNTRY_ISO)
+		assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", CA_COUNTRY_ISO)
 				.hasFieldOrPropertyWithValue("transferMethodCurrency", USD_CURRENCY)
 				.hasFieldOrPropertyWithValue("transferType", TransferType.BANK_ACCOUNT)
 				.hasFieldOrPropertyWithValue("type", BankAccountType.CANADIAN)
 				.hasFieldOrPropertyWithValue("businessName", BUSINESS_NAME)
 				.hasFieldOrPropertyWithValue("firstName", FIRST_NAME)
 				.hasFieldOrPropertyWithValue("lastName", LAST_NAME)
-				.hasFieldOrPropertyWithValue("country", USA_COUNTRY_ISO)
+				.hasFieldOrPropertyWithValue("country", FR_COUNTRY_ISO)
 				.hasFieldOrPropertyWithValue("addressLine1", STREET_1)
 				.hasFieldOrPropertyWithValue("addressLine2", STREET_2)
 				.hasFieldOrPropertyWithValue("stateProvince", STATE)
@@ -155,7 +157,7 @@ class MiraklShopToCanadianBankAccountModelConverterStrategyTest {
 		when(contactInformationMock.getLastname()).thenReturn(LAST_NAME);
 		when(contactInformationMock.getStreet1()).thenReturn(STREET_1);
 		when(contactInformationMock.getStreet2()).thenReturn(null);
-		when(contactInformationMock.getCountry()).thenReturn(COUNTRY);
+		when(contactInformationMock.getCountry()).thenReturn(CONTACT_COUNTRY);
 
 		when(miraklCanadianBankAccountInformationMock.getInstitutionNumber()).thenReturn(INSTITUTION_NUMBER);
 		when(miraklCanadianBankAccountInformationMock.getTransitNumber()).thenReturn(TRANSIT_NUMBER);
@@ -166,14 +168,14 @@ class MiraklShopToCanadianBankAccountModelConverterStrategyTest {
 
 		final BankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off
-		assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", USA_COUNTRY_ISO)
+		assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", CA_COUNTRY_ISO)
 				.hasFieldOrPropertyWithValue("transferMethodCurrency", USD_CURRENCY)
 				.hasFieldOrPropertyWithValue("transferType", TransferType.BANK_ACCOUNT)
 				.hasFieldOrPropertyWithValue("type", BankAccountType.CANADIAN)
 				.hasFieldOrPropertyWithValue("businessName", BUSINESS_NAME)
 				.hasFieldOrPropertyWithValue("firstName", FIRST_NAME)
 				.hasFieldOrPropertyWithValue("lastName", LAST_NAME)
-				.hasFieldOrPropertyWithValue("country", USA_COUNTRY_ISO)
+				.hasFieldOrPropertyWithValue("country", FR_COUNTRY_ISO)
 				.hasFieldOrPropertyWithValue("addressLine1", STREET_1)
 				.hasFieldOrPropertyWithValue("addressLine2", StringUtils.EMPTY)
 				.hasFieldOrPropertyWithValue("stateProvince", STATE)
