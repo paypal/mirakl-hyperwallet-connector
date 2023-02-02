@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public class MiraklShopToABABankAccountModelConverterStrategy implements Strateg
 
 		//@formatter:off
 		return ABABankAccountModel.builder()
-				.transferMethodCountry(contactInformation.getCountry())
+				.transferMethodCountry(Locale.US.getCountry())
 				.branchId(miraklAbaBankAccountInformation.getRoutingNumber())
 				.bankAccountPurpose(BankAccountPurposeType.CHECKING.name())
 				.transferMethodCurrency(source.getCurrencyIsoCode().name())

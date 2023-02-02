@@ -38,11 +38,13 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 
 	private static final String CITY_NAME = "city";
 
-	private static final String COUNTRY = "USA";
-
 	private static final String ABA_ACCOUNT = "ABA";
 
 	private static final String BUSINESS_NAME = "business_name";
+
+	private static final String CONTACT_COUNTRY = "FRA";
+
+	private static final String FR_COUNTRY_ISO = "FR";
 
 	private static final String USA_COUNTRY_ISO = "US";
 
@@ -100,7 +102,7 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 		when(contactInformationMock.getLastname()).thenReturn(LAST_NAME);
 		when(contactInformationMock.getStreet1()).thenReturn(STREET_1);
 		when(contactInformationMock.getStreet2()).thenReturn(STREET_2);
-		when(contactInformationMock.getCountry()).thenReturn(COUNTRY);
+		when(contactInformationMock.getCountry()).thenReturn(CONTACT_COUNTRY);
 
 		when(miraklABABankAccountInformationMock.getBankZip()).thenReturn(BANK_ZIP);
 		when(miraklABABankAccountInformationMock.getBankAccountNumber()).thenReturn(ABA_ACCOUNT);
@@ -119,7 +121,7 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 				.hasFieldOrPropertyWithValue("businessName", BUSINESS_NAME)
 				.hasFieldOrPropertyWithValue("firstName", FIRST_NAME)
 				.hasFieldOrPropertyWithValue("lastName", LAST_NAME)
-				.hasFieldOrPropertyWithValue("country", USA_COUNTRY_ISO)
+				.hasFieldOrPropertyWithValue("country", FR_COUNTRY_ISO)
 				.hasFieldOrPropertyWithValue("addressLine1", STREET_1)
 				.hasFieldOrPropertyWithValue("addressLine2", STREET_2)
 				.hasFieldOrPropertyWithValue("city", CITY_NAME)
@@ -149,7 +151,7 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 		when(contactInformationMock.getLastname()).thenReturn(LAST_NAME);
 		when(contactInformationMock.getStreet1()).thenReturn(STREET_1);
 		when(contactInformationMock.getStreet2()).thenReturn(null);
-		when(contactInformationMock.getCountry()).thenReturn(COUNTRY);
+		when(contactInformationMock.getCountry()).thenReturn(CONTACT_COUNTRY);
 
 		when(miraklABABankAccountInformationMock.getBankZip()).thenReturn(BANK_ZIP);
 		when(miraklABABankAccountInformationMock.getBankAccountNumber()).thenReturn(ABA_ACCOUNT);
@@ -167,7 +169,7 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 				.hasFieldOrPropertyWithValue("businessName", BUSINESS_NAME)
 				.hasFieldOrPropertyWithValue("firstName", FIRST_NAME)
 				.hasFieldOrPropertyWithValue("lastName", LAST_NAME)
-				.hasFieldOrPropertyWithValue("country", USA_COUNTRY_ISO)
+				.hasFieldOrPropertyWithValue("country", FR_COUNTRY_ISO)
 				.hasFieldOrPropertyWithValue("addressLine1", STREET_1)
 				.hasFieldOrPropertyWithValue("addressLine2", StringUtils.EMPTY)
 				.hasFieldOrPropertyWithValue("city", CITY_NAME)

@@ -38,7 +38,9 @@ class MiraklShopToUKBankAccountModelConverterStrategyTest {
 
 	private static final String CITY_NAME = "city";
 
-	private static final String GB_COUNTRY = "GBR";
+	private static final String CONTACT_COUNTRY = "FRA";
+
+	private static final String FR_COUNTRY_ISO = "FR";
 
 	private static final String BUSINESS_NAME = "business_name";
 
@@ -101,7 +103,7 @@ class MiraklShopToUKBankAccountModelConverterStrategyTest {
 		when(contactInformationMock.getStreet1()).thenReturn(STREET_1);
 		when(contactInformationMock.getStreet2()).thenReturn(STREET_2);
 		when(miraklUKBankAccountInformationMock.getBankCity()).thenReturn(CITY_NAME);
-		when(contactInformationMock.getCountry()).thenReturn(GB_COUNTRY);
+		when(contactInformationMock.getCountry()).thenReturn(CONTACT_COUNTRY);
 
 		when(miraklUKBankAccountInformationMock.getBankAccountNumber()).thenReturn(BANK_ACCOUNT_NUMBER);
 		when(miraklUKBankAccountInformationMock.getBankSortCode()).thenReturn(SORT_CODE);
@@ -119,7 +121,7 @@ class MiraklShopToUKBankAccountModelConverterStrategyTest {
 				.hasFieldOrPropertyWithValue("businessName", BUSINESS_NAME)
 				.hasFieldOrPropertyWithValue("firstName", FIRST_NAME)
 				.hasFieldOrPropertyWithValue("lastName", LAST_NAME)
-				.hasFieldOrPropertyWithValue("country", UK_COUNTRY_ISO)
+				.hasFieldOrPropertyWithValue("country", FR_COUNTRY_ISO)
 				.hasFieldOrPropertyWithValue("addressLine1", STREET_1)
 				.hasFieldOrPropertyWithValue("addressLine2", STREET_2)
 				.hasFieldOrPropertyWithValue("city", CITY_NAME)
@@ -146,7 +148,7 @@ class MiraklShopToUKBankAccountModelConverterStrategyTest {
 		when(contactInformationMock.getLastname()).thenReturn(LAST_NAME);
 		when(contactInformationMock.getStreet1()).thenReturn(STREET_1);
 		when(contactInformationMock.getStreet2()).thenReturn(null);
-		when(contactInformationMock.getCountry()).thenReturn(GB_COUNTRY);
+		when(contactInformationMock.getCountry()).thenReturn(CONTACT_COUNTRY);
 
 		when(miraklUKBankAccountInformationMock.getBankSortCode()).thenReturn(SORT_CODE);
 		when(miraklUKBankAccountInformationMock.getBankAccountNumber()).thenReturn(BANK_ACCOUNT_NUMBER);
@@ -165,7 +167,7 @@ class MiraklShopToUKBankAccountModelConverterStrategyTest {
 				.hasFieldOrPropertyWithValue("businessName", BUSINESS_NAME)
 				.hasFieldOrPropertyWithValue("firstName", FIRST_NAME)
 				.hasFieldOrPropertyWithValue("lastName", LAST_NAME)
-				.hasFieldOrPropertyWithValue("country", UK_COUNTRY_ISO)
+				.hasFieldOrPropertyWithValue("country", FR_COUNTRY_ISO)
 				.hasFieldOrPropertyWithValue("addressLine1", STREET_1)
 				.hasFieldOrPropertyWithValue("addressLine2", StringUtils.EMPTY)
 				.hasFieldOrPropertyWithValue("city", CITY_NAME)

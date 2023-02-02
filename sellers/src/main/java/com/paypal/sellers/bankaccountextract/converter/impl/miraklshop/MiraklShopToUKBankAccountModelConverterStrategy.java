@@ -13,6 +13,7 @@ import com.paypal.sellers.bankaccountextract.model.UKBankAccountModel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class MiraklShopToUKBankAccountModelConverterStrategy implements Strategy
 
 		//@formatter:off
 		return UKBankAccountModel.builder()
-				.transferMethodCountry(contactInformation.getCountry())
+				.transferMethodCountry(Locale.UK.getCountry())
 				.transferMethodCurrency(source.getCurrencyIsoCode().name())
 				.transferType(TransferType.BANK_ACCOUNT)
 				.type(BankAccountType.UK)
