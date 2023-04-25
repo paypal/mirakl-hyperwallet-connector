@@ -6,9 +6,10 @@ import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklPaymentInformation;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklUkBankAccountInformation;
 import com.paypal.infrastructure.strategy.Strategy;
+import com.paypal.sellers.bankaccountextract.converter.impl.miraklshop.currency.HyperwalletBankAccountCurrencyResolver;
+import com.paypal.sellers.bankaccountextract.converter.impl.miraklshop.currency.HyperwalletBankAccountCurrencyInfo;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextract.model.BankAccountType;
-import com.paypal.sellers.bankaccountextract.model.TransferType;
 import com.paypal.sellers.bankaccountextract.model.UKBankAccountModel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,13 @@ import java.util.Optional;
 @Service
 public class MiraklShopToUKBankAccountModelConverterStrategy implements Strategy<MiraklShop, BankAccountModel> {
 
+	private final HyperwalletBankAccountCurrencyResolver hyperwalletBankAccountCurrencyResolver;
+
+	public MiraklShopToUKBankAccountModelConverterStrategy(
+			HyperwalletBankAccountCurrencyResolver hyperwalletBankAccountCurrencyResolver) {
+		this.hyperwalletBankAccountCurrencyResolver = hyperwalletBankAccountCurrencyResolver;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -32,11 +40,15 @@ public class MiraklShopToUKBankAccountModelConverterStrategy implements Strategy
 		final MiraklUkBankAccountInformation miraklUkBankAccountInformation = (MiraklUkBankAccountInformation) paymentInformation;
 		final MiraklContactInformation contactInformation = source.getContactInformation();
 
+		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = hyperwalletBankAccountCurrencyResolver
+				.getCurrencyForCountry(BankAccountType.UK.name(), Locale.UK.getCountry(),
+						source.getCurrencyIsoCode().name());
+
 		//@formatter:off
 		return UKBankAccountModel.builder()
 				.transferMethodCountry(Locale.UK.getCountry())
-				.transferMethodCurrency(source.getCurrencyIsoCode().name())
-				.transferType(TransferType.BANK_ACCOUNT)
+				.transferMethodCurrency(hyperwalletBankAccountCurrencyInfo.getCurrency())
+				.transferType(hyperwalletBankAccountCurrencyInfo.getTransferType())
 				.type(BankAccountType.UK)
 				.bankAccountNumber(miraklUkBankAccountInformation.getBankAccountNumber())
 				.bankAccountId(miraklUkBankAccountInformation.getBankSortCode())

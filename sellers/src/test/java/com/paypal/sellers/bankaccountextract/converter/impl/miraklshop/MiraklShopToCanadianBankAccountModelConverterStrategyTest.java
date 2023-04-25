@@ -7,6 +7,8 @@ import com.mirakl.client.mmp.domain.shop.MiraklProfessionalInformation;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklCanadianBankAccountInformation;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklIbanBankAccountInformation;
+import com.paypal.sellers.bankaccountextract.converter.impl.miraklshop.currency.HyperwalletBankAccountCurrencyResolver;
+import com.paypal.sellers.bankaccountextract.converter.impl.miraklshop.currency.HyperwalletBankAccountCurrencyInfo;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextract.model.BankAccountType;
 import com.paypal.sellers.bankaccountextract.model.TransferType;
@@ -64,6 +66,9 @@ class MiraklShopToCanadianBankAccountModelConverterStrategyTest {
 	private MiraklShopToCanadianBankAccountModelConverterStrategy testObj;
 
 	@Mock
+	private HyperwalletBankAccountCurrencyResolver hyperwalletBankAccountCurrencyResolverMock;
+
+	@Mock
 	private MiraklShop miraklShopMock;
 
 	@Mock
@@ -113,6 +118,11 @@ class MiraklShopToCanadianBankAccountModelConverterStrategyTest {
 		when(miraklCanadianBankAccountInformationMock.getBankAccountNumber()).thenReturn(BANK_ACCOUNT_NUMBER);
 
 		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
+
+		HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
+				CA_COUNTRY_ISO, USD_CURRENCY, TransferType.BANK_ACCOUNT);
+		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.CANADIAN.name(),
+				CA_COUNTRY_ISO, USD_CURRENCY)).thenReturn(hyperwalletBankAccountCurrencyInfo);
 
 		final BankAccountModel result = testObj.execute(miraklShopMock);
 
@@ -165,6 +175,11 @@ class MiraklShopToCanadianBankAccountModelConverterStrategyTest {
 		when(miraklCanadianBankAccountInformationMock.getBankAccountNumber()).thenReturn(BANK_ACCOUNT_NUMBER);
 
 		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
+
+		HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
+				CA_COUNTRY_ISO, USD_CURRENCY, TransferType.BANK_ACCOUNT);
+		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.CANADIAN.name(),
+				CA_COUNTRY_ISO, USD_CURRENCY)).thenReturn(hyperwalletBankAccountCurrencyInfo);
 
 		final BankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off

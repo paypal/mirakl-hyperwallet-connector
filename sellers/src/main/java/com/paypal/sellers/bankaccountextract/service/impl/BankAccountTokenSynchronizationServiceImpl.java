@@ -14,12 +14,11 @@ import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextract.service.MiraklBankAccountExtractService;
 import com.paypal.sellers.sellersextract.model.SellerModel;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Class that implements the {@link TokenSynchronizationService} interface for the
@@ -33,86 +32,54 @@ public class BankAccountTokenSynchronizationServiceImpl implements TokenSynchron
 
 	private final MiraklBankAccountExtractService miraklBankAccountExtractService;
 
+	private final HyperwalletMiraklBankAccountMatcher hyperwalletMiraklBankAccountMatcher;
+
 	public BankAccountTokenSynchronizationServiceImpl(final HyperwalletSDKUserService hyperwalletSDKUserService,
-			final MiraklBankAccountExtractService miraklBankAccountExtractService) {
+			final MiraklBankAccountExtractService miraklBankAccountExtractService,
+			HyperwalletMiraklBankAccountMatcher hyperwalletMiraklBankAccountMatcher) {
 
 		this.hyperwalletSDKUserService = hyperwalletSDKUserService;
 		this.miraklBankAccountExtractService = miraklBankAccountExtractService;
+		this.hyperwalletMiraklBankAccountMatcher = hyperwalletMiraklBankAccountMatcher;
 	}
 
-	/**
-	 * Ensures the bank account token between Hyperwallet and Mirakl is synchronized
-	 * @param sellerModel that contains the seller bank account item to be synchronized
-	 * @return the seller with the bank account token synchronized
-	 */
-	@Override
-	public SellerModel synchronizeToken(final SellerModel sellerModel) {
+	public SellerModel synchronizeToken(final SellerModel miraklSeller) {
+		final BankAccountModel miraklBankAccount = miraklSeller.getBankAccountDetails();
 
-		final BankAccountModel bankAccountModel = sellerModel.getBankAccountDetails();
-
-		if (Objects.isNull(bankAccountModel)) {
-
+		if (miraklBankAccount == null || StringUtils.isBlank(miraklBankAccount.getBankAccountNumber())) {
 			log.debug("Not bank account for client user id [{}], synchronization not needed",
-					sellerModel.getClientUserId());
+					miraklSeller.getClientUserId());
 
-			return sellerModel;
+			return miraklSeller;
 		}
 
-		if (StringUtils.isNotBlank(bankAccountModel.getToken())) {
+		// If not exact match or compatible bank account is found, the bank account token
+		// in Mirakl will be updated with a null value, forcing the bank account to be
+		// created again
+		// in Hyperwallet
+		final List<HyperwalletBankAccount> hyperwalletBankAccounts = getHwBankAccountByClientUserId(miraklSeller);
+		HyperwalletBankAccount matchedHyperwalletBankAccount = hyperwalletMiraklBankAccountMatcher
+				.findExactOrCompatibleMatch(hyperwalletBankAccounts, miraklBankAccount)
+				.orElse(new HyperwalletBankAccount());
 
-			log.debug("Hyperwallet token already exists for bank account number [{}], synchronization not needed",
-					bankAccountModel.getBankAccountNumber());
-
-			return sellerModel;
+		if (!Objects.equals(miraklBankAccount.getToken(), matchedHyperwalletBankAccount.getToken())) {
+			updateMiraklBankAccountToken(miraklSeller, matchedHyperwalletBankAccount);
 		}
-
-		final Optional<HyperwalletBankAccount> hyperwalletBankAccount = getHwBankAccount(sellerModel);
-
-		if (hyperwalletBankAccount.isPresent()) {
-
-			updateMiraklBankAccount(sellerModel, hyperwalletBankAccount.get());
-
-			return updateSellerBankAccountWithHyperwalletToken(sellerModel, hyperwalletBankAccount.get());
-
-		}
-		else {
-
-			return sellerModel;
-		}
+		return updateSellerBankAccountWithHyperwalletToken(miraklSeller, matchedHyperwalletBankAccount);
 	}
 
-	private Optional<HyperwalletBankAccount> getHwBankAccount(final SellerModel sellerModel) {
-
-		final HyperwalletList<HyperwalletBankAccount> hyperwalletBankAccounts = getHwBankAccountByClientUserId(
-				sellerModel);
-
-		if (CollectionUtils.isEmpty(hyperwalletBankAccounts.getData())) {
-
-			log.debug("Hyperwallet bank account for client user id [{}] not found", sellerModel.getClientUserId());
-
-			return Optional.empty();
-
-		}
-		else {
-
-			log.debug("Hyperwallet bank account for client user id [{}] found", sellerModel.getClientUserId());
-
-			return Optional.of(hyperwalletBankAccounts.getData().get(0));
-		}
-	}
-
-	private HyperwalletList<HyperwalletBankAccount> getHwBankAccountByClientUserId(final SellerModel sellerModel) {
+	private List<HyperwalletBankAccount> getHwBankAccountByClientUserId(final SellerModel sellerModel) {
 
 		final Hyperwallet hyperwalletSDK = hyperwalletSDKUserService
 				.getHyperwalletInstanceByProgramToken(sellerModel.getProgramToken());
 
 		try {
-
-			return hyperwalletSDK.listBankAccounts(sellerModel.getToken());
+			HyperwalletList<HyperwalletBankAccount> bankAccounts = hyperwalletSDK
+					.listBankAccounts(sellerModel.getToken());
+			return bankAccounts != null && bankAccounts.getData() != null ? bankAccounts.getData() : List.of();
 
 		}
 		catch (final HyperwalletException exception) {
-
 			log.error(
 					String.format("Error while getting Hyperwallet bank account by clientUserId [%s].%n%s",
 							sellerModel.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(exception)),
@@ -122,17 +89,13 @@ public class BankAccountTokenSynchronizationServiceImpl implements TokenSynchron
 		}
 	}
 
-	private void updateMiraklBankAccount(final SellerModel sellerModel,
+	private void updateMiraklBankAccountToken(final SellerModel miraklSeller,
 			final HyperwalletBankAccount hyperwalletBankAccount) {
-
 		try {
-
-			miraklBankAccountExtractService.updateBankAccountToken(sellerModel, hyperwalletBankAccount);
-
+			miraklBankAccountExtractService.updateBankAccountToken(miraklSeller, hyperwalletBankAccount);
 		}
 		catch (final MiraklApiException exception) {
-
-			log.error("Error while updating Mirakl bank account by clientUserId [{}]", sellerModel.getClientUserId(),
+			log.error("Error while updating Mirakl bank account by clientUserId [{}]", miraklSeller.getClientUserId(),
 					exception);
 
 			throw new HMCMiraklAPIException(exception);

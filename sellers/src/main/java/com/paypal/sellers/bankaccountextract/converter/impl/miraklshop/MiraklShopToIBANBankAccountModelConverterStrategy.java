@@ -6,6 +6,8 @@ import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklIbanBankAccountInformation;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklPaymentInformation;
 import com.paypal.infrastructure.strategy.Strategy;
+import com.paypal.sellers.bankaccountextract.converter.impl.miraklshop.currency.HyperwalletBankAccountCurrencyResolver;
+import com.paypal.sellers.bankaccountextract.converter.impl.miraklshop.currency.HyperwalletBankAccountCurrencyInfo;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextract.model.BankAccountType;
 import com.paypal.sellers.bankaccountextract.model.IBANBankAccountModel;
@@ -25,6 +27,13 @@ import java.util.Optional;
 @Service
 public class MiraklShopToIBANBankAccountModelConverterStrategy implements Strategy<MiraklShop, BankAccountModel> {
 
+	private final HyperwalletBankAccountCurrencyResolver hyperwalletBankAccountCurrencyResolver;
+
+	public MiraklShopToIBANBankAccountModelConverterStrategy(
+			HyperwalletBankAccountCurrencyResolver hyperwalletBankAccountCurrencyResolver) {
+		this.hyperwalletBankAccountCurrencyResolver = hyperwalletBankAccountCurrencyResolver;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -34,11 +43,16 @@ public class MiraklShopToIBANBankAccountModelConverterStrategy implements Strate
 		final MiraklIbanBankAccountInformation miraklIbanBankAccountInformation = (MiraklIbanBankAccountInformation) paymentInformation;
 		final MiraklContactInformation contactInformation = source.getContactInformation();
 
-		//@formatter:off
 		final String bankCountryIsoCode = extractCountryFromIban(source, miraklIbanBankAccountInformation);
+		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = hyperwalletBankAccountCurrencyResolver
+				.getCurrencyForCountry(BankAccountType.IBAN.name(), bankCountryIsoCode,
+						source.getCurrencyIsoCode().name());
+
+		//@formatter:off
 		return IBANBankAccountModel.builder()
 				.transferMethodCountry(bankCountryIsoCode)
 				.transferMethodCurrency(source.getCurrencyIsoCode().name())
+				.transferMethodCurrency(hyperwalletBankAccountCurrencyInfo.getCurrency())
 				.transferType(TransferType.BANK_ACCOUNT)
 				.type(BankAccountType.IBAN)
 				.bankBic(miraklIbanBankAccountInformation.getBic())
