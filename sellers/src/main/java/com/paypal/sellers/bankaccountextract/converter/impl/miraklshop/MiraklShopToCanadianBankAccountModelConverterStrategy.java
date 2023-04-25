@@ -6,10 +6,11 @@ import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklCanadianBankAccountInformation;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklPaymentInformation;
 import com.paypal.infrastructure.strategy.Strategy;
+import com.paypal.sellers.bankaccountextract.converter.impl.miraklshop.currency.HyperwalletBankAccountCurrencyResolver;
+import com.paypal.sellers.bankaccountextract.converter.impl.miraklshop.currency.HyperwalletBankAccountCurrencyInfo;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextract.model.BankAccountType;
 import com.paypal.sellers.bankaccountextract.model.CanadianBankAccountModel;
-import com.paypal.sellers.bankaccountextract.model.TransferType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,13 @@ import java.util.Optional;
 @Service
 public class MiraklShopToCanadianBankAccountModelConverterStrategy implements Strategy<MiraklShop, BankAccountModel> {
 
+	private final HyperwalletBankAccountCurrencyResolver hyperwalletBankAccountCurrencyResolver;
+
+	public MiraklShopToCanadianBankAccountModelConverterStrategy(
+			HyperwalletBankAccountCurrencyResolver hyperwalletBankAccountCurrencyResolver) {
+		this.hyperwalletBankAccountCurrencyResolver = hyperwalletBankAccountCurrencyResolver;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -34,13 +42,17 @@ public class MiraklShopToCanadianBankAccountModelConverterStrategy implements St
 		final MiraklCanadianBankAccountInformation miraklCanadianBankAccountInformation = (MiraklCanadianBankAccountInformation) paymentInformation;
 		final MiraklContactInformation contactInformation = source.getContactInformation();
 
+		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = hyperwalletBankAccountCurrencyResolver
+				.getCurrencyForCountry(BankAccountType.CANADIAN.name(), Locale.CANADA.getCountry(),
+						source.getCurrencyIsoCode().name());
+
 		//@formatter:off
 		return CanadianBankAccountModel.builder()
 				.bankId(miraklCanadianBankAccountInformation.getInstitutionNumber())
 				.branchId(miraklCanadianBankAccountInformation.getTransitNumber())
 				.transferMethodCountry(Locale.CANADA.getCountry())
-				.transferMethodCurrency(source.getCurrencyIsoCode().name())
-				.transferType(TransferType.BANK_ACCOUNT)
+				.transferMethodCurrency(hyperwalletBankAccountCurrencyInfo.getCurrency())
+				.transferType(hyperwalletBankAccountCurrencyInfo.getTransferType())
 				.type(BankAccountType.CANADIAN)
 				.bankAccountNumber(miraklCanadianBankAccountInformation.getBankAccountNumber())
 				.businessName(Optional.ofNullable(source.getProfessionalInformation())

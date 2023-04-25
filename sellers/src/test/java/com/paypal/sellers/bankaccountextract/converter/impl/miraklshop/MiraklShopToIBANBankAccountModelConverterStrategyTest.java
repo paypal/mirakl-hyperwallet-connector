@@ -2,6 +2,8 @@ package com.paypal.sellers.bankaccountextract.converter.impl.miraklshop;
 
 import java.util.List;
 
+import com.paypal.sellers.bankaccountextract.converter.impl.miraklshop.currency.HyperwalletBankAccountCurrencyResolver;
+import com.paypal.sellers.bankaccountextract.converter.impl.miraklshop.currency.HyperwalletBankAccountCurrencyInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -66,6 +68,9 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 	private MiraklShopToIBANBankAccountModelConverterStrategy testObj;
 
 	@Mock
+	private HyperwalletBankAccountCurrencyResolver hyperwalletBankAccountCurrencyResolverMock;
+
+	@Mock
 	private MiraklShop miraklShopMock;
 
 	@Mock
@@ -113,6 +118,13 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 		when(miraklIbanBankAccountInformationMock.getIban()).thenReturn(ES_IBAN_ACCOUNT);
 
 		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
+
+		HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
+				ES_COUNTRY_ISO, EUR_CURRENCY, TransferType.BANK_ACCOUNT);
+		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.IBAN.name(),
+				ES_COUNTRY_ISO, EUR_CURRENCY)).thenReturn(hyperwalletBankAccountCurrencyInfo);
+		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.IBAN.name(),
+				ES_COUNTRY_ISO, EUR_CURRENCY)).thenReturn(hyperwalletBankAccountCurrencyInfo);
 
 		final IBANBankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off
@@ -162,6 +174,11 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 
 		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
 
+		HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
+				UK_COUNTRY_ISO, MiraklIsoCurrencyCode.GBP.name(), TransferType.BANK_ACCOUNT);
+		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.IBAN.name(),
+				UK_COUNTRY_ISO, MiraklIsoCurrencyCode.GBP.name())).thenReturn(hyperwalletBankAccountCurrencyInfo);
+
 		final IBANBankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off
 		assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", UK_COUNTRY_ISO)
@@ -207,6 +224,11 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 
 		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
 
+		HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
+				ES_COUNTRY_ISO, EUR_CURRENCY, TransferType.BANK_ACCOUNT);
+		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.IBAN.name(),
+				ES_COUNTRY_ISO, EUR_CURRENCY)).thenReturn(hyperwalletBankAccountCurrencyInfo);
+
 		final IBANBankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off
 		assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", ES_COUNTRY_ISO)
@@ -234,6 +256,7 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 		when(miraklShopMock.getPaymentInformation()).thenReturn(ibanAccount);
 
 		when(miraklShopMock.getContactInformation()).thenReturn(defaultMiraklContanctInformation());
+		when(miraklShopMock.getCurrencyIsoCode()).thenReturn(MiraklIsoCurrencyCode.GBP);
 
 		Assertions.assertThrows(IllegalStateException.class, () -> testObj.execute(miraklShopMock),
 				"Country with isocode: [10] not valid");

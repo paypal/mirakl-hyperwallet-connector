@@ -6,6 +6,8 @@ import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklAbaBankAccountInformation;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklPaymentInformation;
 import com.paypal.infrastructure.strategy.Strategy;
+import com.paypal.sellers.bankaccountextract.converter.impl.miraklshop.currency.HyperwalletBankAccountCurrencyResolver;
+import com.paypal.sellers.bankaccountextract.converter.impl.miraklshop.currency.HyperwalletBankAccountCurrencyInfo;
 import com.paypal.sellers.bankaccountextract.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +25,13 @@ import java.util.Optional;
 @Service
 public class MiraklShopToABABankAccountModelConverterStrategy implements Strategy<MiraklShop, BankAccountModel> {
 
+	private final HyperwalletBankAccountCurrencyResolver hyperwalletBankAccountCurrencyResolver;
+
+	public MiraklShopToABABankAccountModelConverterStrategy(
+			HyperwalletBankAccountCurrencyResolver hyperwalletBankAccountCurrencyResolver) {
+		this.hyperwalletBankAccountCurrencyResolver = hyperwalletBankAccountCurrencyResolver;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -33,13 +42,17 @@ public class MiraklShopToABABankAccountModelConverterStrategy implements Strateg
 		final MiraklAbaBankAccountInformation miraklAbaBankAccountInformation = (MiraklAbaBankAccountInformation) paymentInformation;
 		final MiraklContactInformation contactInformation = source.getContactInformation();
 
+		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = hyperwalletBankAccountCurrencyResolver
+				.getCurrencyForCountry(BankAccountType.ABA.name(), Locale.US.getCountry(),
+						source.getCurrencyIsoCode().name());
+
 		//@formatter:off
 		return ABABankAccountModel.builder()
 				.transferMethodCountry(Locale.US.getCountry())
 				.branchId(miraklAbaBankAccountInformation.getRoutingNumber())
 				.bankAccountPurpose(BankAccountPurposeType.CHECKING.name())
-				.transferMethodCurrency(source.getCurrencyIsoCode().name())
-				.transferType(TransferType.BANK_ACCOUNT)
+				.transferMethodCurrency(hyperwalletBankAccountCurrencyInfo.getCurrency())
+				.transferType(hyperwalletBankAccountCurrencyInfo.getTransferType())
 				.type(BankAccountType.ABA)
 				.bankAccountNumber(miraklAbaBankAccountInformation.getBankAccountNumber())
 				.businessName(Optional.ofNullable(source.getProfessionalInformation())

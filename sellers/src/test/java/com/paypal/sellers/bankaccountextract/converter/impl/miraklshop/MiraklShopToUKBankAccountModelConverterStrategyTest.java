@@ -7,6 +7,8 @@ import com.mirakl.client.mmp.domain.shop.MiraklProfessionalInformation;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklAbaBankAccountInformation;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklUkBankAccountInformation;
+import com.paypal.sellers.bankaccountextract.converter.impl.miraklshop.currency.HyperwalletBankAccountCurrencyResolver;
+import com.paypal.sellers.bankaccountextract.converter.impl.miraklshop.currency.HyperwalletBankAccountCurrencyInfo;
 import com.paypal.sellers.bankaccountextract.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextract.model.BankAccountType;
 import com.paypal.sellers.bankaccountextract.model.TransferType;
@@ -62,6 +64,9 @@ class MiraklShopToUKBankAccountModelConverterStrategyTest {
 	private MiraklShopToUKBankAccountModelConverterStrategy testObj;
 
 	@Mock
+	private HyperwalletBankAccountCurrencyResolver hyperwalletBankAccountCurrencyResolverMock;
+
+	@Mock
 	private MiraklShop miraklShopMock;
 
 	@Mock
@@ -110,6 +115,11 @@ class MiraklShopToUKBankAccountModelConverterStrategyTest {
 
 		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
 
+		HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
+				UK_COUNTRY_ISO, GBP_CURRENCY, TransferType.BANK_ACCOUNT);
+		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.UK.name(), UK_COUNTRY_ISO,
+				GBP_CURRENCY)).thenReturn(hyperwalletBankAccountCurrencyInfo);
+
 		final BankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off
 		assertThat(result).hasFieldOrPropertyWithValue("transferMethodCountry", UK_COUNTRY_ISO)
@@ -155,6 +165,11 @@ class MiraklShopToUKBankAccountModelConverterStrategyTest {
 		when(miraklUKBankAccountInformationMock.getBankCity()).thenReturn(CITY_NAME);
 
 		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
+
+		HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
+				UK_COUNTRY_ISO, GBP_CURRENCY, TransferType.BANK_ACCOUNT);
+		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.UK.name(), UK_COUNTRY_ISO,
+				GBP_CURRENCY)).thenReturn(hyperwalletBankAccountCurrencyInfo);
 
 		final BankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off

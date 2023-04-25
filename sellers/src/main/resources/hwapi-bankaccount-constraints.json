@@ -1,0 +1,2284 @@
+[
+	{
+		"countryName": "Afghanistan",
+		"country": "AF",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Albania",
+		"country": "AL",
+		"currency": "ALL",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Albania",
+		"country": "AL",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Algeria",
+		"country": "DZ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "American Samoa",
+		"country": "AS",
+		"currency": "USD",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "American Samoa",
+		"country": "AS",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Andorra",
+		"country": "AD",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Anguilla",
+		"country": "AI",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Antigua & Barbuda",
+		"country": "AG",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Argentina",
+		"country": "AR",
+		"currency": "ARS",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Argentina",
+		"country": "AR",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Armenia",
+		"country": "AM",
+		"currency": "AMD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Armenia",
+		"country": "AM",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Aruba",
+		"country": "AW",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Australia",
+		"country": "AU",
+		"currency": "AUD",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Australia",
+		"country": "AU",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Austria",
+		"country": "AT",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Austria",
+		"country": "AT",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Azerbaijan",
+		"country": "AZ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Bahamas",
+		"country": "BS",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Bahrain",
+		"country": "BH",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Bangladesh",
+		"country": "BD",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Barbados",
+		"country": "BB",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Belarus",
+		"country": "BY",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Belgium",
+		"country": "BE",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Belgium",
+		"country": "BE",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Belize",
+		"country": "BZ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Benin",
+		"country": "BJ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Bermuda",
+		"country": "BM",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Bhutan",
+		"country": "BT",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Bolivia",
+		"country": "BO",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Bosnia & Herzegovina",
+		"country": "BA",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Botswana",
+		"country": "BW",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Brazil",
+		"country": "BR",
+		"currency": "BRL",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Brazil",
+		"country": "BR",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "British Virgin Islands",
+		"country": "VG",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Brunei",
+		"country": "BN",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Bulgaria",
+		"country": "BG",
+		"currency": "BGN",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Bulgaria",
+		"country": "BG",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Bulgaria",
+		"country": "BG",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Burkina Faso",
+		"country": "BF",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Burundi",
+		"country": "BI",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Cambodia",
+		"country": "KH",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Cameroon",
+		"country": "CM",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Canada",
+		"country": "CA",
+		"currency": "CAD",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "CANADIAN"
+	},
+	{
+		"countryName": "Canada",
+		"country": "CA",
+		"currency": "USD",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "CANADIAN"
+	},
+	{
+		"countryName": "Canada",
+		"country": "CA",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Cape Verde",
+		"country": "CV",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Cayman Islands",
+		"country": "KY",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Central African Republic",
+		"country": "CF",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Chad",
+		"country": "TD",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Chile",
+		"country": "CL",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "China",
+		"country": "CN",
+		"currency": "CNY",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "China",
+		"country": "CN",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Christmas Island",
+		"country": "CX",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Cocos (Keeling) Islands",
+		"country": "CC",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Colombia",
+		"country": "CO",
+		"currency": "COP",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Colombia",
+		"country": "CO",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Congo - Brazzaville",
+		"country": "CG",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Congo - Kinshasa",
+		"country": "CD",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Cook Islands",
+		"country": "CK",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Costa Rica",
+		"country": "CR",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Croatia",
+		"country": "HR",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Croatia",
+		"country": "HR",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Cura\u00e7ao",
+		"country": "CW",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Cyprus",
+		"country": "CY",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Cyprus",
+		"country": "CY",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Czechia",
+		"country": "CZ",
+		"currency": "CZK",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Czechia",
+		"country": "CZ",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Czechia",
+		"country": "CZ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Denmark",
+		"country": "DK",
+		"currency": "DKK",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Denmark",
+		"country": "DK",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Denmark",
+		"country": "DK",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Djibouti",
+		"country": "DJ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Dominica",
+		"country": "DM",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Dominican Republic",
+		"country": "DO",
+		"currency": "DOP",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Dominican Republic",
+		"country": "DO",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Ecuador",
+		"country": "EC",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Egypt",
+		"country": "EG",
+		"currency": "EGP",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Egypt",
+		"country": "EG",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "El Salvador",
+		"country": "SV",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Equatorial Guinea",
+		"country": "GQ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Estonia",
+		"country": "EE",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Estonia",
+		"country": "EE",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Eswatini",
+		"country": "SZ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Ethiopia",
+		"country": "ET",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Falkland Islands",
+		"country": "FK",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Faroe Islands",
+		"country": "FO",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Fiji",
+		"country": "FJ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Finland",
+		"country": "FI",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Finland",
+		"country": "FI",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "France",
+		"country": "FR",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "France",
+		"country": "FR",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "French Guiana",
+		"country": "GF",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "French Guiana",
+		"country": "GF",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "French Polynesia",
+		"country": "PF",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "French Polynesia",
+		"country": "PF",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "French Southern Territories",
+		"country": "TF",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Gabon",
+		"country": "GA",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Gambia",
+		"country": "GM",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Georgia",
+		"country": "GE",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Germany",
+		"country": "DE",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Germany",
+		"country": "DE",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Ghana",
+		"country": "GH",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Gibraltar",
+		"country": "GI",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Gibraltar",
+		"country": "GI",
+		"currency": "GBP",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Gibraltar",
+		"country": "GI",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Greece",
+		"country": "GR",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Greece",
+		"country": "GR",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Greenland",
+		"country": "GL",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Grenada",
+		"country": "GD",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Guadeloupe",
+		"country": "GP",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Guadeloupe",
+		"country": "GP",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Guam",
+		"country": "GU",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Guatemala",
+		"country": "GT",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Guernsey",
+		"country": "GG",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Guernsey",
+		"country": "GG",
+		"currency": "GBP",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Guernsey",
+		"country": "GG",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Guinea",
+		"country": "GN",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Haiti",
+		"country": "HT",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Heard & McDonald Islands",
+		"country": "HM",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Honduras",
+		"country": "HN",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Hong Kong SAR China",
+		"country": "HK",
+		"currency": "HKD",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Hong Kong SAR China",
+		"country": "HK",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Hungary",
+		"country": "HU",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Hungary",
+		"country": "HU",
+		"currency": "HUF",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Hungary",
+		"country": "HU",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Iceland",
+		"country": "IS",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Iceland",
+		"country": "IS",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "India",
+		"country": "IN",
+		"currency": "INR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "India",
+		"country": "IN",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Indonesia",
+		"country": "ID",
+		"currency": "IDR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Indonesia",
+		"country": "ID",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Ireland",
+		"country": "IE",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Ireland",
+		"country": "IE",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Isle of Man",
+		"country": "IM",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Isle of Man",
+		"country": "IM",
+		"currency": "GBP",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Isle of Man",
+		"country": "IM",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Israel",
+		"country": "IL",
+		"currency": "ILS",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Israel",
+		"country": "IL",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Italy",
+		"country": "IT",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Italy",
+		"country": "IT",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Jamaica",
+		"country": "JM",
+		"currency": "JMD",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Jamaica",
+		"country": "JM",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Japan",
+		"country": "JP",
+		"currency": "JPY",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Japan",
+		"country": "JP",
+		"currency": "JPY",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Japan",
+		"country": "JP",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Jersey",
+		"country": "JE",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Jersey",
+		"country": "JE",
+		"currency": "GBP",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Jersey",
+		"country": "JE",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Jordan",
+		"country": "JO",
+		"currency": "JOD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Jordan",
+		"country": "JO",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Kazakhstan",
+		"country": "KZ",
+		"currency": "KZT",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Kazakhstan",
+		"country": "KZ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Kenya",
+		"country": "KE",
+		"currency": "KES",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Kenya",
+		"country": "KE",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Kiribati",
+		"country": "KI",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Kosovo",
+		"country": "XK",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Kuwait",
+		"country": "KW",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Kyrgyzstan",
+		"country": "KG",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Laos",
+		"country": "LA",
+		"currency": "LAK",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Laos",
+		"country": "LA",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Latvia",
+		"country": "LV",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Latvia",
+		"country": "LV",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Lesotho",
+		"country": "LS",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Liberia",
+		"country": "LR",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Libya",
+		"country": "LY",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Liechtenstein",
+		"country": "LI",
+		"currency": "CHF",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Liechtenstein",
+		"country": "LI",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Liechtenstein",
+		"country": "LI",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Lithuania",
+		"country": "LT",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Lithuania",
+		"country": "LT",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Luxembourg",
+		"country": "LU",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Luxembourg",
+		"country": "LU",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Macao SAR China",
+		"country": "MO",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Madagascar",
+		"country": "MG",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Malawi",
+		"country": "MW",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Malaysia",
+		"country": "MY",
+		"currency": "MYR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Malaysia",
+		"country": "MY",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Maldives",
+		"country": "MV",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Mali",
+		"country": "ML",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Malta",
+		"country": "MT",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Malta",
+		"country": "MT",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Marshall Islands",
+		"country": "MH",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Martinique",
+		"country": "MQ",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Martinique",
+		"country": "MQ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Mauritania",
+		"country": "MR",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Mauritius",
+		"country": "MU",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Mayotte",
+		"country": "YT",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Mexico",
+		"country": "MX",
+		"currency": "MXN",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Mexico",
+		"country": "MX",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Micronesia",
+		"country": "FM",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Moldova",
+		"country": "MD",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Monaco",
+		"country": "MC",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Monaco",
+		"country": "MC",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Mongolia",
+		"country": "MN",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Montenegro",
+		"country": "ME",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Montserrat",
+		"country": "MS",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Morocco",
+		"country": "MA",
+		"currency": "MAD",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Morocco",
+		"country": "MA",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Mozambique",
+		"country": "MZ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Namibia",
+		"country": "NA",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Nauru",
+		"country": "NR",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Nepal",
+		"country": "NP",
+		"currency": "NPR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Nepal",
+		"country": "NP",
+		"currency": "NPR",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Nepal",
+		"country": "NP",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Netherlands",
+		"country": "NL",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Netherlands",
+		"country": "NL",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "New Caledonia",
+		"country": "NC",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "New Zealand",
+		"country": "NZ",
+		"currency": "NZD",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "New Zealand",
+		"country": "NZ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Nicaragua",
+		"country": "NI",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Niger",
+		"country": "NE",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Nigeria",
+		"country": "NG",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Niue",
+		"country": "NU",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Norfolk Island",
+		"country": "NF",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "North Macedonia",
+		"country": "MK",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Northern Mariana Islands",
+		"country": "MP",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Norway",
+		"country": "NO",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Norway",
+		"country": "NO",
+		"currency": "NOK",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Norway",
+		"country": "NO",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Oman",
+		"country": "OM",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Pakistan",
+		"country": "PK",
+		"currency": "PKR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Pakistan",
+		"country": "PK",
+		"currency": "PKR",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Pakistan",
+		"country": "PK",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Palau",
+		"country": "PW",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Panama",
+		"country": "PA",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Papua New Guinea",
+		"country": "PG",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Paraguay",
+		"country": "PY",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Peru",
+		"country": "PE",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Philippines",
+		"country": "PH",
+		"currency": "PHP",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Philippines",
+		"country": "PH",
+		"currency": "USD",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Philippines",
+		"country": "PH",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Pitcairn Islands",
+		"country": "PN",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Poland",
+		"country": "PL",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Poland",
+		"country": "PL",
+		"currency": "PLN",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Poland",
+		"country": "PL",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Portugal",
+		"country": "PT",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Portugal",
+		"country": "PT",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Puerto Rico",
+		"country": "PR",
+		"currency": "USD",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Puerto Rico",
+		"country": "PR",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Qatar",
+		"country": "QA",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Romania",
+		"country": "RO",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Romania",
+		"country": "RO",
+		"currency": "RON",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Romania",
+		"country": "RO",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Rwanda",
+		"country": "RW",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "R\u00e9union",
+		"country": "RE",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "R\u00e9union",
+		"country": "RE",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Samoa",
+		"country": "WS",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "San Marino",
+		"country": "SM",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "San Marino",
+		"country": "SM",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Senegal",
+		"country": "SN",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Serbia",
+		"country": "RS",
+		"currency": "RSD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Serbia",
+		"country": "RS",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Seychelles",
+		"country": "SC",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Singapore",
+		"country": "SG",
+		"currency": "SGD",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Singapore",
+		"country": "SG",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Slovakia",
+		"country": "SK",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Slovakia",
+		"country": "SK",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Slovenia",
+		"country": "SI",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Slovenia",
+		"country": "SI",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Solomon Islands",
+		"country": "SB",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "South Africa",
+		"country": "ZA",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "South Africa",
+		"country": "ZA",
+		"currency": "ZAR",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "South Georgia & South Sandwich Islands",
+		"country": "GS",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "South Korea",
+		"country": "KR",
+		"currency": "KRW",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "South Korea",
+		"country": "KR",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "South Sudan",
+		"country": "SS",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Spain",
+		"country": "ES",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Spain",
+		"country": "ES",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Sri Lanka",
+		"country": "LK",
+		"currency": "LKR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Sri Lanka",
+		"country": "LK",
+		"currency": "LKR",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Sri Lanka",
+		"country": "LK",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "St. Barth\u00e9lemy",
+		"country": "BL",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "St. Helena",
+		"country": "SH",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "St. Kitts & Nevis",
+		"country": "KN",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "St. Lucia",
+		"country": "LC",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "St. Martin",
+		"country": "MF",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "St. Pierre & Miquelon",
+		"country": "PM",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "St. Pierre & Miquelon",
+		"country": "PM",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "St. Vincent & Grenadines",
+		"country": "VC",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Suriname",
+		"country": "SR",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Svalbard & Jan Mayen",
+		"country": "SJ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Sweden",
+		"country": "SE",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Sweden",
+		"country": "SE",
+		"currency": "SEK",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Sweden",
+		"country": "SE",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Switzerland",
+		"country": "CH",
+		"currency": "CHF",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Switzerland",
+		"country": "CH",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Switzerland",
+		"country": "CH",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "S\u00e3o Tom\u00e9 & Pr\u00edncipe",
+		"country": "ST",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Taiwan",
+		"country": "TW",
+		"currency": "TWD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Taiwan",
+		"country": "TW",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Tajikistan",
+		"country": "TJ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Tanzania",
+		"country": "TZ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Thailand",
+		"country": "TH",
+		"currency": "THB",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Thailand",
+		"country": "TH",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Timor-Leste",
+		"country": "TL",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Togo",
+		"country": "TG",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Tokelau",
+		"country": "TK",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Tonga",
+		"country": "TO",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Trinidad & Tobago",
+		"country": "TT",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Tunisia",
+		"country": "TN",
+		"currency": "TND",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Turkmenistan",
+		"country": "TM",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Turks & Caicos Islands",
+		"country": "TC",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Tuvalu",
+		"country": "TV",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "U.S. Virgin Islands",
+		"country": "VI",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Uganda",
+		"country": "UG",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Ukraine",
+		"country": "UA",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "United Arab Emirates",
+		"country": "AE",
+		"currency": "AED",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "United Arab Emirates",
+		"country": "AE",
+		"currency": "AED",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "United Arab Emirates",
+		"country": "AE",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "United Kingdom",
+		"country": "GB",
+		"currency": "EUR",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "United Kingdom",
+		"country": "GB",
+		"currency": "GBP",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "UK"
+	},
+	{
+		"countryName": "United Kingdom",
+		"country": "GB",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "United States",
+		"country": "US",
+		"currency": "USD",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "ABA"
+	},
+	{
+		"countryName": "United States",
+		"country": "US",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "ABA"
+	},
+	{
+		"countryName": "Uruguay",
+		"country": "UY",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Uzbekistan",
+		"country": "UZ",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Vanuatu",
+		"country": "VU",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Vatican City",
+		"country": "VA",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Venezuela",
+		"country": "VE",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Vietnam",
+		"country": "VN",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Vietnam",
+		"country": "VN",
+		"currency": "VND",
+		"transferType": "BANK_ACCOUNT",
+		"bankAccountType": "OTHER"
+	},
+	{
+		"countryName": "Wallis & Futuna",
+		"country": "WF",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Yemen",
+		"country": "YE",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	},
+	{
+		"countryName": "Zambia",
+		"country": "ZM",
+		"currency": "USD",
+		"transferType": "WIRE_ACCOUNT",
+		"bankAccountType": "IBAN"
+	}
+]
