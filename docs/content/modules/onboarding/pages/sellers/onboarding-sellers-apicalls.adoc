@@ -1,0 +1,40 @@
+= API calls
+
+The connector does the following API calls during the sellers extraction jobs execution:
+
+|===
+| Call | Target System | Endpoint | Parameters
+
+| Retrieve all modified shops since the last specified date
+| Mirakl
+| https://help.mirakl.net/help/api-doc/operator/mmp.html#S20[S20 - List shops]
+a| * `updated_since`: date calculated by the job as the starting date since the last job 
+execution or the date manually specified in the job execution.
+
+| Update Hyperwallet user token in a Shop
+| Mirakl
+| https://help.mirakl.net/help/api-doc/operator/mmp.html#S07[S07 - Patch shop]
+a| * custom field `hw-user-token`: the Hyperwallet user token.
+
+
+| Create a new user
+| Hyperwallet
+| https://docs.hyperwallet.com/content/api/v4/resources/users/create[POST /users]
+a| The connector generates a body from the seller information contained in the Mirakl shop according to the data mapping rules. The following mappings are specially relevant:
+
+* `clientUserId`: Mirakl shop ID
+* `programToken`: the program token associated to the program assigned to the shop.
+* `profileType`: `BUSINESS` or `INDIVIDUAL` depending on the `business` field in the Mirakl shop
+* `email`: Mirakl shop contact email.
+
+| Update an existing user
+| Hyperwallet
+| https://docs.hyperwallet.com/content/api/v4/resources/users/update[PUT /users/\{user-token}]
+| The connector generates a body from the seller information contained in the Mirakl shop according to the data mapping rules. The data mappings are the same as for the user creation.
+
+| Retrieve an existing user by its `clientUserId`
+| Hyperwallet
+| https://docs.hyperwallet.com/content/api/v4/resources/users/create[GET /users]
+a| * `clientUserId`: Mirakl shop ID
+
+|===

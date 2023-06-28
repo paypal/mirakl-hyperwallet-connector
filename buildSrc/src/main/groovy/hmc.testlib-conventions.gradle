@@ -1,0 +1,24 @@
+plugins {
+	id 'hmc.java-conventions'
+	id 'hmc.testing-conventions'
+
+	id 'java-library'
+}
+
+bootJar {
+	enabled = false
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-test'
+
+	implementation 'org.junit.jupiter:junit-jupiter'
+	implementation 'org.junit.jupiter:junit-jupiter-api'
+	implementation 'org.mockito:mockito-junit-jupiter'
+	implementation 'org.mock-server:mockserver-spring-test-listener:5.14.0'
+	implementation 'com.tngtech.archunit:archunit:1.0.1'
+	implementation 'com.tngtech.archunit:archunit-junit5:1.0.1'
+	implementation 'org.awaitility:awaitility:4.2.0'
+
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}

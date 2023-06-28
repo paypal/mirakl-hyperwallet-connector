@@ -1,0 +1,15 @@
+= Preparation Tasks
+
+Before setting up the connector, you need to make some preparation tasks not only in your environment but in Mirakl and Hyperwallet with the help of their respective support teams.
+
+[#prerequisites-mirakl]
+include::prerequisites-mirakl.adoc[]
+
+[#prerequisites-hyperwallet]
+include::prerequisites-hyperwallet.adoc[]
+
+[#prerequisites-environment]
+include::prerequisites-environment.adoc[]
+
+[#prerequisites-connector]
+include::prerequisites-connector.adoc[]

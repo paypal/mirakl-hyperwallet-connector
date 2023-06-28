@@ -1,0 +1,7 @@
+= Notifications
+
+Hyperwallet servers communicate entity and status changes to the connector using webhooks. A webhook is a notification that is received by the connector in the '/webhook/notifications' endpoint.
+
+include::notifications-handling.adoc[]
+
+include::notifications-retry.adoc[]

@@ -1,0 +1,3 @@
+* xref:payout.adoc[Payout]
+** xref:invoices/payout-invoices.adoc[Invoice extraction]
+** xref:paymentstatus/payout-paymentstatus.adoc[Payment status]

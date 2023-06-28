@@ -1,0 +1,137 @@
+= Program Configuration
+
+Hyperwallet provides a flexible program configuration model to adapt to the needs of the merchants. It supports
+both single program and multiple programs setup as described https://docs.hyperwallet.com/content/program-hierarchy/v1/overview[here].
+
+HMC also supports both single and multi-program setups that can be configured by setting the following variables:
+
+```
+PAYPAL_HYPERWALLET_PROGRAMS_NAMES
+PAYPAL_HYPERWALLET_PROGRAMS_IGNORED
+PAYPAL_HYPERWALLET_PROGRAMS_USERTOKENS
+PAYPAL_HYPERWALLET_PROGRAMS_PAYMENTTOKENS
+PAYPAL_HYPERWALLET_PROGRAMS_BANKACCOUNTTOKENS
+```
+
+A quick summary ot this variables is the following:
+
+PAYPAL_HYPERWALLET_PROGRAMS_NAMES:: The list of programs separated by commas. These are the names that you will add to Mirakl's `hw-program` custom field.
+
+PAYPAL_HYPERWALLET_PROGRAMS_IGNORED:: The list of programs that you want to ignore. Must be a subset of the programs names.
+
+PAYPAL_HYPERWALLET_PROGRAMS_USERTOKENS:: A list containing the program tokens for the programs where you want to create the users and bank accounts.
+
+PAYPAL_HYPERWALLET_PROGRAMS_PAYMENTTOKENS:: A list containing the program tokens for the programs that have the fundings for making the payments.
+
+PAYPAL_HYPERWALLET_PROGRAMS_BANKACCOUNTTOKENS:: A list of bank account tokens where the operator is going to receive the commissions fees.
+
+Every list of tokens must contain one token for each of the programs defined in `PAYPAL_HYPERWALLET_PROGRAMS_NAMES`, appearing in the same order as the program names.
+
+You can see a more detailed definition of this variables xref:#configvars[here]. In addition to that, we are going to go through different
+examples to easily understand how to configure the programs in the connector.
+
+== Single Program (Default)
+
+This is the most simple setup and the most common one. It provides a single-level hierarchy where
+1 Issuing Merchant corresponds to 1 Issuing Store.
+
+For this setup we will have a configuration like this:
+
+```
+PAYPAL_HYPERWALLET_PROGRAMS_NAMES=DEFAULT
+PAYPAL_HYPERWALLET_PROGRAMS_IGNORED=
+PAYPAL_HYPERWALLET_PROGRAMS_USERTOKENS=prg-1fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e
+PAYPAL_HYPERWALLET_PROGRAMS_PAYMENTTOKENS=prg-1fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e
+PAYPAL_HYPERWALLET_PROGRAMS_BANKACCOUNTTOKENS=trm-0f406c41-6464-400d-9ac7-0da3edb1b854
+```
+
+We set the user and payment tokens which in this case are the same since we only have one program.
+Also, we need to fill the bank account token where we want to receive our operator commissions.
+
+We have assigned `DEFAULT` as the name for the program. This is the value that we also need to add to
+the custom field `hw-program` (which basically represents a combo box list in the Mirakl backoffice).
+
+== Multiple Programs
+
+In this case you will have different programs instead of one. For each program you will need to configure
+its set of tokens. 
+
+For example for a setup with two programs UK and EUROPE you can have a configuration like this:
+
+```
+PAYPAL_HYPERWALLET_PROGRAMS_NAMES=UK,EUROPE
+PAYPAL_HYPERWALLET_PROGRAMS_IGNORED=
+PAYPAL_HYPERWALLET_PROGRAMS_USERTOKENS=prg-2fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e,prg-2fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e
+PAYPAL_HYPERWALLET_PROGRAMS_PAYMENTTOKENS=prg-1fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e,prg-1fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e
+PAYPAL_HYPERWALLET_PROGRAMS_BANKACCOUNTTOKENS=trm-0f406c41-6464-400d-9ac7-0da3edb1b854,trm-1f406c41-6464-400d-9ac7-0da3edb1b854
+```
+
+You can think of this configuration as a table, so it's easier to visualize
+
+|===
+| | UK | EUROPE
+
+| USERTOKENS   
+| prg-2fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e
+| prg-2fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e
+
+| PAYMENTTOKENS    
+| prg-1fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e
+| prg-1fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e
+
+| BANKACCOUNTTOKENS
+| trm-0f406c41-6464-400d-9ac7-0da3edb1b854
+| trm-1f406c41-6464-400d-9ac7-0da3edb1b854
+
+|===
+
+As you can see in this example we are using the same user program token for both programs. Depending on your
+hyperwallet configuration the same tokens can be used for different programs. Ask the Hyperwallet team what
+program tokens you should use for each purpose (creating users or doing payments).
+
+== Ignoring Programs
+
+Sometimes we don't want the connector to process all the shops from Mirakl (and their associated invoices). In that case
+we can use programs to exclude those shops from being processed.
+
+To do this, we need to do a configuration similar to this:
+
+```
+PAYPAL_HYPERWALLET_PROGRAMS_NAMES=UK,EUROPE,OTHER
+PAYPAL_HYPERWALLET_PROGRAMS_IGNORED=OTHER
+PAYPAL_HYPERWALLET_PROGRAMS_USERTOKENS=prg-2fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e,prg-2fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e,
+PAYPAL_HYPERWALLET_PROGRAMS_PAYMENTTOKENS=prg-1fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e,prg-1fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e,
+PAYPAL_HYPERWALLET_PROGRAMS_BANKACCOUNTTOKENS=trm-0f406c41-6464-400d-9ac7-0da3edb1b854,trm-1f406c41-6464-400d-9ac7-0da3edb1b854,
+```
+
+We add a new `OTHER` program, that is the one that we will assign to the Mirakl shops that we don't want
+to be processed. Then we add this `OTHER` program to `PAYPAL_HYPERWALLET_PROGRAMS_IGNORED` program, and also adds the 
+tokens for this program. Since we aren't going to need those tokens we left them empty (note the comma at the end of the
+tokens variables)
+
+NOTE: we always need to fill all the tokens information for each of the programs listed in `PAYPAL_HYPERWALLET_PROGRAMS_NAMES`
+
+|===
+| | UK | EUROPE | OTHER
+
+| USERTOKENS   
+| prg-2fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e
+| prg-2fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e
+| 
+
+| PAYMENTTOKENS    
+| prg-1fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e
+| prg-1fb3df0d-787b-4bbd-9eb7-1d9fe8ed6c8e
+| 
+
+| BANKACCOUNTTOKENS
+| trm-0f406c41-6464-400d-9ac7-0da3edb1b854
+| trm-1f406c41-6464-400d-9ac7-0da3edb1b854
+| 
+
+|===
+
+[#configvars]
+== Related Configuration Variables
+
+include::configuration:configvars/configvars-hyperwallet.adoc[leveloffset=1]

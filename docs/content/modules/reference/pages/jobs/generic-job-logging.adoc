@@ -1,0 +1,42 @@
+== Logs of a job
+
+The connector writes logs following a semi-structured format. The first part of each log line contains internal details from Java:
+
+....
+26-04-2023 12:43:12.548 [HyperwalletMiraklScheduler_Worker-1] INFO   com.paypal.jobsystem.quartzintegration.listener.JobExecutionInformationListener - <Log message>
+....
+
+* the first part is the date and time of the log
+* the second part is the thread name
+* the third part is the log level.
+
+After that, it comes the log message, which has two parts:
+
+* A JSON with the transaction context information. This information is useful to correlate the log message with what type of work the connector is doing. 
+
+* The log message itself.
+
+The JSON has the following structure:
+
+....
+{
+  "id": "ea859859-8d1a-41bb-abdd-fa9138ca4dc2",
+  "type": "BatchJob",
+  "subtype": "IndividualSellersExtractBatchJob",
+  "itemType": "IndividualSeller",
+  "itemId":"78771"
+}
+....
+
+The following is an example of a log message while the connector is processing a job:
+
+....
+ {"id":"ea859859-8d1a-41bb-abdd-fa9138ca4dc2","subtype":"IndividualSellersExtractBatchJob","type":"BatchJob"} com.paypal.observability.batchjoblogging.listeners.BatchJobLoggingListener - Starting processing of job
+....
+
+The following is an example of a log message while the connector is processing an item inside a job:
+
+....
+26-04-2023 12:43:13.562 [HyperwalletMiraklScheduler_Worker-1] INFO  {"id":"ea859859-8d1a-41bb-abdd-fa9138ca4dc2","subtype":"IndividualSellersExtractBatchJob","itemType":"IndividualSeller","itemId":"78771","type":"BatchJob"} com.paypal.observability.batchjoblogging.listeners.BatchJobLoggingListener - Processing item of type IndividualSeller with id: 78771
+
+....

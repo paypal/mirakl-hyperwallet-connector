@@ -1,0 +1,150 @@
+= Batch job steps
+
+The invoice extraction process is organized in different phases or steps during the job execution (as explained in xref:reference:jobs/generic-job.adoc#generic-job-phase[phases of a job]):
+
+[mermaid,invoices-steps]
+....
+flowchart TB
+    s1(Step1: Extraction of invoices)
+    s2(Step2: Preparation for processing)
+    subgraph s3 [For each retrieved invoice]
+        s3_1(Step3.1: Invoice enrichment)
+        s3_2(Step3.2: Invoice validation)
+        s3_3(Step3.3: Payment creation)
+    end
+    s1 --> s2
+    s2 --> s3
+    s3_1 --> s3_2
+    s3_2 --> s3_3
+....
+
+Step 1: Extraction of invoices::
+The connector retrieves from Mirakl the invoices with a pending status created since the last successful invoice extraction.
+
+Step 2: Preparation for processing::
+The connector retrieves information from Mirakl about the shops associated to the invoices. The connector needs this information for creating the payments in Mirakl.
+
+Step 3: Invoices processing::
+The connector starts the integration workflow for each of the invoices retrieved during the extraction of items.
+
+Step 3.1: Invoice enrichment::
+The connector enriches the invoices with shop information obtained during the preparation step.
+
+Step 3.2: Invoice validation::
+The connector validates that the enriched invoices has all the information it needs to create a payment.
+
+Step 3.3: Payment creation::
+The connector creates the payments in Hyperwallet.
+
+== Step 1: Extraction of invoices
+
+The connector retrieves all invoices with `PENDING` payment status created since the last successful invoice extraction.
+
+[mermaid,invoices-extraction]
+....
+sequenceDiagram
+    Connector ->> Mirakl: (IV01 GET) Retrieve pending invoices
+    Mirakl -->> Connector: List of invoices
+....
+
+During this phase the connector logs the following information:
+
+....
+[BATCHJOB] Starting extraction of items to be processed
+[BATCHJOB] Retrieved the following number of items to be processed: 3
+....
+
+== Step 2: Preparation for processing
+
+[mermaid,invoices-preparation]
+....
+sequenceDiagram
+    Connector ->> Connector: Find shops for retrieved invoices not stored in cache
+    Connector ->> Mirakl: (S20 GET) Retrieve non-cached shops for retrieved invoices
+    Mirakl -->> Connector: List of shops
+    Connector ->> Connector: Update internal cache with retrieved shops
+....
+
+The connector retrieves shop information from Mirakl that needs to create the payments in Hyperwallet. Invoice documents in Mirakl doesn't contain a `programToken` or a `bankAccountToken`. This information is stored in custom fields of the shop in Mirakl.
+
+To minimize the number of calls to xref:invoices/payout-invoices.adoc#payout-invoices-apicalls[S20 - List all shops] the connector uses an internal cache. This cache stores the relationship between a Mirakl shop and the corresponding Hyperwallet `programToken` and `bankAccountToken`.
+
+During this step the connector doesn't show any specific logs, except if an error happens.
+
+== Step 3: Invoices processing
+
+During this step the connector processes each of the received invoices. For each invoice the connector logs the following information:
+
+....
+[BATCHJOBITEM] Processing item of type Invoice with id: 70051
+[BATCHJOBITEM] Pending invoices to pay: [70051]
+....
+
+and a message like this when the item has finished it processing:
+
+....
+[BATCHJOBITEM] Processed successfully item of type Invoice with id: 70051
+[BATCHJOB] 1 items processed successfully. 0 items failed. 2 items remaining
+....
+
+== Step 3.1: Invoice enrichment
+
+[mermaid,invoices-enrichment]
+....
+sequenceDiagram
+    Connector ->> Connector: Find in cache shop associated to invoice
+    Connector ->> Connector: Add `bankAccountToken` and `programToken` to invoice
+....
+
+The connector only logs error information during this step.
+
+== Step 3.2: Invoice validation
+
+The connector validates the invoice to check if it has all the information. It does the following checks:
+
+. The invoice has an associated `programToken` and `bankAccountToken` 
+. The invoice doesn't belong to an ignored program
+
+The connector logs the following if the validation fails:
+
+....
+Validation of item of type Invoice with id: 75001 has failed with the following message: {}"
+....
+
+== Step 3.3: Payment creation
+
+The connector creates payments for the invoice calling using Hyperwallet API.
+
+[mermaid,payment-creation]
+....
+sequenceDiagram
+    Connector ->> Hyperwallet: (GET /payments) Find payments for invoice by `clientPaymentId`
+    alt No in progress or paid payments found
+        Connector ->> Hyperwallet: (POST /payments) Create payment for seller       
+    else Commissions enabled
+        Connector ->> Hyperwallet: (GET /payments) Find comission payments for invoice by `clientPaymentId`
+        alt No in progress or paid payments found
+            Connector ->> Hyperwallet: (POST /payments) Create payment for operator
+        end
+    end
+....
+
+Before creating a payment the connector checks if there is an existing payment that's in progress or paid. For doing this check, the connector only takes into account payments that doesn't have a failure status (`FAILED`, `RECALLED`, `CANCELLED`, `RETURNED`, `EXPIRED`)
+
+If commissions are enabled, the connector creates two payments:
+
+* A payment for the seller, with the same id as the invoice in Mirakl
+* The payment for the operator, adding the suffix `-operatorFee` to the id.
+
+The following is an example of the log written during this step (in this case with
+commissions enabled):
+
+....
+[BATCHJOBITEM]  Trying to create payment for invoice [70051]
+[BATCHJOBITEM]  Payment successfully created for invoice [70051]
+[BATCHJOBITEM]  Paid invoices: [70051]
+
+[BATCHJOBITEM]  Trying to create payment for invoice [70051-operatorFee]
+[BATCHJOBITEM]  Payment successfully created for invoice [70051-operatorFee]
+[BATCHJOBITEM]  Paid invoices: [70051-operatorFee]
+....

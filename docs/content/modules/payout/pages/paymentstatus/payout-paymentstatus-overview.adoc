@@ -1,0 +1,24 @@
+= Payment status processing
+
+After the connector creates a payment in Hyperwallet, Hyperwallet starts processing it. The payment goes through some intermediate states until it reaches a final success or failure state.
+
+Payment status processing isn't started by the connector using jobs. Hyperwallet servers are the ones notifying the progress of the payment to the connector. The connector then sets the invoice to paid if the payment was successful or sends an error mail if there was a problem.
+
+== Characteristics
+
+* The connector make uses of the webhooks functionality provided by Hyperwallet.
+* The connector sends error mails when a payment isn't successful.
+
+== Payment status processing process
+
+[mermaid,paymentstatus-process,png]
+....
+sequenceDiagram
+    Hyperwallet -->> Connector: (POST /webhooks/notifications) Payment updated notification
+    Connector -->> Connector: Reads payment status from notification
+    alt The payment was successful
+        Connector -->> Mirakl: (IV07 PUT) Confirm the payment of the invoice
+    else The payment failed
+        Connector -->> User: Send mail with payment failure status
+    end
+....

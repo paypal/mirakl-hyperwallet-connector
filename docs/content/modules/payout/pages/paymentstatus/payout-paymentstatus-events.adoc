@@ -1,0 +1,42 @@
+= Hyperwallet events
+
+The connector processes the following events associated to Hyperwallet's user type:
+
+|===
+| Event | Relevant fields
+
+| `PAYMENTS.UPDATED.STATUS.*`
+a| * `token`
+* `type`
+* `createdOn`
+* `object.token`
+* `object.clientPaymentId`
+* `object.status`
+|===
+
+The following is the list of `PAYMENTS.UPDATED.STATUS.*` statuses:
+
+|===
+| Successful statuses | Failure statuses | In progress statuses
+
+a| * `COMPLETED`
+
+a| * `FAILED`
+* `RECALLED`
+* `RETURNED`
+* `EXPIRED`
+* `UNCLAIMED`
+* `CANCELLED`
+
+a| * `CREATED`
+* `SCHEDULED`
+* `PENDING_ACCOUNT_ACTIVATION`
+* `PENDING_TAX_VERIFICATION`
+* `PENDING_TRANSFER_METHOD_ACTION`
+* `PENDING_TRANSACTION_VERIFICATION`
+
+|===
+
+The connector marks the invoice as `PAID` for successhful statuses, sends an error for failure ones and ignores in progress statuses.
+
+Hyperwallet documentation provides more information about https://docs.hyperwallet.com/content/webhooks/v1/notification-types/payments[the Hyperwallet user events].

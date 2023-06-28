@@ -1,0 +1,7 @@
+== Hyperwallet preparation tasks
+
+. Whitelist in Hyperwallet your server IPs, so the connector can make request to the Hyperwallet API.
+. Configure in Hyperwallet connector's URL for receiving webhook notifications. The connector listens for notifications in `/webhooks/notifications` path.
+. Whitelist in your infrastructure Hyperwallet servers IP addresses (69.172.255.0/24 and 38.70.198.0/24) so notifications can reach the connector server.
+
+More info about whitelisting and webhooks can be found https://docs.hyperwallet.com/content/api/v4/overview/environments[here] and https://docs.hyperwallet.com/content/webhooks/v1/integration[here].

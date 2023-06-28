@@ -1,1 +1,0 @@
-* xref:content-table.adoc[Terms & Acronyms]

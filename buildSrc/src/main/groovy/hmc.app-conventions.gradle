@@ -1,0 +1,37 @@
+plugins {
+	id 'hmc.java-conventions'
+
+	id 'application'
+	id 'jacoco-report-aggregation'
+	id 'test-report-aggregation'
+}
+
+springBoot {
+	buildInfo()
+}
+
+bootJar {
+	enabled = true
+}
+
+bootRun {
+	bootRun {
+		jvmArgs = ["-Duser.timezone=UTC"]
+	}
+}
+
+bootBuildImage {
+	imageName = "$rootProject.name:$project.version"
+
+	environment =
+			environment = ["BP_JVM_VERSION"              : "17",
+						   "BPE_DELIM_JAVA_TOOL_OPTIONS" : " ",
+						   "BPE_APPEND_JAVA_TOOL_OPTIONS": "-Xms256m -Xmx2g -XX:MaxDirectMemorySize=200m -Dfile.encoding=UTF8 -Duser.timezone=UTC"]
+}
+
+tasks.named('check') {
+	dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
+	dependsOn tasks.named('integrationTestCodeCoverageReport', JacocoReport)
+	dependsOn tasks.named('testAggregateTestReport', TestReport)
+	dependsOn tasks.named('integrationTestAggregateTestReport', TestReport)
+}

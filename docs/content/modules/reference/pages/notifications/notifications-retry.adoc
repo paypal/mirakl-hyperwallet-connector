@@ -1,0 +1,35 @@
+== Retry mechanism
+
+The connector retries the processing of the notifications received from Hyperwallet in case it's impossible to upload the information in Mirakl. 
+
+=== Functionality behaviour
+
+The connector uses an internal database to support the retry functionality without storing sensitive information. A periodical job retrieve such notifications from Hyperwallet and then try to update Mirakl again until they reach the maximum number of attempts allowed.
+
+When a failed notification is stored in the database and a new one is received, the connector checks the following cases:
+
+* *Identical existing notification*, the connector skips the notification, as it's identical to the previous one.
+* *Updated existing notification*, the connector receives a notification for the same item (e.g a user) with a creation date later than the one stored. In this cases the connector process the received notification and drops the old one.
+* *Outdated existing notification*, the connector receives a notification for the same item (e.g a user) with a creation date before the stored one. In this cases the connector ignores the received notification.
+
+When all retry attempts for a notification are exahusted, the connector removes it from the database and sends an email to the operator.
+
+=== Configuration
+
+The connector reads the configuration from the following configuration variables:
+
+* `PAYPAL_HYPERWALLET_RETRY_NOTIFICATIONS`, set to `true` to enable retries, or `false` to deactivate them. Set to `true` by default.
+
+* `PAYPAL_HYPERWALLET_MAX_AMOUNT_OF_NOTIFICATION_RETRIES`, determines the maximum number of attempts allowed for each notification. Set to `5` by default
+
+* `PAYPAL_HYPERWALLET_RETRY_FAILED_NOTIFICATIONS_CRON_EXPRESSION`, used to configure the periodicity of the retry job.
+
+=== Email alerts
+
+The connector sends an email to the operator when all the retries of a notification fails. The email includes the following details:
+
+....
+Subject: [HMC] Technical error occurred when processing the notification <NOTIFICATION_TOKEN>
+
+Body: There was an error processing the notification <NOTIFICATION_TOKEN> and the operation could not be completed. The maximum number of attempts <NOTIFICATION_TOKEN> has been reached, therefore it will not try to re-process the notification anymore. Please check the logs for further information.
+....

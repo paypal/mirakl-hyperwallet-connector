@@ -1,0 +1,50 @@
+== Run the connector with docker
+
+With this setup worflow you will generate a docker image that can be used to run the connector and that it's easily exportable to other environments.
+
+=== Requirements
+
+- Docker and Docker Compose installed on your system.
+
+=== Building the connector
+
+. Clone the GitHub repository of the project:
+
+ $ git clone https://github.com/paypal/mirakl-hyperwallet-connector.git
+
+. Set up build required environment variables
+. Execute build script:
+
+ $ ./gradlew clean build
+
+=== Creating a docker image
+
+. Create the docker image 
+
+ $ ./gradlew hmc-app:bootBuildImage
+
+=== Running the docker container
+
+. Create an `.env` file with the environment variables. You can use the provided `.env.sample` as a reference
+
+. Start the connector with docker using this command (change `X.Y.Z`` with the version of the connector, e.g. `5.0.0`)
+
+ $ docker run --env-file .env -p 8080:8080 hyperwallet-mirakl-connector:X.Y.Z
+
+TIP: If needed, you can also map the volumes for the folders described at the begining of the page and for the encryption keys.
+
+=== Running the docker container with docker compose
+
+. Create a docker compose file
+
+ $ ./gradlew buildDockerCompose -Pprod=true
+
+NOTE: You can also generate a docker compose file for development or testing purposes by omitting `-Pprod=true`. This docker compose file will also launch additional dependencies like mail server so you don't need to setup one.
+
+. Create an `.env` file with the environment variables. You can use the provided `.env.sample` as a reference
+
+. Start the connector with docker compose using this command
+
+ $ docker-compose up
+
+TIP: If needed, you can also edit the generated docker-compose file to change the volume mappings.

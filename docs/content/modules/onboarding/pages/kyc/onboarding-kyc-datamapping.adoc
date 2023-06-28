@@ -1,0 +1,13 @@
+= Data mapping
+
+Based on the `verificationStatus` field of Hyperwallet's user updated event, the connector does the following mapping into Mirakl KYC status:
+
+[width="100%",cols="32%,68%",options="header",]
+|===
+| Hyperwallet verification status | Mirakl KYC status
+
+| `UNDER_REVIEW` | Awaiting KYC verification (PENDING_APPROVAL)
+| `VERIFIED`  | KYC Passed (APPROVED)
+| `REQUIRED` | Awaiting KYC data (REFUSED)
+| `NOT REQUIRED` | KYC Passed (Approved)
+|===

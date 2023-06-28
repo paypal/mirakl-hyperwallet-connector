@@ -1,0 +1,33 @@
+= Sellers extraction
+
+The sellers extraction jobs retrieves changed shops from Mirakl and creates or updates the corresponding user in Hyperwallet.
+
+Based on the seller's type, the connector provides two different jobs:
+
+- Individual sellers extraction job.
+- Professional sellers extraction job.
+
+NOTE: What's described here applies to both professional and individual sellers extraction jobs.
+
+== Characteristics
+
+* The connector supports individual and professional sellers, providing a different job for each type. The difference between them is the data read from the shop in Mirakl and the data required to create the user in Hyperwallet.
+* A seller can create more than one shop in Mirakl, for example, to sell in different currencies. In this case, the connector exports each shop as a separate user in Hyperwallet as if they were different sellers.
+* Sellers need to accept Hyperwallet's terms and conditions in Mirakl. The connector filter outs shops that doesn't have the custom field `Hyperwallet Ts & Cs and Privacy Policy consent` set to `yes`.
+
+== Seller extraction process
+
+[mermaid,seller-extraction]
+....
+sequenceDiagram
+    Connector ->> Mirakl: (S20 GET) Retrieve changed shops
+    loop For each shop with accepted Ts & Cs
+        Connector ->> Hyperwallet: (GET /users/) Check if user exists
+        alt user exists
+            Connector ->> Hyperwallet: (PUT /users/) Update user information
+        else user not exists
+            Connector ->> Hyperwallet: (POST /users/) Create user
+            Connector ->> Mirakl: (S07 PUT) Update shop with Hyperwallet user token
+        end
+    end    
+....

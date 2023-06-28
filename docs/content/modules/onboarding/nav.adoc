@@ -1,0 +1,4 @@
+* xref:onboarding.adoc[Seller onboarding]
+** xref:sellers/onboarding-sellers.adoc[Sellers extraction]
+** xref:bankaccounts/onboarding-bankaccounts.adoc[Bank accounts extraction]
+** xref:kyc/onboarding-kyc.adoc[KYC processing]

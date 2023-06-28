@@ -1,0 +1,14 @@
+include::onboarding-bankaccounts-overview.adoc[leveloffset=1]
+
+include::onboarding-bankaccounts-steps.adoc[leveloffset=1]
+
+include::onboarding-bankaccounts-execution.adoc[leveloffset=1]
+
+[#onboarding-bankaccounts-configuration]
+include::onboarding-bankaccounts-configuration.adoc[leveloffset=1]
+
+include::onboarding-bankaccounts-apicalls.adoc[leveloffset=1]
+
+include::onboarding-bankaccounts-datamapping.adoc[leveloffset=1]
+
+include::onboarding-bankaccounts-troubleshoot.adoc[leveloffset=1]

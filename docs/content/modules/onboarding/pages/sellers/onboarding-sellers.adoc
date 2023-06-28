@@ -1,0 +1,14 @@
+include::onboarding-sellers-overview.adoc[]
+
+include::onboarding-sellers-steps.adoc[leveloffset=1]
+
+include::onboarding-sellers-execution.adoc[leveloffset=1]
+
+[#onboarding-sellers-configuration]
+include::onboarding-sellers-configuration.adoc[leveloffset=1]
+
+include::onboarding-sellers-apicalls.adoc[leveloffset=1]
+
+include::onboarding-sellers-datamapping.adoc[leveloffset=1]
+
+include::onboarding-sellers-troubleshoot.adoc[leveloffset=1]

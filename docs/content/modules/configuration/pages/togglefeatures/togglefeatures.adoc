@@ -1,0 +1,33 @@
+= Enabling and Disabling Optional Features
+
+The connector offer some optional features that can be enabled or disabled via configuration. This section describes how to do it
+
+== Operator Commissions
+
+By default, the operator commissions feature is enabled. This feature is handled by the `PAYPAL_HYPERWALLET_OPERATOR_COMMISSIONS_ENABLED` configuration variable.
+
+== Financial Reporting
+
+The connector has the ability to generate a financial report, compiling information from the Mirakl and Braintree platforms.
+
+To enable this functionality you simply need to configure the variables described xref:configuration:configvars/configvars.adoc#configvarsvars-financialreports[here].
+
+== Internal Management APIs
+
+The connector provides HTTP endpoints that allows querying and manipulating some internal data that helps diagnosing and solving problems. Since manipulating internal data could be dangerous this endpoints are disabled by default. You can set `PAYPAL_MANAGEMENT_ENABLED` variable to `true` to enable them.
+
+== Http Traffic Logging
+
+The connector provides the ability to log all the http traffic that it generates or receives. This feature is disabled by default. You can enable it by setting the `PAYPAL_HYPERWALLET_HTTP_CAPTURE_ENABLED` variable to `true`. Also if the management APIs are enabled, you can use them to enable or disable this feature at runtime making a PUT to the endpont `/management/traffic-auditor/configuration`:
+
+....
+curl --location --request PUT 'localhost:8080/management/traffic-auditor/configuration' \
+--header 'Content-Type: application/json' \
+--data '{
+    "trafficAuditorEnabled": true
+}'
+....
+
+== New store name and legal name mapping
+
+This feature only affect business shops. By default the shop name is mapped to the `businessName` in Hyperwallet, which is the business legal name, and the coporate name is mapped to `businessOperatingName`. If the variable `PAYPAL_HYPERWALLET_NEW_USER_MAPPING_ENABLED` is set to `true`, the shop name will be mapped to `businessOperatingName` and the corporate name will be mapped to `businessName`. By default this variable is set to `false`.

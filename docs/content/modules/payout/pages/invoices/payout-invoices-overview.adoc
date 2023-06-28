@@ -1,0 +1,47 @@
+= Invoice extraction
+
+The invoice extraction job retrieves pending invoices from Mirakl and creates payments for them in Hyperwallet.
+
+This job can handle credit notes for testing purpose. This job is a composite batch job that runs sequentially:
+
+* Invoices extraction
+* Credit notes extraction
+
+[WARNING]
+.Enabling manual credit notes processing on production
+====
+Mirakl includes the amount of the manual credit notes into the next automatic invoice. This means that if the connector is processing manual credit notes, the amount of the credit notes will be payed two times, one in the credit note and one in the next invoice.
+
+For this reason, *it's strongly urged to use manual credit notes only in test environments while testing*.
+====
+
+[NOTE]
+====
+Since the behavior of the invoice extraction is the same as the credit notes extraction, the following documentation will only refer to invoices.
+====
+
+== Characteristics
+
+* The connector creates payments for the marketplace operator when the commission fees are enabled in the connector configuration.
+* The connector extracts invoices only with a `COMPLETE`status. It ignores invoices with `DRAFT`, `GENERATED` or `PAID` status.
+* The connector can retry the invoice extraction without generating duplicated payments.
+
+== Invoice extraction process
+
+[mermaid,invoice-extraction]
+....
+sequenceDiagram
+    Connector ->> Mirakl: (IV01 GET) Retrieve payment pending invoices
+    Connector ->> Mirakl: (S20 GET) Retrieve shop information for invoices
+    loop For each invoice
+        Connector ->> Hyperwallet: (GET /payments) Check if a seller payment exists for the invoice
+        alt previous payment don't exists:            
+            Connector -->> Hyperwallet: (POST /payments/) Create payment
+        else comissions enabled::            
+            Connector ->> Hyperwallet: (GET /payments) Check if a commissions payment exists for the invoice
+            alt previous payment don't exists:            
+                Connector -->> Hyperwallet: (POST /payments/) Create comissions payment
+            end
+        end
+    end    
+....

@@ -1,0 +1,33 @@
+= Error handling
+
+When an error happens the connector logs the error, and for some errors it also sends an email to the operator. The recipient of the email is configured using the environment variables described in the xref:configuration:configvars/configvars.adoc#configvarsvars-alerts[alerts configuration section].
+
+== Error types
+
+The connector handles the following errors by sending an email:
+
+* Mirakl: Issue detected getting shops in Mirakl
+* Mirakl: Issue detected updating KYC information in Mirakl
+* Hyperwallet: Issue detected when creating seller in Hyperwallet
+* Hyperwallet: Issue detected when updating seller in Hyperwallet
+* Hyperwallet: Issue detected when creating bank account in Hyperwallet
+* Hyperwallet: Issue detected when updating bank account in Hyperwallet
+
+== Error email example
+
+....
+Subject:
+Issue detected when updating seller in Hyperwallet
+
+Body: 
+
+There was an error, please check the logs for further information:
+
+Error updating user with clientUserId [2214]
+
+{exceptionMessage=A system error has occurred. Please try again. If you continue to receive this error, contact customer support for assistance (Ref ID: usr-dc7bf083-310d-4f04-a9b7-13561f011e85).,error=CONSTRAINT_VIOLATIONS[[code=CONSTRAINT_VIOLATIONS,fieldName=<null>,message=A system error has occurred. Please try again. If you continue to receive this error, contact customer support for assistance (Ref ID: usr-dc7bf083-310d-4f04-a9b7-13561f011e85).,relatedResources=<null>][code=CONSTRAINT_VIOLATIONS,fieldName=<null>,message=,relatedResources=<null>]]}
+....
+
+== Error recovery
+
+The connector provides self-healing features through the usage of xref:jobs/generic-job#generic-job-retry[retry jobs]. This allows for recovering from technical failures such as API timeout and IO exceptions.

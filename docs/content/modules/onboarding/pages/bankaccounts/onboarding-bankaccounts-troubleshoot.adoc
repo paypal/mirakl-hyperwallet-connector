@@ -1,0 +1,4 @@
+= Troubleshooting
+
+This job doesn't have any specific troubleshooting guides. Follow the generic recommendations detailed in
+xref:reference:jobs/generic-job.adoc#generic-job-troubleshoot[troubleshooting of a job].

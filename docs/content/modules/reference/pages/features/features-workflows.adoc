@@ -1,0 +1,8 @@
+== Supported workflows
+
+The connector supports the main workflows for providing payout connectivity between Hyperwallet and Mirakl. The following diagram depicts the supported functionalities
+
+* Seller onboarding with KYC verification
+* Payout
+
+image:hmc-workflows.jpg["Supported workflows and connectivity"]

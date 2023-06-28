@@ -1,0 +1,32 @@
+= Bank account export
+
+Bank account extraction is the process or retrieving the shops that have changed in Mirakl and creating or updating the corresponding bank accounts in Hyperwallet.
+
+== Characteristics
+
+* The connector supports the following bank account types from Mirakl:
+** IBAN
+** United States A.B.A.
+** Canadian bank account
+** United Kingdom bank account
+* When creating the bank account in Hyperwallet, the connector uses the currency of the shop if it's supported by Hyperwallet. Otherwise, it uses a currency compatible with the bank account country and bank account type.
+* The connector supports updating the bank account information in Hyperwallet. But if the changes in the bank account aren't compatible with the existing bank account in Hyperwallet, the connector creates a new bank account.
+* When the marketplace currency isn't supported in Hyperwallet for the bank account of the seller, the connector automatically selects a compatible currency. The payments are always made in the marketplace currency.
+
+== Bank account extraction process
+
+[mermaid,bankaccount-extraction]
+....
+sequenceDiagram
+    Connector ->> Mirakl: (S20 GET) Retrieve changed shops
+    loop For each shop with accepted Ts & Cs
+        Connector ->> Hyperwallet: (GET /users/{token}/bank-accounts) Check if bank account exists
+        alt bank account exists and it's compatible:
+            Connector -->> Mirakl: (S07 PUT) Update shop with Hyperwallet bank account token
+            Connector -->> Hyperwallet: (PUT /users/) Update user information
+        else bank account not exists or it's not compatible:            
+            Connector -->> Hyperwallet: (POST /users/{token}/bank-accounts) Create bank account
+            Connector -->> Mirakl: (S07 PUT) Update shop with Hyperwallet bank account token
+        end
+    end    
+....

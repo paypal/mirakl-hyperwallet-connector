@@ -1,8 +1,0 @@
-hmc:
-  mirakl:
-    authentication:
-      operatorApiKey: "${PAYPAL_MIRAKL_OPERATOR_API_KEY}"
-      environment: "${PAYPAL_MIRAKL_ENVIRONMENT}"
-  startupchecks:
-    miraklSchema:
-      exitOnFail: "${PAYPAL_MIRAKL_SCHEMACHECK_EXITONFAIL: true}"

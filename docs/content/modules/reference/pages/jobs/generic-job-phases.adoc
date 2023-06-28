@@ -1,0 +1,31 @@
+== Phases of a job
+
+Jobs splits their execution in different phases:
+
+[mermaid,invoices-steps]
+....
+flowchart TB
+    s1(Step1: Extraction of items)
+    s2(Step2: Preparation for processing)
+    subgraph s3 [For each retrieved item]
+        s3_1(Step3.1: Item enrichment)
+        s3_2(Step3.2: Item validation)
+        s3_3(Step3.3: Item processing)
+    end
+    s1 --> s2
+    s2 --> s3
+    s3_1 --> s3_2
+    s3_2 --> s3_3
+....
+
+* *Extract phase*: during this phase the connector retrieves the items to process from the data source (e.g: Mirakl invoices or previously failed invoices).
+
+* *Prepare for item processing*: during this phase the connector post process the results the data obtained during the extract phase. For example retrieving from source additional information required for the item processing.
+
+* *Item processing*: The connector processes each of the retrieve items. This phase has the following steps:
+
+** *Enrich item*: the connector enriches the information of the items retrieved during the extraction phase, usually with information obtained during the preparation phase. For example, the connector enriches Mirakl invoices with information from the shop.
+
+** *Validate item*: the connector checks if the item is ready for processing.
+
+** *Item processing*: the connector processes the enriched and validated item. For example creating a payment in Hyperwallet from the invoice in Mirakl.

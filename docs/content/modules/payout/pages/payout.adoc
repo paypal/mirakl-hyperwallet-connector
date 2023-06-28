@@ -1,0 +1,30 @@
+= Payout
+
+This workflow enables to pay with Hyperwallet pending invoices from Mirakl, and updating the status of the invoices in Mirakl after they're paid.
+
+The steps for doing the payments are the following:
+
+- Buyers buy products from sellers in Mirakl generating Mirakl orders.
+- The billing cycle runs in Mirakl and generates invoices for the sellers from the orders.
+- The connector runs the invoice extraction job and creates the payments in Hyperwallet.
+  - If payment commission is enabled, the connector creates a payment for the operator of the marketplace.
+- Hyperwallet notifies the connector the status of the payments, and the connector updates the status of the invoices in Mirakl.
+
+The connector can run the extraction jobs automatically through a configurable schedule, or the user can run the jobs manually using the job API.
+
+[mermaid,seller-onboarding]
+....
+sequenceDiagram;
+    Mirakl ->> Mirakl: Run billing cycle and generate invoices    
+    Connector ->> Mirakl: Retrieve payment pending invoices
+    Connector ->> Hyperwallet: Create payment for seller    
+    alt Payment commission enabled
+        Connector ->> Hyperwallet: Create payment for operator
+    end
+    Hyperwallet ->> Connector: Notify payment status
+    Connector ->> Mirakl: Update payment status    
+....
+
+include::invoices/payout-invoices-overview.adoc[leveloffset=1]
+
+include::paymentstatus/payout-paymentstatus-overview.adoc[leveloffset=1]

@@ -1,0 +1,44 @@
+= Seller onboarding
+
+This workflow enables to onboard sellers in Hyperwallet by creating users and bank accounts in Hyperwallet, and updating the KYC status in Mirakl.
+
+The steps for onboarding a seller are the following:
+
+* The seller creates a shop in Mirakl entering the bank account information for receiving the payments.
+* The connector runs the seller extraction job, creating or updating the user in Hyperwallet.
+* The connector runs the extract bank account job, creating or updating the bank account in Hyperwallet.
+* Hyperwallet customer team gets in contact with the seller through his contact information to start the KYC process.
+* Hyperwallet notifies to the connector the progress of the KYC process, and the connector updates the KYC status in Mirakl.
+
+The connector can run the extraction jobs automatically through a configurable schedule, or the user can run the jobs manually using the job API.
+
+[mermaid,seller-onboarding]
+....
+sequenceDiagram;
+    Seller ->> Mirakl: Create shop
+    Seller ->> Mirakl: Add bank account information
+    Connector ->> Mirakl: Retrieved changed shops
+    Connector ->> Hyperwallet: Create user
+    Connector ->> Hyperwallet: Create bank account
+    Hyperwallet ->> Seller: Contact seller for KYC Process
+    loop Every time KYC Status changes
+        Hyperwallet ->> Connector: Notify KYC status
+        Connector ->> Mirakl: Update KYC status
+    end
+....
+
+== Seller onboarding jobs
+
+The connector provides three jobs for handling the process described before:
+
+- Professional sellers extraction batch job.
+- Individual sellers extraction batch job.
+- Bank account extraction batch job.
+
+The connector handles the KYC processing  asynchronously by processing the notifications received from Hyperwallet.
+
+include::sellers/onboarding-sellers-overview.adoc[leveloffset=1]
+
+include::bankaccounts/onboarding-bankaccounts-overview.adoc[leveloffset=1]
+
+include::kyc/onboarding-kyc-overview.adoc[leveloffset=1]
