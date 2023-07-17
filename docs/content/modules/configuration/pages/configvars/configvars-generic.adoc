@@ -1,0 +1,27 @@
+== Generic configuration variables
+
+[cols="2,1,3,1"]
+|===
+|ENVIRONMENT VARIABLE |MANDATORY |DESCRIPTION |EXAMPLE VALUE
+
+|`PAYPAL_HMC_STARTUPCHECKS_EXITONFAIL`
+|NO (default value: `false`)
+|Whether or not the application should shutdown if the startup checks found a severe error.
+|Possible values: `true` or `false`
+
+|`PAYPAL_MANAGEMENT_ENABLED`
+|NO (default value: `false`)
+|Enables HTTP management endpoints under `/management/` path.
+|`true`
+
+|`PAYPAL_HYPERWALLET_HTTP_CAPTURE_ENABLED`
+|NO (default value: `false`)
+|Enables HTTP traffic logging.
+|`true`
+
+|`PAYPAL_HYPERWALLET_DATA_DIR`
+|NO (default value: `./data`)
+|Directory where the application stores its runtime data.
+|`/workspace/data`
+
+|===

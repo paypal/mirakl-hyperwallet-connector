@@ -1,0 +1,43 @@
+== Encryption configuration variables
+
+[cols="2,1,3,1"]
+|===
+|ENVIRONMENT VARIABLE |MANDATORY |DESCRIPTION |EXAMPLE VALUE
+
+|`PAYPAL_HYPERWALLET_ENCRYPTION_ENABLED`
+|NO (default value: `false`)
+|Enables or disables the usage of encryption for the communications between the connector and Hyperwallet, for both requests to Hyperwallet API and Hyperwallet notifications handling.
+|`true``
+
+|`PAYPAL_HYPERWALLET_KEY_SET_LOCATION`
+|NO (default value: `https://uat-api.paylution.com/jwkset`)
+|The key set uri. For pointing to production, replace the value by `https://api.paylution.
+com/jwkset`
+|`https://uat-api.paylution.com/jwkset`
+
+|`PAYPAL_HYPERWALLET_ENCRYPTION_ALGORITHM`
+|NO
+|The algorithm used for Layer7 encryption https://docs.hyperwallet.com/content/api/v4/overview/payload-encryption[Hyperwallet encryption]
+|`RSA-OAEP-256`
+
+|`PAYPAL_HYPERWALLET_SIGN_ALGORITHM`
+|NO
+|The sign algorithm for Layer7 encryption https://docs.hyperwallet.com/content/api/v4/overview/payload-encryption[Hyperwallet encryption]
+|`RS256`
+
+|`PAYPAL_HYPERWALLET_ENCRYPTION_METHOD`
+|NO
+|The encryption method used for Layer7 encryption https://docs.hyperwallet.com/content/api/v4/overview/payload-encryption[Hyperwallet encryption]
+|`A256CBC-HS512`
+
+|`PAYPAL_HYPERWALLET_PRIVATE_JWK_JSON_LOCATION`
+|NO
+|The private/public JWK set location
+|`/your/path/to/private/keys/jwk_set.key`
+
+|`PAYPAL_HYPERWALLET_PUBLIC_JWK_JSON_LOCATION`
+|NO
+|The public JWK set location.
+|`https://example.com/hw/shared`
+
+|===

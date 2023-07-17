@@ -1,0 +1,9 @@
+== Extraction date calculation
+
+The extract jobs makes a request to Mirakl API to retrieve the entities that have changed since a specific date. 
+
+When the connector executes the extract jobs automatically, it calculates the start time for retrieving changes. The initial time is the time of the last successful execution of the job that returned Mirakl entities.
+
+When the connector executes the extract jobs manually, the user must provide the initial time as part of the HTTP request.
+
+The connector has a limit on the number of days to look in the past when retrieving the changed entities. This limit is set using the environment variable `PAYPAL_HYPERWALLET_JOB_EXTRACTION_MAXDAYS` (defaults to 30).

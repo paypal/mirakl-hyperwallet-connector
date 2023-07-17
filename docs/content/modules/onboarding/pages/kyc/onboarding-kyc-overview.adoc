@@ -1,0 +1,20 @@
+= KYC status processing
+
+The KYC process starts after creating the user in Hyperwallet. Hyperwallet gets in contact with the seller through the shop's contact information in Mirakl. 
+
+The KYC status processing isn't started by the connector using jobs. Hyperwallet servers are the ones notifying the progress of the KYC verification to the connector. The connector then updates the KYC status in Mirakl.
+
+== Characteristics
+
+* The connector makes uses of the webhooks functionality provided by Hyperwallet.
+* The connector updates the KYC status in Mirakl which is visible in the Mirakl backoffice for the sellers.
+
+== KYC status processing process
+
+[mermaid,kyc-process,png]
+....
+sequenceDiagram
+    Hyperwallet -->> Connector: (POST /webhooks/notifications) User updated notification
+    Connector -->> Connector: Reads KYC status from notification
+    Connector -->> Mirakl: (S07 PUT) Update shop with new KYC status
+....

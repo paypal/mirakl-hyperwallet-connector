@@ -1,0 +1,7 @@
+== Retry jobs
+
+The connector has specific jobs for retrying items that have failed during the execution of an extraction job.
+
+When the processing of an item fails (for example an individual seller), the connector stores in a database the information of that item. Retry jobs periodically read the content of that database and reprocess the failed items. Retry attempts for an item are separated in time according to this expression: `Item Last Failure Time + (30 minutes * number of attempts)`. The connector makes a maximum of 5 retries for each item.
+
+The connector executes retry jobs with a higher frequency than standard jobs, since they need to check if it's time to reprocess an item according to the previous expression. The frequency of retry jobs is xref:configuration:configvars/configvars.adoc#configvars-jobs[configurable with environment variables], but changing the default values isn't recommended.

@@ -1,0 +1,35 @@
+= Job execution
+
+The connector provides two jobs for extracting sellers:
+
+- Professional sellers extraction batch job.
+- Individual sellers extraction batch job.
+
+The connector executes the jobs automatically, but users can execute the jobs manually using a REST API.
+
+== Scheduled execution
+
+The connector automatically executes the jobs in a scheduled manner. The connector reads the schedule configuration from the following variables:
+
+* `PAYPAL_HYPERWALLET_EXTRACT_SELLERS_CRON_EXPRESSION`
+* `PAYPAL_HYPERWALLET_EXTRACT_PROFESSIONAL_SELLERS_CRON_EXPRESSION`
+
+You can find more information in xref:sellers/onboarding-sellers.adoc#onboarding-sellers-configuration[the configuration variables section].
+
+== Manual execution
+
+The connector provides the following REST API to execute the jobs manually:
+
+|===
+| HTTP method | Path | Job type       
+              
+| `POST`
+| `/job/sellers-extract` 
+| Individual sellers extract job
+
+| `POST` 
+| `/job/professional-sellers-extract` 
+| Professional sellers extract job
+|===
+
+You can find more information in xref:reference:jobs/generic-job#generic-job-restapi[the generic job REST API reference].

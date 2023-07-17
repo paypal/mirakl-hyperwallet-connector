@@ -1,0 +1,13 @@
+plugins {
+	id 'hmc.app-conventions'
+}
+
+dependencies {
+	implementation project(":hmc-infrastructure")
+	implementation project(":hmc-invoices")
+	implementation project(":hmc-notifications")
+	implementation project(":hmc-kyc")
+	implementation project(":hmc-sellers")
+	implementation project(":hmc-observability")
+	implementation project(":hmc-reports")
+}

@@ -1,0 +1,13 @@
+= Preflight and health checks
+
+The connector includes different types of automated checks:
+
+preflight checks:: to ensure that the system is ready to work.
+health checks:: to ensure that a running system is OK.
+info checks:: to retrieve information about the running system.
+
+include::healthchecks-preflight.adoc[]
+
+include::healthchecks-health.adoc[]
+
+include::healthchecks-info.adoc[]

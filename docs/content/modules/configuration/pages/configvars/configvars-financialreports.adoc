@@ -1,0 +1,32 @@
+== Financial reports configuration variables
+
+[cols="2,1,3,1"]
+|===
+|ENVIRONMENT VARIABLE |MANDATORY |DESCRIPTION |EXAMPLE VALUE
+
+|`PAYPAL_BRAINTREE_MERCHANT_ID`
+|NO
+|BrainTree merchant id provided by BrainTree.
+|myBrainTreeMerchantId
+
+|`PAYPAL_BRAINTREE_PUBLIC_KEY`
+|NO
+|BrainTree public key provided by BrainTree.
+|myBrainTreePublicKey
+
+|`PAYPAL_BRAINTREE_PRIVATE_KEY`
+|NO
+|BrainTree private key provided by BrainTree.
+|myBrainTreePrivateKey
+
+|`PAYPAL_BRAINTREE_REPORT_ENVIRONMENT`
+|NO
+|By default the value is  pointing to the `sandbox` environment. In case you want to point to production environment, set the value to `production`.
+|`sandbox`
+
+|`PAYPAL_HYPERWALLET_FINANCIAL_REPORTS_OUTPUT_DIR`
+|NO (default value: `./financial-reports`)
+|Directory where the application stores the financial reports.
+|`/workspace/financial-reports`
+
+|===

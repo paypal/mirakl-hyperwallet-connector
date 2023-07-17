@@ -1,0 +1,92 @@
+= Batch job steps
+
+The seller extraction process is organized in different phases or steps during the job execution (as explained in xref:reference:jobs/generic-job.adoc#generic-job-phase[phases of a job]):
+
+[mermaid,seller-steps]
+....
+flowchart TB
+    s1(Step1: Extraction of items)
+    subgraph s2 [For each retrieved item]
+        s2_1(Step2: Processing of each item)
+    end
+    s1 --> s2
+....
+
+Step 1: Extraction of items::
+During this step the connector retrieves from Mirakl the shops modified since the last execution of the job, extracting the seller information from the shop.
+
+Step 2: Item processing::
+During this step the connector processes each retrieved seller. The connector creates or updates the corresponding user in Hyperwallet.
+
+== Step 1: Extraction of shops
+
+The connector retrieves from Mirakl the shops modified since the last execution of the job.
+
+Then it filters out the shops that doesn't have the custom field `Hyperwallet Ts & Cs and Privacy Policy consent` set to `yes`, and extract the seller information from the shop.
+
+And finally, extracts the seller information from the shop, making it available for the item processing step.
+
+During this phase the connector logs the following information:
+
+....
+[BATCHJOB] Started [individualSellersExtractJob] at 2023-04-11T13:20:14.119666
+[BATCHJOB] Starting processing of job
+[BATCHJOB] Starting extraction of items to be processed
+[BATCHJOB] Retrieving shops since Tue Apr 11 13:17:13 UTC 2023
+[BATCHJOB] Shops retrieved [78759]
+[BATCHJOB] Retrieved the following number of items to be processed: 1
+....
+
+== Step 2: Seller processing
+
+The seller processing has two phases:
+
+- Hyperwallet token synchronization, that ensures that the shop has a Hyperwallet user token assigned if the user already exists in Hyperwallet.
+- Synchronized seller processing, that creates or updates the user in Hyperwallet.
+
+=== Step 2.1: Hyperwallet token synchronization
+
+[mermaid,seller-token-synchronization]
+....
+sequenceDiagram
+    Connector ->> Connector: Check if the shop has an Hyperwallet user token       
+    alt shop doesn't have an Hyperwallet user token            
+        Connector ->> Hyperwallet: (GET /users/) Find user by `clientUserId`
+        alt user found
+            Hyperwallet -->> Connector: Found user
+            Connector ->> Mirakl: (S07 PUT) Update shop with Hyperwallet user token
+        end
+    end
+....
+
+During this process the connector first checks if the shop has a value in `Hyperwallet User Token` custom field. If it has a value, the connector does nothing and continues processing.
+
+If the shop doesn't have an Hyperwallet user token assigned, the connector makes a search in Hyperwallet for a user with a `clientUserId` that matches the shop id in Mirakl.
+
+If the user exists, the connector updates the user token in Mirakl, and continues processing. If the user isn't found, the connector continues processing.
+
+=== Step 2.2: Synchronized seller processing
+
+[mermaid,sync-seller-processing]
+....
+sequenceDiagram
+    alt synchronized shop has an Hyperwallet user token
+        Connector ->> Hyperwallet: (PUT /users/) Update user information
+    else synchronized shop doesn't have an Hyperwallet user token
+        Connector ->> Hyperwallet: (POST /users/) Create user
+        Hyperwallet -->> Connector: Created user
+        Connector ->> Mirakl: (S07 PUT) Update shop with Hyperwallet user token
+    end    
+....
+
+Based on whether the shop has a user token or not after the synchronization process, the connector creates or updates the user in Hyperwallet.
+
+During this phase the connector logs the following information:
+
+....
+[BATCHJOBITEM] Processing item of type IndividualSeller with id: 78759
+[BATCHJOBITEM] Seller created for seller with clientUserId [78759]
+[BATCHJOBITEM] Updating token for shop [78759] to [usr-1b35293c-8859-4899-ba53-69ee9a918382]
+[BATCHJOBITEM] Processed successfully item of type IndividualSeller with id: 78759
+[BATCHJOBITEM] 1 items processed successfully. 0 items failed. 0 items remaining
+....

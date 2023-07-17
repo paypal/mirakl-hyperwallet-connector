@@ -1,0 +1,79 @@
+{
+	"hasNextPage": true,
+	"hasPreviousPage": false,
+	"limit": 2,
+	"data": [
+		{
+			"token": "usr-31a60e4c-dc9d-4061-899b-46575d2508d7",
+			"status": "DE_ACTIVATED",
+			"verificationStatus": "NOT_REQUIRED",
+			"taxVerificationStatus": "NOT_REQUIRED",
+			"createdOn": "2020-10-21T17:46:02",
+			"clientUserId": "2001",
+			"profileType": "INDIVIDUAL",
+			"firstName": "John",
+			"lastName": "Smith",
+			"dateOfBirth": "1990-01-01",
+			"email": "hw2y-developer01@hyperwallet.com",
+			"addressLine1": "123 Townsend St.",
+			"city": "San Francisco",
+			"stateProvince": "CA",
+			"country": "US",
+			"postalCode": "94107",
+			"language": "en",
+			"timeZone": "GMT",
+			"programToken": "prg-60512c71-2e04-4fcf-b7f0-66500819a259",
+			"links": [
+				{
+					"params": {
+						"rel": "self"
+					},
+					"href": "https://uat-api.paylution.com/rest/v4/users/usr-31a60e4c-dc9d-4061-899b-46575d2508d7"
+				}
+			]
+		},
+		{
+			"token": "usr-1509b68e-813f-475c-9cea-f9b905110c34",
+			"status": "DE_ACTIVATED",
+			"verificationStatus": "REQUIRED",
+			"taxVerificationStatus": "NOT_REQUIRED",
+			"createdOn": "2020-10-27T13:37:43",
+			"clientUserId": "2002",
+			"profileType": "INDIVIDUAL",
+			"firstName": "Daffyd",
+			"lastName": "y Goliath",
+			"dateOfBirth": "1985-09-05",
+			"email": "testmail-1@hyperwallet.com",
+			"addressLine1": "123 Main Street",
+			"city": "Austin",
+			"stateProvince": "TX",
+			"country": "US",
+			"postalCode": "78701",
+			"language": "en",
+			"timeZone": "GMT",
+			"programToken": "prg-60512c71-2e04-4fcf-b7f0-66500819a259",
+			"links": [
+				{
+					"params": {
+						"rel": "self"
+					},
+					"href": "https://uat-api.paylution.com/rest/v4/users/usr-1509b68e-813f-475c-9cea-f9b905110c34"
+				}
+			]
+		}
+	],
+	"links": [
+		{
+			"params": {
+				"rel": "self"
+			},
+			"href": "https://uat-api.paylution.com/rest/v4/users?createdBefore=2023-05-04T16%3A49%3A37Z&createdAfter=2022-02-03T18%3A49%3A37Z"
+		},
+		{
+			"params": {
+				"rel": "next"
+			},
+			"href": "https://uat-api.paylution.com/rest/v4/users?after=usr-73080ef1-79b1-4faf-8794-88d485170cdf&createdBefore=2023-05-04T16%3A49%3A37Z&createdAfter=2022-02-03T18%3A49%3A37Z"
+		}
+	]
+}

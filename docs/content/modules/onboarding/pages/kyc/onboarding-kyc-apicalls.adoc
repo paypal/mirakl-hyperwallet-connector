@@ -1,0 +1,14 @@
+= API calls
+
+The connector does the following API calls during the sellers extraction jobs execution:
+
+|===
+| Call | Target System | Endpoint | Parameters
+
+| Update KYC status of a shop
+| Mirakl
+| https://help.mirakl.net/help/api-doc/operator/mmp.html#S07[S07 - Patch shop]
+a| * `shop_id`: shop identifier
+* `kyc.status`: KYC status for the shop calculated as explained in the data mapping section.
+* `kyc.reason`: descriptive message associated to the KYC status displayed in the Mirakl back office.
+|===

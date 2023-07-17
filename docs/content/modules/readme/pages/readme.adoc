@@ -1,0 +1,85 @@
+# Hyperwallet Mirakl Connector Readme
+
+The Hyperwallet Mirakl Connector (HMC) is a service that integrates the Hyperwallet and Mirakl platforms.
+
+## Setting up jobs
+
+The Hyperwallet Mirakl Connector runs jobs to perform various integrations between the Hyperwallet and Mirakl platforms.
+
+* `Individual sellers extract job`: Extracts the individual seller information from Mirakl and creates it on Hyperwallet.
+* `Professional sellers extract job`: Extracts the professional seller information from Mirakl and creates it on
+  Hyperwallet.
+* `Bank Accounts extract job`: Extracts the bank detail information from sellers and creates a bank on account
+  Hyperwallet associated to the corresponding user in Hyperwallet.
+* `Invoices extract job`: Extracts the bank detail information from sellers and creates a bank on account
+  Hyperwallet associated to the corresponding user in Hyperwallet.
+* `Failed notifications retry job`: Retries all of the notifications sent from Hyperwallet that failed while being processed.
+
+Those jobs are currently setup across the properties file as this table follows:
+
+|===
+|Property|Cron expression|Properties file
+| `sellers.extractsellers.scheduling.cronexpression`| 0 0 0 1/1 * ? *   | `sellers/src/main/resources/sellers.properties`             
+| `sellers.extractprofessionalsellers.scheduling.cronexpression`| 0 0 0 1/1 * ? *   | `sellers/src/main/resources/sellers.properties`             
+| `sellers.bankaccountextract.scheduling.cronexpression`| 0 30 0 1/1 * ? *  | `sellers/src/main/resources/sellers.properties`             
+| `invoices.extractinvoices.scheduling.cronexpression`| 1 0 0 1/1 * ? *   | `invoices/src/main/resources/invoices.properties`           
+| `notifications.retryfailed.scheduling.cronexpression`| 0 0/15 * * * ? *  | `notifications/src/main/resources/notifications.properties` 
+|===
+
+The existing jobs can be executed manually through their endpoints. Except for notification retry job, which doesn't receive
+any parameter, all endpoints support 2 optional parameters:
+
+* `delta`: When provided for an extract job, the job will only process entities that were updated/created after this
+  date
+* `name` : When provided, the job will be given this name
+
+
+|===
+|Param|Format
+|`name`| String
+|`delta`| yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+|===
+
+Endpoints:
+|===
+|  HTTP Method   | PATH                                  | Job type                     
+| `POST`         | `/job/sellers-extract`                | Individual Sellers extract   
+| `POST`         | `/job/professional-sellers-extract`   | Professional Sellers extract 
+| `POST`         | `/job/bank-accounts-extract`          | Bank accounts extract        
+| `POST`         | `/job/invoices-extract`               | Invoices extract             
+| `POST`         | `/job//process-failed-notifications`  | Retry failed notifications   
+|===
+See example of valid execution request:
+[example]
+curl --location --request POST 'http://localhost:8080/job/bank-accounts-extract?delta=2020-11-22T11:52:00.000-00:00&name=bankAccountExtractJob'
+
+
+
+## Webhook Notifications
+
+The Hyperwallet platform is capable of sending event notifications via webhook. This connector comes with a built-in
+listener to process supported webhook notification types, and works with both basic authentication and payload
+encryption.
+
+The endpoint for the webhook listener is on the path: `/webhooks/notifications`. This path is used by default, and no
+properties or configuration are used for enabling or setting up the webhook listener.
+
+During the on-boarding process, Hyperwallet will enable webhook notifications by registering the webhook listener
+endpoint URL (for example, https://hmc.example.com/webhooks/notifications).
+
+Storing and querying notifications:
+
+The connector stores the incoming notifications, these can be retrieved and deleted using these endpoints.
+A `from` and a `to` date parameters must be provided in both operations.
+|===
+| HTTP Method | PATH                      | Params                                                              | Description                                             
+| `GET`       | `/webhooks/notifications` | `from` and `to` format ISO-DATE-TIME `yyyy-MM-dd'T'HH:mm:ss.SSSXXX` | Retrieves all the notifications between the given dates 
+| `DELETE`    | `/webhooks/notifications` | `from` and `to` format ISO-DATE-TIME `yyyy-MM-dd'T'HH:mm:ss.SSSXXX` | Deletes all the notifications between the given dates   
+|===
+See examples of valid execution request:
+[example]
+curl --location --request GET 'http://localhost:8080/webhooks/notifications?from=2021-04-27T10:30:00.000-00:00&to=2023-04-27T10:30:00.000-00:00'
+[example]
+curl --location --request DELETE 'http://localhost:8080/webhooks/notifications?from=2021-04-27T10:30:00.000-00:00&to=2023-04-27T10:30:00.000-00:00'
+
+

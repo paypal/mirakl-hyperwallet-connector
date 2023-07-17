@@ -1,0 +1,171 @@
+{
+	"httpRequest": {
+		"method" : "GET",
+		"path" : "/api/shops",
+		"queryStringParameters": {
+			"shop_ids" : ["10000"]
+		}
+	},
+	"httpResponse": {
+		"statusCode": 200,
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"body": {
+			"shops": [
+				{
+					"applicable_taxes": [
+						{
+							"code": "TAXDEFAULT",
+							"label": "Default VAT"
+						}
+					],
+					"approval_delay": null,
+					"approval_rate": null,
+					"banner": null,
+					"billing_info": {
+						"bank_city": null,
+						"bank_name": null,
+						"bank_street": null,
+						"bic": null,
+						"iban": null,
+						"owner": null,
+						"zip_code": null
+					},
+					"channels": [
+						"INIT"
+					],
+					"closed_from": null,
+					"closed_to": null,
+					"contact_informations": {
+						"city": "NorthFay",
+						"civility": "Mrs",
+						"country": "USA",
+						"email": "giuxcakq.Cremin52@example.net",
+						"fax": null,
+						"firstname": "Filomena",
+						"lastname": "Stokes",
+						"phone": null,
+						"phone_secondary": null,
+						"state": "CA",
+						"street1": "80250 Williamson Motorway",
+						"street2": "Kyle Estate",
+						"web_site": null,
+						"zip_code": "90210"
+					},
+					"currency_iso_code": "USD",
+					"date_created": "2023-05-29T11:01:59Z",
+					"description": "e-enable bricks-and-clicks synergies",
+					"domains": [
+						"PRODUCT"
+					],
+					"evaluations_count": 0,
+					"free_shipping": false,
+					"grade": null,
+					"immunity_date": null,
+					"is_professional": false,
+					"kyc": {
+						"reason": "",
+						"status": "APPROVED"
+					},
+					"last_updated_date": "2023-05-29T11:02:45Z",
+					"logo": null,
+					"model": "MARKETPLACE",
+					"offers_count": 0,
+					"operator_internal_id": null,
+					"order_messages_response_delay": null,
+					"orders_count": 0,
+					"payment_details": {
+						"paid_balance": 0.00,
+						"pay_subscription": true,
+						"payable_balance": 0.00,
+						"payment_blocked": false,
+						"pending_balance": 0.00,
+						"subscription_free_from": null,
+						"subscription_free_to": null
+					},
+					"premium": false,
+					"premium_state": "DEFAULT",
+					"pro_details": {
+						"VAT_number": null,
+						"corporate_name": null,
+						"identification_number": null,
+						"tax_identification_number": null
+					},
+					"return_policy": null,
+					"shipping_country": "USA",
+					"shipping_types": [],
+					"shipping_zones": [],
+					"shippings": [],
+					"shop_additional_fields": [
+						{
+							"code": "hw-bankaccount-state",
+							"type": "STRING",
+							"value": "NY"
+						},
+						{
+							"code": "hw-business-type",
+							"type": "LIST",
+							"value": "NOT_FOR_PROFIT_ORGANIZATION"
+						},
+						{
+							"code": "hw-country-of-birth",
+							"type": "STRING",
+							"value": "US"
+						},
+						{
+							"code": "hw-country-of-nationality",
+							"type": "STRING",
+							"value": "US"
+						},
+						{
+							"code": "hw-date-of-birth",
+							"type": "DATE",
+							"value": "1972-04-16T22:00:00Z"
+						},
+						{
+							"code": "hw-drivers-license-id",
+							"type": "STRING",
+							"value": "9gswm1lhr7"
+						},
+						{
+							"code": "hw-government-id",
+							"type": "STRING",
+							"value": "658877958"
+						},
+						{
+							"code": "hw-government-id-type",
+							"type": "LIST",
+							"value": "NATIONAL_ID_CARD"
+						},
+						{
+							"code": "hw-passport-id",
+							"type": "STRING",
+							"value": "497063981"
+						},
+						{
+							"code": "hw-program",
+							"type": "LIST",
+							"value": "DEFAULT"
+						},
+						{
+							"code": "hw-terms-consent",
+							"type": "BOOLEAN",
+							"value": "true"
+						},
+						{
+							"code": "hw-user-token",
+							"type": "STRING",
+							"value": "usr-1efd2215-cbe1-4d92-bf82-30050ce36d33"
+						}
+					],
+					"shop_id": 10000,
+					"shop_name": "Airborne-1685358112613",
+					"shop_state": "SUSPENDED",
+					"suspension_type": "MANUAL"
+				}
+			],
+			"total_count": 1
+		}
+	}
+}

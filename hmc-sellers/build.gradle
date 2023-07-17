@@ -1,0 +1,12 @@
+plugins {
+	id 'hmc.lib-conventions'
+}
+
+dependencies {
+    implementation 'org.apache.commons:commons-collections4:4.4'
+
+    implementation project(":hmc-infrastructure")
+	implementation project(":hmc-jobsystem")
+
+	testImplementation project(":hmc-testsupport")
+}

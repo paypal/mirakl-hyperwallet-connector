@@ -1,0 +1,32 @@
+plugins {
+	id 'java'
+
+	id 'checkstyle'
+	id 'jacoco'
+	id 'io.spring.javaformat'
+
+	id 'hmc.testing-conventions'
+}
+
+compileJava {
+	dependsOn format
+}
+
+jacoco {
+	toolVersion = "0.8.8"
+}
+
+jacocoTestReport {
+	executionData integrationTest
+	reports {
+		xml.required = true
+		html.required = true
+	}
+	dependsOn test, integrationTest
+}
+
+checkstyle {
+	toolVersion = "8.45.1"
+	configDirectory = file("${rootDir}/buildSrc/config/checkstyle")
+	checkstyleTest.enabled = false
+}

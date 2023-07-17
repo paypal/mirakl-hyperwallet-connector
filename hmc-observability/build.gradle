@@ -1,0 +1,15 @@
+plugins {
+	id 'hmc.lib-conventions'
+}
+
+dependencies {
+    implementation project(":hmc-infrastructure")
+    implementation project(":hmc-notifications")
+	implementation project(":hmc-jobsystem")
+
+	inpath 'org.apache.httpcomponents:httpclient'
+	inpath 'com.hyperwallet:sdk:2.4.3'
+	inpath 'com.mirakl:mmp-sdk-operator:6.8.0'
+
+	testImplementation project(":hmc-testsupport")
+}

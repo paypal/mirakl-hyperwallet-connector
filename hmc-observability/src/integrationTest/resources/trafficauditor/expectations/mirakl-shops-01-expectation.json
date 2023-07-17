@@ -1,0 +1,135 @@
+{
+	"httpRequest": {
+		"method": "PUT",
+		"path": "/api/shops",
+		"body": {
+			"shops": [
+				{
+					"kyc": {
+						"status": "APPROVED",
+						"reason": ""
+					},
+					"shop_id": 10000
+				}
+			]
+		}
+	},
+	"httpResponse": {
+		"statusCode" : 200,
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"body": {
+			"shop_returns": [
+				{
+					"shop_updated": {
+						"approval_delay": null,
+						"approval_rate": null,
+						"banner": null,
+						"channels": [
+							"INIT"
+						],
+						"closed_from": null,
+						"closed_to": null,
+						"contact_informations": {
+							"city": "Valencia",
+							"civility": "Mr",
+							"country": "ESP",
+							"email": "fakeMail65124@nomail.com",
+							"fax": null,
+							"firstname": "Fake",
+							"lastname": "Name",
+							"phone": null,
+							"phone_secondary": null,
+							"state": null,
+							"street1": "30 King Street",
+							"street2": null,
+							"web_site": null,
+							"zip_code": "46001"
+						},
+						"currency_iso_code": "EUR",
+						"date_created": "2023-05-11T11:02:11Z",
+						"description": "Test Shop",
+						"domains": [
+							"PRODUCT"
+						],
+						"evaluations_count": 0,
+						"free_shipping": false,
+						"grade": null,
+						"immunity_date": null,
+						"is_professional": false,
+						"kyc": {
+							"reason": "",
+							"status": "APPROVED"
+						},
+						"last_updated_date": "2023-05-15T10:22:13Z",
+						"logo": null,
+						"model": "MARKETPLACE",
+						"offers_count": 0,
+						"operator_internal_id": null,
+						"order_messages_response_delay": null,
+						"orders_count": 0,
+						"payment_details": {
+							"paid_balance": 0.00,
+							"pay_subscription": true,
+							"payable_balance": 0.00,
+							"payment_blocked": false,
+							"pending_balance": 0.00,
+							"subscription_free_from": null,
+							"subscription_free_to": null
+						},
+						"payment_info": {
+							"@type": "IBAN",
+							"bank_city": "Barcelona",
+							"bank_name": "Santander",
+							"bank_street": "115 W 42nd St",
+							"bic": "CAIXESBBXXX",
+							"iban": "ES8220480527748946106488",
+							"owner": "John Doe"
+						},
+						"premium": false,
+						"premium_state": "DEFAULT",
+						"pro_details": {
+							"corporate_name": null,
+							"identification_number": null,
+							"tax_identification_number": null
+						},
+						"return_policy": null,
+						"shipping_country": null,
+						"shippings": [
+							{
+								"additional_fields": [],
+								"shipping_free_amount": null,
+								"shipping_type_code": "STANDARD",
+								"shipping_type_label": "Standard",
+								"shipping_zone_code": "DE",
+								"shipping_zone_label": "GER"
+							}
+						],
+						"shop_additional_fields": [
+							{
+								"code": "hw-bankaccount-state",
+								"type": "STRING",
+								"value": "BANK_STATEMENT"
+							},
+							{
+								"code": "hw-program",
+								"type": "LIST",
+								"value": "DEFAULT"
+							},
+							{
+								"code": "hw-terms-consent",
+								"type": "BOOLEAN",
+								"value": "true"
+							}
+						],
+						"shop_id": 10000,
+						"shop_name": "My test shop 65124",
+						"shop_state": "OPEN",
+						"suspension_type": null
+					}
+				}
+			]
+		}
+	}
+}

@@ -1,0 +1,21 @@
+= Troubleshooting
+
+The connector provides self-healing features through the usage of xref:reference:jobs/generic-job#generic-job-retry[retry jobs]. However, there are some times when the connector may not be able to recover from an error. In these cases the user has other alternatives.
+
+== Manually executing the extract jobs
+
+The connector is designed so every extract job can be retried without generating duplicated data or generating errors for processing various times the same item.
+
+This means that if something fails, for example the processing of a seller or an invoice, the user can use the xref:reference:jobs/generic-job#generic-job-restapi[jobs HTTP API] to reprocess the item.
+
+==  Restarting the connector
+
+Sometimes, the connector may be in a state where it's unresponsive or its internal structures, like a cache, may contain invalid data. In these cases, the user can restart the connector to restore it to a working state.
+
+== Removing persistent data
+
+The connector stores in an internal database some auxiliary data to speed up the processing of the data. This data is stored in the `data` directory and the connector can regenerate it if it's deleted.
+
+The user can remove this data and restart the server to restore the connector to a working state.
+
+TIP: If the connector is running in a container, the user can remove the container destroying it associated data. If the data is stored in a volume, the user can remove the volume.

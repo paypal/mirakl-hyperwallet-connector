@@ -1,0 +1,27 @@
+== Build and run from source (Quickstart)
+
+This is the easy and most straightforward way of running the connector. You simply download the code, build it and run it from the same directory.
+
+=== Building the connector
+
+. Clone the GitHub repository of the project:
+
+ $ git clone https://github.com/paypal/mirakl-hyperwallet-connector.git
+
+. Set up build required environment variables
+. Execute build script:
+
+ $ ./gradlew clean build
+
+After these steps the connector is ready to run.
+
+=== Running the connector
+
+. Set up the required configuration environment variables
+. Run the connector 
+
+ $ ./gradlew app:bootRun
+
+=== Checking if the connector is ready
+
+. Access `http://<host>:8080/connector`

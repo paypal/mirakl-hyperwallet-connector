@@ -1,0 +1,101 @@
+= Data mapping
+
+== Common fields
+
+[width="100%",cols="34%,20%,46%"]
+
+|===
+|Hyperwallet field |Mirakl field |Notes
+
+| `clientUserId`
+| `shopId`
+| Auto generated when creating a shop in Mirakl.
+
+| `profileType`
+| `is_professional`
+| If `is_professional` is `true` then `BUSINESS` otherwise `INDIVIDUAL`
+
+| `email`
+| `contact_informations.email`
+|
+
+| `addressLine1`
+| `contact_informations.street1`
+|
+
+| `addressLine2`
+| `contact_informations.street2`
+| 
+
+| `city`
+| `contact_informations.city`
+|
+
+| `stateProvince`
+| `contact_informations.state`
+| Two letter code for U.S.
+
+| `country`
+| `contact_informations.country`
+| 
+
+| `postalCode`
+| `contact_informations.zipCode`
+|
+
+| `programToken`
+| Custom field `hw-program`
+| Program token configured for the program stored in the custom field `hw-program` of the shop.
+
+| `businessName`
+| `name`
+|
+
+|===
+
+
+== Professional sellers fields
+
+|===
+|Hyperwallet field | Mirakl field | Notes
+
+| `businessRegistrationId`
+| `pro_details.identification_number`
+|
+
+| `businessOperatingNames`
+| `pro_details.corporate_name`
+|
+
+|===
+
+== Individual sellers fields
+
+|===
+| Hyperwallet field | Mirakl field | Notes
+
+| `firstName`
+| `contact_informations.firstname`
+|
+
+| `middleName`
+|
+| Not required
+
+| `lastName`
+| `lastName`
+|
+
+| `gender`
+|
+| Not required
+
+| `phoneNumber`
+| `contact_informations.phone`
+|
+
+| `mobilePhone`
+| `contact_informations.phone_secondary`
+|
+
+|===

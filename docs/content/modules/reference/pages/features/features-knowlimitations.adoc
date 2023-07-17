@@ -1,0 +1,9 @@
+== Known limitations
+
+The connector has the following limitations:
+
+* It only supports the following bank account types:
+** IBAN (EUR, CHF)
+** U.S. ABA (USD)
+** CANADIAN (CAD, USD)
+** United Kingdom account (GBP).

@@ -1,0 +1,41 @@
+= API calls
+
+The connector does the following API calls during the sellers extraction jobs execution:
+
+|===
+| Call | Target System | Endpoint | Parameters
+
+| Retrieve all modified shops since the last specified date
+| Mirakl
+| https://help.mirakl.net/help/api-doc/operator/mmp.html#S20[S20 - List shops]
+a| * `updated_since`: date calculated by the job as the starting date since the last job 
+execution or the date manually specified in the job execution.
+
+| Update Hyperwallet bank account token in a Shop
+| Mirakl
+| https://help.mirakl.net/help/api-doc/operator/mmp.html#S07[S07 - Patch shop]
+a| * custom field `hw-bankaccount-token`: the Hyperwallet bank account token.
+
+
+| Create a new bank account
+| Hyperwallet
+| https://docs.hyperwallet.com/content/api/v4/resources/bank-accounts/create[POST /users/\{user-token}/bank-accounts]
+a| The connector generates a body from the bank account information contained in the Mirakl shop according to the data mapping rules. The following mappings are specially relevant:
+
+* `programToken`: the program token associated to the program assigned to the shop.
+* `profileType`: `BUSINESS` or `INDIVIDUAL` depending on the `business` field in the Mirakl shop
+* `transferMethodCountry`: the country of the bank account.
+* `transferMethodCurrency`: the currency supported by the bank account. The payment is always made in the marketplace currency.
+* `type`: `BANK_ACCOUNT`.
+
+| Update an existing bank account
+| Hyperwallet
+| https://docs.hyperwallet.com/content/api/v4/resources/bank-accounts/update[PUT /users/\{user-token}/bank-accounts/\{bank-account-token}]
+| The connector generates a body from the bank account information contained in the Mirakl shop according to the data mapping rules.
+
+| Retrieve bank accounts of a user
+| Hyperwallet
+| https://docs.hyperwallet.com/content/api/v4/resources/bank-accounts/list[GET /users/\{user-token}/bank-accounts]
+| 
+
+|===

@@ -1,0 +1,353 @@
+{
+	"httpRequest": {
+		"method" : "GET",
+		"path" : "/api/shops"
+	},
+	"httpResponse": {
+		"statusCode": 200,
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"body": {
+			"shops": [
+				{
+					"applicable_taxes": [
+						{
+							"code": "TAXDEFAULT",
+							"label": "Default VAT"
+						}
+					],
+					"approval_delay": null,
+					"approval_rate": null,
+					"banner": null,
+					"billing_info": {
+						"bank_city": "Barcelona",
+						"bank_name": "Santander",
+						"bank_street": "115 W 42nd St",
+						"bic": "CAIXESBBXXX",
+						"iban": "ES1221008896288644305060",
+						"owner": "John Doe",
+						"zip_code": null
+					},
+					"channels": [
+						"INIT"
+					],
+					"closed_from": null,
+					"closed_to": null,
+					"contact_informations": {
+						"city": "Valencia",
+						"civility": "Mr",
+						"country": "ESP",
+						"email": "fakeMail54765@nomail.com",
+						"fax": null,
+						"firstname": "Fake",
+						"lastname": "Name",
+						"phone": null,
+						"phone_secondary": null,
+						"state": null,
+						"street1": "30 King Street",
+						"street2": null,
+						"web_site": null,
+						"zip_code": "46001"
+					},
+					"currency_iso_code": "EUR",
+					"date_created": "2023-06-13T09:56:28Z",
+					"description": "Test Shop",
+					"domains": [
+						"PRODUCT"
+					],
+					"evaluations_count": 0,
+					"free_shipping": false,
+					"grade": null,
+					"immunity_date": null,
+					"is_professional": false,
+					"kyc": {
+						"reason": null,
+						"status": "PENDING_SUBMISSION"
+					},
+					"last_updated_date": "2023-06-13T09:57:19Z",
+					"logo": null,
+					"model": "MARKETPLACE",
+					"offers_count": 0,
+					"operator_internal_id": null,
+					"order_messages_response_delay": null,
+					"orders_count": 0,
+					"payment_details": {
+						"paid_balance": 0.00,
+						"pay_subscription": true,
+						"payable_balance": 0.00,
+						"payment_blocked": false,
+						"pending_balance": 0.00,
+						"subscription_free_from": null,
+						"subscription_free_to": null
+					},
+					"payment_info": {
+						"@type": "IBAN",
+						"bank_city": "Barcelona",
+						"bank_name": "Santander",
+						"bank_street": "115 W 42nd St",
+						"bic": "CAIXESBBXXX",
+						"iban": "ES1221008896288644305060",
+						"owner": "John Doe"
+					},
+					"premium": false,
+					"premium_state": "DEFAULT",
+					"pro_details": {
+						"VAT_number": null,
+						"corporate_name": null,
+						"identification_number": null,
+						"tax_identification_number": null
+					},
+					"return_policy": null,
+					"shipping_country": null,
+					"shipping_types": [
+						"STANDARD"
+					],
+					"shipping_zones": [
+						"DE"
+					],
+					"shippings": [
+						{
+							"additional_fields": [],
+							"shipping_free_amount": null,
+							"shipping_type_code": "STANDARD",
+							"shipping_type_label": "Standard",
+							"shipping_zone_code": "DE",
+							"shipping_zone_label": "GER"
+						}
+					],
+					"shop_additional_fields": [
+						{
+							"code": "hw-bankaccount-state",
+							"type": "STRING",
+							"value": "BANK_STATEMENT"
+						},
+						{
+							"code": "hw-country-of-birth",
+							"type": "STRING",
+							"value": "ES"
+						},
+						{
+							"code": "hw-country-of-nationality",
+							"type": "STRING",
+							"value": "ES"
+						},
+						{
+							"code": "hw-date-of-birth",
+							"type": "DATE",
+							"value": "1990-10-09T22:00:00Z"
+						},
+						{
+							"code": "hw-ind-proof-identity-country",
+							"type": "STRING",
+							"value": "ES"
+						},
+						{
+							"code": "hw-ind-proof-identity-type",
+							"type": "LIST",
+							"value": "PASSPORT"
+						},
+						{
+							"code": "hw-passport-id",
+							"type": "STRING",
+							"value": "WJM515141V"
+						},
+						{
+							"code": "hw-program",
+							"type": "LIST",
+							"value": "PROGRAM-2"
+						},
+						{
+							"code": "hw-terms-consent",
+							"type": "BOOLEAN",
+							"value": "true"
+						},
+						{
+							"code": "hw-user-token",
+							"type": "STRING",
+							"value": "usr-ca2bb0f3-501f-46f4-97b4-6890b5d10f0f"
+						},
+						{
+							"code": "hw-bankaccount-token",
+							"type": "STRING",
+							"value": "trm-00000000-0000-0000-0000-0000000001"
+						}
+					],
+					"shop_id": 10001,
+					"shop_name": "My test shop 54765",
+					"shop_state": "OPEN",
+					"suspension_type": null
+				},
+				{
+					"applicable_taxes": [
+						{
+							"code": "TAXDEFAULT",
+							"label": "Default VAT"
+						}
+					],
+					"approval_delay": null,
+					"approval_rate": null,
+					"banner": null,
+					"billing_info": {
+						"bank_city": "Barcelona",
+						"bank_name": "Santander",
+						"bank_street": "115 W 42nd St",
+						"bic": "CAIXESBBXXX",
+						"iban": "ES2220389967199667547124",
+						"owner": "John Doe",
+						"zip_code": null
+					},
+					"channels": [
+						"INIT"
+					],
+					"closed_from": null,
+					"closed_to": null,
+					"contact_informations": {
+						"city": "Valencia",
+						"civility": "Mr",
+						"country": "ESP",
+						"email": "fakeMail62353@nomail.com",
+						"fax": null,
+						"firstname": "Fake",
+						"lastname": "Name",
+						"phone": null,
+						"phone_secondary": null,
+						"state": null,
+						"street1": "30 King Street",
+						"street2": null,
+						"web_site": null,
+						"zip_code": "46001"
+					},
+					"currency_iso_code": "EUR",
+					"date_created": "2023-06-13T09:25:42Z",
+					"description": "Test Shop",
+					"domains": [
+						"PRODUCT"
+					],
+					"evaluations_count": 0,
+					"free_shipping": false,
+					"grade": null,
+					"immunity_date": null,
+					"is_professional": false,
+					"kyc": {
+						"reason": null,
+						"status": "PENDING_SUBMISSION"
+					},
+					"last_updated_date": "2023-06-13T09:27:50Z",
+					"logo": null,
+					"model": "MARKETPLACE",
+					"offers_count": 0,
+					"operator_internal_id": null,
+					"order_messages_response_delay": null,
+					"orders_count": 0,
+					"payment_details": {
+						"paid_balance": 0.00,
+						"pay_subscription": true,
+						"payable_balance": 0.00,
+						"payment_blocked": false,
+						"pending_balance": 0.00,
+						"subscription_free_from": null,
+						"subscription_free_to": null
+					},
+					"payment_info": {
+						"@type": "IBAN",
+						"bank_city": "Barcelona",
+						"bank_name": "Santander",
+						"bank_street": "115 W 42nd St",
+						"bic": "CAIXESBBXXX",
+						"iban": "ES2220389967199667547124",
+						"owner": "John Doe"
+					},
+					"premium": false,
+					"premium_state": "DEFAULT",
+					"pro_details": {
+						"VAT_number": null,
+						"corporate_name": null,
+						"identification_number": null,
+						"tax_identification_number": null
+					},
+					"return_policy": null,
+					"shipping_country": null,
+					"shipping_types": [
+						"STANDARD"
+					],
+					"shipping_zones": [
+						"DE"
+					],
+					"shippings": [
+						{
+							"additional_fields": [],
+							"shipping_free_amount": null,
+							"shipping_type_code": "STANDARD",
+							"shipping_type_label": "Standard",
+							"shipping_zone_code": "DE",
+							"shipping_zone_label": "GER"
+						}
+					],
+					"shop_additional_fields": [
+						{
+							"code": "hw-bankaccount-state",
+							"type": "STRING",
+							"value": "BANK_STATEMENT"
+						},
+						{
+							"code": "hw-country-of-birth",
+							"type": "STRING",
+							"value": "ES"
+						},
+						{
+							"code": "hw-country-of-nationality",
+							"type": "STRING",
+							"value": "ES"
+						},
+						{
+							"code": "hw-date-of-birth",
+							"type": "DATE",
+							"value": "1990-10-09T22:00:00Z"
+						},
+						{
+							"code": "hw-ind-proof-identity-country",
+							"type": "STRING",
+							"value": "ES"
+						},
+						{
+							"code": "hw-ind-proof-identity-type",
+							"type": "LIST",
+							"value": "PASSPORT"
+						},
+						{
+							"code": "hw-passport-id",
+							"type": "STRING",
+							"value": "ZVN361198P"
+						},
+						{
+							"code": "hw-program",
+							"type": "LIST",
+							"value": "PROGRAM-1"
+						},
+						{
+							"code": "hw-terms-consent",
+							"type": "BOOLEAN",
+							"value": "true"
+						},
+						{
+							"code": "hw-user-token",
+							"type": "STRING",
+							"value": "usr-8c4401be-11d7-4f24-a676-44620cde1e7f"
+						},
+						{
+							"code": "hw-bankaccount-token",
+							"type": "STRING",
+							"value": "trm-00000000-0000-0000-0000-0000000002"
+						}
+					],
+					"shop_id": 10002,
+					"shop_name": "My test shop 62353",
+					"shop_state": "OPEN",
+					"suspension_type": null
+				}
+			],
+			"total_count": 6
+		}
+	}
+}

@@ -1,0 +1,231 @@
+== Preflight start up checks
+
+During the start up the connector does a series of checks to ensure that it's ready to be work. It does the following checks:
+
+* Mirakl custom fields schema
+* Mirakl documents
+* Hyperwallet API connectivity
+* Mirakl API connectivity
+
+The start up check system generates a report for each individual check, showing the issues founds and the check status. It also generates an summary status aggregating each individual check. The possible statuses are the following:
+
+* `READY`: The check has passed and no issues were found.
+* `READY_WITH_WARNINGS`: The check has passed but minor issues were found. The connector can be used but it's recommended to solve the issues.
+* `NOT_READY`: The check hasn't passed because at least one severe issue was found. You must solve the issue before using the connector in production.
+
+The aggregated status of all the individual checks is the most severe status. For example, if one check is `READY_WITH_WARNINGS` and the others are `READY`, then the summary status is `READY_WITH_WARNINGS`.
+
+By default, the connector continues working even when the aggregated report status is `NOT_READY`. This can be changed by setting to true the `PAYPAL_HMC_start upCHECKS_EXITONFAIL` environment variable.
+
+The following is an example of a start up check report:
+
+....
+22-07-2022 14:54:47.209 [main] WARN   start upCheckerService.java - start up Check Report -> Status: <READY_WITH_WARNINGS>. Dumping individual checks:
+22-07-2022 14:54:47.211 [main] INFO   start upCheckerService.java - start up Check: <miraklHealthCheck>, Status <READY>, CheckDetails:
+Mirakl API is accessible
+status: UP
+location: https://server.mirakl.net/api
+version: 3.213
+22-07-2022 14:54:47.212 [main] INFO   start upCheckerService.java - start up Check: <hyperwalletHealthCheck>, Status <READY>, CheckDetails:
+Hyperwallet API is accessible
+status: UP
+location: https://server.hyperwallet.com/
+22-07-2022 14:54:47.214 [main] WARN   start upCheckerService.java - start up Check: <miraklCustomFieldsSchemaCheck>, Status <READY_WITH_WARNINGS>, CheckDetails:
+Item 'hw-bankaccount-token' doesn't have the expected definition.
+Property 'description' doesn't have the correct value.
+Expected value: 'Auto-generated, DO NOT change this value. This is a unique identifier for this Seller/Payee's bank account in Hyperwallet.'
+Actual value: 'Auto-generated, DO NOT change this value.  This is a unique identifier for this Seller/Payee's bank account in Hyperwallet.'
+---------
+Item 'hw-stakeholder-government-id-count-3' doesn't have the expected definition.
+Property 'label' doesn't have the correct value.
+Expected value: 'Government ID country code'
+Actual value: 'Government ID country code '
+---------
+Item 'hw-stakeholder-city-4' doesn't have the expected definition.
+Property 'label' doesn't have the correct value.
+Expected value: 'City'
+Actual value: ' City'
+22-07-2022 14:54:47.214 [main] WARN   start upCheckerService.java - start up Check: <miraklDocSchemaCheck>, Status <READY_WITH_WARNINGS>, CheckDetails:
+An unexpected field named 'hw-bsh2-proof-address' has been found
+Offending field details: MiraklDoc(code=hw-bsh2-proof-address, label=Business Stakeholder 2 - Proof of Address (front) (DEPRECATED), description=Please upload the photo page of Business Stakeholder 2 - Proof of Address document)
+....
+
+First it shows the summary status:
+
+....
+22-07-2022 14:54:47.209 [main] WARN   start upCheckerService.java - start up Check Report -> Status: <READY_WITH_WARNINGS>. Dumping individual checks:
+....
+
+Then there is a log entry for each individual check:
+
+....
+22-07-2022 14:54:47.211 [main] INFO   start upCheckerService.java - start up Check: <miraklHealthCheck>, Status <READY>, CheckDetails:
+Mirakl API is accessible
+status: UP
+location: https://hyperwallet2-dev.mirakl.net/api
+version: 3.213
+....
+
+As shown in the examples, the log level is directly related to the status:
+
+** `READY`: It's printed with INFO level
+** `READY_WITH_WARNINGS`: It's printed with WARNING level
+** `NOT_READY`: It's printed with ERROR level
+
+There are some complex checks (for example custom fields) that makes multiple checks, in that cases in the log each individual issue found is printed:
+
+....
+22-07-2022 14:54:47.214 [main] WARN   start upCheckerService.java - start up Check: <miraklCustomFieldsSchemaCheck>, Status <READY_WITH_WARNINGS>, CheckDetails:
+Item 'hw-bankaccount-token' doesn't have the expected definition.
+Property 'description' doesn't have the correct value.
+Expected value: 'Auto-generated, DO NOT change this value. This is a unique identifier for this Seller/Payee's bank account in Hyperwallet.'
+Actual value: 'Auto-generated, DO NOT change this value.  This is a unique identifier for this Seller/Payee's bank account in Hyperwallet.'
+Severity: RECOMMENDATION
+---------
+Item 'hw-stakeholder-government-id-count-3' doesn't have the expected definition.
+Property 'label' doesn't have the correct value.
+Expected value: 'Government ID country code'
+Actual value: 'Government ID country code '
+Severity: RECOMMENDATION
+---------
+Item 'hw-stakeholder-city-4' doesn't have the expected definition.
+Property 'label' doesn't have the correct value.
+Expected value: 'City'
+Actual value: ' City'
+Severity: RECOMMENDATION
+....
+
+=== Mirakl custom fields schema check
+
+Custom field schema start up checks ensures that the custom fields expected by the definition exists and their definition is the expected.
+
+This check only takes into account custom fields whose code starts with `hw-` which is the prefix used for all the custom fields used by the connector. It does three checks:
+
+* It checks that the required custom fields exist in Mirakl.
+* It checks that there aren't unexpected custom fields in Mirakl. Since the system only takes into account `hw-` prefixed fields this won't conflict with other custom fields that can exists in Mirakl for other purposes.
+* It checks the properties of each individual field to see if they are correct.
+
+Each issue found has a different severity:
+
+* Field not found - this is a severe issue.
+* Unexpected field found - this is only a warning.
+* Custom field property doesn't have the expected definition. In this case it depends on the property that doesn't have
+the expected definition:
+  ** Wrong type - this is a severe issue. For example, the field should be a list but is a boolean.
+  ** Wrong permissions - this is a severe issue. For example, the field shouldn't be visible to the sellers, but it's visible.
+  ** Wrong regexp - this is a severe issue. A different regular expression than the expected has been found.
+  ** Wrong allowed values - this is a severe issue. For example, the field is a list and it should allow ONE and TWO values, but in Mirakl it allows ONE, TWO, THREE.
+  ** Wrong label - this is only a warning.
+  ** Wrong description - this is only a warning.
+  ** Wrong required value - this is only a warning. For example, the field `hw-terms-consent` is expected to not be required but in Mirakl is required. (Required value refers to if the field should be filled to be able to save changes in Mirakl Backoffice)
+
+The final status of this check depends on the aggregated results of each individual checks:
+
+* `READY`: no issues were found.
+* `READY_WITH_WARNINGS`: no severe issues were found, but at least one warning was found.
+* `NOT_READY`: at least one severe issue was found.
+
+Each individual issue found is printed into the log, like in this example:
+
+....
+22-07-2022 14:54:47.214 [main] WARN   start upCheckerService.java - start up Check: <miraklCustomFieldsSchemaCheck>, Status <READY_WITH_WARNINGS>, CheckDetails:
+Item 'hw-bankaccount-token' doesn't have the expected definition.
+Property 'description' doesn't have the correct value.
+Expected value: 'Auto-generated, DO NOT change this value. This is a unique identifier for this Seller/Payee's bank account in Hyperwallet.'
+Actual value: 'Auto-generated, DO NOT change this value.  This is a unique identifier for this Seller/Payee's bank account in Hyperwallet.'
+Severity: RECOMMENDATION
+---------
+Item 'hw-stakeholder-government-id-count-3' doesn't have the expected definition.
+Property 'label' doesn't have the correct value.
+Expected value: 'Government ID country code'
+Actual value: 'Government ID country code '
+Severity: RECOMMENDATION
+---------
+Item 'hw-stakeholder-city-4' doesn't have the expected definition.
+Property 'label' doesn't have the correct value.
+Expected value: 'City'
+Actual value: ' City'
+Severity: RECOMMENDATION
+....
+
+For each individual issue in addition to the details of the issue the severity of the issue is also print:
+
+** `Severity: RECOMMENDATION`: This means that the issue is only a warning, it's recommended to update the definition
+of the custom field, but it's not mandatory.
+** `Severity: BLOCKER`: This means that this is a severe issue that can cause the connector to not work properly. Is mandatory to fix the issue.
+
+For unexpected field definitions issues the log message is the following:
+
+....
+Item 'hw-stakeholder-city-4' doesn't have the expected definition.
+Property 'label' doesn't have the correct value.
+Expected value: 'City'
+Actual value: ' City'
+Severity: RECOMMENDATION
+....
+
+It shows:
+
+** The custom field that has a property with a wrong definition.
+** The name of the property.
+** The value expected by the connector.
+** The actual value found in Mirakl.
+
+For field not founds issues, the log message is the following:
+
+....
+Expected field 'hw-program' has not been found
+Offending field details: MiraklField(label=Hyperwallet Program, code=hw-program, description=Your Hyperwallet implementation may consist of one or more programs based on your payout needs. Select the appropriate program for this Seller/Payee., type=SINGLE_VALUE_LIST, permissions=INVISIBLE, required=null, regexpPattern=null, allowedValues=[])
+Severity: BLOCKER
+....
+
+It shows:
+
+* The custom field that wasn't found.
+* The details of the field including the expected value for each property.
+
+For unexpected fields the log message is the following:
+
+....
+An unexpected field named 'hw-program-old' has been found
+Offending field details: MiraklField(label=Hyperwallet Program, code=hw-program, description=Your Hyperwallet implementation may consist of one or more programs based on your payout needs. Select the appropriate program for this Seller/Payee., type=SINGLE_VALUE_LIST, permissions=INVISIBLE, required=null, regexpPattern=null, allowedValues=[])
+Severity: RECOMMENDATION
+....
+
+It shows:
+
+* The custom field that was unexpectedly found.
+* The details of the field including the value for each property that was retrieved from Mirakl.
+
+=== Mirakl documents check
+
+This check is only useful for uncommon deployments that need to check the custom documents in Mirakl. By default, by default it doesn't do anything.
+
+=== Hyperwallet API connectivity
+
+This check tests if Hyperwallet API is accessible and if the configuration (user/password) is correct. To do this check, the connector makes a request to the `/programs` Hyperwallet endpoint and tries to retrieve the token specified by the variable `PAYPAL_HYPERWALLET_PROGRAM_TOKEN_USERS_DEFAULT`.
+
+....
+22-07-2022 14:54:47.212 [main] INFO   start upCheckerService.java - start up Check: <hyperwalletHealthCheck>, Status <READY>, CheckDetails:
+Hyperwallet API is accessible
+status: UP
+location: https://server.hyperwallet.com/
+....
+
+In case of errors, it will display the error message returned by the Hyperwallet SDK.
+
+=== Mirakl API connectivity
+
+This check tests if Mirakl API is accessible and if the configuration (access token) is correct. To do this check the connector makes a request to V01 Health Check Endpoint of Mirakl that returns the version of Mirakl.
+
+The log shows the following:
+
+....
+22-07-2022 14:54:47.211 [main] INFO   start upCheckerService.java - start up Check: <miraklHealthCheck>, Status <READY>, CheckDetails:
+Mirakl API is accessible
+status: UP
+location: https://server.mirakl.net/api
+version: 3.213
+....
+
+In case of error it will display the error message returned by the Mirakl SDK.

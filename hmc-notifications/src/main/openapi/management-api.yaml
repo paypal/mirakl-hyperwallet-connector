@@ -1,0 +1,227 @@
+openapi: 3.0.3
+info:
+    title: HMC Management API
+    description: This API provides endpoints that allows to query and manipulate the internal state and configuration of the connector.
+    version: 1.0.0
+servers:
+    - url: 'https://localhost:8080'
+paths:
+    /management/failed-notifications/:
+        post:
+            operationId: add
+            summary: Adds a new failed notification
+            description: Adds a new failed notification info entry
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/FailedNotificationInfo'
+                required: true
+            responses:
+                '201':
+                    description: Created
+        get:
+            operationId: find
+            summary: Returns all failed notifications
+            description: Returns all failed notifications
+            parameters:
+                - $ref: '#/components/parameters/page'
+                - $ref: '#/components/parameters/size'
+                - $ref: '#/components/parameters/sort'
+                - schema:
+                      type: string
+                  in: query
+                  name: type
+                  description: Filter by this notification type
+                - schema:
+                      type: string
+                  in: query
+                  name: target
+                  description: Filter by this notification target
+            responses:
+                '200':
+                    description: List of failed notifications
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FailedNotificationInfoPagedCollection'
+        put:
+            operationId: replace
+            summary: Sets the internal failed notifications list
+            description: Replaces the list of failed notifications with the provided data.
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/FailedNotificationInfo'
+                    application/xml:
+                        schema:
+                            type: object
+                            properties: {}
+                description: List of failed notifications
+            responses:
+                '200':
+                    description: OK
+    '/management/failed-notifications/{notificationToken}':
+        get:
+            operationId: get
+            summary: Retrieves a failed notification
+            description: Returns the failed notification info corresponding to the specified token
+            parameters:
+                - name: notificationToken
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FailedNotificationInfoContainer'
+        put:
+            operationId: update
+            summary: Updates a failed notification
+            description: Updates the data of a failed notification
+            parameters:
+                - name: notificationToken
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/FailedNotificationInfo'
+                required: true
+            responses:
+                '200':
+                    description: OK
+        delete:
+            operationId: delete
+            summary: Removes a failed notification
+            description: Removes a failed notification
+            parameters:
+                - name: notificationToken
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: OK
+        parameters:
+            - schema:
+                  type: string
+              name: notificationToken
+              in: path
+              required: true
+              description: Token of the notification to retrieve
+components:
+    schemas:
+        PageMetadata:
+            type: object
+            properties:
+                size:
+                    type: integer
+                    format: int64
+                    description: Size of the page
+                totalElements:
+                    type: integer
+                    format: int64
+                    description: Number of elements in this page
+                totalPages:
+                    type: integer
+                    format: int64
+                    description: Number of pages available in the server
+                number:
+                    type: integer
+                    format: int64
+                    description: Number of this page
+            required:
+                - size
+                - totalElements
+                - totalPages
+                - number
+        PageMetadataMixin:
+            type: object
+            properties:
+                page:
+                    $ref: '#/components/schemas/PageMetadata'
+        Link:
+            type: object
+            properties:
+                href:
+                    type: string
+            required:
+                - href
+        LinksMixin:
+            type: object
+            properties:
+                _links:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/Link'
+        FailedNotificationInfoPagedCollection:
+            allOf:
+                - $ref: '#/components/schemas/LinksMixin'
+                - $ref: '#/components/schemas/PageMetadataMixin'
+            type: object
+            properties:
+                _embedded:
+                    type: object
+                    properties:
+                        failed-notifications:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/FailedNotificationInfo'
+        FailedNotificationInfo:
+            type: object
+            properties:
+                notificationToken:
+                    type: string
+                type:
+                    type: string
+                target:
+                    type: string
+                program:
+                    type: string
+                retryCounter:
+                    type: integer
+                    format: int32
+                creationDate:
+                    type: string
+                    format: date-time
+        FailedNotificationInfoContainer:
+            allOf:
+                - $ref: '#/components/schemas/LinksMixin'
+            type: object
+            properties:
+                content:
+                    $ref: '#/components/schemas/FailedNotificationInfo'
+    parameters:
+        page:
+            name: page
+            in: query
+            required: false
+            schema:
+                type: number
+            description: Number of page to be retrieved
+        size:
+            name: size
+            in: query
+            required: false
+            schema:
+                type: integer
+            description: Number of elements to be retrieved per page
+        sort:
+            name: sort
+            in: query
+            schema:
+                type: string
+                example: 'creationDate,desc'
+            description: Sorting order for the response. You can add this parameter more than once

@@ -1,0 +1,43 @@
+plugins {
+	id 'java'
+	id 'jvm-test-suite'
+}
+
+test {
+	maxParallelForks = Runtime.runtime.availableProcessors()
+
+	testLogging {
+		events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
+	}
+}
+
+testing {
+	suites {
+		configureEach {
+			useJUnitJupiter()
+		}
+
+		integrationTest(JvmTestSuite) {
+			dependencies {
+				implementation project()
+			}
+
+			targets {
+				all {
+					testTask.configure {
+						shouldRunAfter(test)
+					}
+				}
+			}
+		}
+	}
+}
+
+configurations {
+	integrationTestImplementation.extendsFrom testImplementation
+	integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
+tasks.named('check') {
+	dependsOn(testing.suites.integrationTest)
+}

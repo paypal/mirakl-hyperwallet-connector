@@ -1,0 +1,24 @@
+site:
+  title: Hyperwallet Mirakl Connector
+  start_page: component-hmc::index.adoc
+content: 
+  sources: 
+  - url: ..
+    edit_url: false
+    branches: HEAD
+    start_path: docs/content
+ui: 
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+  supplemental_files: ./supplemental-ui
+antora:
+  extensions:
+    - '@antora/lunr-extension'
+asciidoc:
+  extensions:
+    - asciidoctor-kroki
+  attributes:
+    source-language: asciidoc@
+    table-caption: false
+    kroki-fetch-diagram: true

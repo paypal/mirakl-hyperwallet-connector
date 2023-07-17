@@ -1,0 +1,27 @@
+= Job execution
+
+The connector provides can execute the bank account extract job automatically and the users can execute the job manually using a REST API.
+
+== Scheduled execution
+
+The connector automatically executes the jobs in a scheduled manner. The connector reads the schedule configuration from the following variable:
+
+* `PAYPAL_HYPERWALLET_BANK_ACCOUNT_EXTRACT_CRON_EXPRESSION`
+
+You can find more information in xref:bankaccounts/onboarding-bankaccounts.adoc#onboarding-bankaccounts-configuration[the configuration variables section].
+
+== Manual execution
+
+The connector provides the following REST API to execute the jobs manually:
+
+|===
+
+| HTTP method | Path | Job type       
+              
+| `POST`
+| `/job/bank-accounts-extract` 
+| Bank accounts extract job
+
+|===
+
+You can find more information in xref:reference:jobs/generic-job#generic-job-restapi[the generic job REST API reference].

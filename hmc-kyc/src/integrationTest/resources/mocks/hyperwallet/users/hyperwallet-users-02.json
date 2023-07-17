@@ -1,0 +1,49 @@
+{
+	"hasNextPage": false,
+	"hasPreviousPage": true,
+	"limit": 2,
+	"data": [
+		{
+			"token": "usr-d2c0d3f3-ba8b-4f34-b544-8206267db547",
+			"status": "DE_ACTIVATED",
+			"verificationStatus": "VERIFIED",
+			"taxVerificationStatus": "NOT_REQUIRED",
+			"createdOn": "2020-10-30T08:01:09",
+			"clientUserId": "2005",
+			"profileType": "INDIVIDUAL",
+			"firstName": "Maverick",
+			"lastName": "Weimann",
+			"dateOfBirth": "1997-08-17",
+			"email": "Helena_Harris66@example.org",
+			"addressLine1": "7798 Koss Springs",
+			"city": "South Darrickmouth",
+			"country": "KW",
+			"postalCode": "35853",
+			"language": "en",
+			"timeZone": "GMT",
+			"programToken": "prg-60512c71-2e04-4fcf-b7f0-66500819a259",
+			"links": [
+				{
+					"params": {
+						"rel": "self"
+					},
+					"href": "https://uat-api.paylution.com/rest/v4/users/usr-d2c0d3f3-ba8b-4f34-b544-8206267db547"
+				}
+			]
+		}
+	],
+	"links": [
+		{
+			"params": {
+				"rel": "self"
+			},
+			"href": "https://uat-api.paylution.com/rest/v4/users?after=usr-d2c0d3f3-ba8b-4f34-b544-8206267db547&createdBefore=2023-05-04T16%3A49%3A37Z&createdAfter=2022-02-03T18%3A49%3A37Z"
+		},
+		{
+			"params": {
+				"rel": "previous"
+			},
+			"href": "https://uat-api.paylution.com/rest/v4/users?before=usr-d2c0d3f3-ba8b-4f34-b544-8206267db547&createdBefore=2023-05-04T16%3A49%3A37Z&createdAfter=2022-02-03T18%3A49%3A37Z"
+		}
+	]
+}

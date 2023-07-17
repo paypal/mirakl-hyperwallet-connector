@@ -1,0 +1,6 @@
+* Configuration
+** xref:programs/programs.adoc[Configuring Programs]
+** xref:encryption/encryption.adoc[Setting up Encryption]
+** xref:customfields/customfields.adoc[Configuring Mirakl Custom Fields]
+** xref:togglefeatures/togglefeatures.adoc[Enabling Features]
+** xref:configvars/configvars.adoc[Configuration Variables]

@@ -1,0 +1,32 @@
+== Setting up the required configuration variables
+
+The connector provides sensible defaults for its configuration variables, so setting the required variables is enough for most of the scenarios.
+
+xref:configuration:configvars/configvars.adoc#configvarsvars-hyperwallet[Hyperwallet credentials and programs]::
+....
+PAYPAL_HYPERWALLET_API_SERVER
+PAYPAL_HYPERWALLET_API_USERNAME
+PAYPAL_HYPERWALLET_API_PASSWORD
+PAYPAL_HYPERWALLET_PROGRAMS_NAMES
+PAYPAL_HYPERWALLET_PROGRAMS_USERTOKENS
+PAYPAL_HYPERWALLET_PROGRAMS_PAYMENTTOKENS
+PAYPAL_HYPERWALLET_PROGRAMS_BANKACCOUNTTOKENS
+....
+
+xref:configuration:configvars/configvars.adoc#configvarsvars-mirakl[Mirakl credentials]::
+....
+PAYPAL_MIRAKL_ENVIRONMENT
+PAYPAL_MIRAKL_FRONT_API_KEY
+PAYPAL_MIRAKL_OPERATOR_API_KEY
+PAYPAL_MIRAKL_OPERATOR_TIME_ZONE
+....
+
+xref:configuration:configvars/configvars.adoc#configvarsvars-alerts[Email settings]::
+....
+PAYPAL_MAIL_SMTP_AUTH
+PAYPAL_MAIL_SMTP_STARTTLS_ENABLE
+PAYPAL_MAIL_USER_NAME
+PAYPAL_MAIL_USER_PASSWORD
+PAYPAL_SERVER_EMAIL_HOST
+PAYPAL_SERVER_EMAIL_PORT
+....

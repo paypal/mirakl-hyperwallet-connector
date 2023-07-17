@@ -1,0 +1,62 @@
+{
+	"token": "wbh-9d3f1d9a-37a7-40ad-b6c7-c0481e280e6c",
+	"type": "USERS.UPDATED.VERIFICATION_STATUS.UNDER_REVIEW",
+	"createdOn": "2022-02-03T00:30:40.000",
+	"object": {
+		"token": "usr-bbb82b9a-f312-491c-bafb-b587d03c4d56",
+		"status": "PRE_ACTIVATED",
+		"verificationStatus": "UNDER_REVIEW",
+		"businessStakeholderVerificationStatus": "UNDER_REVIEW",
+		"letterOfAuthorizationStatus": "NOT_REQUIRED",
+		"createdOn": "2021-11-30T16:03:14",
+		"clientUserId": "2092",
+		"profileType": "BUSINESS",
+		"businessType": "PRIVATE_COMPANY",
+		"businessName": "HISTORIC",
+		"businessRegistrationId": "BS574830",
+		"businessRegistrationStateProvince": "BS",
+		"businessRegistrationCountry": "IT",
+		"businessOperatingName": "L.B.W. SRL",
+		"countryOfBirth": "IT",
+		"phoneNumber": "+390309932872",
+		"email": "info@lbw-srl.it",
+		"employerId": "",
+		"addressLine1": "Via Brescia 60/A",
+		"addressLine2": "",
+		"city": "Bassano Bresciano",
+		"stateProvince": "BS",
+		"country": "IT",
+		"postalCode": "25020",
+		"language": "en",
+		"timeZone": "GMT",
+		"programToken": "prg-f4feeda8-6ad7-47b6-a654-2919c9020c34",
+		"documents": [
+			{
+				"category": "BUSINESS",
+				"type": "INCORPORATION",
+				"status": "NEW",
+				"createdOn": "2022-02-03T00:30:06"
+			},
+			{
+				"category": "BUSINESS",
+				"type": "BUSINESS_REGISTRATION",
+				"status": "INVALID",
+				"reasons": [
+					{
+						"name": "DOCUMENT_NOT_RELATED_TO_PROFILE",
+						"description": "Document does not match account information."
+					}
+				],
+				"createdOn": "2021-12-22T18:07:24"
+			}
+		]
+	},
+	"links": [
+		{
+			"params": {
+				"rel": "self"
+			},
+			"href": "https://api.paylution.com/rest/v4/webhook-notifications/wbh-9d3f1d9a-37a7-40ad-b6c7-c0481e280e6c"
+		}
+	]
+}

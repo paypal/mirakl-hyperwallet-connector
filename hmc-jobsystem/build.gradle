@@ -1,0 +1,9 @@
+plugins {
+	id 'hmc.lib-conventions'
+}
+
+dependencies {
+	implementation project(":hmc-infrastructure")
+
+	testImplementation project(":hmc-testsupport")
+}

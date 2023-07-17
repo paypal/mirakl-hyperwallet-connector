@@ -1,0 +1,695 @@
+.doc {
+  margin: 0 .5rem;
+  padding: 0 1rem 4rem;
+  color: var(--color-text);
+  max-width: 100%;
+}
+
+@media screen and (min-width: 1024px) {
+  .doc {
+    margin: 0 1rem;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .doc {
+    min-width: 41rem;
+    max-width: 50rem;
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+}
+
+.doc h1,
+.doc h2,
+.doc h3,
+.doc h4,
+.doc h5,
+.doc h6 {
+  color: var(--color-text);
+  font-weight: normal;
+  line-height: 1.3;
+  margin: 1rem 0 0;
+}
+
+.doc h3 {
+  font-weight: 400;
+}
+
+.doc h1 > a.anchor,
+.doc h2 > a.anchor,
+.doc h3 > a.anchor,
+.doc h4 > a.anchor,
+.doc h5 > a.anchor,
+.doc h6 > a.anchor {
+  position: absolute;
+  text-decoration: none;
+  width: 1.75ex;
+  margin-left: -1.5ex;
+  visibility: hidden;
+  font-size: 0.814em;
+  font-weight: normal;
+  padding-top: 0.05em;
+}
+
+.doc h1 > a.anchor::before,
+.doc h2 > a.anchor::before,
+.doc h3 > a.anchor::before,
+.doc h4 > a.anchor::before,
+.doc h5 > a.anchor::before,
+.doc h6 > a.anchor::before {
+  content: "\00a7";
+  color: var(--color-cloudflow-blue);
+}
+
+.doc h1:hover > a.anchor,
+.doc h2:hover > a.anchor,
+.doc h3:hover > a.anchor,
+.doc h4:hover > a.anchor,
+.doc h5:hover > a.anchor,
+.doc h6:hover > a.anchor {
+  visibility: visible;
+}
+
+.doc a,
+.doc a:visited {
+  color: var(--color-cloudflow-blue);
+}
+
+.doc a:hover {
+  color: var(--color-cloudflow-blue);
+}
+
+.doc i.fa {
+  font-style: normal;
+}
+
+/* what about td/th code? */
+.doc p code {
+  font-size: 0.814em;
+  background-color: var(--color-lb-off-white);
+  padding: 0.075rem 0.25rem 0.125rem;
+  border-radius: 0.2rem;
+  /* font-weight: 300; */
+}
+
+.doc pre {
+  /* color: #000; */
+  font-size: 0.814em;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.doc .paragraph,
+.doc .colist,
+.doc .dlist,
+.doc .olist,
+.doc .ulist,
+.doc .exampleblock,
+.doc .imageblock,
+.doc .listingblock,
+.doc .literalblock,
+.doc .sidebarblock,
+.doc .verseblock {
+  margin: 1rem 0 0;
+}
+
+.doc table.tableblock {
+  border-collapse: collapse;
+  font-size: 0.814em;
+  margin: 2rem 0;
+  /* enable table-layout: fixed if you want the table width to be enforced strictly */
+  /* alternative is to wrap table in div and set overflow-x: auto on the wrapper */
+  /* table-layout: fixed; */
+}
+
+.doc table.spread {
+  width: 100%;
+}
+
+.doc table.tableblock th,
+.doc table.tableblock td {
+  padding: 0.75rem;
+  border: 1px solid var(--color-lb-off-white-dkr);
+}
+.doc table.tableblock th {
+  border-left: 1px solid rgba(255,255,255,.3);
+  border: 1px solid rgba(255,255,255,.3);
+}
+
+.doc table.tableblock th {
+  border-bottom: 2.5px solid #ddd;
+  font-weight: 700;
+}
+
+thead tr {
+  background: var(--color-cloudflow-blue);
+  color: white;
+}
+tbody tr:nth-child(odd) {
+  background: var(--color-lb-off-white);
+}
+
+.doc .halign-left {
+  text-align: left;
+}
+
+.doc .halign-right {
+  text-align: right;
+}
+
+.doc .halign-center {
+  text-align: center;
+}
+
+.doc .valign-top {
+  vertical-align: top;
+}
+
+.doc .valign-bottom {
+  vertical-align: bottom;
+}
+
+.doc .valign-middle {
+  vertical-align: middle;
+}
+
+.doc .tableblock p {
+  font-size: inherit;
+}
+
+.doc .admonitionblock {
+  margin: 2.25rem 0 0;
+}
+
+.doc .admonitionblock p,
+.doc .admonitionblock td.content {
+  font-size: 0.875em;
+}
+
+.doc .admonitionblock td.content > :first-child {
+  margin: 0;
+}
+
+.doc .admonitionblock pre {
+  font-size: 0.875em;
+  background-color: transparent;
+  box-shadow: none;
+}
+.doc .admonitionblock pre code, .doc .admonitionblock pre:not(.highlight) {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.doc .admonitionblock > table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  position: relative;
+  width: 100%;
+}
+
+.doc .admonitionblock td.content {
+  padding: 1.5rem 1rem 0.75rem;
+  background-color: var(--color-lb-off-white);
+  width: 100%;
+}
+
+.doc .admonitionblock .icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 0.75rem;
+  padding: .75rem .6rem;
+  line-height: 1;
+  vertical-align: middle;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 0.45rem;
+  color: #fff;
+  transform: translate(-0.5rem, -50%);
+}
+
+.doc .admonitionblock.caution .icon {
+  background: #ffbf00 url(../img/caution-white.svg) no-repeat left;
+  background-position: 5px center;
+  background-size: 30px
+}
+
+.doc .admonitionblock.important .icon {
+  background: #B33A3A url(../img/important-white.svg) no-repeat left;
+  background-position: 5px center;
+  background-size: 30px
+}
+
+.doc .admonitionblock.note .icon {
+  background: var(--color-cloudflow-blue) url(../img/note-white.svg) no-repeat left;
+  background-position: 5px center;
+  background-size: 30px
+}
+
+.doc .admonitionblock.tip .icon {
+  background: var(--color-cloudflow-blue) url(../img/tip-white.svg) no-repeat left;
+  background-position: 5px center;
+  background-size: 35px
+}
+
+.doc .admonitionblock.warning .icon {
+  background: #B33A3A url(../img/caution-white.svg) no-repeat left;
+  background-position: 5px center;
+  background-size: 30px
+}
+
+.doc .admonitionblock .icon i {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+}
+
+.doc .admonitionblock .icon i::after {
+  content: attr(title);
+  hyphens: none;
+  padding-left: 1.375rem;
+}
+
+.doc .imageblock {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.doc .imageblock img {
+  display: block;
+}
+
+.doc .imageblock .title {
+  /* color: #4a4a4a; */
+  color: #191919;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+.doc .imageblock img,
+.doc .paragraph .image img {
+  height: auto;
+  max-width: 100%;
+}
+
+@media screen and (min-width: 500px) {
+
+  .doc .image-group .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .doc .image-group.top .content {
+    align-items: flex-start;
+  }
+
+  .doc .image-group.bottom .content {
+    align-items: flex-end;
+  }
+
+  .doc .image-group .content .imageblock {
+    padding: 0 .5rem;
+  }
+  .doc .image-group .content .imageblock:first-child {
+    padding-left: 0;
+  }
+  .doc .image-group .content .imageblock:last-child {
+    padding-right: 0;
+  }
+
+  .doc .image-group .content .imageblock.width-5 {width: 5%;}
+  .doc .image-group .content .imageblock.width-10 {width: 10%;}
+  .doc .image-group .content .imageblock.width-15 {width: 15%;}
+  .doc .image-group .content .imageblock.width-20 {width: 20%;}
+  .doc .image-group .content .imageblock.width-25 {width: 25%;}
+  .doc .image-group .content .imageblock.width-30 {width: 30%;}
+  .doc .image-group .content .imageblock.width-35 {width: 35%;}
+  .doc .image-group .content .imageblock.width-40 {width: 40%;}
+  .doc .image-group .content .imageblock.width-45 {width: 45%;}
+  .doc .image-group .content .imageblock.width-50 {width: 50%;}
+  .doc .image-group .content .imageblock.width-55 {width: 55%;}
+  .doc .image-group .content .imageblock.width-60 {width: 60%;}
+  .doc .image-group .content .imageblock.width-65 {width: 65%;}
+  .doc .image-group .content .imageblock.width-70 {width: 70%;}
+  .doc .image-group .content .imageblock.width-75 {width: 75%;}
+  .doc .image-group .content .imageblock.width-80 {width: 80%;}
+  .doc .image-group .content .imageblock.width-85 {width: 85%;}
+  .doc .image-group .content .imageblock.width-90 {width: 90%;}
+  .doc .image-group .content .imageblock.width-95 {width: 95%;}
+  .doc .image-group .content .imageblock.width-100 {width: 100%;}
+
+}
+
+
+
+
+.doc > h1 {
+  font-size: 2rem;
+  margin: 2rem 0 1.5rem;
+}
+
+#preamble + .sect1,
+.doc .sect1 + .sect1 {
+  margin-top: 2.5rem;
+}
+
+.doc h2:not(.discrete) {
+  border-bottom: 1px solid var(--color-cloudflow-dark-blue);
+  margin-left: -1rem;
+  margin-right: -1rem;
+  padding: 0.4rem 1rem 0.1rem;
+  /* custom overide */
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+}
+
+.doc p {
+  font-size: 0.875em;
+  margin: 0;
+}
+
+.doc p,
+.doc .tableblock,
+.doc .content {
+  hyphens: auto;
+}
+
+/*
+.doc .ulist .paragraph,
+.doc .olist .paragraph {
+  margin: 0;
+  padding: 0;
+}
+*/
+
+#preamble .abstract blockquote {
+  background-color: var(--color-lb-off-white);
+  border-left: 5px solid var(--color-cloudflow-blue);
+  color: #4a4a4a;
+  font-size: 0.875em;
+  margin: 0;
+  padding: 0.75em 1em;
+}
+
+.doc table.tableblock .paragraph {
+  margin: 0;
+  padding: 0;
+}
+
+.doc table.tableblock .admonitionblock,
+.doc .ulist .admonitionblock,
+.doc .olist .admonitionblock {
+  padding: 0;
+}
+
+.doc ul,
+.doc ol {
+  margin: 0;
+  padding: 0 0 0 2rem;
+}
+
+.doc ul.checklist {
+  padding-left: 0.5rem;
+  list-style: none;
+}
+
+.doc ul.checklist p > i.fa-check-square-o:first-child,
+.doc ul.checklist p > i.fa-square-o:first-child {
+  display: inline-flex;
+  justify-content: center;
+  width: 1.25rem;
+}
+
+.doc ul.checklist i.fa-check-square-o::before {
+  content: "\2713";
+}
+
+.doc ul.checklist i.fa-square-o::before {
+  content: "\274f";
+}
+
+.doc .dlist .dlist,
+.doc .dlist .olist,
+.doc .dlist .ulist,
+.doc .olist .dlist,
+.doc .olist .olist,
+.doc .olist .ulist,
+.doc .ulist .dlist,
+.doc .ulist .olist,
+.doc .ulist .ulist {
+  margin-top: 0.5rem;
+}
+
+.doc .olist li,
+.doc .ulist li {
+  margin-bottom: 0.5rem;
+}
+
+.doc .ulist .listingblock,
+.doc .olist .listingblock,
+.doc .admonitionblock .listingblock {
+  padding: 0;
+}
+
+.doc .admonitionblock .title,
+.doc .exampleblock .title,
+.doc .literalblock .title,
+.doc .listingblock .title,
+.doc .openblock .title {
+  /* color: #4a4a4a; */
+  color: #191919;
+  font-size: 0.938em;
+  font-style: italic;
+  letter-spacing: -0.005em;
+  padding-bottom: 0.075em;
+}
+
+.doc .admonitionblock .title + .paragraph {
+  margin-top: 0;
+}
+
+/* Other possible colors #248232 (dark green) #2ba84a (brighter green), #f7ef99 (soft yellow), #f78e69 (orangey-grayish) */
+.doc .exampleblock > .content {
+  background-color: #fff;
+  box-shadow: inset 0 0 1.75px #248232;
+  padding: 0.75rem;
+}
+
+.doc .exampleblock > .content > :first-child {
+  margin-top: 0;
+}
+
+.doc .sidebarblock {
+  border: 1px solid var(--color-lb-off-white-dkr);
+  border-left: 2px solid var(--color-cloudflow-blue);
+  padding: 2rem 1.5rem;
+  box-shadow: 0px 5px 5px -4px rgba(0,0,0,0.3);
+}
+
+.doc .sidebarblock > .content > .title {
+  color: #191919;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.3;
+  text-align: left;
+}
+
+.doc .sidebarblock > .content > :not(.title):first-child {
+  margin-top: 0;
+}
+
+/* NEEDS REVIEW prevent pre in table from causing article to exceed bounds */
+.doc .tableblock pre,
+.doc .listingblock.wrap pre {
+  white-space: pre-wrap;
+}
+
+.doc pre:not(.highlight),
+.doc pre.highlight code {
+  background-color: var(--color-lb-off-white);
+  box-shadow: inset 0 0 1.75px #ddd;
+  display: block;
+  overflow-x: auto;
+  padding: 0.75rem;
+}
+
+/* NOTE assume pre.highlight contains code[data-lang] */
+.doc pre.highlight {
+  position: relative;
+}
+
+.doc .listingblock code[data-lang]::before {
+  content: attr(data-lang);
+  display: none;
+  color: #8e8e8e;
+  font-size: 0.75em;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  text-transform: uppercase;
+  position: absolute;
+  top: 0.25rem;
+  right: 0.5rem;
+}
+
+.doc .listingblock:hover code[data-lang]::before {
+  display: block;
+}
+
+.doc .dlist dt {
+  color: #4a4a4a;
+  font-style: italic;
+}
+
+.doc .dlist dd {
+  margin: 0 0 0.3rem 1.5rem;
+}
+
+.doc .conum[data-value] {
+  /* border: 1px solid #989898; */
+  border: 1px solid #404040;
+  border-radius: 100%;
+  display: inline-block;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.75rem;
+  font-style: normal;
+  height: 1.25em;
+  line-height: 1.2;
+  text-align: center;
+  width: 1.25em;
+  letter-spacing: -0.25ex;
+  text-indent: -0.25ex;
+}
+
+.doc .conum[data-value]::after {
+  content: attr(data-value);
+}
+
+.doc .conum[data-value] + b {
+  display: none;
+}
+
+.doc .colist {
+  font-size: 0.875em;
+}
+
+.doc .colist > table tr > td:first-of-type {
+  padding: 0.5em 0.75em;
+  line-height: 1;
+  vertical-align: top;
+}
+
+.doc div.source-toolbox {
+  visibility: hidden;
+  height: 0;
+}
+
+b.button {
+  white-space: nowrap;
+}
+
+b.button::before {
+  content: "[";
+  padding-right: 0.25em;
+}
+
+b.button::after {
+  content: "]";
+  padding-left: 0.25em;
+}
+
+kbd {
+  display: inline-block;
+  font-size: 0.689rem;
+  background-color: var(--color-lb-off-white);
+  border: 1px solid #c1c1c1;
+  border-radius: 0.25em;
+  box-shadow: 0 1px 0 #c1c1c1, 0 0 0 0.1em #fff inset;
+  padding: 0.25em 0.5em;
+  vertical-align: text-bottom;
+  white-space: nowrap;
+}
+
+kbd,
+.keyseq {
+  line-height: 1;
+}
+
+.keyseq {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.875em;
+}
+
+.keyseq kbd {
+  margin: 0 0.125em;
+}
+
+.keyseq kbd:first-child {
+  margin-left: 0;
+}
+
+.keyseq kbd:last-child {
+  margin-right: 0;
+}
+
+.menuseq i.caret::before {
+  content: ">";
+  font-weight: 400;
+}
+.doc .tabset {
+  margin-bottom: 4rem;
+}
+.doc dl.tabbed {
+  position: relative;
+  margin-bottom: 40px;
+}
+.doc dl.tabbed dt {
+  float: left;
+  display: inline-block;
+  position: relative;
+  left: 1px;
+  margin-left: -1px;
+  padding: .25rem .75rem;
+  border: 1px solid var(--color-lb-off-white-dkr);
+  border-bottom: none;
+  font-style: normal;
+  z-index: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 2;
+}
+.doc dl.tabbed dt.current {
+  background: var(--color-lb-off-white);
+  border-bottom: 1px solid var(--color-lb-off-white);
+  z-index: 1;
+}
+.doc dl.tabbed dt.first{
+  border-radius: 3px 0 0 0;
+}
+.doc dl.tabbed dt.last{
+  border-radius: 0 3px 0 0;
+}
+.doc dl.tabbed dd {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 37px;
+  border-radius: 0 3px 3px 3px;
+  border: 1px solid var(--color-lb-off-white-dkr);
+  margin: 0 0 2rem 0;
+  padding: 1rem;
+  background: var(--color-lb-off-white);
+}
+
+.doc dl.tabbed dd .listingblock:first-child {
+  margin-top: 0;
+}
+.doc dl.tabbed dd pre code {
+  background-color: transparent;
+  box-shadow: none;
+  clear: both;
+}

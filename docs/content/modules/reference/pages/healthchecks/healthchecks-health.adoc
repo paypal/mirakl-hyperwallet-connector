@@ -1,0 +1,73 @@
+== Health check
+
+The connector exposes a health check endpoint under route `/actuator/health` that returns an object like this whenever the server is up and running:
+
+....
+{
+  "status": "DOWN",
+  "components": {
+    "db": {
+      "status": "UP",
+      "components": {
+        "applicationDataSource": {
+          "status": "UP",
+          "details": {
+            "database": "H2",
+            "validationQuery": "isValid()"
+          }
+        },
+        "notificationsDataSource": {
+          "status": "UP",
+          "details": {
+            "database": "H2",
+            "validationQuery": "isValid()"
+          }
+        },
+        "sellersDataSource": {
+          "status": "UP",
+          "details": {
+            "database": "H2",
+            "validationQuery": "isValid()"
+          }
+        }
+      }
+    },
+    "diskSpace": {
+      "status": "UP",
+      "details": {
+        "total": 494384795648,
+        "free": 182405443584,
+        "threshold": 10485760,
+        "exists": true
+      }
+    },
+    "hyperwalletAPIHealthCheck": {
+      "status": "UP",
+      "details": {
+        "location": "https://server.hyperwallet.com/"
+      }
+    },
+    "mail": {
+      "status": "DOWN",
+      "details": {
+        "location": "localhost:1025",
+        "error": "com.sun.mail.util.MailConnectException: Couldn't connect to host, port: localhost, 1025; timeout 5000"
+      }
+    },
+    "miraklAPIHealthCheck": {
+      "status": "UP",
+      "details": {
+        "version": "3.213",
+        "location": "https://server.mirakl.net/api"
+      }
+    },
+    "ping": {
+      "status": "UP"
+    }
+  }
+}
+....
+
+It shows each individual health check and the aggregated health check status. As part of the checks, it shows `miraklAPIHealthCheck` and `hyperwalletAPIHealthCheck` checks, which are the same checks made during the startup check.
+
+The example shown before has a `DOWN` status because one of the dependencies, the mail system, that isn't accessible. If you are only interested in knowing if the connector is up, you can look at `ping` check.

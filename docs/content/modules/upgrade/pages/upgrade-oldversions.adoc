@@ -1,0 +1,60 @@
+= Upgrade from 4.x versions
+
+If you are running a 4.x version, take note of the following changes:
+
+- Installation procedures have slightly changed. Please review xref:installation:installation.adoc[the new installation instructions].
+- The environment variables for program configuration have changed. Please review xref:configuration:programs/programs.adoc[the program configuration instructions].
+
+== Major configuration changes
+
+=== Prerequisites changes
+
+The connector now requires Java 17 or higher. If you are executing the connector using Docker you shouldn't be affected by this change (although you will need to generate a new image).
+
+=== Program configuration
+
+The way the connector is configured has changed and now it uses a new set of configuration variables:
+
+```
+PAYPAL_HYPERWALLET_PROGRAMS_NAMES
+PAYPAL_HYPERWALLET_PROGRAMS_IGNORED
+PAYPAL_HYPERWALLET_PROGRAMS_USERTOKENS
+PAYPAL_HYPERWALLET_PROGRAMS_PAYMENTTOKENS
+PAYPAL_HYPERWALLET_PROGRAMS_BANKACCOUNTTOKENS
+```
+
+After upgrading and before starting the connector you need to check your environment variables since the olds one are not valid. For more details, please review xref:configuration:programs/programs.adoc[the program configuration instructions].
+
+=== New user mapping variable
+
+A new `PAYPAL_HYPERWALLET_NEW_USER_MAPPING_ENABLED` variable has been added to control how Mirakl shop's business legal name is mapped into Hyperwallet users. By default, in previous versions its value was set to `false` and couldn't be changed. In 5.x versions its default value is `false`, but it can be changed using environment variables. *Ensure that this variable is not defined in your environment so it takes its default `false` value*.
+
+WARNING: Changing the value of this variable can impact on the KYC of already verified sellers. More details about this variable in: xref:configuration:togglefeatures/togglefeatures.adoc#new-user-mapping[Enabling and Disabling Optional Features]
+
+=== Spring profiles removal
+
+The connector no longer uses Spring profiles (environment variable: `PAYPAL_SPRING_PROFILE_ACTIVE`) to enable or disable features, like financial reports or encryption. Now the connector uses feature toggle environment variables. For more details, please review xref:configuration:togglefeatures/togglefeatures.adoc[the feature toggles configuration instructions].
+
+CAUTION: Since Spring profiles has been removed, to enable encryption now you need to set the environment variable `PAYPAL_HYPERWALLET_ENCRYPTION_ENABLED` to true.
+
+Also, Spring profiles like `dev`, `qa`, `prod` no longer exists, so selecting this profiles using the old environment variable or JVM parameters will have no effect.
+
+== Major installation changes
+
+=== Change of the name of the main module
+
+The name of the main module of the project has changed from `web` to `hmc-app`. This affects Gradle tasks so, for example, instead of doing:
+
+```
+./gradlew web:bootRun
+```
+
+You should do:
+
+```
+./gradlew hmc-app:bootRun
+```
+
+=== Execution without Gradle
+
+Although you can still follow the same procedure as in 4.x for installing and executing the connector, now the recommended way is to first build the binaries (jar or docker images) and then execute them using Java or Docker. This is a better approach for production environments, where is preferable to install the binaries instead of building from source.

@@ -1,0 +1,107 @@
+= Payload Encryption
+
+The connector supports the https://docs.hyperwallet.com/content/api/v4/overview/payload-encryption[Hyperwallet payload encryption feature], meaning that all the traffic between between the connector and Hyperwallet is encrypted and signed. This payload encryption is based on https://jose.readthedocs.io/en/latest/[JOSE] and https://jwt.io)[JWT] standards.
+
+To make use of this feature in the connector you need to enable it using the variable `PAYPAL_HYPERWALLET_ENCRYPTION_ENABLED` and then configuring the encryption keys.
+
+== Payload encryption keys configuration 
+
+You will need to generate public and private keys for both encryption and signing. Also, the public keys needs to be published in a public URL with a valid TLS certificate so that they can be downloaded by Hyperwallet.
+
+CAUTION: Be sure to publish only the PUBLIC keys JSON file
+
+=== Generating the keys
+
+You will need to generate a JWK key set. There are many tools for doing this, but you can generate the keys easily using this website: https://mkjwk.org/
+
+Supported sign algorithms (JWS):
+
+- RS256, RS384, RS512
+- PS256, PS384, PS512
+- ES256, ES384, ES512
+
+Supported JWE encryption algorithms are:
+
+- RSA-OAEP-256
+- ECDH-ES, ECDH-ES+A128KW, ECDH-ES+A192KW, ECDH-ES+A256KW
+
+Once you have generated both keys, you need to create 2 files: one with only the public keys and another one containing both public and private keys, for example:
+
+*Private keys file:*
+
+....
+{
+  "keys": [
+    {
+      "p": "9mH5gBqS-HuYT7K8XTwtvDgJjKJSQ7r3sfAdke0R4xrA1heQQBOCol0TSbnpcxvDNSF89NWSN2regHr3GdjVYrG1SX5jIqwnpKQX79mRURJb0dOuD5QOfUW8J7dhOdBnvE49S-JNTeR4jty2YS1Lj3x-eQyKJWuTkVJiblPmG1s",
+      "kty": "RSA",
+      "q": "mHWzxs3nS6z7eUtwxJhhzkhf_bsgEWGhtqHkXRRFutCAGOxsUiNOIn8yQGZfSbX7Jc5nGRT8h6r8Gar6Tiyn_uLtWIsBwzypVtFGKAcHboxa4_8TbRPB66Fh_H65LLMiCLxkOADIDFW1-wv5muEYU1dqSdUkv6Gqp--g82DBqjM",
+      "d": "cMNoZadBA3M6h-VGD14b07flMuYSey7KO9lOk3yomyxbHt5i7jBJ1W0V1FHYnVIjR7ufubHcsCYjqeVtgCmJtu4a5nCLP_v3iIEm3uV5f627Rknyxe7hNPd6v0BBnCHMjRkM38OhSaB1IYOrl5ElA2a4dLKRRKlRz1g5OaxMw_36jvv555p03eRwMUg5W-lEP7iTl4aaEeh60TV2KAKCM1lD4-2UMb-G7H2DHWA72xMB1oZLiDbPIQCh8uvI7KTl3FdpZ5mYMuRtCpfkhIbxIVW5wpfFDasPOxklhnUr7f6OH9MKJFJ7UpkV79Uv7W8iTEtTiVQ6gCUeRrRNRM2sRQ",
+      "e": "AQAB",
+      "use": "sig",
+      "qi": "j5bvMljGOUbBppAsoPhb9QTKUPsCQcAOoT3gYAGTD-mCUHNHO3BR3NZtOnoHVAShFWQRuB8jIiMIOZs52tzwCFnOBLn7Org2LN3GC5ntASDT-Vvizv_iYKJQcvLGuqNIpZMxil5t4wSM8ZSqw8F8xipsIgNtjhkO-xhyPEQBj4U",
+      "dp": "XiAN3kfIsA8foArrdT8BRe-ujkCQ5vktmZfe5BnKhJV66A92d1Q8yuR98uOIcQZBLDIP98UDqBI20KSpdAFne93iISKcoulb98UMs__NSUiXNXEGBUONyYPznsSq6xhYGRNWzX-2ArTu7b0aG8PfIwDvnDUTLbqMVK9BlV6OARM",
+      "alg": "RS256",
+      "dq": "Bvxlt3dZ4NrVTxKI4UlGOgiQ9XRsnL9HhLHYX_d81nmVVQ8IS584hlYjvFW0ihEfp_TUPo76n1DTam2uOITNUd2eGI-ODh8qd0LxnwXrbkJaK9ZVUos0OJLVhZdc7tJqfdH8GaDXidEnnJBI6LLlxXPc9_MfUvSaeEV_r4dAeIc",
+      "n": "krtz8O66BGcsKSui7N-5f9amdWvcZ-Fofgh6_WDgGAQ4ZVcaw61klX4boKngBjxGqWhF2H5fdPJFKHXWuY0gPkEfBg-iJvDv2qJQYZKwdBbjVnDbF63v97-1yIUtHNepGOOPoan-GvqMxpUl3mfjHJHRPpx4vs4AgGJJJwoPr_RLXzhVkfQMuen_HTbuHh0GMumYb1wWcTTy4SEakWuX_dga8WQDhg--kBTNgSAOJa6KuVy6R6CMaG87FzoGXa_wLrRMwDiEr7FfFAZSiTv1Yhbb2E3PAXd-gtBV7iIEPz8xrh-BNc-Jflckwkgel7HZ6NLMFb7_GS-Y5EHPRJzhIQ"
+    },
+    {
+      "p": "4UTkd95iNPs1eBqBm1zNlRAB0MiWZxpq7RGJq9n1bCURJB3e5BH_Ye-bdEoC_wL2ovgIvTZwL1EubyhCTl6FFeK_Kgdx3KhqydM_vi8Gry1H3z1GAKtIo_718wh3BWedqjsKLxKvcR0q4_syLJvdWshQ_2LkYItGu9Gks3ZqY8M",
+      "kty": "RSA",
+      "q": "trseuEzp8oMcxkpC0SHOuA54xh00647iOA6ijJ5piUmgJai1H1WFVxjqbhwu5p7m77lrXQIZfjYXCEUrLPb685v7D3C7bYeK2yfF8OKrPVdqR3lhRZx4BgtP6xSem1LeqjaxDDOR5DQ6dnnpGnY-q3B5dN8jBU67487_70_Vvbs",
+      "d": "UnW76DYdu9JtyCMXgmsNm7haei8rYrQFpb991pU-Jko5zs4ZAgCzyTDRg28Evl16zaacSeqS-MvEJS4f7K_xKUZYF7GZqr7h0CkXqawgckzsddPTuPMYLgd4iR0DTmVmKxTf90AGLQBH739flGJBNHwdgemyLeEO0tdJu73KqW1WO8HKMQFVgFd4jtMrGPnM5I0272GotGtLeew2FXmXUbGJrqe93xH8l8EuiCbdr2KUMsTnWrt7f0l8Hb2k6RAnPRl3pGb0id8awnbhnllK7faRB-J0ByED87QeQp_DAR4Vo463lKjFcl3t0h6Z7I9yFXs8ZdsRv31-JSPR4HN1lQ",
+      "e": "AQAB",
+      "use": "enc",
+      "qi": "N9Z0zqxWlx638Nnwp1bY2j6fFO6UTgA3A6lw2mstNxRxq1CBPdvrXgMtlZQDTHCxC6fuigajUu4aMLYMz_eUWgSOI9LgGgfc-CqO-OInRt-ctYdb5_AqyWv5Fy-6sorYJGehadkJ3WgdAaRu9VO3GJm4zLf2x_e_UIXIS1Z8ITY",
+      "dp": "sNoAL6cUHJoXeSn-FHXAJEWD12CSy3Du_x0koxkjVvqmwV7-DLmgcEfHGH2-amvuKzVkzv89BbjLJpNJsvL7spnoEFv15REHfVlukqWirsZyxWz6Vy4hgjZ46or7ve-B1RIyxY_60mfes0sTMfhPyKS5CjaeKrlNF8jXb9kIXzc",
+      "alg": "RSA-OAEP-256",
+      "dq": "URkO80C_e7AQ7zg6G1LjyfAyTcrcl8bcQ4DLR5luwU150_ziFbwA57zZHnFHp3bSi4ZBThAGfGtJIZSBKv2aNs_9RscDiALl74nhYZ1X3muTcZE_SIO_CP-wQmbuVYUb6XNIdF_W2e8MG1TTzbi466GJZgM6KbrdzKcsE2vdMs0",
+      "n": "oMuiyFuh1oyq-cSw-EXk1BKKkpwGBDcejNERhv09mF2o0taKCUKUIn6RzoI8qDsd66xhSdaV4fbSMN9uM5DteiKLwdPgnt1PDLRWw3dOXAI2-FT06G58VVaaIIGF1Xy7mGbC65BBDprzycrH0p3aCt81bvs5jvkYwxpWHEkz19Giba6rYVoNMnKy84nTWR5t3_eG_YC84Y-A63268ITlwErdeoKmiVBkMW6lpgNi5Vi6r2PdKP90KbgZEdbE3ci8cXyho33ke9Zjmbo5CaiMqvmjBNSYVcqDfQIo5y3Y23XagivtHI_42Tmp41H7uXsU89v-xCtFXJkaNIjfOZzWcQ"
+    }
+  ]
+}
+....
+
+*Public keys file:*
+
+....
+{
+  "keys": [
+    {
+      "kty": "RSA",
+      "e": "AQAB",
+      "use": "sig",
+      "alg": "RS256",
+      "n": "krtz8O66BGcsKSui7N-5f9amdWvcZ-Fofgh6_WDgGAQ4ZVcaw61klX4boKngBjxGqWhF2H5fdPJFKHXWuY0gPkEfBg-iJvDv2qJQYZKwdBbjVnDbF63v97-1yIUtHNepGOOPoan-GvqMxpUl3mfjHJHRPpx4vs4AgGJJJwoPr_RLXzhVkfQMuen_HTbuHh0GMumYb1wWcTTy4SEakWuX_dga8WQDhg--kBTNgSAOJa6KuVy6R6CMaG87FzoGXa_wLrRMwDiEr7FfFAZSiTv1Yhbb2E3PAXd-gtBV7iIEPz8xrh-BNc-Jflckwkgel7HZ6NLMFb7_GS-Y5EHPRJzhIQ"
+    },
+    {
+      "kty": "RSA",
+      "e": "AQAB",
+      "use": "enc",
+      "alg": "RSA-OAEP-256",
+      "n": "oMuiyFuh1oyq-cSw-EXk1BKKkpwGBDcejNERhv09mF2o0taKCUKUIn6RzoI8qDsd66xhSdaV4fbSMN9uM5DteiKLwdPgnt1PDLRWw3dOXAI2-FT06G58VVaaIIGF1Xy7mGbC65BBDprzycrH0p3aCt81bvs5jvkYwxpWHEkz19Giba6rYVoNMnKy84nTWR5t3_eG_YC84Y-A63268ITlwErdeoKmiVBkMW6lpgNi5Vi6r2PdKP90KbgZEdbE3ci8cXyho33ke9Zjmbo5CaiMqvmjBNSYVcqDfQIo5y3Y23XagivtHI_42Tmp41H7uXsU89v-xCtFXJkaNIjfOZzWcQ"
+    }
+  ]
+}
+....
+
+=== Setting configuration variables
+
+You need to setup the configuration variables related to the encryption feature as described xref:configvars/configvars.adoc#configurationvars-encryption[here]:
+
+Following this previous example, the environment variables values for the UAT environment could be:
+
+|===
+|`PAYPAL_HYPERWALLET_KEY_SET_LOCATION`          | `https://uat-api.paylution.com/jwkset`
+|`PAYPAL_HYPERWALLET_ENCRYPTION_ALGORITHM`      | `RSA-OAEP-256`
+|`PAYPAL_HYPERWALLET_SIGN_ALGORITHM`            | `RS256`
+|`PAYPAL_HYPERWALLET_ENCRYPTION_METHOD`         | `A256CBC-HS512`
+|`PAYPAL_HYPERWALLET_PRIVATE_JWK_JSON_LOCATION` | `/your/path/to/private/keys/jwk_set.key`
+|`PAYPAL_HYPERWALLET_PUBLIC_JWK_JSON_LOCATION`  | `/your/path/to/public/keys/jwk_set.key` 
+|===
+
+By default, and under the encrypted profile, the connector allows you to share your public keys throughout this endpoint: `/jwkset`
+
+Take into account that this file can also be published in a different server than the connector (
+like an S3 bucket) and you'll simply need to modify the `hyperwallet.api.hmcPublicKeyLocation` with the proper URL where
+this file is published.

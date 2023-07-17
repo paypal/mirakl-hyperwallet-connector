@@ -1,0 +1,20 @@
+= Data mapping
+
+The following is the mapping between the Hyperwallet payment status notification and the Mirakl invoice confirmation request.
+
+|===
+| Hyperwallet field | Mirakl field
+
+| `amount`
+| `amount`
+
+| `currency`
+| `currency_iso_code`
+
+| `clientPaymentId`
+| `invoice_id`
+
+| `createdOn`
+| `transaction_date`
+
+|===

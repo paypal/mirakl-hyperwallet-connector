@@ -1,0 +1,60 @@
+= API calls
+
+The following API calls are made during the invoice extraction job:
+
+== Invoice extraction
+|===
+| Call | Target System | Endpoint | Parameters
+
+| Retrieve all pending invoices since the last specified date
+| Mirakl
+| https://help.mirakl.net/help/api-doc/operator/mmp.html#IV01[IV01 - List accounting documents]
+a| * `start_date`: date calculated by the job as the starting date since the last job 
+execution or the date manually specified in the job execution.
+* `status`: `PENDING`
+* `states`: `COMPLETE`
+* `type`: `AUTO_INVOICE`
+
+| Create a payment in Hyperwallet
+| Hyperwallet
+| https://docs.hyperwallet.com/content/api/v4/resources/payments/create[`POST /payments`]
+a| A body is generated from the Mirakl Invoice according to the data mapping rules.
+The following mappings are specially relevant:
+
+* `clientPaymentId`: field `invoice_id` from Mirakl invoice.
+* `amount`: field `amount_transferred` from Mirakl invoice.
+
+| Create an operator payment in Hyperwallet
+| Hyperwallet
+| `POST /payments`
+a| A body is generated from the Mirakl Invoice according to the data mapping rules.
+The following mappings are specially relevant:
+
+* `clientPaymentId`: field `invoice_id` from Mirakl invoice plus the suffix `-operatorFee`.
+* `amount`: field `amount_transferred_to_operator` from Mirakl invoice.
+|===
+
+== Credit notes extraction
+
+|===
+| Call | Target System | Endpoint | Parameters
+
+| Retrieve all pending credit notes since the last specified date
+| Mirakl
+| https://help.mirakl.net/help/api-doc/operator/mmp.html#IV01[IV01 - List accounting documents]
+a|
+* `start_date`: date calculated by the job as the starting date since the last job 
+execution or the date manually specified in the job execution.
+* `status`: `PENDING`
+* `states`: `COMPLETE`
+* `type`: `MANUAL_CREDIT`
+
+| Create a payment in Hyperwallet
+| Hyperwallet
+| https://docs.hyperwallet.com/content/api/v4/resources/payments/create[`POST /payments`]
+a| A body is generated from the Mirakl Invoice according to the data mapping rules.
+The following mappings are specially relevant:
+
+* `clientPaymentId`: field `invoice_id` from Mirakl invoice.
+* `amount`: field `amount_transferred` from Mirakl invoice.
+|===

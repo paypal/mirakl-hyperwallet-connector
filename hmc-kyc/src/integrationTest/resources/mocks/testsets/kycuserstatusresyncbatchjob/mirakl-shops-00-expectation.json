@@ -1,0 +1,54 @@
+{
+	"httpRequest": {
+		"body": {
+			"shops": [
+				{
+					"kyc": {
+						"status": "APPROVED",
+						"reason": ""
+					},
+					"shop_id": 2001
+				},
+				{
+					"kyc": {
+						"status": "REFUSED",
+						"reason": "There is an issue with verifying your details in Hyperwallet. Please ensure that you: <br /><ul><li>Filled all your account details correctly.</li><li>Submitted your Proof of Identity and Proof of Address documents.</li></ul><br />For more information on document requirements please refer to the <a href=\"https://docs.hyperwallet.com/content/payee-requirements/v1/payee-verification/required-data\">Hyperwallet guidelines</a>."
+					},
+					"shop_id": 2002,
+					"shop_additional_fields": [
+						{
+							"code": "hw-kyc-req-proof-identity-business",
+							"value": "true"
+						}
+					]
+				}
+			]
+		}
+	},
+	"httpResponse": {
+		"body": {
+			"shops": [
+				{
+					"kyc": {
+						"status": "APPROVED",
+						"reason": ""
+					},
+					"shop_id": 2001
+				},
+				{
+					"kyc": {
+						"status": "REFUSED",
+						"reason": "There is an issue with verifying your details in Hyperwallet. Please ensure that you: <br /><ul><li>Filled all your account details correctly.</li><li>Submitted your Proof of Identity and Proof of Address documents.</li></ul><br />For more information on document requirements please refer to the <a href=\"https://docs.hyperwallet.com/content/payee-requirements/v1/payee-verification/required-data\">Hyperwallet guidelines</a>."
+					},
+					"shop_id": 2002,
+					"shop_additional_fields": [
+						{
+							"code": "hw-kyc-req-proof-identity-business",
+							"value": "true"
+						}
+					]
+				}
+			]
+		}
+	}
+}

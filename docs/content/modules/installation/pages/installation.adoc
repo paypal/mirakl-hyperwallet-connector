@@ -1,0 +1,9 @@
+= Installation and Setup (TEST)
+
+include::installation-requisites.adoc[]
+
+include::installation-quickstart.adoc[]
+
+include::installation-docker.adoc[]
+
+include::installation-binary.adoc[]

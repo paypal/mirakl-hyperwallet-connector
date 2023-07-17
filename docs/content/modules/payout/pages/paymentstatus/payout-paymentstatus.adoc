@@ -1,0 +1,7 @@
+include::payout-paymentstatus-overview.adoc[leveloffset=1]
+
+include::payout-paymentstatus-events.adoc[leveloffset=1]
+
+include::payout-paymentstatus-apicalls.adoc[leveloffset=1]
+
+include::payout-paymentstatus-datamapping.adoc[leveloffset=1]

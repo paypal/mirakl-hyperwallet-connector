@@ -1,0 +1,161 @@
+= Data mapping
+
+== Common fields
+
+[width="100%",cols="34%,20%,46%"]
+
+|===
+|Hyperwallet field | Mirakl field | Notes
+
+|`profileType`
+|`BUSINESS` or `INDIVIDUAL`, based on `Professional` attribute
+|
+
+|`transferMethodCountry`
+|Calculated based on the bank account type (using 2 char ISO code):
+* `US` for US bank accounts
+* `CA` for Canadian bank accounts
+* `GB` for UK bank accounts
+* First two characters of bank account number for IBAN bank accounts
+|
+
+|`transferMethodCurrency`
+|Calculated based on `currency_iso_codefield` from Mirakl shop and the supported country/currency combination in Hyperwallet for the selected bank account type.
+|
+
+|`type`
+|N/A 
+|Fixed value `BANK_ACCOUNT`
+
+|`businessName`
+|`Company name` field under Seller Contact Details
+|
+
+|`country`
+|`Country` field under Seller Contact Details
+|
+
+|`addressLine1`
+|`Address` field under Seller Contact Details
+|
+
+|`addressLine2`
+|`Address (continued)` field under Seller Contact details.
+|It's optional and the connector fills it if this data exists in Mirakl.
+
+|`city`
+|`City` field in Seller Bank Account Details
+|
+
+|`postalCode`
+|`Postcode` field in Seller Bank Account Details
+|
+
+|`stateProvince`
+|Custom field: `hw-bankaccount-state`
+|
+
+|===
+
+== IBAN Payment method
+
+[width=`100%`,cols=`34%,20%,46%`]
+
+|===
+| Hyperwallet field | Mirakl field | Notes
+
+| `bankId`
+| BIC
+|
+
+| `bankAccountId`
+| IBAN
+|
+
+|===
+
+== UK payment method
+
+[width=`100%`,cols=`34%,20%,46%`]
+
+|===
+| Hyperwallet field | Mirakl field | Notes
+
+|`bankId`
+|BIC
+|
+
+|`bankAccountId`
+|IBAN
+|
+
+|===
+
+== U.S. ABA payment method
+
+[width=`100%`,cols=`34%,20%,46%`]
+
+|===
+| Hyperwallet field | Mirakl field | Notes
+
+|`branchId`
+|Routing number (ABA).
+|
+
+|`bankAccountId`
+|Bank account number
+|
+
+|`bankAccountPurpose`
+|N/A
+|Fixed value `CHECKING`
+|===
+
+== Canadian payment method
+
+[width=`100%`,cols=`34%,20%,46%`]
+
+|===
+| Hyperwallet field | Mirakl field | Notes
+
+|`bankId`
+|3 digit bank code 
+|
+
+|`branchId`
+|5 digit transit number
+|
+
+|`bankAccountId`
+|Bank account number
+|
+
+|===
+
+[#country-currency-selection]
+== Country and currency selection
+
+Hyperwallet API defines the supported countries and currencies combinations, and based on them, it defines the bank account type that should be provided.
+
+The bank account information that the sellers provide in Mirakl defines the bank account type and the country, which is derived from the bank account type and number according to the following rules:
+
+* `US` for US bank accounts.
+* `CA` for Canadian bank accounts.
+* `GB` for UK bank accounts.
+* First two characters of the bank account number for IBAN bank accounts.
+
+Using the bank account information and Hyperwallet's country/currency combinations, the connector determines the currency that should be used for the transfer using the following logic:
+
+[mermaid,bankaccount-currency-selection]
+....
+flowchart TB
+    s0(Extract bank account country and type<br/>from Mirakl shop's information)
+    s1{{Hyperwallet supports marketplace currency<br/>for bank account country and type in Mirakl?}}
+    s2(Use marketplace's currency<br/>in Hyperwallet bank account)
+    s3(Use another compatible currency<br/>in Hyperwallet bank account)    
+    s0 --> s1
+    s1 --> |Yes|s2
+    s1 --> |No|s3
+....
+
+Automatic currency selection can be disabled setting to `false`` the environment variable `PAYPAL_HYPERWALLET_BANK_ACCOUNTS_ENABLE_AUTOMATIC_CURRENCY_SELECTION`. In this case marketplace's currency is always used during bank account creation, that will fail when the currency isn't supported by Hyperwallet.

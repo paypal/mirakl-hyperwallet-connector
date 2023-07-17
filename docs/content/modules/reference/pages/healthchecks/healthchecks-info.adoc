@@ -1,0 +1,19 @@
+== Version info check
+
+For knowing the version of the connector you're running you can query the URL `/actuator/info` to return a version object:
+
+....
+{
+  "app": {
+    "name": "Hyperwallet Mirakl Connector",
+    "description": "Drop in connector for interconnecting Mirakl and Hyperwallet systems"
+  },
+  "build": {
+    "artifact": "web",
+    "name": "web",
+    "time": "2021-06-25T12:55:52.428Z",
+    "version": "release-3.0-5-ga3d1009.dirty",
+    "group": "com.paypal"
+  }
+}
+....

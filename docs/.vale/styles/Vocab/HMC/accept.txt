@@ -1,0 +1,16 @@
+[Oo]nboarding
+API
+BIC
+Braintree
+backoffice
+Hyperwallet
+HMC
+IBAN
+ISO
+JSON
+KYC
+PSP
+Mirakl
+REST
+URL
+US

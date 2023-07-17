@@ -1,0 +1,9 @@
+== Configuration variables for new users
+
+If you are *NOT* upgrading from 4.x versions, you should define the following variable setting its value to `true`.
+
+....
+PAYPAL_HYPERWALLET_NEW_USER_MAPPING_ENABLED=true
+....
+
+WARNING: Changing the value of this variable can impact the KYC status of already verified sellers. So be sure not to change its value after onboarding sellers. More details about this variable in: xref:configuration:togglefeatures/togglefeatures.adoc#new-user-mapping[Enabling and Disabling Optional Features]

@@ -1,0 +1,30 @@
+== Building and running a binary
+
+With this setup workflow you will build an executable JAR that you can move to the target machine where you want to execute the connector. This allows you to build only one time and reuse the executable JAR for multiple environments (like your pre-production and production environment).
+
+=== Building the connector
+
+. Clone the GitHub repository of the project:
+
+ $ git clone https://github.com/paypal/mirakl-hyperwallet-connector.git
+
+. Set up required environment variables for the build process
+. Execute build script:
+
+ $ ./gradlew clean build
+
+After these steps the connector is ready to run.
+
+=== Creating executable JAR file
+
+The first step for having the connector up and running is building it from source code.
+
+* `./gradlew clean build bootJar`
+
+It will generate a file named hmc-app-X.Y.Z.jar in the `./hmc-app/build/libs` directory.
+
+=== Running executable JAR file
+
+. Execute the JAR using Java:
+
+ $ java -jar hmc-app-X.Y.Z.jar
