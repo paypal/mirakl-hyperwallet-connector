@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
     paths:
-      - docs-site/**
+      - docs/**
   workflow_dispatch:
 permissions:
   contents: read
@@ -23,17 +23,17 @@ jobs:
       with:
         node-version: '16'
     - name: Install Antora
-      working-directory: ./docs-site
+      working-directory: ./docs
       run: npm i antora
     - name: Setup Pages
       uses: actions/configure-pages@v1
     - name: Generate Site
-      working-directory: ./docs-site
+      working-directory: ./docs
       run: npx antora antora-playbook.yml
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v1
       with:
-        path: ./docs-site/build/site
+        path: ./docs/build/site
   deploy:
     environment:
       name: github-pages
