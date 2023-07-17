@@ -1,0 +1,9 @@
+plugins {
+	id 'hmc.lib-conventions'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+dependencies {
+	testImplementation project(":hmc-testsupport")
+}

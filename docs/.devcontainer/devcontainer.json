@@ -1,0 +1,36 @@
+{
+    "name": "mirakl-hyperwallet-connector",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"vale.valeCLI.config": "${workspaceFolder}/.vale/vale.ini"
+			},
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"davidanson.vscode-markdownlint",
+				"davidlday.languagetool-linter",
+				"ChrisChinchilla.vale-vscode",
+				"EditorConfig.EditorConfig",
+				"asciidoctor.asciidoctor-vscode"
+			]
+		}
+	  },
+
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+    "forwardPorts": [
+        1313
+    ],
+
+    "portsAttributes": {
+		"5151": {
+        		"label": "Preview",
+        		"onAutoForward": "openPreview"
+      		}
+	},
+
+	"postCreateCommand": "npm install"
+}

@@ -1,0 +1,45 @@
+= Job execution
+
+The connector provides can execute the invoice extract job automatically and the users can execute the job manually using a REST API.
+
+== Scheduled execution
+
+The connector automatically executes the jobs in a scheduled manner. The connector reads the schedule configuration from the following variable:
+
+* `PAYPAL_HYPERWALLET_EXTRACT_INVOICES_CRON_EXPRESSION`
+
+You can find more information in xref:invoices/payout-invoices.adoc#payout-invoices-configuration[the configuration variables section].
+
+== Manual execution
+
+The connector provides the following REST API to execute the jobs manually:
+
+
+|===
+
+| HTTP method | Path | Job type       
+              
+| `POST`
+| `/job/invoices-extract` 
+| Invoices extract job
+
+|===
+
+|===
+|Param | Format | Description
+
+|`name`
+| String
+| The name of the job
+
+|`delta`
+| yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+| The start date for retrieving the invoices
+
+|`includePaid`
+| Boolean
+| `true` to retrieve also the paid invoices, `false` to retrieve only the unpaid invoices. It's optional and the default value is `false`.
+
+|===
+
+You can find more information in xref:reference:jobs/generic-job#generic-job-restapi[the generic job REST API reference].

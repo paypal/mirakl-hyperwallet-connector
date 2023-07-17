@@ -1,5 +1,8 @@
 HELP.md
+.DS_Store
 .gradle
+.env
+
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -7,6 +10,7 @@ build/
 **/pipeline.gdsl
 
 **/src/main/generated
+**/src/test/generated_tests
 
 ### STS ###
 .apt_generated
@@ -16,6 +20,9 @@ build/
 .settings
 .springBeans
 .sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
 .idea
@@ -35,17 +42,22 @@ out/
 
 ### VS Code ###
 .vscode/
+!docs/.vscode/
+
+### Jenkins ###
+**/jenkins/.gdsl
 
 ### Docker ###
-rabbitmq-data/
 mailhog-data/
 app-data/
-docker-compose.yml
-/keys/
-/financial-reports/
+/docker-compose.yml
 
-### DB ###
-/data
-web/data
-/logs/application.log
-/logs/
+### Working Directories ###
+data/
+logs/
+/financial-reports/
+/keys/
+!**/src/main/**/data/
+!**/src/test/**/data/
+!**/src/main/**/logs/
+!**/src/test/**/logs/

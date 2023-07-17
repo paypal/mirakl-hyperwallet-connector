@@ -1,0 +1,3 @@
+== Connector environment requirements
+
+For production and UAT it's recommended to run the connector behind a load balancer or web proxy with a valid SSL/TLS certificate.

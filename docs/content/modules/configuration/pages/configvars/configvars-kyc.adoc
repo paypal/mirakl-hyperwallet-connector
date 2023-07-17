@@ -1,0 +1,17 @@
+== KYC and business stakeholders configuration variables
+
+[cols="2,1,3,1"]
+|===
+|ENVIRONMENT VARIABLE |MANDATORY |DESCRIPTION |EXAMPLE VALUE
+
+|`PAYPAL_HYPERWALLET_STK_MANDATORY_EMAIL`
+|NO (default value: `false`)
+|By default, the business stakeholder email is not mandatory in Hyperwallet.
+|Possible values:`true` or `false`
+
+|`PAYPAL_HYPERWALLET_RETRY_BUSINESS_STAKEHOLDERS_CRON_EXPRESSION`
+|NO (default value: `0 0/15 * ? * * *`)
+|The cron expression to trigger periodically the Business Stakeholders Retry Job.
+|`0 0/15 * ? * * *`
+
+|===

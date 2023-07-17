@@ -1,0 +1,17 @@
+= Hyperwallet events
+
+The connector processes the following events associated to Hyperwallet's user type:
+
+|===
+| Event | Relevant fields
+
+| `USERS.UPDATED.VERIFICATION_STATUS.*`
+a| * `token`
+* `type`
+* `createdOn`
+* `object.token`
+* `object.clientUserId`
+* `object.verificationStatus`
+|===
+
+Hyperwallet documentation provides more information about https://docs.hyperwallet.com/content/webhooks/v1/notification-types/users[the Hyperwallet user events].

@@ -1,0 +1,117 @@
+= Batch job steps
+
+The bank account extraction process is organized in different phases or steps during the job execution (as explained in xref:reference:jobs/generic-job.adoc#generic-job-phase[phases of a job]):
+
+[mermaid,bankaccount-steps]
+....
+flowchart TB
+    s1(Step1: Extraction of items)
+    subgraph s2 [For each retrieved item]
+        s2_1(Step2: Processing of each item)
+    end
+    s1 --> s2
+....
+
+Step 1: Extraction of items::
+During this step the connector retrieves from Mirakl the shops modified since the last execution of the job, extracting the bank account information from the shop.
+
+Step 2: Item processing::
+During this step the connector processes each retrieved bank account. The connector creates or updates the corresponding bank account in Hyperwallet, according to certain bank account update restrictions.
+
+== Step 1: Extraction of shops
+
+Since bank account information is part of the shop information, the connector retrieves from Mirakl the shops modified since the last execution of the job.
+
+During this phase the connector logs the following information:
+
+....
+[BATCHJOB] Starting processing of job
+[BATCHJOB] Starting extraction of items to be processed
+[BATCHJOB] Retrieving shops since Tue Apr 18 12:41:42 UTC 2023
+[BATCHJOB] Shops retrieved [78766,78764]
+[BATCHJOB] Retrieving shops since Tue Apr 18 12:41:42 UTC 2023
+[BATCHJOB] Shops retrieved [78765]
+[BATCHJOB] Retrieved the following number of items to be processed: 3
+....
+
+The connector filters the shop by type (first individuals and then professionals), that's why it logs two times the `Shop retrieved` message.
+
+== Step 2: Bank account processing
+
+The seller processing has two phases:
+
+- Hyperwallet token synchronization, that ensures that the shop has an Hyperwallet bank account token assigned if the bank account already exists in Hyperwallet.
+- Synchronized bank account processing, that creates or updates the bank account in Hyperwallet.
+
+=== Step 2.1: Hyperwallet token synchronization
+
+[mermaid,bankaccount-token-synchronization]
+....
+sequenceDiagram
+    Connector ->> Hyperwallet: (GET /users) Find user by `clientUserId`
+    Hyperwallet -->> Connector: Hyperwallet user
+    Connector ->> Hyperwallet: (GET /users/{user-token}/bank-accounts) Find bank accounts of user
+    Connector ->> Connector: Find compatible Hyperwallet bank account
+    alt if Hyperwallet bank account found and its token isn't the same as the one in Mirakl
+        Connector ->> Mirakl: (S07 PUT) Update shop with Hyperwallet bank account token
+    end
+....
+
+Hyperwallet has some restrictions about the fields of the bank account that the connector can change:
+
+* Country of the bank account can't be changed.
+* Type of the bank account can't be changed.
+
+For example, the following changes can't be made to an existing bank account in Hyperwallet:
+
+* If the existing bank account is of type ABA (US bank account), the connector can't update it to an IBAN (international bank account) type.
+* If the existing bank account has an IBAN from Italy, the connector can't update it to an IBAN from Spain.
+
+For this reason the bank account token alone isn't enough to identify the bank account in Hyperwallet, because it doesn't guarantee that the connector can update the bank account. The connector needs to verify that the existing bank account in Hyperwallet is compatible with the information in Mirakl.
+
+[mermaid,bankaccount-steps]
+....
+flowchart TB
+    s1(Find compatible bank account with the same token)
+    s2(Find exact bank account)
+    s3(Find compatible bank account)    
+    s1 --> s2
+    s2 --> s3
+....
+
+A Mirakl bank account is compatible with an Hyperwallet bank account if:
+
+* The bank account country is the same as the one in Hyperwallet.
+* The bank account type is the same as the one in Hyperwallet.
+
+=== Step 2.2: Synchronized bank account processing
+
+[mermaid,bankaccount-processing]
+....
+sequenceDiagram
+    alt synchronized shop has an Hyperwallet user token
+        Connector ->> Hyperwallet: (PUT /users/) Update user information
+    else synchronized shop doesn't have an Hyperwallet user token
+        Connector ->> Hyperwallet: (POST /users/) Create user
+        Hyperwallet -->> Connector: Created user
+        Connector ->> Mirakl: (S07 PUT) Update shop with Hyperwallet user token
+    end
+....
+
+Based on whether the bank account has a token or not after the synchronization process, the connector creates or updates the bank account in Hyperwallet.
+
+During this phase the connector logs the following information:
+
+....
+[BATCHJOBITEM] Processing item of type BankAccount with id: 78766
+18-04-2023 12:44:45.052 [HyperwalletMiraklScheduler_Worker-3] INFO  [BATCHJOBITEM] Bank account created or updated for seller with clientId [78766]
+[BATCHJOBITEM] Updating bank account token for shop [78766]
+[BATCHJOBITEM] Bank account token updated for shop [78766]
+[BATCHJOBITEM] Processed successfully item of type BankAccount with id: 78766
+[BATCHJOBITEM] 1 items processed successfully. 0 items failed. 2 items remaining
+...
+[BATCHJOBITEM] 3 items processed successfully. 0 items failed. 0 items remaining
+[BATCHJOB] Finished processing of job
+....
+
+

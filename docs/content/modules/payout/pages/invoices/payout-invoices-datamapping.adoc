@@ -1,0 +1,29 @@
+= Data mapping
+
+== Invoice extraction
+
+[width="100%",cols="34%,20%,46%"]
+|===
+| Mirakl IV01 API field | HW API field | Notes
+
+| `amount_transferred` | `amount` |
+| `invoice_id` | `clientPaymentId` |
+| `currency_iso_code` |`currency` |
+| TRM token | `destinationToken`  | The seller TRM token denoting the bank account in HW Embedded Experience.
+| Operator token in the Connector | `programToken` | Operator token
+| n/a | `purpose`: `OTHER` | We will use OTHER for all payouts.
+|===
+
+== Credit note extraction
+
+[width="100%",cols="34%,20%,46%"]
+|===
+| Mirakl IV01 API field | HW API field | Notes
+
+| `amount_transferred_to_operator` | `amount` |
+| `invoice_id` | `clientPaymentId` |
+| `currency_iso_code` |`currency` |
+| TRM token | `destinationToken`  | The seller TRM token denoting the bank account in HW Embedded Experience.
+| Operator token in the Connector | `programToken` | Operator token
+| n/a | `purpose`: `OTHER` | We will use OTHER for all payouts.
+|===

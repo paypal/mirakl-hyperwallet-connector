@@ -1,0 +1,47 @@
+== Alerts and mail configuration
+
+[cols="2,1,3,1"]
+|===
+|ENVIRONMENT VARIABLE |MANDATORY |DESCRIPTION |EXAMPLE VALUE
+
+|`PAYPAL_SERVER_EMAIL_HOST`
+|NO
+|The URL where your POP3/SMTP server is hosted. If you're using the Docker Compose script provided in this repo, use `smtp`.
+|`smtp.example.com`
+
+|`PAYPAL_SERVER_EMAIL_PORT`
+|NO
+|The port used by your POP3/SMTP server. If you're using the Docker Compose script provided in this repo, use `1025`.
+|`1025`
+
+|`PAYPAL_MAIL_SMTP_AUTH`
+|NO
+|Whether or not authentication is needed for accessing the POP3/SMTP mail server.
+|Possible values: `true` or `false`
+
+|`PAYPAL_MAIL_USER_NAME`
+|NO
+|The username credential for using the POP3/SMTP server. It can be left empty if `PAYPAL_MAIL_SMTP_AUTH` is set to `false`.
+|`smtp-username`
+
+|`PAYPAL_MAIL_USER_PASSWORD`
+|NO
+|The password credential for using the POP3/SMTP server. It can be left empty if `PAYPAL_MAIL_SMTP_AUTH` is set to `false`.
+|`smtp-pass`
+
+|`PAYPAL_MAIL_SMTP_STARTTLS_ENABLE`
+|NO
+|Whether or not TLS is needed for establishing connection with the POP3/SMTP server.
+|Possible values:`true` or `false`
+
+|`PAYPAL_HYPERWALLET_MAIL_RECIPIENT`
+|NO (default value: `recipient1@test.com`)
+|The email recipient for the errors thrown by the connector.
+|`recipient@email.com`
+
+|`PAYPAL_HYPERWALLET_MAIL_FROM`
+|NO (default value: `from@email.com`)
+|The from email that appears on the emails sent by the connector.
+|`from@email.com`
+
+|===

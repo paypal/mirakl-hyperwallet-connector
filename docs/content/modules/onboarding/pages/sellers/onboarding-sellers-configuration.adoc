@@ -1,0 +1,3 @@
+= Configuration variables
+
+The section xref:configuration:configvars/configvars.adoc#configvarsvars-onboarding[seller onboarding configuration variables], has information about the configuration variables used by the sellers extraction jobs.

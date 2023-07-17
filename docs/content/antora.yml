@@ -1,0 +1,13 @@
+name: component-hmc
+title: Hyperwallet Mirakl Connector
+start_page: ROOT:overview.adoc
+version: ~
+nav: 
+- modules/prerequisites/nav.adoc
+- modules/installation/nav.adoc
+- modules/upgrade/nav.adoc
+- modules/onboarding/nav.adoc
+- modules/payout/nav.adoc
+- modules/configuration/nav.adoc
+- modules/reference/nav.adoc
+- modules/troubleshooting/nav.adoc

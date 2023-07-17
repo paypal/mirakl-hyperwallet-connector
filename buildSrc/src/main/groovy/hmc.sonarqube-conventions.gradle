@@ -1,0 +1,36 @@
+plugins {
+	id 'org.sonarqube'
+}
+
+sonar {
+	//noinspection GroovyAssignabilityCheck
+	properties {
+		property "sonar.host.url", "https://sonarcloud.io"
+		property "sonar.pullrequest.provider", "github"
+		property "sonar.projectKey", "paypal-hyperwallet"
+		property "sonar.projectName", "Paypal Hyperwallet"
+		property "sonar.junit.reportPaths",
+						"$projectDir/hmc-app/build/test-results/test/," +
+						"$projectDir/hmc-app/build/test-results/integrationTest/," +
+						"$projectDir/hmc-infrastructure/build/test-results/test/," +
+						"$projectDir/hmc-infrastructure/build/test-results/integrationTest/," +
+						"$projectDir/hmc-invoices/build/test-results/test/," +
+						"$projectDir/hmc-invoices/build/test-results/integrationTest/," +
+						"$projectDir/hmc-jobsystem/build/test-results/test/," +
+						"$projectDir/hmc-jobsystem/build/test-results/integrationTest/," +
+						"$projectDir/hmc-kyc/build/test-results/test/," +
+						"$projectDir/hmc-kyc/build/test-results/integrationTest/," +
+						"$projectDir/hmc-notifications/build/test-results/test/," +
+						"$projectDir/hmc-notifications/build/test-results/integrationTest/," +
+						"$projectDir/hmc-observability/build/test-results/test/," +
+						"$projectDir/hmc-observability/build/test-results/integrationTest/," +
+						"$projectDir/hmc-reports/build/test-results/test/," +
+						"$projectDir/hmc-reports/build/test-results/integrationTest/," +
+						"$projectDir/hmc-sellers/build/test-results/test/," +
+						"$projectDir/hmc-sellers/build/test-results/integrationTest/," +
+						"$projectDir/hmc-testsupport/build/test-results/test/," +
+						"$projectDir/hmc-testsupport/build/test-results/integrationTest/"
+		property "sonar.coverage.jacoco.xmlReportPaths", "$projectDir/*/build/reports/jacoco/**/*.xml,"
+		property "sonar.qualitygate.wait", true
+	}
+}

@@ -1,0 +1,31 @@
+== REST API
+
+The existing jobs can be executed manually through their endpoints. Except for notification retry job, which doesn't receive
+any parameter, all endpoints support 2 optional parameters:
+
+* `delta`: When provided for an extract job, the job will only process entities that were updated/created after this
+  date
+* `name` : When provided, the job will be given this name
+
+
+|===
+|Param|Format
+
+|`name`| String
+|`delta`| yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+|===
+
+Endpoints:
+|===
+|  HTTP Method   | PATH                                  | Job type       
+              
+| `POST`         | `/job/sellers-extract`                | Individual Sellers extract   
+| `POST`         | `/job/professional-sellers-extract`   | Professional Sellers extract 
+| `POST`         | `/job/bank-accounts-extract`          | Bank accounts extract        
+| `POST`         | `/job/invoices-extract`               | Invoices extract
+|===
+
+See example of valid execution request:
+
+[example]
+curl --location --request POST 'http://localhost:8080/job/bank-accounts-extract?delta=2020-11-22T11:52:00.000-00:00&name=bankAccountExtractJob'

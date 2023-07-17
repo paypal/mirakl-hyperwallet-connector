@@ -1,0 +1,10 @@
+== Mirakl preparation tasks
+
+. Request Access to Mirakl SDK repository (the credentials will be needed during the build process). See the "Access to Artifactory" topic https://help.mirakl.net/bundle/customers/page/topics/Connectors/SDK/java/access_java_sdk.html[here].
+
+. Ask Mirakl Support to enable the following features:
+- https://help.mirakl.net/bundle/customers/page/topics/Mirakl/PSP_Project/topics/validating_kyc_psp.htm[`KYC status`].
+- https://help.mirakl.net/Customers/topics/Mirakl/integrating_mirakl/pay_sellers/payment_confirmation.htm[`Payment Confirmation`].
+- https://help.mirakl.net/bundle/customers/page/topics/Mirakl/mmp/Operator/config_languages_currencies/Currencies/config_currencies.html[`Multiple Currencies`].
+
+. Add to Mirakl the custom fields required by the connector. More details about it in xref:configuration:customfields/customfields.adoc[Setting up required Mirakl Custom Fields]

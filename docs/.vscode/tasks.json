@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Antora: Start Server",
+            "type": "shell",
+            "command": "http-server build/site -c-1 -p 5151",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "isBackground": true
+        },
+        {
+            "label": "Antora: Build Site",
+            "type": "shell",
+            "command": "npx antora --fetch antora-playbook.yml",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

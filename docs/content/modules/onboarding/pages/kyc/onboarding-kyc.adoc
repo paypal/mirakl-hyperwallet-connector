@@ -1,0 +1,7 @@
+include::onboarding-kyc-overview.adoc[leveloffset=1]
+
+include::onboarding-kyc-events.adoc[leveloffset=1]
+
+include::onboarding-kyc-apicalls.adoc[leveloffset=1]
+
+include::onboarding-kyc-datamapping.adoc[leveloffset=1]

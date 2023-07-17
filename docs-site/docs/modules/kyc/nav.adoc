@@ -1,5 +1,0 @@
-* xref:kyc.adoc[KYC]
-** xref:kyc.adoc#_overview[Overview]
-** xref:kyc.adoc#_managed_kyc_flow[Managed KYC Flow]
-** xref:kyc.adoc#_update_kyc_status[Update KYC status]
-** xref:kyc.adoc#_kyc_failure_reason_message[KYC failure reason message]

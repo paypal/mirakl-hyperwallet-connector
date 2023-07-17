@@ -1,0 +1,14 @@
+plugins {
+	id 'hmc.java-conventions'
+
+	id 'java-library'
+}
+
+bootJar {
+	enabled = false
+}
+
+dependencies {
+	api 'com.hyperwallet:sdk:2.4.3'
+	api 'com.mirakl:mmp-sdk-operator:6.8.0'
+}

@@ -1,0 +1,22 @@
+= Overview
+
+WARNING: If you are migrating from 4.x versions, take a look at the release notes in https://github.com/paypal/mirakl-hyperwallet-connector/releases[GitHub] and the xref:upgrade:upgrade.adoc[upgrade guide]. There are some breaking changes in the requisites and configuration that you need to take into account.
+
+The Hyperwallet-Mirakl Connector (HMC) is a drop-in service that interconnects Mirakl and Hyperwallet providing payout connectivity between them.
+
+It's designed to be easy to install and operate, providing self-healing features and a mail based alerting system. The connector xref:reference:/features/features.adoc[supports the following workflows]:
+
+* Seller onboarding with KYC verification
+* Payout
+
+The connector is pay-in provider agnostic, allowing to combine it with other third-party PSPs or using it with Braintree for a full PayPal ecosystem-based payment. 
+
+== Getting started with HMC
+
+To have the connector up and running you will need to:
+
+. xref:prerequisites:prerequisites.adoc#prerequisites-hyperwallet[Fulfil the configuration tasks for Hyperwallet]
+. xref:prerequisites:prerequisites.adoc#prerequisites-mirakl[Fulfil the configuration tasks for Mirakl]
+. xref:prerequisites:prerequisites.adoc#prerequisites-environment[Prepare your environment]
+. xref:prerequisites:prerequisites.adoc#prerequisites-connector[Do the basic connector configuration]
+. xref:installation:installation.adoc[Install the connector]

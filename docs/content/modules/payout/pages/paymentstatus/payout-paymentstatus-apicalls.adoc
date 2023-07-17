@@ -1,0 +1,15 @@
+= API calls
+
+The connector does the following API calls during the sellers extraction jobs execution:
+
+|===
+| Call | Target System | Endpoint | Parameters
+
+| Confirms the payment of an invoice setting its status to `PAID`.
+| Mirakl
+| https://help.mirakl.net/help/api-doc/operator/mmp.html#IV07[PUT IV07 - Confirm the payment of accounting documents]
+a| * `invoice_id`: invoice identifier
+* `currency_iso_code`: ISO code for the currency used in the payment.
+* `amount`: Amount of the invoice.
+* `transaction_date`: Invoice transaction date.
+|===

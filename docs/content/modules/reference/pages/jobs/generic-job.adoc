@@ -1,0 +1,25 @@
+= Connector jobs
+
+The connector uses jobs to extract data from Mirakl and push it to Hyperwallet. This section describes how jobs work and how to troubleshoot them.
+
+include::generic-job-types.adoc[]
+
+== Common aspects
+
+Extract and retry jobs shares most of their logic. This section describes the common aspects of these jobs.
+
+[#generic-job-phases]
+include::generic-job-phases.adoc[leveloffset=1]
+
+[#generic-job-logging]
+include::generic-job-logging.adoc[leveloffset=1]
+
+== Extract jobs
+
+include::generic-job-deltacalculation.adoc[leveloffset=1]
+
+[#generic-job-restapi]
+include::generic-job-restapi.adoc[leveloffset=1]
+
+[#generic-job-retry]
+include::generic-job-retry.adoc[]

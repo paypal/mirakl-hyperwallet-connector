@@ -1,0 +1,8 @@
+## Job types
+
+The connector executes two types of jobs:
+
+* Extract jobs: these jobs extract data from Mirakl and then process the extracted items.
+* Retry jobs: these jobs extracts data from an internal store of failed items and then process the extracted items.
+
+Extract and retry jobs apply the same logic to process the extracted items. The only difference is the source of the extracted items. This section xref:jobs/generic-job#generic-job-retry[regarding retries] provides more information about the retry processes.

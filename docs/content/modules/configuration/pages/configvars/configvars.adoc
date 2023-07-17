@@ -1,0 +1,36 @@
+= Configuration Environment Variables
+
+The connector is configured using environment variables. There are many configuration variables that can be tweaked to tailor the connector to your needs. However, we have tried to provide good default values, so our recommendation is to stick with the defaults unless they don't work for you.
+
+[#configvarsvars-generic]
+include::configvars-generic.adoc[]
+
+[#configvarsvars-hyperwallet]
+include::configvars-hyperwallet.adoc[]
+
+[#configvarsvars-mirakl]
+include::configvars-mirakl.adoc[]
+
+[#configvarsvars-alerts]
+include::configvars-alerts.adoc[]
+
+[#configvarsvars-onboarding]
+include::configvars-onboarding.adoc[]
+
+[#configvarsvars-kyc]
+include::configvars-kyc.adoc[]
+
+[#configvarsvars-payout]
+include::configvars-payout.adoc[]
+
+[#configvarsvars-financialreports]
+include::configvars-financialreports.adoc[]
+
+[#configvarsvars-jobs]
+include::configvars-jobs.adoc[]
+
+[#configvarsvars-notifications]
+include::configvars-notifications.adoc[]
+
+[#configvarsvars-encryption]
+include::configvars-encryption.adoc[]
