@@ -20,6 +20,7 @@ import com.mirakl.client.mmp.request.shop.document.MiraklDeleteShopDocumentReque
 import com.mirakl.client.mmp.request.shop.document.MiraklDownloadShopsDocumentsRequest;
 import com.mirakl.client.mmp.request.shop.document.MiraklGetShopDocumentsRequest;
 import com.paypal.infrastructure.mirakl.client.filter.IgnoredShopsFilter;
+import com.paypal.infrastructure.mirakl.client.filter.TerminatedShopsFilter;
 import com.paypal.infrastructure.mirakl.configuration.MiraklApiClientConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,12 +46,16 @@ class DirectMiraklClientTest {
 	@Mock
 	private IgnoredShopsFilter ignoredShopsFilterMock;
 
+	@Mock
+	private TerminatedShopsFilter terminatedShopsFilterMock;
+
 	@BeforeEach
 	void setUp() {
 		final MiraklApiClientConfig config = new MiraklApiClientConfig();
 		config.setOperatorApiKey("OPERATOR-KEY");
 		config.setEnvironment("environment");
-		testObj = Mockito.spy(new DirectMiraklClient(config, ignoredShopsFilterMock));
+		testObj = Mockito
+				.spy(new DirectMiraklClient(config, List.of(ignoredShopsFilterMock, terminatedShopsFilterMock)));
 		ReflectionTestUtils.setField(testObj, "miraklMarketplacePlatformOperatorApiClient",
 				miraklMarketplacePlatformOperatorApiClientMock);
 	}
@@ -72,19 +77,18 @@ class DirectMiraklClientTest {
 	@Test
 	void getShops_shouldCallSdkClient_andFilterShops() {
 		// given
-		final MiraklShops unfilteredMiraklShops = mock(MiraklShops.class);
-		final MiraklShops filteredMiraklShops = mock(MiraklShops.class);
-		when(ignoredShopsFilterMock.filterIgnoredShops(unfilteredMiraklShops)).thenReturn(filteredMiraklShops);
+		final MiraklShops miraklShops = mock(MiraklShops.class);
 		final MiraklGetShopsRequest miraklGetShopsRequest = mock(MiraklGetShopsRequest.class);
-		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequest))
-				.thenReturn(unfilteredMiraklShops);
+		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequest)).thenReturn(miraklShops);
 
 		// when
 		final MiraklShops result = testObj.getShops(miraklGetShopsRequest);
 
 		// then
-		assertThat(result).isEqualTo(filteredMiraklShops);
+		assertThat(result).isEqualTo(miraklShops);
 		verify(miraklMarketplacePlatformOperatorApiClientMock).getShops(miraklGetShopsRequest);
+		verify(ignoredShopsFilterMock).filterShops(miraklShops);
+		verify(terminatedShopsFilterMock).filterShops(miraklShops);
 	}
 
 	@Test

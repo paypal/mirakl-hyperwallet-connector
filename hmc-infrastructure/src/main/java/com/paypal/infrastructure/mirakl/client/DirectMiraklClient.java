@@ -21,7 +21,7 @@ import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.mirakl.client.mmp.request.shop.document.MiraklDeleteShopDocumentRequest;
 import com.mirakl.client.mmp.request.shop.document.MiraklDownloadShopsDocumentsRequest;
 import com.mirakl.client.mmp.request.shop.document.MiraklGetShopDocumentsRequest;
-import com.paypal.infrastructure.mirakl.client.filter.IgnoredShopsFilter;
+import com.paypal.infrastructure.mirakl.client.filter.ShopsFilter;
 import com.paypal.infrastructure.mirakl.configuration.MiraklApiClientConfig;
 import org.springframework.stereotype.Component;
 
@@ -32,13 +32,13 @@ public class DirectMiraklClient implements MiraklClient {
 
 	private MiraklMarketplacePlatformOperatorApiClient miraklMarketplacePlatformOperatorApiClient;
 
-	private final IgnoredShopsFilter ignoredShopsFilter;
+	private final List<ShopsFilter> shopsFilter;
 
 	private final MiraklApiClientConfig config;
 
-	public DirectMiraklClient(final MiraklApiClientConfig config, final IgnoredShopsFilter ignoredShopsFilter) {
+	public DirectMiraklClient(final MiraklApiClientConfig config, final List<ShopsFilter> shopsFilter) {
 		this.config = config;
-		this.ignoredShopsFilter = ignoredShopsFilter;
+		this.shopsFilter = shopsFilter;
 		reloadHttpConfiguration();
 	}
 
@@ -51,7 +51,9 @@ public class DirectMiraklClient implements MiraklClient {
 	public MiraklShops getShops(final MiraklGetShopsRequest request) {
 		final MiraklShops shops = getUnfilteredMiraklShops(request);
 
-		return ignoredShopsFilter.filterIgnoredShops(shops);
+		shopsFilter.forEach(filter -> filter.filterShops(shops));
+
+		return shops;
 	}
 
 	@Override

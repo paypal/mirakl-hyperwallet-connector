@@ -51,10 +51,11 @@ class IgnoredShopsFilterTest {
 		mockIgnoreProgram(2, true);
 		mockIgnoreProgram(3, false);
 
-		final MiraklShops result = testObj.filterIgnoredShops(miraklShopsMock);
+		testObj.filterShops(miraklShopsMock);
 
-		verify(result, times(1)).setShops(argThat(x -> x.size() == 2));
-		verify(result, times(1)).setShops(argThat(x -> x.containsAll(List.of(miraklShop1Mock, miraklShop3Mock))));
+		verify(miraklShopsMock, times(1)).setShops(argThat(x -> x.size() == 2));
+		verify(miraklShopsMock, times(1))
+				.setShops(argThat(x -> x.containsAll(List.of(miraklShop1Mock, miraklShop3Mock))));
 	}
 
 	private void mockShop(final MiraklShop miraklShopMock, final int id) {

@@ -4,7 +4,7 @@ import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.paypal.infrastructure.changestaging.service.ChangeStagingService;
 import com.paypal.infrastructure.mirakl.client.converters.MiraklStageChangeConverter;
-import com.paypal.infrastructure.mirakl.client.filter.IgnoredShopsFilter;
+import com.paypal.infrastructure.mirakl.client.filter.ShopsFilter;
 import com.paypal.infrastructure.mirakl.configuration.MiraklApiClientConfig;
 import com.paypal.infrastructure.mirakl.settings.MiraklClientSettingsHolder;
 import org.springframework.context.annotation.Primary;
@@ -20,10 +20,10 @@ public class StageChangesMiraklClient extends DirectMiraklClient {
 
 	private final MiraklStageChangeConverter miraklStageChangeConverter;
 
-	public StageChangesMiraklClient(final MiraklApiClientConfig config, final IgnoredShopsFilter ignoredShopsFilter,
+	public StageChangesMiraklClient(final MiraklApiClientConfig config, final List<ShopsFilter> shopsFilters,
 			final ChangeStagingService changeStagingService,
 			final MiraklStageChangeConverter miraklStageChangeConverter) {
-		super(config, ignoredShopsFilter);
+		super(config, shopsFilters);
 		this.changeStagingService = changeStagingService;
 		this.miraklStageChangeConverter = miraklStageChangeConverter;
 	}
