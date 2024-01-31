@@ -1,16 +1,14 @@
 package com.paypal.infrastructure.mirakl.client;
 
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
-import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShops;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.paypal.infrastructure.changestaging.model.Change;
 import com.paypal.infrastructure.changestaging.service.ChangeStagingService;
 import com.paypal.infrastructure.mirakl.client.converters.MiraklStageChangeConverter;
-import com.paypal.infrastructure.mirakl.client.filter.IgnoredShopsFilter;
+import com.paypal.infrastructure.mirakl.client.filter.ShopsFilter;
 import com.paypal.infrastructure.mirakl.configuration.MiraklApiClientConfig;
 import com.paypal.infrastructure.mirakl.settings.MiraklClientSettings;
-import com.paypal.infrastructure.mirakl.settings.MiraklClientSettingsExecutor;
 import com.paypal.infrastructure.mirakl.settings.MiraklClientSettingsHolder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.InjectMocks;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 
@@ -38,13 +34,16 @@ class StageChangesMiraklClientTest {
 	@Mock
 	private MiraklStageChangeConverter miraklStageChangeConverterMock;
 
+	@Mock
+	private List<ShopsFilter> shopsFiltersMock;
+
 	@BeforeEach
 	void setUp() {
 		final MiraklApiClientConfig config = new MiraklApiClientConfig();
 		config.setOperatorApiKey("OPERATOR-KEY");
 		config.setEnvironment("environment");
-		testObj = Mockito.spy(new StageChangesMiraklClient(config, mock(IgnoredShopsFilter.class),
-				changeStagingServiceMock, miraklStageChangeConverterMock));
+		testObj = Mockito.spy(new StageChangesMiraklClient(config, shopsFiltersMock, changeStagingServiceMock,
+				miraklStageChangeConverterMock));
 	}
 
 	@AfterEach
