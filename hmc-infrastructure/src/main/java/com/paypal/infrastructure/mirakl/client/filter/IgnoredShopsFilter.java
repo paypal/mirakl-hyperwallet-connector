@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class IgnoredShopsFilter {
+public class IgnoredShopsFilter implements ShopsFilter {
 
 	private final HyperwalletProgramsConfiguration hyperwalletProgramsConfiguration;
 
@@ -22,13 +22,12 @@ public class IgnoredShopsFilter {
 		this.hyperwalletProgramsConfiguration = hyperwalletProgramsConfiguration;
 	}
 
-	public MiraklShops filterIgnoredShops(final MiraklShops shops) {
+	public void filterShops(final MiraklShops shops) {
 		final List<MiraklShop> validShops = shops.getShops().stream().filter(Predicate.not(this::isIgnored))
 				.collect(Collectors.toList());
+
 		shops.setShops(validShops);
 		shops.setTotalCount((long) validShops.size());
-
-		return shops;
 	}
 
 	private boolean isIgnored(final MiraklShop miraklShop) {
