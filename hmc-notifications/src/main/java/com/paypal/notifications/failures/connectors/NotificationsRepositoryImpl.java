@@ -23,9 +23,10 @@ public class NotificationsRepositoryImpl implements NotificationsRepository {
 	}
 
 	@Override
-	public HyperwalletWebhookNotification getHyperwalletWebhookNotification(final String program, final String token) {
+	public HyperwalletWebhookNotification getHyperwalletWebhookNotification(final String programToken,
+			final String token) {
 		final Hyperwallet hyperwalletInstance = userHyperwalletSDKService
-				.getHyperwalletInstanceByHyperwalletProgram(program);
+				.getHyperwalletInstanceByProgramToken(programToken);
 		try {
 			return hyperwalletInstance.getWebhookEvent(token);
 		}

@@ -49,12 +49,13 @@ class NotificationProcessingServiceImplTest {
 				hyperwalletWebhookNotificationSenderStrategyExecutorMock);
 
 		inOrder.verify(notificationConverterMock).convert(hyperwalletWebhookNotification1Mock);
+		inOrder.verify(hyperwalletWebhookNotificationSenderStrategyExecutorMock)
+				.execute(hyperwalletWebhookNotification1Mock);
 		inOrder.verify(notificationStorageServiceMock).saveNotification(notificationEntityMock);
-		verify(hyperwalletWebhookNotificationSenderStrategyExecutorMock).execute(hyperwalletWebhookNotification1Mock);
 	}
 
 	@Test
-	void processNotification_shouldSaveAndNotProcessIncomingNotificationAndReturnsOK_WhenNotificationIsNotProcessable() {
+	void processNotification_shouldNotSaveAndNotProcessIncomingNotificationAndReturnsOK_WhenNotificationIsNotProcessable() {
 		when(notificationEntityEvaluatorMock.isProcessable(notificationEntityMock)).thenReturn(false);
 		when(notificationConverterMock.convert(hyperwalletWebhookNotification1Mock)).thenReturn(notificationEntityMock);
 
@@ -64,9 +65,9 @@ class NotificationProcessingServiceImplTest {
 				hyperwalletWebhookNotificationSenderStrategyExecutorMock);
 
 		inOrder.verify(notificationConverterMock).convert(hyperwalletWebhookNotification1Mock);
-		inOrder.verify(notificationStorageServiceMock).saveNotification(notificationEntityMock);
 		verify(hyperwalletWebhookNotificationSenderStrategyExecutorMock, never())
 				.execute(hyperwalletWebhookNotification1Mock);
+		verify(notificationStorageServiceMock, never()).saveNotification(notificationEntityMock);
 	}
 
 }

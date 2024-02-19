@@ -22,7 +22,7 @@ class NotificationsRepositoryImplTest {
 
 	private static final String HYPERWALLET_NOTIFICATION_TOKEN = "TEST_TOKEN";
 
-	private static final String HYPERWALLET_NOTIFICATION_PROGRAM = "TEST_PROGRAM";
+	private static final String HYPERWALLET_NOTIFICATION_PROGRAM_TOKEN = "TEST_PROGRAM_TOKE";
 
 	private static final String MSG_ERROR = "An error has occurred";
 
@@ -44,38 +44,38 @@ class NotificationsRepositoryImplTest {
 
 	@Test
 	void getHyperwalletWebhookNotification_shouldReturnAnHyperwalletNotification_WhenTokenExists() {
-		when(userHyperwalletSDKService.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_NOTIFICATION_PROGRAM))
+		when(userHyperwalletSDKService.getHyperwalletInstanceByProgramToken(HYPERWALLET_NOTIFICATION_PROGRAM_TOKEN))
 				.thenReturn(hyperwalletInstanceMock);
 		when(hyperwalletInstanceMock.getWebhookEvent(HYPERWALLET_NOTIFICATION_TOKEN))
 				.thenReturn(hyperwalletWebhookNotificationMock);
 
-		final HyperwalletWebhookNotification result = testObj
-				.getHyperwalletWebhookNotification(HYPERWALLET_NOTIFICATION_PROGRAM, HYPERWALLET_NOTIFICATION_TOKEN);
+		final HyperwalletWebhookNotification result = testObj.getHyperwalletWebhookNotification(
+				HYPERWALLET_NOTIFICATION_PROGRAM_TOKEN, HYPERWALLET_NOTIFICATION_TOKEN);
 
 		assertThat(result).isEqualTo(hyperwalletWebhookNotificationMock);
 	}
 
 	@Test
 	void getHyperwalletWebhookNotification_shouldReturnNull_WhenTokenNotExists() {
-		when(userHyperwalletSDKService.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_NOTIFICATION_PROGRAM))
+		when(userHyperwalletSDKService.getHyperwalletInstanceByProgramToken(HYPERWALLET_NOTIFICATION_PROGRAM_TOKEN))
 				.thenReturn(hyperwalletInstanceMock);
 		when(hyperwalletInstanceMock.getWebhookEvent(HYPERWALLET_NOTIFICATION_TOKEN)).thenReturn(null);
 
-		final HyperwalletWebhookNotification result = testObj
-				.getHyperwalletWebhookNotification(HYPERWALLET_NOTIFICATION_PROGRAM, HYPERWALLET_NOTIFICATION_TOKEN);
+		final HyperwalletWebhookNotification result = testObj.getHyperwalletWebhookNotification(
+				HYPERWALLET_NOTIFICATION_PROGRAM_TOKEN, HYPERWALLET_NOTIFICATION_TOKEN);
 
 		assertThat(result).isNull();
 	}
 
 	@Test
 	void getHyperwalletWebhookNotification_shouldReturnNull_andLogException_WhenExceptionIsThrown() {
-		when(userHyperwalletSDKService.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_NOTIFICATION_PROGRAM))
+		when(userHyperwalletSDKService.getHyperwalletInstanceByProgramToken(HYPERWALLET_NOTIFICATION_PROGRAM_TOKEN))
 				.thenReturn(hyperwalletInstanceMock);
 		final HyperwalletException hyperwalletException = new HyperwalletException(MSG_ERROR);
 		when(hyperwalletInstanceMock.getWebhookEvent(HYPERWALLET_NOTIFICATION_TOKEN)).thenThrow(hyperwalletException);
 
-		final HyperwalletWebhookNotification result = testObj
-				.getHyperwalletWebhookNotification(HYPERWALLET_NOTIFICATION_PROGRAM, HYPERWALLET_NOTIFICATION_TOKEN);
+		final HyperwalletWebhookNotification result = testObj.getHyperwalletWebhookNotification(
+				HYPERWALLET_NOTIFICATION_PROGRAM_TOKEN, HYPERWALLET_NOTIFICATION_TOKEN);
 
 		assertThat(result).isNull();
 		assertThat(logTrackerStub.contains("Could not fetch notification [%s] due to reason:%n%s".formatted(
