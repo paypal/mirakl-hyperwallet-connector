@@ -20,6 +20,8 @@ The connector reads the configuration from the following configuration variables
 
 * `PAYPAL_HYPERWALLET_RETRY_NOTIFICATIONS`, set to `true` to enable retries, or `false` to deactivate them. Set to `true` by default.
 
+* `PAYPAL_HYPERWALLET_CONFIRM_LINKED_DOCUMENTS`, set to `true` to allow confirmation of linked documents from an invoice (manual invoice confirmation). Set to `false` by default for backwards compatibility.
+
 * `PAYPAL_HYPERWALLET_MAX_AMOUNT_OF_NOTIFICATION_RETRIES`, determines the maximum number of attempts allowed for each notification. Set to `5` by default
 
 * `PAYPAL_HYPERWALLET_RETRY_FAILED_NOTIFICATIONS_CRON_EXPRESSION`, used to configure the periodicity of the retry job.

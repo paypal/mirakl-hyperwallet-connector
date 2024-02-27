@@ -62,6 +62,8 @@ public class AcceptedPaymentNotificationStrategy implements Strategy<PaymentNoti
 		miraklAccountingDocumentPaymentConfirmation
 				.setTransactionDate(DateUtil.convertToDate(paymentNotificationBodyModel.getCreatedOn(),
 						HyperWalletConstants.HYPERWALLET_DATE_FORMAT, DateUtil.TIME_UTC));
+		miraklAccountingDocumentPaymentConfirmation
+				.setConfirmLinkedManualDocuments(paymentNotificationConfig.isConfirmLinkedDocuments());
 
 		log.info("Creating payment confirmation request for invoice ID {} and amount {}",
 				miraklAccountingDocumentPaymentConfirmation.getInvoiceId(),

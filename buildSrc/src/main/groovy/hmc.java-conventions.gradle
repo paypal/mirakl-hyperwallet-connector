@@ -21,6 +21,7 @@ java {
 }
 
 repositories {
+	maven { url "https://nexus.k8s.an.digikfplc.com/repository/maven-public/" }
 	mavenCentral()
 	maven {
 		credentials {

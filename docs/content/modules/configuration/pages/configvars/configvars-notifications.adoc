@@ -14,6 +14,11 @@
 |Whether or not Hyperwallet notifications should be retried when an error occurs (e.g. connection issues). If set to `true`, any notification that fails is stored in the database and automatically restarted up to `PAYPAL_HYPERWALLET_MAX_AMOUNT` `_OF_NOTIFICATION_RETRIES` times. If set to `false`, notifications are not stored or retried
 |Possible values:`true` or `false`
 
+|`PAYPAL_HYPERWALLET_CONFIRM_LINKED_DOCUMENTS`
+|NO (default value: `false`)
+|Whether or not to confirm linked documents from an invoice (manual invoice confirmation).
+|Possible values:`true` or `false`
+
 |`PAYPAL_HYPERWALLET_MAX_AMOUNT_OF_NOTIFICATION_RETRIES`
 |NO (default value: `5`)
 |Sets the amount of retries a Hyperwallet notification operation can be retried before it is discarded. Whenever a notification is discarded, an email is sent to the integrators so it can be analyzed and addressed
