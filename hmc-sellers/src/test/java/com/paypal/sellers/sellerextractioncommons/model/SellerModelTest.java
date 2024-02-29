@@ -1,10 +1,6 @@
 package com.paypal.sellers.sellerextractioncommons.model;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
-import com.paypal.sellers.sellerextractioncommons.model.SellerBusinessType;
-import com.paypal.sellers.sellerextractioncommons.model.SellerGovernmentIdType;
-import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
-import com.paypal.sellers.sellerextractioncommons.model.SellerProfileType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
