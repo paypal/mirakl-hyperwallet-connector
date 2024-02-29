@@ -18,6 +18,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.lenient;
@@ -49,6 +50,10 @@ class SellerModelToHyperWalletUserConverterTest {
 	private static final Date DATE_OF_BIRTH = DateUtil.convertToDate(LocalDate.of(1985, 9, 6), ZoneId.systemDefault());
 
 	private static final String COUNTRY_OF_NATIONALITY = "FRA";
+
+	private static final Locale SHOP_LANGUAGE = Locale.FRANCE;
+
+	private static final String HYPERWALET_LANGUAGE = "fr";
 
 	private static final String DRIVERS_LICENSE = "489663020J";
 
@@ -106,6 +111,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		when(sellerModelMock.getPostalCode()).thenReturn(POSTAL_CODE);
 		when(sellerModelMock.getAddressLine1()).thenReturn(ADDRESS_LINE_ONE);
 		when(sellerModelMock.getCountry()).thenReturn(COUNTRY);
+		when(sellerModelMock.getLanguage()).thenReturn(SHOP_LANGUAGE);
 		when(sellerModelMock.getStateProvince()).thenReturn(STATE_PROVINCE);
 		when(sellerModelMock.getToken()).thenReturn(USER_TOKEN);
 		when(sellerModelMock.getEmail()).thenReturn(EMAIL);
@@ -136,8 +142,8 @@ class SellerModelToHyperWalletUserConverterTest {
 
 		assertThat(result).hasAllNullFieldsOrPropertiesExcept("clientUserId", "businessName", "profileType",
 				"businessType", "addressLine1", "city", "stateProvince", "postalCode", "programToken", "country",
-				"token", "inclusions", "email", "businessRegistrationCountry", "businessRegistrationStateProvince",
-				"businessRegistrationId", "businessOperatingName");
+				"token", "inclusions", "email", "language", "businessRegistrationCountry",
+				"businessRegistrationStateProvince", "businessRegistrationId", "businessOperatingName");
 		assertThat(result.getClientUserId()).isEqualTo(CLIENT_USER_ID);
 		assertThat(result.getBusinessName()).isEqualTo(BUSINESS_NAME);
 		assertThat(result.getBusinessOperatingName()).isEqualTo(COMPANY_NAME);
@@ -145,6 +151,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		assertThat(result.getBusinessType()).isEqualTo(HyperwalletUser.BusinessType.PRIVATE_COMPANY);
 		assertThat(result.getAddressLine1()).isEqualTo(ADDRESS_LINE_ONE);
 		assertThat(result.getCity()).isEqualTo(CITY);
+		assertThat(result.getLanguage()).isEqualTo(HYPERWALET_LANGUAGE);
 		assertThat(result.getStateProvince()).isEqualTo(STATE_PROVINCE);
 		assertThat(result.getPostalCode()).isEqualTo(POSTAL_CODE);
 		assertThat(result.getProgramToken()).isEqualTo(PROGRAM_TOKEN);
@@ -166,8 +173,8 @@ class SellerModelToHyperWalletUserConverterTest {
 
 		assertThat(result).hasAllNullFieldsOrPropertiesExcept("clientUserId", "businessName", "profileType",
 				"businessType", "addressLine1", "city", "stateProvince", "postalCode", "programToken", "country",
-				"token", "inclusions", "email", "businessRegistrationCountry", "businessRegistrationStateProvince",
-				"businessRegistrationId", "businessOperatingName");
+				"token", "inclusions", "email", "language", "businessRegistrationCountry",
+				"businessRegistrationStateProvince", "businessRegistrationId", "businessOperatingName");
 		assertThat(result.getClientUserId()).isEqualTo(CLIENT_USER_ID);
 		assertThat(result.getBusinessName()).isEqualTo(COMPANY_NAME);
 		assertThat(result.getBusinessOperatingName()).isEqualTo(BUSINESS_NAME);
@@ -175,6 +182,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		assertThat(result.getBusinessType()).isEqualTo(HyperwalletUser.BusinessType.PRIVATE_COMPANY);
 		assertThat(result.getAddressLine1()).isEqualTo(ADDRESS_LINE_ONE);
 		assertThat(result.getCity()).isEqualTo(CITY);
+		assertThat(result.getLanguage()).isEqualTo(HYPERWALET_LANGUAGE);
 		assertThat(result.getStateProvince()).isEqualTo(STATE_PROVINCE);
 		assertThat(result.getPostalCode()).isEqualTo(POSTAL_CODE);
 		assertThat(result.getProgramToken()).isEqualTo(PROGRAM_TOKEN);
@@ -207,6 +215,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		assertThat(result.getAddressLine1()).isEqualTo(ADDRESS_LINE_ONE);
 		assertThat(result.getAddressLine2()).isEqualTo(ADDRESS_LINE_TWO);
 		assertThat(result.getCity()).isEqualTo(CITY);
+		assertThat(result.getLanguage()).isEqualTo(HYPERWALET_LANGUAGE);
 		assertThat(result.getStateProvince()).isEqualTo(STATE_PROVINCE);
 		assertThat(result.getCountry()).isEqualTo(COUNTRY);
 		assertThat(result.getPostalCode()).isEqualTo(POSTAL_CODE);

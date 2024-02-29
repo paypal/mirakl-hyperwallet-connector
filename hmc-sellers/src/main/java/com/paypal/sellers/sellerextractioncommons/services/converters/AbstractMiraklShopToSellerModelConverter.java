@@ -3,6 +3,7 @@ package com.paypal.sellers.sellerextractioncommons.services.converters;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.shop.MiraklContactInformation;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
+import com.mirakl.client.mmp.domain.shop.billing.MiraklDefaultBillingInformation;
 import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.infrastructure.support.strategy.StrategyExecutor;
 import com.paypal.sellers.bankaccountextraction.model.BankAccountModel;
@@ -26,6 +27,7 @@ public abstract class AbstractMiraklShopToSellerModelConverter implements Strate
 
 	protected SellerModel.SellerModelBuilder getCommonFieldsBuilder(final MiraklShop source) {
 		final MiraklContactInformation contactInformation = source.getContactInformation();
+		final MiraklDefaultBillingInformation defaultBillingInformation = source.getDefaultBillingInformation();
 		final List<MiraklAdditionalFieldValue> additionalFieldValues = source.getAdditionalFieldValues();
 		final BankAccountModel bankAccountModel = miraklShopBankAccountModelStrategyExecutor.execute(source);
 		//@formatter:off
@@ -43,6 +45,7 @@ public abstract class AbstractMiraklShopToSellerModelConverter implements Strate
 				.postalCode(contactInformation.getZipCode())
 				.stateProvince(contactInformation.getState())
 				.country(contactInformation.getCountry())
+				.language(defaultBillingInformation.getDefaultLanguage())
 				.timeZone(sellersMiraklApiConfig.getTimeZone())
 				.dateOfBirth(additionalFieldValues)
 				.passportId(additionalFieldValues)

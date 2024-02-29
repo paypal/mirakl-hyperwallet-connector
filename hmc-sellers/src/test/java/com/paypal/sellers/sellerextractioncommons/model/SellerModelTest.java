@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 import static com.paypal.sellers.sellerextractioncommons.model.SellerModelConstants.HYPERWALLET_TERMS_CONSENT;
@@ -231,7 +232,7 @@ class SellerModelTest {
 				.stateProvince("stateProvince")
 				.country("USA")
 				.postalCode("postalCode")
-				.language("language")
+				.language(Locale.US)
 				.programToken("programToken")
 				.businessType(List.of(businessTypeMiraklCustomField))
 				.businessName("businessName").token("token")
@@ -263,7 +264,7 @@ class SellerModelTest {
 				.hasFieldOrPropertyWithValue("stateProvince", "stateProvince")
 				.hasFieldOrPropertyWithValue("country", "US")
 				.hasFieldOrPropertyWithValue("postalCode", "postalCode")
-				.hasFieldOrPropertyWithValue("language", "language")
+				.hasFieldOrPropertyWithValue("language", Locale.US)
 				.hasFieldOrPropertyWithValue("programToken", "programToken")
 				.hasFieldOrPropertyWithValue("businessType", SellerBusinessType.CORPORATION)
 				.hasFieldOrPropertyWithValue("profileType", SellerProfileType.INDIVIDUAL)
@@ -489,7 +490,7 @@ class SellerModelTest {
 				.stateProvince("stateProvince")
 				.country("USA")
 				.postalCode("postalCode")
-				.language("language")
+				.language(Locale.US)
 				.programToken("programToken")
 				.businessType(List.of(businessTypeMiraklCustomField))
 				.businessName("businessName").token("token")

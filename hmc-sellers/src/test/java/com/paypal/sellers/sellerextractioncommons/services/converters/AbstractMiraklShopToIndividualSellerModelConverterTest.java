@@ -2,13 +2,13 @@ package com.paypal.sellers.sellerextractioncommons.services.converters;
 
 import com.mirakl.client.mmp.domain.shop.MiraklContactInformation;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
+import com.mirakl.client.mmp.domain.shop.billing.MiraklDefaultBillingInformation;
 import com.paypal.infrastructure.support.strategy.StrategyExecutor;
 import com.paypal.sellers.bankaccountextraction.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextraction.model.IBANBankAccountModel;
 import com.paypal.sellers.sellerextractioncommons.configuration.SellersMiraklApiConfig;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel.SellerModelBuilder;
-import com.paypal.sellers.sellerextractioncommons.services.converters.AbstractMiraklShopToSellerModelConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -36,6 +37,9 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 	private MiraklContactInformation contactInformationMock;
 
 	@Mock
+	private MiraklDefaultBillingInformation defaultBillingInformationMock;
+
+	@Mock
 	private StrategyExecutor<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyExecutor;
 
 	@Mock
@@ -47,6 +51,7 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 		when(miraklShopMock.getId()).thenReturn("shopId");
 		when(miraklShopMock.getName()).thenReturn("shopName");
 		when(miraklShopMock.getContactInformation()).thenReturn(contactInformationMock);
+		when(miraklShopMock.getDefaultBillingInformation()).thenReturn(defaultBillingInformationMock);
 		when(contactInformationMock.getFirstname()).thenReturn("firstName");
 		when(contactInformationMock.getLastname()).thenReturn("lastName");
 		when(contactInformationMock.getPhone()).thenReturn("phone");
@@ -58,6 +63,7 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 		when(contactInformationMock.getZipCode()).thenReturn("zipcode");
 		when(contactInformationMock.getState()).thenReturn("state");
 		when(contactInformationMock.getCountry()).thenReturn("USA");
+		when(defaultBillingInformationMock.getDefaultLanguage()).thenReturn(Locale.US);
 		// Not testing the builder part where it is converting and setting values from
 		// mirakl custom fields
 		when(miraklShopMock.getAdditionalFieldValues()).thenReturn(Collections.emptyList());
@@ -80,7 +86,8 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 				.hasFieldOrPropertyWithValue("postalCode", "zipcode")
 				.hasFieldOrPropertyWithValue("stateProvince", "state")
 				.hasFieldOrPropertyWithValue("country", "US")
-				.hasFieldOrPropertyWithValue("bankAccountDetails", IBANBankAccountModelMock);
+				.hasFieldOrPropertyWithValue("bankAccountDetails", IBANBankAccountModelMock)
+				.hasFieldOrPropertyWithValue("language", Locale.US);
 		//@formatter:on
 	}
 
@@ -90,6 +97,7 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 		when(miraklShopMock.getId()).thenReturn("shopId");
 		when(miraklShopMock.getName()).thenReturn("shopName");
 		when(miraklShopMock.getContactInformation()).thenReturn(contactInformationMock);
+		when(miraklShopMock.getDefaultBillingInformation()).thenReturn(defaultBillingInformationMock);
 		when(contactInformationMock.getFirstname()).thenReturn("firstName");
 		when(contactInformationMock.getLastname()).thenReturn("lastName");
 		when(contactInformationMock.getPhone()).thenReturn("phone");
@@ -101,6 +109,8 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 		when(contactInformationMock.getZipCode()).thenReturn("zipcode");
 		when(contactInformationMock.getState()).thenReturn("state");
 		when(contactInformationMock.getCountry()).thenReturn("USA");
+		when(defaultBillingInformationMock.getDefaultLanguage()).thenReturn(Locale.US);
+
 		// Not testing the builder part where it is converting and setting values from
 		// mirakl custom fields
 		when(miraklShopMock.getAdditionalFieldValues()).thenReturn(Collections.emptyList());
@@ -120,7 +130,9 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 				.hasFieldOrPropertyWithValue("postalCode", "zipcode")
 				.hasFieldOrPropertyWithValue("stateProvince", "state")
 				.hasFieldOrPropertyWithValue("country", "US")
-				.hasFieldOrPropertyWithValue("bankAccountDetails", null);
+				.hasFieldOrPropertyWithValue("bankAccountDetails", null)
+				.hasFieldOrPropertyWithValue("language", Locale.US);
+
 		//@formatter:on
 	}
 

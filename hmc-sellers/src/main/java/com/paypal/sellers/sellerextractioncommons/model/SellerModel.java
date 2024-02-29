@@ -70,7 +70,7 @@ public class SellerModel {
 
 	private final String postalCode;
 
-	private final String language;
+	private final Locale language;
 
 	private final String programToken;
 

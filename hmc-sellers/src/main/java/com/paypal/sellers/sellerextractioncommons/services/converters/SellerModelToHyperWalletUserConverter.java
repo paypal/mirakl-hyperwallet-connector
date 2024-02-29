@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.paypal.sellers.utils.LanguageConversion.toIso6391;
+
 @Service
 public class SellerModelToHyperWalletUserConverter implements Converter<SellerModel, HyperwalletUser> {
 
@@ -42,6 +44,7 @@ public class SellerModelToHyperWalletUserConverter implements Converter<SellerMo
 		hyperwalletUser.setCity(sellerModel.getCity());
 		hyperwalletUser.setStateProvince(sellerModel.getStateProvince());
 		hyperwalletUser.setPostalCode(sellerModel.getPostalCode());
+		hyperwalletUser.setLanguage(toIso6391(sellerModel.getLanguage()));
 		hyperwalletUser.setCountry(sellerModel.getCountry());
 		hyperwalletUser.setProgramToken(hyperwalletProgramsConfiguration
 				.getProgramConfiguration(sellerModel.getHyperwalletProgram()).getUsersProgramToken());
