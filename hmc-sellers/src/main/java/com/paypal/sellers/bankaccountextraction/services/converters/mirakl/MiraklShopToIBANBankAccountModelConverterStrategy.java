@@ -1,10 +1,10 @@
 package com.paypal.sellers.bankaccountextraction.services.converters.mirakl;
 
 import com.mirakl.client.mmp.domain.shop.MiraklContactInformation;
-import com.mirakl.client.mmp.domain.shop.MiraklProfessionalInformation;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklIbanBankAccountInformation;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklPaymentInformation;
+import com.mirakl.client.mmp.domain.shop.billing.MiraklDefaultBillingInformation;
 import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.sellers.bankaccountextraction.model.BankAccountModel;
 import com.paypal.sellers.bankaccountextraction.model.BankAccountType;
@@ -57,8 +57,9 @@ public class MiraklShopToIBANBankAccountModelConverterStrategy implements Strate
 				.type(BankAccountType.IBAN)
 				.bankBic(miraklIbanBankAccountInformation.getBic())
 				.bankAccountNumber(miraklIbanBankAccountInformation.getIban())
-				.businessName(Optional.ofNullable(source.getProfessionalInformation())
-						.map(MiraklProfessionalInformation::getCorporateName)
+				.businessName(Optional.ofNullable(source.getDefaultBillingInformation())
+						.map(MiraklDefaultBillingInformation::getCorporateInformation)
+						.map(MiraklDefaultBillingInformation.CorporateInformation::getCompanyRegistrationName)
 						.orElse(null))
 				.firstName(contactInformation.getFirstname())
 				.lastName(contactInformation.getLastname())

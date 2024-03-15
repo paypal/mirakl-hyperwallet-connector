@@ -45,14 +45,14 @@ class IsDuplicatedTest {
 	}
 
 	@Test
-	void test_ShouldReturnFalse_WhenThereIsOneNotificationWithTheSameWebHookToken() {
+	void test_ShouldReturnTrue_WhenThereIsOneNotificationWithTheSameWebHookToken() {
 
 		when(notificationStorageService.getNotificationsByWebHookToken(WEB_HOOK_TOKEN))
 				.thenReturn(List.of(new NotificationEntity()));
 
 		final boolean result = testObj.test(notificationEntityMock);
 
-		assertThat(result).isFalse();
+		assertThat(result).isTrue();
 	}
 
 	@Test

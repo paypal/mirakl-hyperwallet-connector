@@ -3,10 +3,10 @@ package com.paypal.sellers.bankaccountextraction.services.converters.mirakl;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.common.currency.MiraklIsoCurrencyCode;
 import com.mirakl.client.mmp.domain.shop.MiraklContactInformation;
-import com.mirakl.client.mmp.domain.shop.MiraklProfessionalInformation;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklAbaBankAccountInformation;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklIbanBankAccountInformation;
+import com.mirakl.client.mmp.domain.shop.billing.MiraklDefaultBillingInformation;
 import com.paypal.sellers.bankaccountextraction.model.ABABankAccountModel;
 import com.paypal.sellers.bankaccountextraction.model.BankAccountType;
 import com.paypal.sellers.bankaccountextraction.model.TransferType;
@@ -76,7 +76,10 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 	private MiraklAbaBankAccountInformation miraklABABankAccountInformationMock;
 
 	@Mock
-	private MiraklProfessionalInformation miraklProfessionalInformationMock;
+	private MiraklDefaultBillingInformation miraklDefaultBillingInformationMock;
+
+	@Mock
+	private MiraklDefaultBillingInformation.CorporateInformation miraklCorporateInformationMock;
 
 	@Mock
 	private MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue miraklBankAccountTokenFieldValueMock,
@@ -93,7 +96,8 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 		when(miraklShopMock.getContactInformation()).thenReturn(contactInformationMock);
 		when(miraklShopMock.getPaymentInformation()).thenReturn(miraklABABankAccountInformationMock);
 		when(miraklShopMock.getCurrencyIsoCode()).thenReturn(MiraklIsoCurrencyCode.USD);
-		when(miraklShopMock.getProfessionalInformation()).thenReturn(miraklProfessionalInformationMock);
+		when(miraklShopMock.getDefaultBillingInformation()).thenReturn(miraklDefaultBillingInformationMock);
+		when(miraklDefaultBillingInformationMock.getCorporateInformation()).thenReturn(miraklCorporateInformationMock);
 		when(miraklShopMock.getAdditionalFieldValues()).thenReturn(List.of(miraklBankAccountTokenFieldValueMock,
 				miraklBankAccountStateFieldValueMock, miraklHyperwalletProgramFieldValueMock));
 		when(miraklBankAccountTokenFieldValueMock.getCode()).thenReturn(HYPERWALLET_BANK_ACCOUNT_TOKEN);
@@ -113,7 +117,7 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 		when(miraklABABankAccountInformationMock.getBankAccountNumber()).thenReturn(ABA_ACCOUNT);
 		when(miraklABABankAccountInformationMock.getBankCity()).thenReturn(CITY_NAME);
 
-		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
+		when(miraklCorporateInformationMock.getCompanyRegistrationName()).thenReturn(BUSINESS_NAME);
 
 		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
 				USA_COUNTRY_ISO, USD_CURRENCY, TransferType.BANK_ACCOUNT);
@@ -147,7 +151,8 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 		when(miraklShopMock.getContactInformation()).thenReturn(contactInformationMock);
 		when(miraklShopMock.getPaymentInformation()).thenReturn(miraklABABankAccountInformationMock);
 		when(miraklShopMock.getCurrencyIsoCode()).thenReturn(MiraklIsoCurrencyCode.USD);
-		when(miraklShopMock.getProfessionalInformation()).thenReturn(miraklProfessionalInformationMock);
+		when(miraklShopMock.getDefaultBillingInformation()).thenReturn(miraklDefaultBillingInformationMock);
+		when(miraklDefaultBillingInformationMock.getCorporateInformation()).thenReturn(miraklCorporateInformationMock);
 		when(miraklShopMock.getAdditionalFieldValues()).thenReturn(List.of(miraklBankAccountTokenFieldValueMock,
 				miraklBankAccountStateFieldValueMock, miraklHyperwalletProgramFieldValueMock));
 		when(miraklBankAccountTokenFieldValueMock.getCode()).thenReturn(HYPERWALLET_BANK_ACCOUNT_TOKEN);
@@ -167,7 +172,7 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 		when(miraklABABankAccountInformationMock.getBankAccountNumber()).thenReturn(ABA_ACCOUNT);
 		when(miraklABABankAccountInformationMock.getBankCity()).thenReturn(CITY_NAME);
 
-		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(BUSINESS_NAME);
+		when(miraklCorporateInformationMock.getCompanyRegistrationName()).thenReturn(BUSINESS_NAME);
 		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
 				USA_COUNTRY_ISO, USD_CURRENCY, TransferType.BANK_ACCOUNT);
 		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.ABA.name(),

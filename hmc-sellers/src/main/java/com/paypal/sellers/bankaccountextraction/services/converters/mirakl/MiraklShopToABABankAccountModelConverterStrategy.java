@@ -1,10 +1,10 @@
 package com.paypal.sellers.bankaccountextraction.services.converters.mirakl;
 
 import com.mirakl.client.mmp.domain.shop.MiraklContactInformation;
-import com.mirakl.client.mmp.domain.shop.MiraklProfessionalInformation;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklAbaBankAccountInformation;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklPaymentInformation;
+import com.mirakl.client.mmp.domain.shop.billing.MiraklDefaultBillingInformation;
 import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.sellers.bankaccountextraction.model.ABABankAccountModel;
 import com.paypal.sellers.bankaccountextraction.model.BankAccountModel;
@@ -58,8 +58,9 @@ public class MiraklShopToABABankAccountModelConverterStrategy implements Strateg
 				.transferType(hyperwalletBankAccountCurrencyInfo.getTransferType())
 				.type(BankAccountType.ABA)
 				.bankAccountNumber(miraklAbaBankAccountInformation.getBankAccountNumber())
-				.businessName(Optional.ofNullable(source.getProfessionalInformation())
-						.map(MiraklProfessionalInformation::getCorporateName)
+				.businessName(Optional.ofNullable(source.getDefaultBillingInformation())
+						.map(MiraklDefaultBillingInformation::getCorporateInformation)
+						.map(MiraklDefaultBillingInformation.CorporateInformation::getCompanyRegistrationName)
 						.orElse(null))
 				.firstName(contactInformation.getFirstname())
 				.lastName(contactInformation.getLastname())

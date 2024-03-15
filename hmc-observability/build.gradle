@@ -9,7 +9,7 @@ dependencies {
 
 	inpath 'org.apache.httpcomponents:httpclient'
 	inpath 'com.hyperwallet:sdk:2.4.3'
-	inpath 'com.mirakl:mmp-sdk-operator:6.37.0'
+	inpath 'com.mirakl:mmp-sdk-operator:7.2.0'
 
 	testImplementation project(":hmc-testsupport")
 }

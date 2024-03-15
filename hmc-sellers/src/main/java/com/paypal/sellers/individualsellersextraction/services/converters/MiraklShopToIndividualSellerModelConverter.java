@@ -7,6 +7,7 @@ import com.paypal.sellers.sellerextractioncommons.configuration.SellersMiraklApi
 import com.paypal.sellers.sellerextractioncommons.services.converters.AbstractMiraklShopToSellerModelConverter;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import com.paypal.sellers.sellerextractioncommons.model.SellerProfileType;
+import com.paypal.sellers.utils.LanguageConverter;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,8 +15,8 @@ public class MiraklShopToIndividualSellerModelConverter extends AbstractMiraklSh
 
 	protected MiraklShopToIndividualSellerModelConverter(
 			final StrategyExecutor<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyExecutor,
-			final SellersMiraklApiConfig sellersMiraklApiConfig) {
-		super(miraklShopBankAccountModelStrategyExecutor, sellersMiraklApiConfig);
+			final SellersMiraklApiConfig sellersMiraklApiConfig, final LanguageConverter languageConversion) {
+		super(miraklShopBankAccountModelStrategyExecutor, sellersMiraklApiConfig, languageConversion);
 	}
 
 	/**

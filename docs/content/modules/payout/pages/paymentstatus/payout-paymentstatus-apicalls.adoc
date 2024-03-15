@@ -12,4 +12,5 @@ a| * `invoice_id`: invoice identifier
 * `currency_iso_code`: ISO code for the currency used in the payment.
 * `amount`: Amount of the invoice.
 * `transaction_date`: Invoice transaction date.
+* `confirm_all_linked_manual_documents`: Confirm the payment of each manual accounting document present in the billing cycle.
 |===

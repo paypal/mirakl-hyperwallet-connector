@@ -1,8 +1,8 @@
 package com.paypal.sellers.professionalsellersextraction.services.converters;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
-import com.mirakl.client.mmp.domain.shop.MiraklProfessionalInformation;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
+import com.mirakl.client.mmp.domain.shop.billing.MiraklDefaultBillingInformation;
 import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.support.strategy.StrategyExecutor;
 import com.paypal.sellers.bankaccountextraction.model.BankAccountModel;
@@ -10,13 +10,18 @@ import com.paypal.sellers.sellerextractioncommons.configuration.SellersMiraklApi
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import com.paypal.sellers.sellerextractioncommons.model.SellerProfileType;
 import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
+import com.paypal.sellers.utils.LanguageConverter;
 import org.apache.commons.lang3.tuple.Triple;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 
@@ -37,6 +42,10 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 
 	private static final String STATE_PROVINCE_VALUE = "stateProvince";
 
+	private static final String COUNTRIES_NOT_LOCAL_TAX = "countriesNotLocalTax";
+
+	private static final String LOCAL_VAT_NUMBER = "localTaxNumber";
+
 	@Spy
 	@InjectMocks
 	private MyMiraklShopToProfessionalSellerModelConverter testObj;
@@ -48,7 +57,13 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 	private Converter<Triple<List<MiraklAdditionalFieldValue>, Integer, String>, BusinessStakeHolderModel> businessStakeHolderModelConverterMock;
 
 	@Mock
-	private MiraklProfessionalInformation miraklProfessionalInformationMock;
+	private MiraklDefaultBillingInformation miraklDefaultBillingInformationMock;
+
+	@Mock
+	private MiraklDefaultBillingInformation.CorporateInformation miraklCorporateInformationMock;
+
+	@Mock
+	private MiraklDefaultBillingInformation.FiscalInformation miraklFiscalInformationMock;
 
 	@Mock
 	private MiraklAdditionalFieldValue tokenOneAdditionalFieldMock, businessOneAdditionalFieldMock,
@@ -77,12 +92,20 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 	@Mock
 	private BusinessStakeHolderModel businessStakeHolderModelOneMock, businessStakeHolderModelTwoMock;
 
+	@BeforeEach
+	void setUp() {
+		final List<String> countriesNotLocalTax = List.of("KOR", "USA");
+		ReflectionTestUtils.setField(testObj, COUNTRIES_NOT_LOCAL_TAX, countriesNotLocalTax);
+	}
+
 	@Test
 	void execute_shouldSetProfileTypeToIndividual() {
-		when(miraklShopMock.getProfessionalInformation()).thenReturn(miraklProfessionalInformationMock);
-		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(CORP_NAME);
-		when(miraklProfessionalInformationMock.getIdentificationNumber()).thenReturn(IDENTIFICATION_NUMBER);
-		when(miraklProfessionalInformationMock.getTaxIdentificationNumber()).thenReturn(VAT_NUMBER);
+		when(miraklShopMock.getDefaultBillingInformation()).thenReturn(miraklDefaultBillingInformationMock);
+		when(miraklDefaultBillingInformationMock.getCorporateInformation()).thenReturn(miraklCorporateInformationMock);
+		when(miraklDefaultBillingInformationMock.getFiscalInformation()).thenReturn(miraklFiscalInformationMock);
+		when(miraklCorporateInformationMock.getCompanyRegistrationName()).thenReturn(CORP_NAME);
+		when(miraklCorporateInformationMock.getCompanyRegistrationNumber()).thenReturn(IDENTIFICATION_NUMBER);
+		when(miraklFiscalInformationMock.getLocalTaxNumber()).thenReturn(VAT_NUMBER);
 
 		final MiraklStringAdditionalFieldValue businessRegistrationStateProvinceMiraklCustomField = new MiraklStringAdditionalFieldValue();
 		businessRegistrationStateProvinceMiraklCustomField.setCode("hw-business-reg-state-province");
@@ -110,11 +133,13 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 
 	@Test
 	void execute_shouldConvertMiraklBusinessStakeHolderAttributesIntoListOfBusinessStakeHolderModel() {
-		when(miraklShopMock.getProfessionalInformation()).thenReturn(miraklProfessionalInformationMock);
-		when(miraklProfessionalInformationMock.getCorporateName()).thenReturn(CORP_NAME);
+		when(miraklShopMock.getDefaultBillingInformation()).thenReturn(miraklDefaultBillingInformationMock);
+		when(miraklDefaultBillingInformationMock.getCorporateInformation()).thenReturn(miraklCorporateInformationMock);
+		when(miraklDefaultBillingInformationMock.getFiscalInformation()).thenReturn(miraklFiscalInformationMock);
 		when(miraklShopMock.getId()).thenReturn(CLIENT_ID_1);
-		when(miraklProfessionalInformationMock.getIdentificationNumber()).thenReturn(IDENTIFICATION_NUMBER);
-		when(miraklProfessionalInformationMock.getTaxIdentificationNumber()).thenReturn(VAT_NUMBER);
+		when(miraklCorporateInformationMock.getCompanyRegistrationName()).thenReturn(CORP_NAME);
+		when(miraklCorporateInformationMock.getCompanyRegistrationNumber()).thenReturn(IDENTIFICATION_NUMBER);
+		when(miraklFiscalInformationMock.getLocalTaxNumber()).thenReturn(VAT_NUMBER);
 
 		final List<MiraklAdditionalFieldValue> additionalFieldValues = List.of(tokenOneAdditionalFieldMock,
 				businessOneAdditionalFieldMock, directorOneAdditionalFieldMock, uboOneAdditionalFieldMock,
@@ -180,14 +205,43 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 		assertThat(result).isFalse();
 	}
 
+	@ParameterizedTest
+	@ValueSource(strings = { "", " ", "ESP", "FRA" })
+	void getTaxNumber_shouldReturnLocalTaxNumberWhenTaxIdentificationCountryIsBlankOrNotMatch(final String country) {
+		when(miraklFiscalInformationMock.getLocalTaxNumber()).thenReturn(LOCAL_VAT_NUMBER);
+		when(miraklFiscalInformationMock.getTaxIdentificationCountry()).thenReturn(country);
+
+		final String result = testObj.getTaxNumber(miraklFiscalInformationMock);
+		assertThat(result).isEqualTo(LOCAL_VAT_NUMBER);
+	}
+
+	@Test
+	void getTaxNumber_shouldReturnLocalTaxNumberWhenTaxIdentificationCountryIsNull() {
+		when(miraklFiscalInformationMock.getLocalTaxNumber()).thenReturn(LOCAL_VAT_NUMBER);
+		when(miraklFiscalInformationMock.getTaxIdentificationCountry()).thenReturn(null);
+
+		final String result = testObj.getTaxNumber(miraklFiscalInformationMock);
+		assertThat(result).isEqualTo(LOCAL_VAT_NUMBER);
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = { "USA", "KOR" })
+	void getTaxNumber_shouldReturnTaxIdentificationNumberWhenTaxIdentificationCountryMatch(final String country) {
+		when(miraklFiscalInformationMock.getTaxIdentificationNumber()).thenReturn(VAT_NUMBER);
+		when(miraklFiscalInformationMock.getTaxIdentificationCountry()).thenReturn(country);
+
+		final String result = testObj.getTaxNumber(miraklFiscalInformationMock);
+		assertThat(result).isEqualTo(VAT_NUMBER);
+	}
+
 	static class MyMiraklShopToProfessionalSellerModelConverter extends MiraklShopToProfessionalSellerModelConverter {
 
 		protected MyMiraklShopToProfessionalSellerModelConverter(
 				final StrategyExecutor<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyExecutor,
 				final Converter<Triple<List<MiraklAdditionalFieldValue>, Integer, String>, BusinessStakeHolderModel> pairBusinessStakeHolderModelConverter,
-				final SellersMiraklApiConfig sellersMiraklApiConfig) {
+				final SellersMiraklApiConfig sellersMiraklApiConfig, final LanguageConverter languageConversion) {
 			super(miraklShopBankAccountModelStrategyExecutor, pairBusinessStakeHolderModelConverter,
-					sellersMiraklApiConfig);
+					sellersMiraklApiConfig, languageConversion);
 		}
 
 		@Override
