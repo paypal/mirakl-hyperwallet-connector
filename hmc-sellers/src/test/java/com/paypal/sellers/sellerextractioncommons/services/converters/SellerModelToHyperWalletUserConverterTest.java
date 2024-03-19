@@ -80,6 +80,8 @@ class SellerModelToHyperWalletUserConverterTest {
 
 	private static final String NEW_USER_MAPPING_ENABLED = "newUserMappingEnabled";
 
+	private static final String LANGUAGE = "en";
+
 	@InjectMocks
 	private SellerModelToHyperWalletUserConverter testObj;
 
@@ -126,6 +128,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		lenient().when(sellerModelMock.getPassportId()).thenReturn(PASSPORT_ID);
 		lenient().when(sellerModelMock.getMobilePhone()).thenReturn(MOBILE_PHONE);
 		lenient().when(sellerModelMock.getCompanyName()).thenReturn(COMPANY_NAME);
+		lenient().when(sellerModelMock.getLanguage()).thenReturn(LANGUAGE);
 	}
 
 	@Test
@@ -137,7 +140,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		assertThat(result).hasAllNullFieldsOrPropertiesExcept("clientUserId", "businessName", "profileType",
 				"businessType", "addressLine1", "city", "stateProvince", "postalCode", "programToken", "country",
 				"token", "inclusions", "email", "businessRegistrationCountry", "businessRegistrationStateProvince",
-				"businessRegistrationId", "businessOperatingName");
+				"businessRegistrationId", "businessOperatingName", "language");
 		assertThat(result.getClientUserId()).isEqualTo(CLIENT_USER_ID);
 		assertThat(result.getBusinessName()).isEqualTo(BUSINESS_NAME);
 		assertThat(result.getBusinessOperatingName()).isEqualTo(COMPANY_NAME);
@@ -154,6 +157,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		assertThat(result.getBusinessRegistrationCountry()).isEqualTo(COMPANY_REGISTRATION_COUNTRY);
 		assertThat(result.getBusinessRegistrationStateProvince()).isEqualTo(BUSINESS_REGISTRATION_STATE_PROVINCE);
 		assertThat(result.getBusinessRegistrationId()).isEqualTo(COMPANY_REGISTRATION_NUMBER);
+		assertThat(result.getLanguage()).isEqualTo(LANGUAGE);
 	}
 
 	@Test
@@ -167,7 +171,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		assertThat(result).hasAllNullFieldsOrPropertiesExcept("clientUserId", "businessName", "profileType",
 				"businessType", "addressLine1", "city", "stateProvince", "postalCode", "programToken", "country",
 				"token", "inclusions", "email", "businessRegistrationCountry", "businessRegistrationStateProvince",
-				"businessRegistrationId", "businessOperatingName");
+				"businessRegistrationId", "businessOperatingName", "language");
 		assertThat(result.getClientUserId()).isEqualTo(CLIENT_USER_ID);
 		assertThat(result.getBusinessName()).isEqualTo(COMPANY_NAME);
 		assertThat(result.getBusinessOperatingName()).isEqualTo(BUSINESS_NAME);
@@ -184,6 +188,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		assertThat(result.getBusinessRegistrationCountry()).isEqualTo(COMPANY_REGISTRATION_COUNTRY);
 		assertThat(result.getBusinessRegistrationStateProvince()).isEqualTo(BUSINESS_REGISTRATION_STATE_PROVINCE);
 		assertThat(result.getBusinessRegistrationId()).isEqualTo(COMPANY_REGISTRATION_NUMBER);
+		assertThat(result.getLanguage()).isEqualTo(LANGUAGE);
 	}
 
 	@Test
@@ -215,6 +220,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		assertThat(result.getBusinessType()).isEqualTo(HyperwalletUser.BusinessType.PRIVATE_COMPANY);
 		assertThat(result.getGovernmentIdType()).isEqualTo(HyperwalletUser.GovernmentIdType.NATIONAL_ID_CARD);
 		assertThat(result.getToken()).isEqualTo(USER_TOKEN);
+		assertThat(result.getLanguage()).isEqualTo(LANGUAGE);
 	}
 
 }

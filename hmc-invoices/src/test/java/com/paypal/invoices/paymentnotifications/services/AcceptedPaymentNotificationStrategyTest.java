@@ -77,6 +77,35 @@ class AcceptedPaymentNotificationStrategyTest {
 		assertThat(accountingDocuments.get(0).getCurrencyIsoCode()).isEqualTo(MiraklIsoCurrencyCode.EUR);
 		assertThat(accountingDocuments.get(0).getTransactionDate()).isEqualTo(DateUtil.convertToDate(CREATED_ON,
 				HyperWalletConstants.HYPERWALLET_DATE_FORMAT, TimeZone.getTimeZone("UTC")));
+		assertThat(accountingDocuments.get(0).isConfirmLinkedManualDocuments()).isFalse();
+	}
+
+	@Test
+	void execute_shouldSendConfirmationPaymentToMiraklConfirmingLinkedManualDocuments() {
+		when(paymentNotificationConfigMock.isConfirmLinkedManualDocuments()).thenReturn(true);
+
+		when(paymentNotificationBodyModelMock.getAmount()).thenReturn(AMOUNT);
+		when(paymentNotificationBodyModelMock.getClientPaymentId()).thenReturn(INVOICE_ID);
+		when(paymentNotificationBodyModelMock.getCurrency()).thenReturn(CURRENCY_EUR_ISO_CODE);
+		when(paymentNotificationBodyModelMock.getCreatedOn()).thenReturn(CREATED_ON);
+
+		testObj.execute(paymentNotificationBodyModelMock);
+
+		verify(miraklClientMock).confirmAccountingDocumentPayment(
+				miraklConfirmAccountingDocumentPaymentRequestArgumentCaptor.capture());
+
+		final MiraklConfirmAccountingDocumentPaymentRequest miraklConfirmAccountingDocumentPaymentRequest = miraklConfirmAccountingDocumentPaymentRequestArgumentCaptor
+				.getValue();
+		final List<MiraklAccountingDocumentPaymentConfirmation> accountingDocuments = miraklConfirmAccountingDocumentPaymentRequest
+				.getAccountingDocuments();
+
+		assertThat(miraklConfirmAccountingDocumentPaymentRequest.getAccountingDocuments()).hasSize(1);
+		assertThat(accountingDocuments.get(0).getAmount()).isEqualTo(AMOUNT);
+		assertThat(accountingDocuments.get(0).getInvoiceId()).isEqualTo(Long.valueOf(INVOICE_ID));
+		assertThat(accountingDocuments.get(0).getCurrencyIsoCode()).isEqualTo(MiraklIsoCurrencyCode.EUR);
+		assertThat(accountingDocuments.get(0).getTransactionDate()).isEqualTo(DateUtil.convertToDate(CREATED_ON,
+				HyperWalletConstants.HYPERWALLET_DATE_FORMAT, TimeZone.getTimeZone("UTC")));
+		assertThat(accountingDocuments.get(0).isConfirmLinkedManualDocuments()).isTrue();
 	}
 
 	@Test

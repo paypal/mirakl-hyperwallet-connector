@@ -19,4 +19,7 @@ public class PaymentNotificationConfig {
 	@Value("#{'${hmc.webhooks.payments.accepted-statuses}'}")
 	private Set<String> acceptedStatuses;
 
+	@Value("#{'${hmc.webhooks.payments.confirm-linked-manual-documents}'}")
+	private boolean confirmLinkedManualDocuments;
+
 }

@@ -3,10 +3,10 @@ package com.paypal.sellers.individualsellersextraction.services.converters;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.paypal.infrastructure.support.strategy.StrategyExecutor;
 import com.paypal.sellers.bankaccountextraction.model.BankAccountModel;
-import com.paypal.sellers.individualsellersextraction.services.converters.MiraklShopToIndividualSellerModelConverter;
 import com.paypal.sellers.sellerextractioncommons.configuration.SellersMiraklApiConfig;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import com.paypal.sellers.sellerextractioncommons.model.SellerProfileType;
+import com.paypal.sellers.utils.LanguageConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -60,8 +60,8 @@ class MiraklShopToIndividualSellerModelConverterTest {
 
 		protected MyMiraklShopToIndividualSellerModelConverter(
 				final StrategyExecutor<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyExecutor,
-				final SellersMiraklApiConfig sellersMiraklApiConfig) {
-			super(miraklShopBankAccountModelStrategyExecutor, sellersMiraklApiConfig);
+				final SellersMiraklApiConfig sellersMiraklApiConfig, final LanguageConverter languageConversion) {
+			super(miraklShopBankAccountModelStrategyExecutor, sellersMiraklApiConfig, languageConversion);
 		}
 
 		@Override

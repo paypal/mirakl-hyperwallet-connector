@@ -28,8 +28,8 @@ public class IsDuplicated extends AbstractNotificationPredicate implements Predi
 	@Override
 	public boolean test(final NotificationEntity notificationEntity) {
 
-		final boolean isDuplicated = super.notificationStorageService
-				.getNotificationsByWebHookToken(notificationEntity.getWebHookToken()).size() > 1;
+		final boolean isDuplicated = !super.notificationStorageService
+				.getNotificationsByWebHookToken(notificationEntity.getWebHookToken()).isEmpty();
 
 		if (isDuplicated) {
 			log.warn("Duplicated notification: [{}]", notificationEntity.getWebHookToken());

@@ -47,6 +47,7 @@ public class SellerModelToHyperWalletUserConverter implements Converter<SellerMo
 				.getProgramConfiguration(sellerModel.getHyperwalletProgram()).getUsersProgramToken());
 		hyperwalletUser.setToken(sellerModel.getToken());
 		hyperwalletUser.setEmail(sellerModel.getEmail());
+		hyperwalletUser.setLanguage(sellerModel.getLanguage());
 
 		if (HyperwalletUser.ProfileType.BUSINESS.equals(profileType)) {
 			hyperwalletUser.setBusinessRegistrationCountry(sellerModel.getCompanyRegistrationCountry());

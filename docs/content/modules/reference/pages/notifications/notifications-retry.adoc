@@ -23,7 +23,6 @@ The connector reads the configuration from the following configuration variables
 * `PAYPAL_HYPERWALLET_MAX_AMOUNT_OF_NOTIFICATION_RETRIES`, determines the maximum number of attempts allowed for each notification. Set to `5` by default
 
 * `PAYPAL_HYPERWALLET_RETRY_FAILED_NOTIFICATIONS_CRON_EXPRESSION`, used to configure the periodicity of the retry job.
-
 === Email alerts
 
 The connector sends an email to the operator when all the retries of a notification fails. The email includes the following details:

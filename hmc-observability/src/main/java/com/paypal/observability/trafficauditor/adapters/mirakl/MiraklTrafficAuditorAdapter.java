@@ -100,7 +100,14 @@ public class MiraklTrafficAuditorAdapter extends AbstractTrafficAuditorAdapter<H
 	}
 
 	private String getUrl(final HttpRequest request) {
-		return request.getRequestLine().getUri();
+		String uri = request.getRequestLine().getUri();
+		final Header host = Arrays.stream(request.getHeaders("Host")).findFirst().orElse(null);
+
+		if (null != host && !host.getValue().isEmpty()) {
+			uri = "https://" + host.getValue() + uri;
+		}
+
+		return uri;
 	}
 
 	@SneakyThrows

@@ -38,10 +38,9 @@ public class NotificationProcessingServiceImpl implements NotificationProcessing
 	public void processNotification(final HyperwalletWebhookNotification incomingNotificationDTO) {
 		final NotificationEntity notificationEntity = notificationConverter.convert(incomingNotificationDTO);
 
-		notificationStorageService.saveNotification(notificationEntity);
-
 		if (notificationEntityEvaluator.isProcessable(notificationEntity)) {
 			hyperwalletWebhookNotificationSenderStrategyExecutor.execute(incomingNotificationDTO);
+			notificationStorageService.saveNotification(notificationEntity);
 		}
 	}
 
