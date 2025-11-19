@@ -1,11 +1,8 @@
 package com.paypal.notifications.storage.repositories.entities;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,6 +11,8 @@ import java.util.Date;
  */
 @Entity
 @Data
+@Table(name = "NOTIFICATION_ENTITY", indexes = { @Index(name = "wbh_token_idx", columnList = "webHookToken"),
+		@Index(name = "obj_token_idx", columnList = "objectToken,creationDate") })
 public class NotificationEntity implements Serializable {
 
 	@Id
