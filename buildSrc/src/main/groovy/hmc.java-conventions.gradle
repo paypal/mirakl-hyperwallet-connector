@@ -27,7 +27,7 @@ repositories {
 			username "$System.env.PAYPAL_MIRAKL_SDK_USER"
 			password "$System.env.PAYPAL_MIRAKL_SDK_PASSWORD"
 		}
-		url "https://artifactory.mirakl.net/artifactory/mirakl-ext-repo/"
+		url "https://packages.mirakl.net/artifactory/mirakl-repo"
 	}
 }
 
