@@ -36,6 +36,12 @@ public class NotificationProcessingServiceImpl implements NotificationProcessing
 	 */
 	@Override
 	public void processNotification(final HyperwalletWebhookNotification incomingNotificationDTO) {
+		if (incomingNotificationDTO == null) {
+			log.warn(
+					"Skipping notification processing - incoming notification is null (likely deleted/missing in Hyperwallet).");
+			return;
+		}
+
 		final NotificationEntity notificationEntity = notificationConverter.convert(incomingNotificationDTO);
 
 		if (notificationEntityEvaluator.isProcessable(notificationEntity)) {

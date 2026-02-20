@@ -10,10 +10,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,6 +33,9 @@ class FailedNotificationServiceImplTest {
 
 	@InjectMocks
 	private FailedNotificationServiceImpl testObj;
+
+	@Mock
+	private FailedNotificationRetryMarker retryMarkerMock;
 
 	@Mock
 	private NotificationsRepository notificationsRepositoryMock;
@@ -48,6 +55,7 @@ class FailedNotificationServiceImplTest {
 
 	@Test
 	void processFailedNotifications_whenFailedNotificationsExist_shouldProcessFailedNotifications_andSkipNotificationsThatCantBeFetched() {
+		ReflectionTestUtils.setField(testObj, "maxRetries", 5);
 		when(failedNotificationInformationRepositoryMock.findAll()).thenReturn(
 				List.of(notificationInfoEntity1Mock, notificationInfoEntity2Mock, notificationInfoEntity3Mock));
 		when(notificationInfoEntity1Mock.getNotificationToken()).thenReturn(TOKEN_1);
@@ -68,4 +76,40 @@ class FailedNotificationServiceImplTest {
 		verify(notificationProcessingServiceMock).processNotification(hyperwalletWebhookNotification2Mock);
 	}
 
+	@Test
+	void processFailedNotifications_whenMaxRetriesReached_shouldExpireAndSkipProcessing() {
+		ReflectionTestUtils.setField(testObj, "maxRetries", 0);
+
+		when(failedNotificationInformationRepositoryMock.findAll()).thenReturn(List.of(notificationInfoEntity1Mock));
+		when(notificationInfoEntity1Mock.getNotificationToken()).thenReturn(TOKEN_1);
+		when(notificationInfoEntity1Mock.getRetryCounter()).thenReturn(0);
+
+		testObj.processFailedNotifications();
+
+		verify(retryMarkerMock).expireAndRemove(TOKEN_1);
+		verifyNoInteractions(notificationsRepositoryMock);
+		verifyNoInteractions(notificationProcessingServiceMock);
+		verify(retryMarkerMock, never()).incrementFailures(anyString());
+		verify(retryMarkerMock, never()).markSucceededAndRemove(anyString());
+	}
+
+	@Test
+	void processFailedNotifications_whenRetryCounterIsNull_shouldTreatAsZeroAndProcess() {
+		ReflectionTestUtils.setField(testObj, "maxRetries", 5);
+
+		when(failedNotificationInformationRepositoryMock.findAll()).thenReturn(List.of(notificationInfoEntity1Mock));
+		when(notificationInfoEntity1Mock.getNotificationToken()).thenReturn(TOKEN_1);
+		when(notificationInfoEntity1Mock.getProgram()).thenReturn(PROGRAM_TOKEN);
+		when(notificationInfoEntity1Mock.getRetryCounter()).thenReturn(0);
+
+		when(notificationsRepositoryMock.getHyperwalletWebhookNotification(PROGRAM_TOKEN, TOKEN_1))
+				.thenReturn(hyperwalletWebhookNotification1Mock);
+
+		testObj.processFailedNotifications();
+
+		verify(notificationProcessingServiceMock).processNotification(hyperwalletWebhookNotification1Mock);
+		verify(retryMarkerMock).markSucceededAndRemove(TOKEN_1);
+		verify(retryMarkerMock, never()).expireAndRemove(anyString());
+		verify(retryMarkerMock, never()).incrementFailures(anyString());
+	}
 }

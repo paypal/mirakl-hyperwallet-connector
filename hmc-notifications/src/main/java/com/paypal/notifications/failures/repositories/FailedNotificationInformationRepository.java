@@ -4,6 +4,9 @@ import com.paypal.notifications.storage.repositories.entities.NotificationInfoEn
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,4 +23,18 @@ public interface FailedNotificationInformationRepository extends JpaRepository<N
 
 	Page<NotificationInfoEntity> findByTypeAndTarget(Pageable pageable, String type, String target);
 
+	@Modifying
+	@Query("""
+        update NotificationInfoEntity n
+        set n.retryCounter = coalesce(n.retryCounter, 0) + 1
+        where n.notificationToken = :token
+    """)
+	int incrementRetryCounter(@Param("token") String token);
+
+	@Modifying
+	@Query("""
+        delete from NotificationInfoEntity n
+        where n.notificationToken = :token
+    """)
+	int deleteByNotificationToken(@Param("token") String token);
 }
