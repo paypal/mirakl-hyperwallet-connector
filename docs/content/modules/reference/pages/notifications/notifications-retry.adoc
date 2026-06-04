@@ -1,34 +1,105 @@
 == Retry mechanism
 
-The connector retries the processing of the notifications received from Hyperwallet in case it's impossible to upload the information in Mirakl. 
+The connector retries the processing of notifications that could not be delivered to Mirakl or Hyperwallet due to transient errors (for example, connection issues or temporary service unavailability).
 
-=== Functionality behaviour
+=== How retries work
 
-The connector uses an internal database to support the retry functionality without storing sensitive information. A periodical job retrieve such notifications from Hyperwallet and then tries to update Mirakl again until they reach the maximum number of attempts allowed.
+All notifications are stored in the `NotificationEntity` table from the moment they arrive (see xref:notifications-handling.adoc[Storing and processing]). When processing a notification fails, the connector:
 
-When a failed notification is stored in the database and a new one is received, the connector checks the following cases:
+. Increments the `retryCounter` on the entity.
+. Sets `status` to `RETRYING`.
+. Computes a `nextRetryDate` using an exponential back-off formula:
 
-* *Identical existing notification*, the connector skips the notification, as it's identical to the previous one.
-* *Updated existing notification*, the connector receives a notification for the same item (e.g., a user) with a creation date later than the one stored. In this cases the connector processes the received notification and drops the old one.
-* *Outdated existing notification*, the connector receives a notification for the same item (e.g., a user) with a creation date before the stored one. In this cases the connector ignores the received notification.
+ nextRetryDate = now + initialRetryDelay × backoffMultiplier^(retryCounter - 1)
 
-When all retry attempts for a notification are exhausted, the connector removes it from the database and sends an email to the operator.
+With the default values (`initialRetryDelay = PT1M`, `backoffMultiplier = 2.0`) the retry schedule for a notification that fails on every attempt is:
 
-=== Configuration
+[cols="1,1"]
+|===
+|Attempt |Delay before next retry
 
-The connector reads the configuration from the following configuration variables:
+|1st failure |1 minute
+|2nd failure |2 minutes
+|3rd failure |4 minutes
+|4th failure |8 minutes
+|5th failure (final) |— (marked `FAILED`)
 
-* `PAYPAL_HYPERWALLET_RETRY_NOTIFICATIONS`, set to `true` to enable retries, or `false` to deactivate them. Set to `true` by default.
+|===
 
-* `PAYPAL_HYPERWALLET_MAX_AMOUNT_OF_NOTIFICATION_RETRIES`, determines the maximum number of attempts allowed for each notification. Set to `5` by default
+The <<notification-process-job,Notification Processing Job>> only picks up `RETRYING` entries whose `nextRetryDate` is in the past, ensuring the back-off window is respected.
 
-* `PAYPAL_HYPERWALLET_RETRY_FAILED_NOTIFICATIONS_CRON_EXPRESSION`, used to configure the periodicity of the retry job.
+When all retry attempts for a notification are exhausted, the entry is set to `FAILED` and the connector sends an email alert to the operator. Failed entries are never retried again automatically, but they can be managed through the xref:notifications-handling.adoc#management-api[Failed Notifications Management API].
+
+=== Incoming notifications while retrying
+
+When a new notification is received and a `PENDING` or `RETRYING` entry for the same object already exists, the connector checks the incoming notification's creation date:
+
+* *Identical*: same webhook token — the incoming notification is a duplicate and is discarded.
+* *Newer*: later creation date — the incoming notification is enqueued and the existing `PENDING`/`RETRYING` entry is marked `OUTDATED` (it will be skipped by the job).
+* *Older*: earlier creation date — the incoming notification is obsolete and is discarded without touching the existing entry.
+
+=== Failed Notifications Management API
+[[management-api]]
+
+The connector exposes a management REST API that lets operators inspect and manage notifications that are in `FAILED` or `RETRYING` state. This API is gated behind the `hmc.toggle-features.management-api` feature toggle.
+
+[cols="1,1,3"]
+|===
+|HTTP Method |Path |Description
+
+|`GET`
+|`/management/failed-notifications/`
+|Returns a paged list of `FAILED` and `RETRYING` notifications. Supports optional `type` (notification type, e.g. `USR`) and `target` (object token) query parameters for filtering.
+
+|`GET`
+|`/management/failed-notifications/{notificationToken}`
+|Returns a single notification by its webhook token. Returns `404` if not found.
+
+|`POST`
+|`/management/failed-notifications/`
+|Adds a new entry directly with `FAILED` status (useful for manual re-injection).
+
+|`PUT`
+|`/management/failed-notifications/{notificationToken}`
+|Updates mutable fields (e.g. `retryCounter`, `program`) of an existing entry. Returns `404` if not found.
+
+|`PUT`
+|`/management/failed-notifications/`
+|Replaces the entire list of `FAILED` and `RETRYING` entries — deletes all existing entries and persists the provided list.
+
+|`DELETE`
+|`/management/failed-notifications/{notificationToken}`
+|Deletes a single entry by webhook token. Returns `404` if not found.
+
+|===
+
+NOTE: Both `FAILED` and `RETRYING` notifications are returned by `GET /management/failed-notifications/`. Compare the `retryCounter` field against the configured `PAYPAL_HYPERWALLET_MAX_AMOUNT_OF_NOTIFICATION_RETRIES` value to determine whether a notification has exhausted all retries or is still being reattempted.
+
 === Email alerts
 
-The connector sends an email to the operator when all the retries of a notification fails. The email includes the following details:
+The connector sends an email to the operator when all retry attempts for a notification are exhausted. The email contains the following information:
 
 ....
 Subject: [HMC] Technical error occurred when processing the notification <NOTIFICATION_TOKEN>
 
-Body: There was an error processing the notification <NOTIFICATION_TOKEN> and the operation could not be completed. The maximum number of attempts <NOTIFICATION_TOKEN> has been reached, therefore it will not try to re-process the notification anymore. Please check the logs for further information.
+Body: There was an error processing the notification <NOTIFICATION_TOKEN> and the operation
+could not be completed. The maximum number of attempts has been reached, therefore it will
+not try to re-process the notification anymore. Please check the logs for further information.
 ....
+
+=== Configuration
+
+The retry behaviour is controlled by the following environment variables (see also xref:configuration:configvars/configvars.adoc#configvars-notifications[Notification configuration variables]):
+
+* `PAYPAL_HYPERWALLET_MAX_AMOUNT_OF_NOTIFICATION_RETRIES` — maximum number of processing attempts per notification. Default: `5`.
+* `PAYPAL_HYPERWALLET_NOTIFICATION_INITIAL_RETRY_DELAY` — ISO-8601 duration for the delay before the first retry. Default: `PT1M` (1 minute).
+* `PAYPAL_HYPERWALLET_NOTIFICATION_RETRY_BACKOFF_MULTIPLIER` — multiplier applied to the delay on each subsequent failure. Default: `2.0`.
+* `PAYPAL_HYPERWALLET_NOTIFICATIONS_PROCESSING_CRON_EXPRESSION` — cron expression that controls how often the processing job runs. Default: `0/30 * * * * ?` (every 30 seconds).
+* `PAYPAL_HYPERWALLET_NOTIFICATIONS_BATCH_SIZE` — maximum number of notifications processed per job execution. Default: `100`.
+
+==== Cleanup job configuration
+
+The following variables control the <<notification-cleanup-job,Notification Cleanup Job>>:
+
+* `PAYPAL_HYPERWALLET_NOTIFICATIONS_CLEANUP_CRON_EXPRESSION` — cron expression that controls when the cleanup job runs. Default: `0 0 1 * * ?` (daily at 01:00 UTC).
+* `PAYPAL_HYPERWALLET_NOTIFICATIONS_CLEANUP_RETENTION_DAYS` — number of days after which terminal-state (`FAILED`, `SUCCESS`, `OUTDATED`) notifications are eligible for deletion. Default: `90`.

@@ -4,6 +4,7 @@ import com.paypal.testsupport.mocks.MockServerExpectationsLoader;
 import com.paypal.testsupport.mocks.hyperwallet.BusinessStakeHoldersEndpointMock;
 import com.paypal.testsupport.mocks.hyperwallet.PaymentsEndpointMock;
 import com.paypal.testsupport.mocks.hyperwallet.UsersEndpointMock;
+import com.paypal.testsupport.mocks.hyperwallet.WebhookNotificationEndpointMock;
 import com.paypal.testsupport.mocks.mirakl.MiraklShopsDocumentsEndpointMock;
 import com.paypal.testsupport.mocks.mirakl.MiraklShopsEndpointMock;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +26,8 @@ public abstract class AbstractMockEnabledIntegrationTest extends AbstractIntegra
 
 	protected MockServerExpectationsLoader mockServerExpectationsLoader;
 
+	protected WebhookNotificationEndpointMock webhookNotificationEndpointMock;
+
 	@BeforeEach
 	public void setMockEndpoints() {
 		paymentsEndpointMock = new PaymentsEndpointMock(mockServerClient);
@@ -33,6 +36,7 @@ public abstract class AbstractMockEnabledIntegrationTest extends AbstractIntegra
 		miraklShopsEndpointMock = new MiraklShopsEndpointMock(mockServerClient);
 		miraklShopsDocumentsEndpointMock = new MiraklShopsDocumentsEndpointMock(mockServerClient);
 		mockServerExpectationsLoader = new MockServerExpectationsLoader(mockServerClient);
+		webhookNotificationEndpointMock = new WebhookNotificationEndpointMock(mockServerClient);
 	}
 
 }

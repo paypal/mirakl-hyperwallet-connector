@@ -17,7 +17,8 @@ xref:configuration:configvars/configvars.adoc#configvarsvars-mirakl[Mirakl crede
 ....
 PAYPAL_MIRAKL_ENVIRONMENT
 PAYPAL_MIRAKL_FRONT_API_KEY
-PAYPAL_MIRAKL_OPERATOR_API_KEY
+PAYPAL_MIRAKL_OPERATOR_ACCESS_TOKEN (preferred, required for new Mirakl instances)
+PAYPAL_MIRAKL_OPERATOR_API_KEY (deprecated, not available in new Mirakl instances)
 PAYPAL_MIRAKL_OPERATOR_TIME_ZONE
 ....
 

@@ -19,9 +19,14 @@
 |Mirakl password, for accessing the Mirakl Java
 |secret
 
+|`PAYPAL_MIRAKL_OPERATOR_ACCESS_TOKEN`
+|YES
+|*(Preferred)* The Mirakl operator access token generated for your operator account. This is the recommended authentication method for all new Mirakl instances.
+|c262b297-c8a7-45a5-a22f-a0d9fe25132a
+
 |`PAYPAL_MIRAKL_OPERATOR_API_KEY`
 |YES
-|The Mirakl operator API key generated for your operator account.
+|*(Deprecated)* The Mirakl operator API key generated for your operator account. This parameter is deprecated and is not available in new Mirakl instances. Use `PAYPAL_MIRAKL_OPERATOR_ACCESS_TOKEN` instead.
 |c262b297-c8a7-45a5-a22f-a0d9fe25132a
 
 |`PAYPAL_MIRAKL_OPERATOR_TIME_ZONE`

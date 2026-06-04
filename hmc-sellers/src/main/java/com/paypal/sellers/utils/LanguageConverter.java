@@ -21,7 +21,7 @@ public final class LanguageConverter {
 	}
 
 	/**
-	 * Hyperwallet require that the language code be in ISO-639-1 format.
+	 * Hyperwallet requires that the language code be in ISO-639-1 format.
 	 * @param input - the input string of locale (e.g. en_GB)
 	 * @return the 2 digit language tag
 	 * @see <a href=

@@ -1,7 +1,13 @@
 == Retry jobs
 
-The connector has specific jobs for retrying items that have failed during the execution of an extraction job.
+The connector includes specific jobs for retrying items that have failed during extraction or notification processing.
 
-When the processing of an item fails (for example an individual seller), the connector stores in a database the information of that item. Retry jobs periodically read the content of that database and reprocess the failed items. Retry attempts for an item are separated in time according to this expression: `Item Last Failure Time + (30 minutes * number of attempts)`. The connector makes a maximum of 5 retries for each item.
+=== Extraction retry jobs
 
-The connector executes retry jobs with a higher frequency than standard jobs, since they need to check if it's time to reprocess an item according to the previous expression. The frequency of retry jobs is xref:configuration:configvars/configvars.adoc#configvars-jobs[configurable with environment variables], but changing the default values isn't recommended.
+When the processing of an item fails during an extraction job (for example an individual seller), the connector stores the information of that item in a database. Retry jobs periodically read the content of that database and reprocess the failed items. Retry attempts are separated in time according to this expression: `Item Last Failure Time + (30 minutes × number of attempts)`. The connector makes a maximum of 5 retries for each item.
+
+The connector executes extraction retry jobs with a higher frequency than standard jobs, since they need to check if it's time to reprocess an item according to the expression above. The frequency is xref:configuration:configvars/configvars.adoc#configvars-jobs[configurable with environment variables], but changing the default values is not recommended.
+
+=== Notification retry
+
+Notification retries use a different, exponential back-off strategy instead of the linear formula above. See xref:notifications/notifications-retry.adoc[Retry mechanism] for the full description of delays, configuration, and the failed notifications management API.

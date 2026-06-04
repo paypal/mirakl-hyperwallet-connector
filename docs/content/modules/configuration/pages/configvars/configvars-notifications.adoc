@@ -4,19 +4,49 @@
 |===
 |ENVIRONMENT VARIABLE |MANDATORY |DESCRIPTION |EXAMPLE VALUE
 
-|`PAYPAL_HYPERWALLET_RETRY_FAILED` `_NOTIFICATIONS_CRON_EXPRESSION`
-|NO (default value: `0 0/15 * * * ? *`)
-|The cron expression to trigger periodically the Failed Notifications Retry Job.
-|`1 30 0 1/1 * ? *`
+|`PAYPAL_HYPERWALLET_NOTIFICATIONS` `_PROCESSING_CRON_EXPRESSION`
+|NO (default: `0/30 * * * * ?`)
+|Cron expression that controls how often the Notification Processing Job runs. The job picks up `PENDING` and eligible `RETRYING` notifications in each execution.
+|`0 0/1 * * * ?`
 
-|`PAYPAL_HYPERWALLET_RETRY_NOTIFICATIONS`
-|NO (default value: `true`)
-|Whether or not Hyperwallet notifications should be retried when an error occurs (e.g. connection issues). If set to `true`, any notification that fails is stored in the database and automatically restarted up to `PAYPAL_HYPERWALLET_MAX_AMOUNT` `_OF_NOTIFICATION_RETRIES` times. If set to `false`, notifications are not stored or retried
-|Possible values:`true` or `false`
+|`PAYPAL_HYPERWALLET_MAX_AMOUNT_OF` `_NOTIFICATION_RETRIES`
+|NO (default: `5`)
+|Maximum number of processing attempts for each notification. When this limit is reached, the notification is marked `FAILED` and an email alert is sent to the operator.
+|Any positive integer
 
-|`PAYPAL_HYPERWALLET_MAX_AMOUNT_OF_NOTIFICATION_RETRIES`
-|NO (default value: `5`)
-|Sets the amount of retries a Hyperwallet notification operation can be retried before it is discarded. Whenever a notification is discarded, an email is sent to the integrators so it can be analyzed and addressed
-|Possible values: Any positive integer
+|`PAYPAL_HYPERWALLET_NOTIFICATION` `_INITIAL_RETRY_DELAY`
+|NO (default: `PT1M`)
+|ISO-8601 duration for the delay before the first retry attempt. Combined with the backoff multiplier to compute the delay for each subsequent attempt.
+|`PT5M`
+
+|`PAYPAL_HYPERWALLET_NOTIFICATION` `_RETRY_BACKOFF_MULTIPLIER`
+|NO (default: `2.0`)
+|Multiplier applied to the retry delay on each subsequent failed attempt (exponential back-off). For example, with an initial delay of `PT1M` and a multiplier of `2.0`, the delays are 1 min, 2 min, 4 min, 8 min, etc.
+|`3.0`
+
+|`PAYPAL_HYPERWALLET_NOTIFICATIONS` `_BATCH_SIZE`
+|NO (default: `100`)
+|Maximum number of notifications the processing job fetches and processes in a single execution.
+|`200`
+
+|`PAYPAL_HYPERWALLET_NOTIFICATIONS` `_CACHE_MAX_SIZE`
+|NO (default: `5000`)
+|Maximum number of webhook notification payloads held in the in-memory Caffeine cache. Cached payloads are used on retry attempts to avoid redundant calls to the Hyperwallet SDK.
+|`10000`
+
+|`PAYPAL_HYPERWALLET_NOTIFICATIONS` `_CACHE_EXPIRE_AFTER_DAYS`
+|NO (default: `15`)
+|Number of days after which a cached webhook notification payload expires and is evicted from the cache.
+|`30`
+
+|`PAYPAL_HYPERWALLET_NOTIFICATIONS` `_CLEANUP_CRON_EXPRESSION`
+|NO (default: `0 0 1 * * ?`)
+|Cron expression that controls when the Notification Cleanup Job runs. The job deletes terminal-state notifications older than the retention period.
+|`0 0 2 * * ?`
+
+|`PAYPAL_HYPERWALLET_NOTIFICATIONS` `_CLEANUP_RETENTION_DAYS`
+|NO (default: `90`)
+|Number of days after which `FAILED`, `SUCCESS`, and `OUTDATED` notifications are eligible for deletion by the cleanup job.
+|`180`
 
 |===

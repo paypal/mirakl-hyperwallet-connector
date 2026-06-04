@@ -5,6 +5,7 @@ import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.invoices.extractioncreditnotes.model.CreditNoteModel;
 import com.paypal.infrastructure.hyperwallet.services.PaymentHyperwalletSDKService;
 import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
 
 @Service
 public class PayeeCreditNoteModelToHyperwalletPaymentConverter
@@ -32,7 +33,7 @@ public class PayeeCreditNoteModelToHyperwalletPaymentConverter
 				.getProgramTokenByHyperwalletProgram(source.getHyperwalletProgram()));
 		target.setDestinationToken(source.getDestinationToken());
 		target.setClientPaymentId(source.getInvoiceNumber());
-		target.setAmount(source.getCreditAmount());
+		target.setAmount(BigDecimal.valueOf(source.getCreditAmount()).toPlainString());
 		target.setCurrency(source.getCurrencyIsoCode());
 		target.setPurpose(PURPOSE);
 

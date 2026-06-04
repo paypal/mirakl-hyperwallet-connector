@@ -1,7 +1,7 @@
 package com.paypal.observability.notificationslogging.loggincontext;
 
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
-import com.paypal.notifications.events.model.HMCEvent;
+import com.paypal.notifications.storage.repositories.entities.NotificationEntity;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +11,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,10 +25,10 @@ class NotificationListenerLoggingContextAspectTest {
 	private ProceedingJoinPoint pjpMock;
 
 	@Test
-	void getNotificationObject_shouldReturnNotificationObjectWhenArgIsOfTypeHyperwalletNotification() {
+	void getNotificationObject_shouldReturnNotificationObjectWhenSecondArgIsHyperwalletWebhookNotification() {
+		final NotificationEntity entity = mock(NotificationEntity.class);
 		final HyperwalletWebhookNotification notification = new HyperwalletWebhookNotification();
-		final HMCEvent hmcEvent = new MyEvent(new Object(), notification);
-		when(pjpMock.getArgs()).thenReturn(new Object[] { hmcEvent });
+		when(pjpMock.getArgs()).thenReturn(new Object[] { entity, notification });
 
 		final HyperwalletWebhookNotification result = testObj.getNotificationObject(pjpMock);
 
@@ -35,9 +36,9 @@ class NotificationListenerLoggingContextAspectTest {
 	}
 
 	@Test
-	void getNotificationObject_shouldReturnNullWhenArgumentIsNotOfTypeHyperwalletNotification() {
-		final String notification = "";
-		when(pjpMock.getArgs()).thenReturn(new Object[] { notification });
+	void getNotificationObject_shouldReturnNullWhenSecondArgumentIsNotHyperwalletWebhookNotification() {
+		final NotificationEntity entity = mock(NotificationEntity.class);
+		when(pjpMock.getArgs()).thenReturn(new Object[] { entity, "not-a-notification" });
 
 		final HyperwalletWebhookNotification result = testObj.getNotificationObject(pjpMock);
 
@@ -45,20 +46,21 @@ class NotificationListenerLoggingContextAspectTest {
 	}
 
 	@Test
-	void getNotificationObject_shouldReturnNullWhenArgumentIsNull() {
-		when(pjpMock.getArgs()).thenReturn(new Object[] { null });
+	void getNotificationObject_shouldReturnNullWhenArgsHasLessThanTwoElements() {
+		when(pjpMock.getArgs()).thenReturn(new Object[] { mock(NotificationEntity.class) });
 
 		final HyperwalletWebhookNotification result = testObj.getNotificationObject(pjpMock);
 
 		assertThat(result).isNull();
 	}
 
-	private static class MyEvent extends HMCEvent {
+	@Test
+	void getNotificationObject_shouldReturnNullWhenArgsIsEmpty() {
+		when(pjpMock.getArgs()).thenReturn(new Object[] {});
 
-		protected MyEvent(final Object source, final HyperwalletWebhookNotification notification) {
-			super(source, notification);
-		}
+		final HyperwalletWebhookNotification result = testObj.getNotificationObject(pjpMock);
 
+		assertThat(result).isNull();
 	}
 
 }

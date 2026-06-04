@@ -14,6 +14,8 @@ import static com.paypal.infrastructure.hyperwallet.constants.HyperWalletConstan
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+
 @ExtendWith(MockitoExtension.class)
 class OperatorInvoiceModelToHyperwalletPaymentConverterTest {
 
@@ -67,7 +69,7 @@ class OperatorInvoiceModelToHyperwalletPaymentConverterTest {
 
 		assertThat(result.getDestinationToken()).isEqualTo(OPERATOR_BANK_ACCOUNT_TOKEN);
 		assertThat(result.getClientPaymentId()).isEqualTo(INVOICE_NUMBER + PAYMENT_OPERATOR_SUFFIX);
-		assertThat(result.getAmount()).isEqualTo(transferAmountToOperator);
+		assertThat(result.getAmount()).isEqualTo(BigDecimal.valueOf(transferAmountToOperator).toPlainString());
 		assertThat(result.getCurrency()).isEqualTo(CURRENCY_ISO_CODE);
 		assertThat(result.getPurpose()).isEqualTo("OTHER");
 		assertThat(result.getProgramToken()).isEqualTo(PROGRAM_TOKEN);

@@ -6,6 +6,7 @@ import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
 import com.paypal.infrastructure.hyperwallet.services.PaymentHyperwalletSDKService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
 
 /**
  * Class to convert payee invoices from {@link InvoiceModel} to {@link HyperwalletPayment}
@@ -32,7 +33,7 @@ public class PayeeInvoiceModelToHyperwalletPaymentConverter implements Converter
 				.getProgramTokenByHyperwalletProgram(source.getHyperwalletProgram()));
 		target.setDestinationToken(source.getDestinationToken());
 		target.setClientPaymentId(source.getInvoiceNumber());
-		target.setAmount(source.getTransferAmount());
+		target.setAmount(BigDecimal.valueOf(source.getTransferAmount()).toPlainString());
 		target.setCurrency(source.getCurrencyIsoCode());
 		target.setPurpose(PURPOSE);
 

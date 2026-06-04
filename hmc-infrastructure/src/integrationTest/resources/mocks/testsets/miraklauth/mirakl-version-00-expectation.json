@@ -1,0 +1,12 @@
+{
+	"httpRequest": {
+		"method": "GET",
+		"path": "/api/version"
+	},
+	"httpResponse": {
+		"statusCode": 200,
+		"body": {
+			"version": "3.210"
+		}
+	}
+}
