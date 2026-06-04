@@ -1,31 +1,41 @@
 == REST API
 
-The existing jobs can be executed manually through their endpoints. Except for notification retry job, which doesn't receive
-any parameter, all endpoints support 2 optional parameters:
+All jobs can be triggered manually through their REST endpoints. Most endpoints support the following optional parameters:
 
-* `delta`: When provided for an extract job, the job will only process entities that were updated/created after this
-  date
-* `name` : When provided, the job will be given this name
-
+* `delta` — when provided for an extract job, the job only processes entities that were updated or created after this date.
+* `name` — when provided, the job execution is given this name (useful for correlation in logs).
 
 |===
-|Param|Format
+|Param |Format
 
-|`name`| String
-|`delta`| yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+|`name` |String
+|`delta` |`yyyy-MM-dd'T'HH:mm:ss.SSSXXX`
 |===
 
 Endpoints:
+
 |===
-|  HTTP Method   | PATH                                  | Job type       
-              
-| `POST`         | `/job/sellers-extract`                | Individual Sellers extract   
-| `POST`         | `/job/professional-sellers-extract`   | Professional Sellers extract 
-| `POST`         | `/job/bank-accounts-extract`          | Bank accounts extract        
-| `POST`         | `/job/invoices-extract`               | Invoices extract
+|HTTP Method |Path |Job type |Supported parameters
+
+|`POST` |`/job/sellers-extract`              |Individual Sellers extract    |`delta`, `name`
+|`POST` |`/job/professional-sellers-extract` |Professional Sellers extract  |`delta`, `name`
+|`POST` |`/job/bank-accounts-extract`        |Bank accounts extract         |`delta`, `name`
+|`POST` |`/job/invoices-extract`             |Invoices extract              |`delta`, `name`
+|`POST` |`/job/process-notifications`        |Notification Processing       |`name`
+
 |===
 
-See example of valid execution request:
+NOTE: The `process-notifications` endpoint triggers one immediate execution of the xref:notifications/notifications-handling.adoc#notification-process-job[Notification Processing Job], which picks up any `PENDING` or eligible `RETRYING` notifications and processes them. The `delta` parameter is not applicable to this job.
+
+See example of valid execution requests:
 
 [example]
-curl --location --request POST 'http://localhost:8080/job/bank-accounts-extract?delta=2020-11-22T11:52:00.000-00:00&name=bankAccountExtractJob'
+====
+....
+curl --location --request POST \
+  'http://localhost:8080/job/bank-accounts-extract?delta=2020-11-22T11:52:00.000-00:00&name=bankAccountExtractJob'
+
+curl --location --request POST \
+  'http://localhost:8080/job/process-notifications?name=manualNotificationRun'
+....
+====

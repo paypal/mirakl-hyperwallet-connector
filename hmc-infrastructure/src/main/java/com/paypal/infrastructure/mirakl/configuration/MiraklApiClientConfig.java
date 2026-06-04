@@ -13,6 +13,8 @@ public class MiraklApiClientConfig {
 
 	private String operatorApiKey;
 
+	private String operatorAccessToken;
+
 	private String environment;
 
 }

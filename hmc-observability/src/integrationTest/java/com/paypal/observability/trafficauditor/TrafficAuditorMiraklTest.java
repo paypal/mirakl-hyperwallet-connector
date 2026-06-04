@@ -96,8 +96,8 @@ class TrafficAuditorMiraklTest extends AbstractObservabilityIntegrationTest {
 		assertThat(capturedTrace.getRequest().getHeaders()).containsEntry("Accept",
 				List.of("application/json; charset=UTF-8"));
 		assertThat(capturedTrace.getRequest().getMethod()).contains("PUT");
-		assertThat(capturedTrace.getRequest().getQueryParameters()).containsEntry("sdk-module", "mmp-sdk-operator")
-				.containsKey("sdk-version");
+		assertThat(capturedTrace.getRequest().getQueryParameters())
+				.containsEntry("sdk-module", "com.mirakl%3Ammp-sdk-operator").containsKey("sdk-version");
 
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getBody()).contains("shop_id")
 				.contains("10000");

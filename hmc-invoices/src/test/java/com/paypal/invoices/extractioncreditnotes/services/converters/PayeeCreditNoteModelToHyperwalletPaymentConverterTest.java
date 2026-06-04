@@ -12,6 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+
 @ExtendWith(MockitoExtension.class)
 class PayeeCreditNoteModelToHyperwalletPaymentConverterTest {
 
@@ -32,7 +34,7 @@ class PayeeCreditNoteModelToHyperwalletPaymentConverterTest {
 
 		final HyperwalletPayment result = testObj.convert(creditNoteModelStub);
 
-		assertThat(result.getAmount()).isEqualTo(20.00D);
+		assertThat(result.getAmount()).isEqualTo(BigDecimal.valueOf(20.00D).toPlainString());
 		assertThat(result.getCurrency()).isEqualTo("EUR");
 		assertThat(result.getProgramToken()).isEqualTo("the-real-token");
 		assertThat(result.getDestinationToken()).isEqualTo("destination-token");

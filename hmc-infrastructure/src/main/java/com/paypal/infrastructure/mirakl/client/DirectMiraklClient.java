@@ -1,5 +1,6 @@
 package com.paypal.infrastructure.mirakl.client;
 
+import com.mirakl.client.core.security.MiraklBearerToken;
 import com.mirakl.client.core.security.MiraklCredential;
 import com.mirakl.client.mmp.domain.additionalfield.MiraklFrontOperatorAdditionalField;
 import com.mirakl.client.mmp.domain.common.FileWrapper;
@@ -23,6 +24,7 @@ import com.mirakl.client.mmp.request.shop.document.MiraklDownloadShopsDocumentsR
 import com.mirakl.client.mmp.request.shop.document.MiraklGetShopDocumentsRequest;
 import com.paypal.infrastructure.mirakl.client.filter.ShopsFilter;
 import com.paypal.infrastructure.mirakl.configuration.MiraklApiClientConfig;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -111,8 +113,11 @@ public class DirectMiraklClient implements MiraklClient {
 
 	@Override
 	public void reloadHttpConfiguration() {
+		final var credential = StringUtils.isNotBlank(config.getOperatorAccessToken())
+				? new MiraklBearerToken(config.getOperatorAccessToken())
+				: new MiraklCredential(config.getOperatorApiKey());
 		this.miraklMarketplacePlatformOperatorApiClient = new MiraklMarketplacePlatformOperatorApiClient(
-				config.getEnvironment(), new MiraklCredential(config.getOperatorApiKey()));
+				config.getEnvironment(), credential);
 	}
 
 	protected MiraklShops getUnfilteredMiraklShops(final MiraklGetShopsRequest request) {

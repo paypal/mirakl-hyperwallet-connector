@@ -12,6 +12,7 @@ import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -132,7 +133,8 @@ class HyperWalletPaymentExtractServiceImplTest extends AbstractMockEnabledIntegr
 
 	private HyperwalletPayment defaultHyperwalletPayment() {
 		return new HyperwalletPayment().programToken(DEFAULT_PAYMENT_TOKEN).clientPaymentId(DEFAULT_INVOICE_NUMBER)
-				.destinationToken(CUSTOMER_DESTINATION_TOKEN).amount(DEFAULT_TRANSFER_AMOUNT).currency(GB_ISOCODE)
+				.destinationToken(CUSTOMER_DESTINATION_TOKEN)
+				.amount(BigDecimal.valueOf(DEFAULT_TRANSFER_AMOUNT).toPlainString()).currency(GB_ISOCODE)
 				.purpose("OTHER");
 	}
 

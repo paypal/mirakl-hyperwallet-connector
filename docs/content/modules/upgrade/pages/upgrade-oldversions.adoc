@@ -1,4 +1,17 @@
-= Upgrade from 4.x versions
+= Upgrade from version 5.2.x or earlier
+
+== Removal of `NotificationInfoEntity` and migration of notification data
+
+WARNING: The  `NOTIFICATION_INFO_ENTITY`  database table has been removed. The connector now uses `NOTIFICATION_ENTITY` exclusively to track all webhook notifications and their processing state. If you have data in `NOTIFICATION_INFO_ENTITY` that you want to preserve, you must migrate it before starting the new version of the connector.
+
+Two SQL migration scripts are provided under `docs/migrations/`:
+
+. `01_export_notification_info_entity.sql` — exports rows from `NOTIFICATION_INFO_ENTITY` to a CSV file using H2's `CSVWRITE` function. Run this against your **old** database before upgrading.
+. `02_import_into_notification_entity.sql` — loads the CSV into `NOTIFICATION_ENTITY`, deriving the `NOTIFICATION_TYPE` from the object token prefix and setting `STATUS` to `FAILED`. Run this against your **new** database after upgrading, while the connector is stopped.
+
+If you have no data to preserve (or are installing for the first time), you can skip this step — the old table simply no longer exists and will not be created by Hibernate.
+
+== Upgrade from 4.x versions
 
 If you are running a 4.x version, take note of the following changes:
 
@@ -15,13 +28,14 @@ The connector now requires Java 17 or higher. If you are executing the connector
 
 The way the connector is configured has changed and now it uses a new set of configuration variables:
 
-```
+[source]
+----
 PAYPAL_HYPERWALLET_PROGRAMS_NAMES
 PAYPAL_HYPERWALLET_PROGRAMS_IGNORED
 PAYPAL_HYPERWALLET_PROGRAMS_USERTOKENS
 PAYPAL_HYPERWALLET_PROGRAMS_PAYMENTTOKENS
 PAYPAL_HYPERWALLET_PROGRAMS_BANKACCOUNTTOKENS
-```
+----
 
 After upgrading and before starting the connector you need to check your environment variables since the olds one are not valid. For more details, please review xref:configuration:programs/programs.adoc[the program configuration instructions].
 
@@ -45,15 +59,17 @@ Also, Spring profiles like `dev`, `qa`, `prod` no longer exists, so selecting th
 
 The name of the main module of the project has changed from `web` to `hmc-app`. This affects Gradle tasks so, for example, instead of doing:
 
-```
+[source]
+----
 ./gradlew web:bootRun
-```
+----
 
 You should do:
 
-```
+[source]
+----
 ./gradlew hmc-app:bootRun
-```
+----
 
 === Execution without Gradle
 

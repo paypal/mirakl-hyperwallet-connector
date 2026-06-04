@@ -1,5 +1,7 @@
 package com.paypal.infrastructure.mirakl.client;
 
+import com.mirakl.client.core.security.MiraklBearerToken;
+import com.mirakl.client.core.security.MiraklCredential;
 import com.mirakl.client.mmp.domain.additionalfield.MiraklFrontOperatorAdditionalField;
 import com.mirakl.client.mmp.domain.common.FileWrapper;
 import com.mirakl.client.mmp.domain.invoice.MiraklInvoices;
@@ -225,6 +227,46 @@ class DirectMiraklClientTest {
 
 		// then
 		verify(miraklMarketplacePlatformOperatorApiClientMock).deleteShopDocument(miraklDeleteShopDocumentRequest);
+	}
+
+	@Test
+	void reloadHttpConfiguration_shouldUseBearerToken_whenOperatorAccessTokenIsConfigured() {
+		// given
+		final MiraklApiClientConfig config = new MiraklApiClientConfig();
+		config.setOperatorAccessToken("ACCESS-TOKEN");
+		config.setEnvironment("http://mirakl-env");
+		final DirectMiraklClient client = new DirectMiraklClient(config,
+				List.of(ignoredShopsFilterMock, terminatedShopsFilterMock));
+
+		// when
+		client.reloadHttpConfiguration();
+
+		// then
+		final MiraklMarketplacePlatformOperatorApiClient sdkClient = (MiraklMarketplacePlatformOperatorApiClient) ReflectionTestUtils
+				.getField(client, "miraklMarketplacePlatformOperatorApiClient");
+		assertThat(sdkClient).isNotNull();
+		final Object credential = ReflectionTestUtils.getField(sdkClient, "defaultCredential");
+		assertThat(credential).isInstanceOf(MiraklBearerToken.class);
+	}
+
+	@Test
+	void reloadHttpConfiguration_shouldUseLegacyApiKey_whenOnlyOperatorApiKeyIsConfigured() {
+		// given
+		final MiraklApiClientConfig config = new MiraklApiClientConfig();
+		config.setOperatorApiKey("OPERATOR-KEY");
+		config.setEnvironment("http://mirakl-env");
+		final DirectMiraklClient client = new DirectMiraklClient(config,
+				List.of(ignoredShopsFilterMock, terminatedShopsFilterMock));
+
+		// when
+		client.reloadHttpConfiguration();
+
+		// then
+		final MiraklMarketplacePlatformOperatorApiClient sdkClient = (MiraklMarketplacePlatformOperatorApiClient) ReflectionTestUtils
+				.getField(client, "miraklMarketplacePlatformOperatorApiClient");
+		assertThat(sdkClient).isNotNull();
+		final Object credential = ReflectionTestUtils.getField(sdkClient, "defaultCredential");
+		assertThat(credential).isInstanceOf(MiraklCredential.class);
 	}
 
 }

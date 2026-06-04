@@ -1,18 +1,26 @@
 package com.paypal.notifications.incoming.services;
 
-import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
+import com.paypal.notifications.storage.repositories.entities.NotificationEntity;
 
 /**
- * Service that receives incoming notifications and sends them to the proper event sender
- * (users, payments, etc)
+ * Service responsible for processing queued notifications.
  */
 public interface NotificationProcessingService {
 
+	enum NotificationProcessingStatus {
+
+		SUCCESS, ERROR
+
+	}
+
 	/**
-	 * Process the {@link HyperwalletWebhookNotification} notification and send it to the
-	 * proper sender, depending on the strategy
-	 * @param incomingNotificationDTO {@link HyperwalletWebhookNotification} notification
+	 * Processes a queued {@link NotificationEntity} by retrieving the full webhook
+	 * payload from cache, selecting the appropriate handler, and invoking it.
+	 * @param entity the {@link NotificationEntity} to process.
+	 * @return {@link NotificationProcessingService.NotificationProcessingStatus#SUCCESS}
+	 * if the notification was handled successfully, or
+	 * {@link NotificationProcessingService.NotificationProcessingStatus#ERROR} otherwise.
 	 */
-	void processNotification(HyperwalletWebhookNotification incomingNotificationDTO);
+	NotificationProcessingStatus processNotification(NotificationEntity entity);
 
 }

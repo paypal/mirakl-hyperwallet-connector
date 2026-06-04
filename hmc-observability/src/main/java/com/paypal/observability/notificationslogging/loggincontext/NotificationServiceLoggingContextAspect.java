@@ -15,7 +15,7 @@ public class NotificationServiceLoggingContextAspect extends AbstractNotificatio
 		super(loggingContextService);
 	}
 
-	@Around("execution(* com.paypal.notifications.incoming.services.NotificationProcessingServiceImpl.processNotification(..))")
+	@Around("execution(* com.paypal.notifications.incoming.services.NotificationProcessingServiceImpl.processHyperwalletWebhookNotification(..))")
 	public void interceptNotificationMethod(final ProceedingJoinPoint pjp) throws Throwable {
 		doInterceptNotificationMethod(pjp);
 	}

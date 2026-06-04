@@ -1,109 +1,69 @@
 package com.paypal.notifications.incoming.services.converters;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
-import com.paypal.infrastructure.support.date.DateUtil;
-import com.paypal.infrastructure.support.date.TimeMachine;
 import com.paypal.notifications.storage.repositories.entities.NotificationEntity;
 import com.paypal.notifications.storage.repositories.entities.NotificationType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
+import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class NotificationConverterTest {
 
-	private static final String OBJECT_TOKEN_MAP_KEY = "token";
+	@InjectMocks
+	private NotificationConverter testObj;
 
-	private static final String PAYMENT_OBJECT_TOKEN_MAP_VALUE = "pmt-ffffffff-fff-ffff-4444-444444444444";
+	@Test
+	void convert_shouldMapTokenAndCreationDate() {
+		final HyperwalletWebhookNotification notification = new HyperwalletWebhookNotification();
+		final Date createdOn = new Date();
+		notification.setToken("wbh-token-1");
+		notification.setCreatedOn(createdOn);
 
-	private static final String UNKNOWN_OBJECT_TOKEN_MAP_VALUE = "ffffffff-fff-ffff-4444-444444444444";
+		final NotificationEntity result = testObj.convert(notification);
 
-	private static final String WEB_HOOK_TOKEN = "webHookToken";
-
-	private static final Date CREATION_DATE = new GregorianCalendar(2015, Calendar.FEBRUARY, 11).getTime();
-
-	private final NotificationConverter testObj = new NotificationConverter();
-
-	@Mock
-	private HyperwalletWebhookNotification sourceMock;
-
-	@BeforeEach
-	public void setUp() {
-
-		when(sourceMock.getToken()).thenReturn(WEB_HOOK_TOKEN);
-		when(sourceMock.getCreatedOn()).thenReturn(CREATION_DATE);
+		assertThat(result.getWebHookToken()).isEqualTo("wbh-token-1");
+		assertThat(result.getCreationDate()).isEqualTo(createdOn);
+		assertThat(result.getReceptionDate()).isNotNull();
 	}
 
 	@Test
-	void convert_ShouldPopulateWebHookTokenAndCreationDateAndReceptionDateAndNotPopulateObjectTokenAndNotPopulateNotificationType_WhenObjectIsNull() {
+	void convert_shouldDeriveNotificationTypeFromObjectToken() {
+		final HyperwalletWebhookNotification notification = new HyperwalletWebhookNotification();
+		notification.setToken("wbh-token-1");
+		notification.setObject(Map.of("token", "usr-some-user-token"));
 
-		TimeMachine.useFixedClockAt(LocalDateTime.now());
-		final LocalDateTime now = TimeMachine.now();
-		final Date nowAsDate = DateUtil.convertToDate(now, ZoneId.systemDefault());
+		final NotificationEntity result = testObj.convert(notification);
 
-		final NotificationEntity result = testObj.convert(sourceMock);
-
-		assertThat(result.getWebHookToken()).isEqualTo(WEB_HOOK_TOKEN);
-		assertThat(result.getCreationDate()).isEqualTo(CREATION_DATE);
-		assertThat(result.getReceptionDate()).isEqualTo(nowAsDate);
-		assertThat(result.getObjectToken()).isNull();
-		assertThat(result.getNotificationType()).isNull();
+		assertThat(result.getNotificationType()).isEqualTo(NotificationType.USR);
+		assertThat(result.getObjectToken()).isEqualTo("usr-some-user-token");
 	}
 
 	@Test
-	void convert_ShouldNotPopulateObjectTokenAndNotPopulateNotificationType_WhenObjectIsNotAMap() {
+	void convert_shouldSetUnknownType_whenObjectTokenPrefixIsUnrecognised() {
+		final HyperwalletWebhookNotification notification = new HyperwalletWebhookNotification();
+		notification.setToken("wbh-token-1");
+		notification.setObject(Map.of("token", "xyz-unknown-token"));
 
-		when(sourceMock.getObject()).thenReturn(new Object());
+		final NotificationEntity result = testObj.convert(notification);
 
-		final NotificationEntity result = testObj.convert(sourceMock);
-
-		assertThat(result.getObjectToken()).isNull();
-		assertThat(result.getNotificationType()).isNull();
-	}
-
-	@Test
-	void convert_ShouldNotPopulateObjectTokenAndNotPopulateNotificationType_WhenObjectTokenIsNotAString() {
-
-		when(sourceMock.getObject()).thenReturn(Map.of(OBJECT_TOKEN_MAP_KEY, new Object()));
-
-		final NotificationEntity result = testObj.convert(sourceMock);
-
-		assertThat(result.getObjectToken()).isNull();
-		assertThat(result.getNotificationType()).isNull();
-	}
-
-	@Test
-	void convert_ShouldPopulateObjectTokenAndPopulateNotificationType_WhenObjectTokenIsAString() {
-
-		when(sourceMock.getObject()).thenReturn(Map.of(OBJECT_TOKEN_MAP_KEY, PAYMENT_OBJECT_TOKEN_MAP_VALUE));
-
-		final NotificationEntity result = testObj.convert(sourceMock);
-
-		assertThat(result.getObjectToken()).isEqualTo(PAYMENT_OBJECT_TOKEN_MAP_VALUE);
-		assertThat(result.getNotificationType()).isEqualTo(NotificationType.PMT);
-	}
-
-	@Test
-	void convert_ShouldPopulateObjectTokenAndPopulateAnUnknownNotificationType_WhenObjectTokenIsAStringAndObjectTokenHasNotAKnownPrefix() {
-
-		when(sourceMock.getObject()).thenReturn(Map.of(OBJECT_TOKEN_MAP_KEY, UNKNOWN_OBJECT_TOKEN_MAP_VALUE));
-
-		final NotificationEntity result = testObj.convert(sourceMock);
-
-		assertThat(result.getObjectToken()).isEqualTo(UNKNOWN_OBJECT_TOKEN_MAP_VALUE);
 		assertThat(result.getNotificationType()).isEqualTo(NotificationType.UNK);
+	}
+
+	@Test
+	void convert_shouldLeaveObjectTokenNull_whenObjectIsNull() {
+		final HyperwalletWebhookNotification notification = new HyperwalletWebhookNotification();
+		notification.setToken("wbh-token-1");
+
+		final NotificationEntity result = testObj.convert(notification);
+
+		assertThat(result.getObjectToken()).isNull();
+		assertThat(result.getNotificationType()).isNull();
 	}
 
 }

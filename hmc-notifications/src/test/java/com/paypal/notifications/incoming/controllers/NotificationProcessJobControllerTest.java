@@ -1,9 +1,8 @@
 package com.paypal.notifications.incoming.controllers;
 
-import com.paypal.jobsystem.quartzintegration.support.AbstractDeltaInfoJob;
 import com.paypal.jobsystem.quartzintegration.services.JobService;
-import com.paypal.notifications.failures.controllers.NotificationProcessJobController;
-import com.paypal.notifications.failures.jobs.NotificationProcessJob;
+import com.paypal.jobsystem.quartzintegration.support.AbstractDeltaInfoJob;
+import com.paypal.notifications.incoming.jobs.NotificationProcessJob;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import static com.paypal.infrastructure.hyperwallet.constants.HyperWalletConstants.PAYMENT_OPERATOR_SUFFIX;
 
+import java.math.BigDecimal;
+
 /**
  * Class to convert operator invoices from {@link InvoiceModel} to
  * {@link HyperwalletPayment}
@@ -51,7 +53,7 @@ public class OperatorInvoiceModelToHyperwalletPaymentConverter implements Conver
 		target.setDestinationToken(hyperwalletProgramsConfiguration
 				.getProgramConfiguration(source.getHyperwalletProgram()).getBankAccountToken());
 		target.setClientPaymentId(source.getInvoiceNumber() + PAYMENT_OPERATOR_SUFFIX);
-		target.setAmount(source.getTransferAmountToOperator());
+		target.setAmount(BigDecimal.valueOf(source.getTransferAmountToOperator()).toPlainString());
 		target.setCurrency(source.getCurrencyIsoCode());
 		target.setPurpose(PURPOSE);
 

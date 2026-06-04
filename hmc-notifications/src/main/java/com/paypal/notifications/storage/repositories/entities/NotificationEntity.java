@@ -29,4 +29,27 @@ public class NotificationEntity implements Serializable {
 
 	private NotificationType notificationType;
 
+	@Enumerated(EnumType.STRING)
+	private NotificationStatus status = NotificationStatus.PENDING;
+
+	private int retryCounter = 0;
+
+	/**
+	 * Timestamp of the last failed processing attempt. Populated each time the
+	 * notification transitions to {@link NotificationStatus#RETRYING} or
+	 * {@link NotificationStatus#FAILED}.
+	 */
+	private Date lastRetryDate;
+
+	/**
+	 * Earliest timestamp at which this notification is eligible to be retried. Computed
+	 * using exponential back-off when the notification transitions to
+	 * {@link NotificationStatus#RETRYING}: {@code lastRetryDate + initialDelay *
+	 * multiplier^retryCounter}. {@code null} for {@code PENDING} notifications (always
+	 * eligible) and {@code FAILED} notifications (never eligible again).
+	 */
+	private Date nextRetryDate;
+
+	private String program;
+
 }

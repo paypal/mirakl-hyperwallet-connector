@@ -1,12 +1,16 @@
 package com.paypal.notifications.storage.services;
 
-import com.paypal.notifications.storage.repositories.entities.NotificationEntity;
 import com.paypal.notifications.storage.repositories.NotificationEntityRepository;
+import com.paypal.notifications.storage.repositories.entities.NotificationEntity;
+import com.paypal.notifications.storage.repositories.entities.NotificationType;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Default implementation of {@link NotificationStorageService}.
@@ -62,6 +66,39 @@ public class NotificationStorageServiceImpl implements NotificationStorageServic
 			final Date creationDate) {
 		return notificationEntityRepository.findNotificationsByObjectTokenAndAndCreationDateAfter(objectToken,
 				creationDate);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Page<NotificationEntity> getFailedNotifications(final NotificationType notificationType,
+			final String objectToken, final Pageable pageable) {
+		return notificationEntityRepository.findFailedNotifications(notificationType, objectToken, pageable);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean existsNewerNotificationByObjectToken(final String objectToken, final Date creationDate) {
+		return notificationEntityRepository.existsNewerNotificationByObjectToken(objectToken, creationDate);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Optional<NotificationEntity> getNotificationByWebHookToken(final String webHookToken) {
+		return notificationEntityRepository.findByWebHookToken(webHookToken);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void deleteNotificationByWebHookToken(final String webHookToken) {
+		notificationEntityRepository.deleteByWebHookToken(webHookToken);
 	}
 
 }
