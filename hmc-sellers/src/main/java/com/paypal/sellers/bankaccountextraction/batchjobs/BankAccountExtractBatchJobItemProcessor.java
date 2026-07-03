@@ -34,7 +34,7 @@ public class BankAccountExtractBatchJobItemProcessor
 	@Override
 	public void processItem(final BatchJobContext ctx, final BankAccountExtractJobItem jobItem) {
 		final SellerModel synchronizedSellerModel = bankAccountTokenSynchronizationService
-				.synchronizeToken(jobItem.getItem());
+			.synchronizeToken(jobItem.getItem());
 		hyperWalletBankAccountStrategyExecutor.execute(synchronizedSellerModel);
 	}
 

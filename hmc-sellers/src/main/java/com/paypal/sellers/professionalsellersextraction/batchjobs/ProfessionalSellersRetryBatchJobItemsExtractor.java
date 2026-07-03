@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Extract professional sellers for retry from the failed items cache.
@@ -30,8 +29,10 @@ public class ProfessionalSellersRetryBatchJobItemsExtractor
 
 	@Override
 	protected Collection<ProfessionalSellerExtractJobItem> getItems(final List<String> ids) {
-		return miraklSellersExtractService.extractProfessionals(ids).stream().map(ProfessionalSellerExtractJobItem::new)
-				.collect(Collectors.toList());
+		return miraklSellersExtractService.extractProfessionals(ids)
+			.stream()
+			.map(ProfessionalSellerExtractJobItem::new)
+			.toList();
 	}
 
 }

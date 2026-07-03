@@ -23,8 +23,8 @@ public class HyperwalletBankAccountTypeResolverImpl implements HyperwalletBankAc
 	public BankAccountType getBankAccountType(final HyperwalletBankAccount hyperwalletBankAccount) {
 		final HyperwalletBankAccount.Type type = hyperwalletBankAccount.getType();
 		final List<HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry> typeCandidates = countryCurrencyConfiguration
-				.getEntriesFor(hyperwalletBankAccount.getTransferMethodCountry(),
-						hyperwalletBankAccount.getTransferMethodCurrency(), TransferType.valueOf(type.name()));
+			.getEntriesFor(hyperwalletBankAccount.getTransferMethodCountry(),
+					hyperwalletBankAccount.getTransferMethodCurrency(), TransferType.valueOf(type.name()));
 
 		if (typeCandidates.isEmpty()) {
 			throw new HMCException(String.format(

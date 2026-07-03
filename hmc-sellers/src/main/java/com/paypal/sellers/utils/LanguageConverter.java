@@ -17,7 +17,7 @@ public final class LanguageConverter {
 	@Value("#{'${hmc.hyperwallet.default.language}'}")
 	private String defaultLanguage;
 
-	protected LanguageConverter() {
+	private LanguageConverter() {
 	}
 
 	/**

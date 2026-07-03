@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * The extractor class for retrieving all the business stakeholders within a delta time
@@ -45,9 +44,8 @@ public class BusinessStakeholdersExtractBatchJobItemsExtractor
 	protected Collection<BusinessStakeholderExtractJobItem> getItems(final BatchJobContext ctx, final Date delta) {
 		final List<SellerModel> miraklProfessionalSellers = miraklSellersExtractService.extractProfessionals(delta);
 		final List<BusinessStakeHolderModel> businessStakeHolderModels = businessStakeholderExtractService
-				.extractBusinessStakeHolders(miraklProfessionalSellers);
-		return businessStakeHolderModels.stream().map(BusinessStakeholderExtractJobItem::new)
-				.collect(Collectors.toList());
+			.extractBusinessStakeHolders(miraklProfessionalSellers);
+		return businessStakeHolderModels.stream().map(BusinessStakeholderExtractJobItem::new).toList();
 	}
 
 }

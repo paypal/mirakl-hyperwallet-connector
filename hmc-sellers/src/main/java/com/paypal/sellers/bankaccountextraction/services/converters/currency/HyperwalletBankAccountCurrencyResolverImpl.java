@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -49,7 +48,7 @@ public class HyperwalletBankAccountCurrencyResolverImpl implements HyperwalletBa
 	}
 
 	private List<HyperwalletBankAccountCurrencyInfo> filterUnsupportedCurrencyCandidates(final List<HyperwalletBankAccountCurrencyInfo> currencyCandidates) {
-		return currencyCandidates.stream().filter(this::supportedTransferType).collect(Collectors.toList());
+		return currencyCandidates.stream().filter(this::supportedTransferType).toList();
 	}
 
 	private boolean supportedTransferType(final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo) {

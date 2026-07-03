@@ -46,8 +46,8 @@ public class MiraklShopToABABankAccountModelConverterStrategy implements Strateg
 		final MiraklContactInformation contactInformation = source.getContactInformation();
 
 		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = hyperwalletBankAccountCurrencyResolver
-				.getCurrencyForCountry(BankAccountType.ABA.name(), Locale.US.getCountry(),
-						source.getCurrencyIsoCode().name());
+			.getCurrencyForCountry(BankAccountType.ABA.name(), Locale.US.getCountry(),
+					source.getCurrencyIsoCode().name());
 
 		//@formatter:off
 		return ABABankAccountModel.builder()

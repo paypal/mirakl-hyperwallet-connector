@@ -7,7 +7,6 @@ import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
-import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -52,8 +51,9 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 	private static final String BUSINESS_STAKEHOLDER_TOKEN = "businessStakeholderToken";
 
 	@RegisterExtension
-	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.WARN)
-			.recordForType(KYCDocumentBusinessStakeHolderInfoModel.class);
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create()
+		.recordForLevel(LogTracker.LogLevel.WARN)
+		.recordForType(KYCDocumentBusinessStakeHolderInfoModel.class);
 
 	@Mock
 	private KYCDocumentModel kycDocumentModelMock;
@@ -117,14 +117,16 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 	@Test
 	void containsIdentityDocuments_shouldReturnTrueWhenAllIdentityDocumentsAreFilled() {
 		final KYCDocumentModel nationalIdentityCardFront = KYCDocumentModel.builder()
-				.documentFieldName(PROOF_OF_IDENTITY_FRONT).build();
+			.documentFieldName(PROOF_OF_IDENTITY_FRONT)
+			.build();
 		final KYCDocumentModel nationalIdentityCardBack = KYCDocumentModel.builder()
-				.documentFieldName(PROOF_OF_IDENTITY_BACK).build();
+			.documentFieldName(PROOF_OF_IDENTITY_BACK)
+			.build();
 		final KYCDocumentBusinessStakeHolderInfoModel testObj = KYCDocumentBusinessStakeHolderInfoModel.builder()
-				.proofOfIdentity(
-						List.of(new MiraklValueListAdditionalFieldValue(PROOF_OF_IDENTITY_TYPE, "GOVERNMENT_ID")),
-						VALID_BUSINESS_STAKE_HOLDER_NUMBER)
-				.documents(List.of(nationalIdentityCardFront, nationalIdentityCardBack)).build();
+			.proofOfIdentity(List.of(new MiraklValueListAdditionalFieldValue(PROOF_OF_IDENTITY_TYPE, "GOVERNMENT_ID")),
+					VALID_BUSINESS_STAKE_HOLDER_NUMBER)
+			.documents(List.of(nationalIdentityCardFront, nationalIdentityCardBack))
+			.build();
 
 		final boolean result = testObj.isIdentityDocumentsFilled();
 
@@ -137,7 +139,7 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModelTwo = createKYCDocumentBusinessStakeholderInfoModelObject();
 
 		final boolean result = kycDocumentBusinessStakeHolderInfoModelOne
-				.equals(kycDocumentBusinessStakeHolderInfoModelTwo);
+			.equals(kycDocumentBusinessStakeHolderInfoModelTwo);
 
 		assertThat(result).isTrue();
 	}
@@ -148,7 +150,7 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModelTwo = createAnotherKYCDocumentBusinessStakeholderInfoModelObject();
 
 		final boolean result = kycDocumentBusinessStakeHolderInfoModelOne
-				.equals(kycDocumentBusinessStakeHolderInfoModelTwo);
+			.equals(kycDocumentBusinessStakeHolderInfoModelTwo);
 
 		assertThat(result).isFalse();
 	}
@@ -158,7 +160,7 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModelOne = createKYCDocumentBusinessStakeholderInfoModelObject();
 
 		final boolean result = kycDocumentBusinessStakeHolderInfoModelOne
-				.equals(kycDocumentBusinessStakeHolderInfoModelOne);
+			.equals(kycDocumentBusinessStakeHolderInfoModelOne);
 
 		assertThat(result).isTrue();
 	}
@@ -242,7 +244,8 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 	@Test
 	void isEmpty_shouldReturnTrueWhenBusinessStakeholderTokenAndProofOfIdentityAndDocumentsAreNull() {
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeholderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
-				.builder().build();
+			.builder()
+			.build();
 
 		final boolean result = kycDocumentBusinessStakeholderInfoModel.isEmpty();
 
@@ -252,7 +255,9 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 	@Test
 	void isEmpty_shouldReturnFalseWhenBusinessStakeholderTokenIsFilledAndProofOfIdentityAndDocumentsAreNull() {
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeholderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
-				.builder().token(BUSINESS_STAKEHOLDER_TOKEN).build();
+			.builder()
+			.token(BUSINESS_STAKEHOLDER_TOKEN)
+			.build();
 
 		final boolean result = kycDocumentBusinessStakeholderInfoModel.isEmpty();
 
@@ -262,7 +267,9 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 	@Test
 	void isEmpty_shouldReturnFalseWhenBusinessStakeholderTokenIsEmptyAndProofOfIdentityIsFilledAndDocumentsIsEmpty() {
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeholderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
-				.builder().proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID).build();
+			.builder()
+			.proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
+			.build();
 
 		final boolean result = kycDocumentBusinessStakeholderInfoModel.isEmpty();
 
@@ -272,10 +279,13 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 	@Test
 	void isEmpty_shouldReturnFalseWhenBusinessStakeholderTokenIsEmptyAndProofOfIdentityIsEmptyAndDocumentsIsFilled() {
 		final KYCDocumentModel document = KYCDocumentModel.builder()
-				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_AUTHORIZATION).build();
+			.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_AUTHORIZATION)
+			.build();
 
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeholderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
-				.builder().documents(List.of(document)).build();
+			.builder()
+			.documents(List.of(document))
+			.build();
 
 		final boolean result = kycDocumentBusinessStakeholderInfoModel.isEmpty();
 
@@ -293,7 +303,7 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 		//@formatter:on
 
 		final boolean result = kycDocumentBusinessStakeholderInfoModel
-				.hasSelectedDocumentsControlFieldsInBusinessStakeholder();
+			.hasSelectedDocumentsControlFieldsInBusinessStakeholder();
 
 		assertThat(result).isTrue();
 	}
@@ -307,7 +317,7 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 				.build();
 		//@formatter:on
 		final boolean result = kycDocumentBusinessStakeholderInfoModel
-				.hasSelectedDocumentsControlFieldsInBusinessStakeholder();
+			.hasSelectedDocumentsControlFieldsInBusinessStakeholder();
 
 		assertThat(result).isFalse();
 	}
@@ -321,7 +331,7 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 				.build();
 		//@formatter:on
 		final boolean result = kycDocumentBusinessStakeholderInfoModel
-				.hasSelectedDocumentsControlFieldsInBusinessStakeholder();
+			.hasSelectedDocumentsControlFieldsInBusinessStakeholder();
 
 		assertThat(result).isTrue();
 	}
@@ -396,7 +406,7 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 		//@formatter:on
 
 		final List<KYCDocumentModel> result = kycDocumentBusinessStakeholderInfoModel
-				.getLetterOfAuthorizationDocument();
+			.getLetterOfAuthorizationDocument();
 
 		assertThat(result).hasSize(1).containsExactlyInAnyOrder(documentForLetterOfAuthorization);
 	}
@@ -415,7 +425,7 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 		//@formatter:on
 
 		final List<KYCDocumentModel> result = kycDocumentBusinessStakeholderInfoModel
-				.getLetterOfAuthorizationDocument();
+			.getLetterOfAuthorizationDocument();
 
 		assertThat(result).isEmpty();
 	}
@@ -437,7 +447,7 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 		//@formatter:on
 
 		final List<KYCDocumentModel> result = kycDocumentBusinessStakeholderInfoModel
-				.getLetterOfAuthorizationDocument();
+			.getLetterOfAuthorizationDocument();
 
 		assertThat(result).isEmpty();
 	}
@@ -459,7 +469,7 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 		//@formatter:on
 
 		final List<KYCDocumentModel> result = kycDocumentBusinessStakeholderInfoModel
-				.getLetterOfAuthorizationDocument();
+			.getLetterOfAuthorizationDocument();
 
 		assertThat(result).isEmpty();
 	}
@@ -585,7 +595,7 @@ class KYCDocumentBusinessStakeHolderInfoModelTest {
 		//@formatter:on
 
 		doReturn(List.of(kycDocumentModelMock)).when(kycDocumentBusinessStakeholderInfoModel)
-				.getLetterOfAuthorizationDocument();
+			.getLetterOfAuthorizationDocument();
 
 		final boolean result = kycDocumentBusinessStakeholderInfoModel.areDocumentsFilled();
 

@@ -1,7 +1,6 @@
 package com.paypal.jobsystem.batchjobfailures.services.retrypolicies;
 
 import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
-import com.paypal.jobsystem.batchjobfailures.services.retrypolicies.AttemptsRetryPolicy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -1,10 +1,10 @@
 package com.paypal.kyc.incomingnotifications.services.converters;
 
 import com.paypal.infrastructure.support.converter.Converter;
+import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
 import com.paypal.kyc.incomingnotifications.model.KYCDocumentNotificationModel;
 import com.paypal.kyc.sellersdocumentextraction.model.KYCProofOfAddressEnum;
 import com.paypal.kyc.sellersdocumentextraction.model.KYCProofOfBusinessEnum;
-import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Service;

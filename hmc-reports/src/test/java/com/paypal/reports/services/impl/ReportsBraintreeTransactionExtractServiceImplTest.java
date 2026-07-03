@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 class ReportsBraintreeTransactionExtractServiceImplTest {
 
 	// ISO-8601 format
-	private final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_INSTANT;
+	private final DateTimeFormatter dateFormater = DateTimeFormatter.ISO_INSTANT;
 
 	private String transactionSearchQuery;
 
@@ -50,8 +50,9 @@ class ReportsBraintreeTransactionExtractServiceImplTest {
 	void setUp() {
 		testObj = Mockito.spy(new MyReportsBraintreeTransactionsExtractServiceImpl(braintreeGatewayMock,
 				mapToBraintreeTransactionLineConverterMock));
-		transactionSearchQuery = Paths.get("src", "test", "resources", "graphQLTransactionSearchQuery.graphql").toFile()
-				.toString();
+		transactionSearchQuery = Paths.get("src", "test", "resources", "graphQLTransactionSearchQuery.graphql")
+			.toFile()
+			.toString();
 	}
 
 	@Test
@@ -61,27 +62,29 @@ class ReportsBraintreeTransactionExtractServiceImplTest {
 				ZoneId.systemDefault());
 		final Date endDate = DateUtil.convertToDate(LocalDateTime.of(2021, 5, 20, 12, 0, 22), ZoneId.systemDefault());
 		doReturn(graphQLClientMock).when(testObj).getGraphQLClient();
-		final Map<String, Object> graphQLQueryResponseMap = new ObjectMapper().readValue(
-				Paths.get("src", "test", "resources", "graphQLOnePageQueryResponse.json").toFile(), Map.class);
+		final Map<String, Object> graphQLQueryResponseMap = new ObjectMapper()
+			.readValue(Paths.get("src", "test", "resources", "graphQLOnePageQueryResponse.json").toFile(), Map.class);
 		final Map<String, Object> graphQLFirstEdge = new ObjectMapper()
-				.readValue(Paths.get("src", "test", "resources", "graphQLOnePageFirstEdge.json").toFile(), Map.class);
+			.readValue(Paths.get("src", "test", "resources", "graphQLOnePageFirstEdge.json").toFile(), Map.class);
 		final Map<String, Object> graphQLSecondEdge = new ObjectMapper()
-				.readValue(Paths.get("src", "test", "resources", "graphQLOnePageSecondEdge.json").toFile(), Map.class);
+			.readValue(Paths.get("src", "test", "resources", "graphQLOnePageSecondEdge.json").toFile(), Map.class);
 		when(graphQLClientMock.query(transactionSearchQuery, createInputVars("SETTLED", startDate, endDate, null)))
-				.thenReturn(graphQLQueryResponseMap);
+			.thenReturn(graphQLQueryResponseMap);
 		final HmcBraintreeTransactionLine firstTransaction = HmcBraintreeTransactionLine.builder()
-				.paymentTransactionId("firstTransaction").build();
+			.paymentTransactionId("firstTransaction")
+			.build();
 		when(mapToBraintreeTransactionLineConverterMock.convert(graphQLFirstEdge)).thenReturn(firstTransaction);
 
 		final HmcBraintreeTransactionLine secondTransaction = HmcBraintreeTransactionLine.builder()
-				.paymentTransactionId("secondTransaction").build();
+			.paymentTransactionId("secondTransaction")
+			.build();
 		when(mapToBraintreeTransactionLineConverterMock.convert(graphQLSecondEdge)).thenReturn(secondTransaction);
 
 		final List<HmcBraintreeTransactionLine> result = testObj.getAllTransactionsByTypeAndDateInterval("SETTLED",
 				startDate, endDate);
 
 		assertThat(result.stream().map(HmcBraintreeTransactionLine::getPaymentTransactionId))
-				.containsExactlyInAnyOrder("firstTransaction", "secondTransaction");
+			.containsExactlyInAnyOrder("firstTransaction", "secondTransaction");
 		verify(mapToBraintreeTransactionLineConverterMock, times(2)).convert(any());
 	}
 
@@ -97,27 +100,29 @@ class ReportsBraintreeTransactionExtractServiceImplTest {
 		final Map<String, Object> graphQLSecondPageQueryResponseMap = new ObjectMapper().readValue(
 				Paths.get("src", "test", "resources", "graphQLTwoPagesQueryResponseTwo.json").toFile(), Map.class);
 		final Map<String, Object> graphQLFirstEdge = new ObjectMapper()
-				.readValue(Paths.get("src", "test", "resources", "graphQLOnePageFirstEdge.json").toFile(), Map.class);
+			.readValue(Paths.get("src", "test", "resources", "graphQLOnePageFirstEdge.json").toFile(), Map.class);
 		final Map<String, Object> graphQLSecondEdge = new ObjectMapper()
-				.readValue(Paths.get("src", "test", "resources", "graphQLOnePageSecondEdge.json").toFile(), Map.class);
+			.readValue(Paths.get("src", "test", "resources", "graphQLOnePageSecondEdge.json").toFile(), Map.class);
 		when(graphQLClientMock.query(transactionSearchQuery, createInputVars("SETTLED", startDate, endDate, null)))
-				.thenReturn(graphQLFirstPageQueryResponseMap);
+			.thenReturn(graphQLFirstPageQueryResponseMap);
 		when(graphQLClientMock.query(transactionSearchQuery,
 				createInputVars("SETTLED", startDate, endDate,
 						"ZEhKaGJuTmhZM1JwYjI1ZmJYWjVZWFp4YW1vOzIwMjEtMDUtMTNUMDY6NTY6MDNa")))
-								.thenReturn(graphQLSecondPageQueryResponseMap);
+			.thenReturn(graphQLSecondPageQueryResponseMap);
 		final HmcBraintreeTransactionLine firstTransaction = HmcBraintreeTransactionLine.builder()
-				.paymentTransactionId("firstTransaction").build();
+			.paymentTransactionId("firstTransaction")
+			.build();
 		when(mapToBraintreeTransactionLineConverterMock.convert(graphQLFirstEdge)).thenReturn(firstTransaction);
 		final HmcBraintreeTransactionLine secondTransaction = HmcBraintreeTransactionLine.builder()
-				.paymentTransactionId("secondTransaction").build();
+			.paymentTransactionId("secondTransaction")
+			.build();
 		when(mapToBraintreeTransactionLineConverterMock.convert(graphQLSecondEdge)).thenReturn(secondTransaction);
 
 		final List<HmcBraintreeTransactionLine> result = testObj.getAllTransactionsByTypeAndDateInterval("SETTLED",
 				startDate, endDate);
 
 		assertThat(result.stream().map(HmcBraintreeTransactionLine::getPaymentTransactionId))
-				.containsExactlyInAnyOrder("firstTransaction", "secondTransaction");
+			.containsExactlyInAnyOrder("firstTransaction", "secondTransaction");
 		verify(mapToBraintreeTransactionLineConverterMock, times(2)).convert(any());
 	}
 
@@ -128,9 +133,9 @@ class ReportsBraintreeTransactionExtractServiceImplTest {
 		final Date endDate = DateUtil.convertToDate(LocalDateTime.of(2021, 5, 20, 12, 0, 22), ZoneId.systemDefault());
 		doReturn(graphQLClientMock).when(testObj).getGraphQLClient();
 		final Map<String, Object> emptyResponse = new ObjectMapper()
-				.readValue(Paths.get("src", "test", "resources", "graphQLEmptyResponse.json").toFile(), Map.class);
+			.readValue(Paths.get("src", "test", "resources", "graphQLEmptyResponse.json").toFile(), Map.class);
 		when(graphQLClientMock.query(transactionSearchQuery, createInputVars("SETTLED", startDate, endDate, null)))
-				.thenReturn(emptyResponse);
+			.thenReturn(emptyResponse);
 
 		final List<HmcBraintreeTransactionLine> result = testObj.getAllTransactionsByTypeAndDateInterval("SETTLED",
 				startDate, endDate);
@@ -167,7 +172,7 @@ class ReportsBraintreeTransactionExtractServiceImplTest {
 
 	private String convertToISO8601(final LocalDateTime date) {
 		final TemporalAccessor temp = date.atZone(ZoneId.systemDefault());
-		return DATE_FORMATTER.format(temp);
+		return dateFormater.format(temp);
 	}
 
 	private class MyReportsBraintreeTransactionsExtractServiceImpl

@@ -19,9 +19,9 @@ public class MiraklSchemaDiffEvaluatorRegistry {
 			final List<MiraklSchemaSetDiffEvaluator> miraklSchemaSetDiffEvaluators) {
 
 		itemDiffEvaluatorsRegistry = miraklSchemaItemDiffEvaluators.stream()
-				.collect(Collectors.groupingBy(MiraklSchemaItemDiffEvaluator::targetClass));
+			.collect(Collectors.groupingBy(MiraklSchemaItemDiffEvaluator::targetClass));
 		setDiffEvaluatorsRegistry = miraklSchemaSetDiffEvaluators.stream()
-				.collect(Collectors.groupingBy(MiraklSchemaSetDiffEvaluator::targetClass));
+			.collect(Collectors.groupingBy(MiraklSchemaSetDiffEvaluator::targetClass));
 	}
 
 	public List<MiraklSchemaItemDiffEvaluator> getItemDiffEvaluators(final MiraklSchemaItem item) {
@@ -30,7 +30,7 @@ public class MiraklSchemaDiffEvaluatorRegistry {
 				.filter(entry -> entry.getKey().isAssignableFrom(item.getClass()))
 				.map(Map.Entry::getValue)
 				.flatMap(List::stream)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 
@@ -40,7 +40,7 @@ public class MiraklSchemaDiffEvaluatorRegistry {
 				.filter(e -> e.getKey().isAssignableFrom(diff.getSchemaType()))
 				.map(Map.Entry::getValue)
 				.flatMap(List::stream)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 

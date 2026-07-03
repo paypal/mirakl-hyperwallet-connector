@@ -1,7 +1,6 @@
 package com.paypal.kyc.stakeholdersdocumentextraction.batchjobs;
 
 import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
-import com.paypal.kyc.stakeholdersdocumentextraction.batchjobs.BusinessStakeholdersDocumentsExtractBatchJobItem;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,21 +19,26 @@ class BusinessStakeholdersDocumentsExtractBatchJobItemTest {
 	void getItemId_ShouldReturnItemId() {
 
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentSellerInfoModel = KYCDocumentBusinessStakeHolderInfoModel
-				.builder().clientUserId(CLIENT_USER_ID).businessStakeholderMiraklNumber(BUSINESSSTAKEHOLDER_NUMBER)
-				.token(BUSINESSSTAKEHOLDER_TOKEN).build();
+			.builder()
+			.clientUserId(CLIENT_USER_ID)
+			.businessStakeholderMiraklNumber(BUSINESSSTAKEHOLDER_NUMBER)
+			.token(BUSINESSSTAKEHOLDER_TOKEN)
+			.build();
 
 		final BusinessStakeholdersDocumentsExtractBatchJobItem testObj = new BusinessStakeholdersDocumentsExtractBatchJobItem(
 				kycDocumentSellerInfoModel);
 
 		assertThat(testObj.getItemId())
-				.isEqualTo(CLIENT_USER_ID + "-" + BUSINESSSTAKEHOLDER_NUMBER + "-" + BUSINESSSTAKEHOLDER_TOKEN);
+			.isEqualTo(CLIENT_USER_ID + "-" + BUSINESSSTAKEHOLDER_NUMBER + "-" + BUSINESSSTAKEHOLDER_TOKEN);
 	}
 
 	@Test
 	void getItemType_ShouldReturnItemType() {
 
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentSellerInfoModel = KYCDocumentBusinessStakeHolderInfoModel
-				.builder().clientUserId(CLIENT_USER_ID).build();
+			.builder()
+			.clientUserId(CLIENT_USER_ID)
+			.build();
 
 		final BusinessStakeholdersDocumentsExtractBatchJobItem testObj = new BusinessStakeholdersDocumentsExtractBatchJobItem(
 				kycDocumentSellerInfoModel);

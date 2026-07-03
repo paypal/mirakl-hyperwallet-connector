@@ -1,6 +1,5 @@
 package com.paypal.infrastructure.support.exceptions;
 
-import com.paypal.infrastructure.support.exceptions.DateIntervalException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
@@ -27,7 +26,7 @@ class DateIntervalExceptionTest {
 		final DateIntervalException result = new DateIntervalException(FROM_DATE, TO_DATE);
 
 		assertThat(result).hasFieldOrPropertyWithValue(FROM_ATTRIBUTE, FROM_DATE)
-				.hasFieldOrPropertyWithValue(TO_ATTRIBUTE, TO_DATE);
+			.hasFieldOrPropertyWithValue(TO_ATTRIBUTE, TO_DATE);
 	}
 
 	@Test

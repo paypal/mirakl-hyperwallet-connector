@@ -45,8 +45,7 @@ public class MiraklShopToIBANBankAccountModelConverterStrategy implements Strate
 
 		final String bankCountryIsoCode = extractCountryFromIban(source, miraklIbanBankAccountInformation);
 		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = hyperwalletBankAccountCurrencyResolver
-				.getCurrencyForCountry(BankAccountType.IBAN.name(), bankCountryIsoCode,
-						source.getCurrencyIsoCode().name());
+			.getCurrencyForCountry(BankAccountType.IBAN.name(), bankCountryIsoCode, source.getCurrencyIsoCode().name());
 
 		//@formatter:off
 		return IBANBankAccountModel.builder()

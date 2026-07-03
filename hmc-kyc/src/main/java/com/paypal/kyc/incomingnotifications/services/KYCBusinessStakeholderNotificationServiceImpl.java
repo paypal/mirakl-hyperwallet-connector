@@ -34,7 +34,7 @@ public class KYCBusinessStakeholderNotificationServiceImpl implements KYCBusines
 	@Override
 	public void updateBusinessStakeholderKYCStatus(final HyperwalletWebhookNotification incomingNotification) {
 		final KYCBusinessStakeholderStatusNotificationBodyModel kycBusinessStakeholderNotification = hyperWalletObjectToKycBusinessStakeholderStatusNotificationBodyModelConverter
-				.convert(incomingNotification);
+			.convert(incomingNotification);
 		try {
 			kycBusinessStakeholderStatusExecutor.execute(kycBusinessStakeholderNotification);
 		}
@@ -57,7 +57,7 @@ public class KYCBusinessStakeholderNotificationServiceImpl implements KYCBusines
 			final Exception e) {
 		log.error(
 				"Notification [%s] could not be processed - the KYC Letter of authorization for a business stakeholder could not be updated.%n%s"
-						.formatted(incomingNotification.getToken(), exceptionMessage),
+					.formatted(incomingNotification.getToken(), exceptionMessage),
 				e);
 	}
 

@@ -47,7 +47,7 @@ class HyperWalletObjectToKYCUserDocumentFlagsExecutorNotificationBodyModelConver
 	@Test
 	void convert_whenDetailsAreNotNull_shouldTransformHyperWalletWebhookNotificationToKycUserDocumentFlagsNotificationModel() {
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(PROGRAM))
-				.thenReturn(hyperwalletMock);
+			.thenReturn(hyperwalletMock);
 		doReturn(PROGRAM).when(testObj).getHyperwalletPrograms();
 
 		final Map<String, String> hyperWalletKycUserBodyNotification = createHyperWalletKycUserDocumentFlagsNotification();
@@ -64,7 +64,7 @@ class HyperWalletObjectToKYCUserDocumentFlagsExecutorNotificationBodyModelConver
 	@Test
 	void convert_whenProgramIsNotFound_shouldReturnNullHyperwalletProgramInKYCUserDocumentFlagsNotificationBodyModel() {
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(PROGRAM))
-				.thenReturn(hyperwalletMock);
+			.thenReturn(hyperwalletMock);
 		when(hyperwalletMock.getProgram(PROGRAM_TOKEN)).thenThrow(HyperwalletException.class);
 		doReturn(PROGRAM).when(testObj).getHyperwalletPrograms();
 

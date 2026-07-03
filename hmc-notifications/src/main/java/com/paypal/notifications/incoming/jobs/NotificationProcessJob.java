@@ -41,7 +41,7 @@ public class NotificationProcessJob extends AbstractDeltaInfoJob {
 
 		for (final NotificationEntity entity : batch) {
 			final NotificationProcessingService.NotificationProcessingStatus result = notificationProcessingService
-					.processNotification(entity);
+				.processNotification(entity);
 			statusUpdates.put(entity.getWebHookToken(), result);
 		}
 

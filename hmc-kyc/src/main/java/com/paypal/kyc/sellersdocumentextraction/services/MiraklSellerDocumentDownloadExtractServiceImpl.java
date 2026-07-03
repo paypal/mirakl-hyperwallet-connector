@@ -2,14 +2,13 @@ package com.paypal.kyc.sellersdocumentextraction.services;
 
 import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-
 import com.mirakl.client.mmp.request.shop.document.MiraklGetShopDocumentsRequest;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
 import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
-import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.documentextractioncommons.services.MiraklDocumentsSelector;
+import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -53,12 +52,15 @@ public class MiraklSellerDocumentDownloadExtractServiceImpl implements MiraklSel
 		}
 
 		final List<KYCDocumentModel> extractedDocumentsSelectedBySeller = miraklKYCSelectionDocumentStrategyExecutor
-				.execute(kycDocumentSellerInfoModelWithMiraklShops).stream().flatMap(List::stream)
-				.collect(Collectors.toList());
+			.execute(kycDocumentSellerInfoModelWithMiraklShops)
+			.stream()
+			.flatMap(List::stream)
+			.toList();
 		//@formatter:on
 
-		return kycDocumentSellerInfoModelWithMiraklShops.toBuilder().documents(extractedDocumentsSelectedBySeller)
-				.build();
+		return kycDocumentSellerInfoModelWithMiraklShops.toBuilder()
+			.documents(extractedDocumentsSelectedBySeller)
+			.build();
 	}
 
 	/**
@@ -73,7 +75,7 @@ public class MiraklSellerDocumentDownloadExtractServiceImpl implements MiraklSel
 		try {
 			log.info("Retrieving documents for seller with id [{}]", kycDocumentSellerInfoModel.getClientUserId());
 			final List<MiraklShopDocument> shopDocuments = miraklMarketplacePlatformOperatorApiClient
-					.getShopDocuments(getShopDocumentsRequest);
+				.getShopDocuments(getShopDocumentsRequest);
 			log.info("Documents retrieved for seller with id [{}]: [{}]", kycDocumentSellerInfoModel.getClientUserId(),
 					shopDocuments.stream().map(MiraklShopDocument::getId).collect(Collectors.joining(",")));
 

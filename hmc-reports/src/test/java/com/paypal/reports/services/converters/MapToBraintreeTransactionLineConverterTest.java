@@ -6,7 +6,6 @@ import com.paypal.reports.model.HmcBraintreeTransactionLine;
 import com.paypal.reports.model.graphql.braintree.paymentransaction.BraintreeGraphQLAmountModel;
 import com.paypal.reports.model.graphql.braintree.paymentransaction.BraintreeNodeGraphQLModel;
 import com.paypal.reports.model.graphql.braintree.paymentransaction.BraintreeTransactionTypeEnum;
-import com.paypal.reports.services.converters.MapToBraintreeTransactionLineConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -52,7 +51,7 @@ class MapToBraintreeTransactionLineConverterTest {
 		when(edgeMock.get("legacyId")).thenReturn("dHJhbnNhY3Rpb25fbXZ5YXZxamo");
 		when(braintreeNodeGraphQLModelMock.getAmount()).thenReturn(braintreeNodeGraphQLAmountModelMock);
 		when(braintreeNodeGraphQLModelMock.getCreatedAt())
-				.thenReturn(DateUtil.convertToDate(createdAt, ZoneId.systemDefault()));
+			.thenReturn(DateUtil.convertToDate(createdAt, ZoneId.systemDefault()));
 		when(braintreeNodeGraphQLAmountModelMock.getValue()).thenReturn(expected);
 		when(braintreeNodeGraphQLAmountModelMock.getCurrencyCode()).thenReturn("USD");
 

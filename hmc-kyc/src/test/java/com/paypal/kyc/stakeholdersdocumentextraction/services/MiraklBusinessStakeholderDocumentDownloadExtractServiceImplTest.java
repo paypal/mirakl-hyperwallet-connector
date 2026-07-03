@@ -7,10 +7,10 @@ import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
 import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
-import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
 import com.paypal.kyc.documentextractioncommons.services.MiraklDocumentsSelector;
+import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -46,7 +46,7 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 	private MailNotificationUtil kycMailNotificationUtilMock;
 
 	@Mock
-	private static KYCDocumentBusinessStakeHolderInfoModel KYCDocumentBusinessStakeHolderInfoModelMock;
+	private static KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModelMock;
 
 	@Test
 	void getBusinessStakeholderDocumentsSelectedBySeller_shouldReturnAnEmptyListWhenNoProofOfAddressNeitherProofOfIdentityHasBeenSelectedBySeller() {
@@ -58,7 +58,7 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 		//@formatter:on
 
 		final KYCDocumentBusinessStakeHolderInfoModel result = testObj
-				.getBusinessStakeholderDocumentsSelectedBySeller(kycBusinessStakeholderNonSelectedDocuments);
+			.getBusinessStakeholderDocumentsSelectedBySeller(kycBusinessStakeholderNonSelectedDocuments);
 
 		assertThat(result.getDocuments()).isEmpty();
 	}
@@ -74,9 +74,11 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 		//@formatter:on
 
 		final KYCDocumentModel kycDocumentModelFront = KYCDocumentModel.builder()
-				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_FRONT).build();
+			.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_FRONT)
+			.build();
 		final KYCDocumentModel kycDocumentModelBack = KYCDocumentModel.builder()
-				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_BACK).build();
+			.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_BACK)
+			.build();
 
 		final MiraklShopDocument miraklShopProofOfIdentityDocumentFront = new MiraklShopDocument();
 		miraklShopProofOfIdentityDocumentFront.setTypeCode("hw-bsh1-proof-identity-front");
@@ -86,21 +88,23 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 		final List<MiraklShopDocument> miraklShopDocumentsList = List.of(miraklShopProofOfIdentityDocumentFront,
 				miraklShopProofOfIdentityDocumentBack);
 		when(miraklMarketplacePlatformOperatorApiClientMock
-				.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID))))
-						.thenReturn(miraklShopDocumentsList);
+			.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID))))
+			.thenReturn(miraklShopDocumentsList);
 
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeholderInfoModelWithMiraklDocumentsShopInformation = kycDocumentBusinessStakeHolderInfoModel
-				.toBuilder().miraklShopDocuments(miraklShopDocumentsList).build();
+			.toBuilder()
+			.miraklShopDocuments(miraklShopDocumentsList)
+			.build();
 
 		when(proofOfIdentityStrategyExecutorMock
-				.execute(kycDocumentBusinessStakeholderInfoModelWithMiraklDocumentsShopInformation))
-						.thenReturn(List.of(List.of(kycDocumentModelFront, kycDocumentModelBack)));
+			.execute(kycDocumentBusinessStakeholderInfoModelWithMiraklDocumentsShopInformation))
+			.thenReturn(List.of(List.of(kycDocumentModelFront, kycDocumentModelBack)));
 
 		final KYCDocumentBusinessStakeHolderInfoModel result = testObj
-				.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
+			.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock)
-				.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID)));
+			.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID)));
 		verifyNoMoreInteractions(miraklMarketplacePlatformOperatorApiClientMock);
 
 		assertThat(result.getDocuments()).containsExactlyInAnyOrder(kycDocumentModelFront, kycDocumentModelBack);
@@ -123,7 +127,7 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 
 		final MiraklException miraklException = new MiraklException("Something wrong happened");
 		doThrow(miraklException).when(miraklMarketplacePlatformOperatorApiClientMock)
-				.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID)));
+			.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID)));
 
 		testObj.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
 
@@ -147,7 +151,7 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 		//@formatter:on
 
 		final KYCDocumentBusinessStakeHolderInfoModel result = testObj
-				.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
+			.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
 
 		assertThat(kycDocumentBusinessStakeHolderInfoModel).isEqualTo(result);
 	}
@@ -164,7 +168,7 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 		//@formatter:on
 
 		final KYCDocumentBusinessStakeHolderInfoModel result = testObj
-				.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
+			.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
 
 		assertThat(kycDocumentBusinessStakeHolderInfoModel).isEqualTo(result);
 	}
@@ -181,7 +185,7 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 		//@formatter:on
 
 		final KYCDocumentBusinessStakeHolderInfoModel result = testObj
-				.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
+			.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
 
 		assertThat(kycDocumentBusinessStakeHolderInfoModel).isEqualTo(result);
 	}
@@ -198,11 +202,14 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 		//@formatter:on
 
 		final KYCDocumentModel kycDocumentModelProofOfIdentityFront = KYCDocumentModel.builder()
-				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_FRONT).build();
+			.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_FRONT)
+			.build();
 		final KYCDocumentModel kycDocumentModelProofOfIdentityBack = KYCDocumentModel.builder()
-				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_BACK).build();
+			.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_BACK)
+			.build();
 		final KYCDocumentModel kycDocumentModelLetterOfAuthorization = KYCDocumentModel.builder()
-				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_AUTHORIZATION).build();
+			.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_AUTHORIZATION)
+			.build();
 
 		final MiraklShopDocument miraklShopProofOfIdentityDocumentFront = new MiraklShopDocument();
 		miraklShopProofOfIdentityDocumentFront.setTypeCode("hw-bsh1-proof-identity-front");
@@ -214,22 +221,24 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 		final List<MiraklShopDocument> miraklShopDocumentsList = List.of(miraklShopProofOfIdentityDocumentFront,
 				miraklShopProofOfIdentityDocumentBack, miraklShopLetterOfAuthorizationDocument);
 		when(miraklMarketplacePlatformOperatorApiClientMock
-				.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID))))
-						.thenReturn(miraklShopDocumentsList);
+			.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID))))
+			.thenReturn(miraklShopDocumentsList);
 
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeholderInfoModelWithMiraklDocumentsShopInformation = kycDocumentBusinessStakeHolderInfoModel
-				.toBuilder().miraklShopDocuments(miraklShopDocumentsList).build();
+			.toBuilder()
+			.miraklShopDocuments(miraklShopDocumentsList)
+			.build();
 
 		when(proofOfIdentityStrategyExecutorMock
-				.execute(kycDocumentBusinessStakeholderInfoModelWithMiraklDocumentsShopInformation))
-						.thenReturn(List.of(List.of(kycDocumentModelProofOfIdentityFront,
-								kycDocumentModelProofOfIdentityBack, kycDocumentModelLetterOfAuthorization)));
+			.execute(kycDocumentBusinessStakeholderInfoModelWithMiraklDocumentsShopInformation))
+			.thenReturn(List.of(List.of(kycDocumentModelProofOfIdentityFront, kycDocumentModelProofOfIdentityBack,
+					kycDocumentModelLetterOfAuthorization)));
 
 		final KYCDocumentBusinessStakeHolderInfoModel result = testObj
-				.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
+			.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock)
-				.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID)));
+			.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID)));
 		verifyNoMoreInteractions(miraklMarketplacePlatformOperatorApiClientMock);
 
 		assertThat(result.getDocuments()).containsExactlyInAnyOrder(kycDocumentModelProofOfIdentityFront,
@@ -255,14 +264,14 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 		final List<MiraklShopDocument> miraklShopDocumentsList = List.of(miraklShopProofOfIdentityDocumentFront,
 				miraklShopProofOfIdentityDocumentBack);
 		when(miraklMarketplacePlatformOperatorApiClientMock
-				.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID))))
-						.thenReturn(miraklShopDocumentsList);
+			.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID))))
+			.thenReturn(miraklShopDocumentsList);
 
 		final KYCDocumentBusinessStakeHolderInfoModel result = testObj
-				.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
+			.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModel);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock)
-				.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID)));
+			.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID)));
 		verifyNoMoreInteractions(miraklMarketplacePlatformOperatorApiClientMock);
 
 		assertThat(result.getDocuments()).isEmpty();
@@ -273,10 +282,10 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 	void getBusinessStakeholderDocumentsSelectedBySeller_whenDocumentsAremissingForShop_shouldReturnShopDocument_andNeverSelectDocuments(
 			final KYCDocumentBusinessStakeHolderInfoModel document) {
 		doReturn(document).when(testObj)
-				.populateMiraklShopBusinessStakeholderDocuments(KYCDocumentBusinessStakeHolderInfoModelMock);
+			.populateMiraklShopBusinessStakeholderDocuments(kycDocumentBusinessStakeHolderInfoModelMock);
 
 		final KYCDocumentBusinessStakeHolderInfoModel result = testObj
-				.getBusinessStakeholderDocumentsSelectedBySeller(KYCDocumentBusinessStakeHolderInfoModelMock);
+			.getBusinessStakeholderDocumentsSelectedBySeller(kycDocumentBusinessStakeHolderInfoModelMock);
 
 		assertThat(result).isEqualTo(document);
 		verify(proofOfIdentityStrategyExecutorMock, never()).execute(any());
@@ -285,25 +294,33 @@ class MiraklBusinessStakeholderDocumentDownloadExtractServiceImplTest {
 	private static Stream<Arguments> documents() {
 		// Case 1: Document needs LOA and KYC but does not exist in Mirakl
 		final KYCDocumentBusinessStakeHolderInfoModel case1 = spy(KYCDocumentBusinessStakeHolderInfoModel.builder()
-				.requiresLetterOfAuthorization(true).requiresKYC(true).build());
+			.requiresLetterOfAuthorization(true)
+			.requiresKYC(true)
+			.build());
 		when(case1.existsDocumentInMirakl()).thenReturn(false);
 
 		// Case 2: Document needs LOA and KYC, exists in Mirakl but does not have LoA
 		// document in Mirakl
 		final KYCDocumentBusinessStakeHolderInfoModel case2 = spy(KYCDocumentBusinessStakeHolderInfoModel.builder()
-				.requiresLetterOfAuthorization(true).requiresKYC(true).build());
+			.requiresLetterOfAuthorization(true)
+			.requiresKYC(true)
+			.build());
 		when(case2.existsDocumentInMirakl()).thenReturn(true);
 		when(case2.existsDocumentInMirakl()).thenReturn(false);
 
 		// Case 3: Document needs LOA (not KYC), but does not have a LoA document in
 		// Mirakl
 		final KYCDocumentBusinessStakeHolderInfoModel case3 = spy(KYCDocumentBusinessStakeHolderInfoModel.builder()
-				.requiresLetterOfAuthorization(true).requiresKYC(false).build());
+			.requiresLetterOfAuthorization(true)
+			.requiresKYC(false)
+			.build());
 		when(case3.existsLetterOfAuthorizationDocumentInMirakl()).thenReturn(false);
 
 		// Case 4: Document needs KYC, but does not have a document in Mirakl
 		final KYCDocumentBusinessStakeHolderInfoModel case4 = spy(KYCDocumentBusinessStakeHolderInfoModel.builder()
-				.requiresLetterOfAuthorization(false).requiresKYC(true).build());
+			.requiresLetterOfAuthorization(false)
+			.requiresKYC(true)
+			.build());
 		when(case4.existsDocumentInMirakl()).thenReturn(false);
 
 		return Stream.of(Arguments.of(case1), Arguments.of(case2), Arguments.of(case3), Arguments.of(case4));

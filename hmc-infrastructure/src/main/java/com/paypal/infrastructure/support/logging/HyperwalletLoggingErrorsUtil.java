@@ -23,7 +23,7 @@ public final class HyperwalletLoggingErrorsUtil {
 	public static String stringify(final HyperwalletException exception) {
 		final HyperwalletErrorLogEntry logEntry = HyperwalletErrorLogEntryConverter.INSTANCE.from(exception);
 		final ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
 		try {
 			return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(logEntry);
 		}

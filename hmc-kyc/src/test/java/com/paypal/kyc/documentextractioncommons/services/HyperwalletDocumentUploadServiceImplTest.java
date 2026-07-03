@@ -6,9 +6,9 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
-import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
+import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.support.logging.HyperwalletLoggingErrorsUtil;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
@@ -64,8 +64,9 @@ class HyperwalletDocumentUploadServiceImplTest {
 	private HyperwalletVerificationDocument usrOneBstOneFilesOneDataMock;
 
 	@RegisterExtension
-	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.ERROR)
-			.recordForType(HyperwalletBusinessStakeholderExtractServiceImpl.class);
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create()
+		.recordForLevel(LogTracker.LogLevel.ERROR)
+		.recordForType(HyperwalletBusinessStakeholderExtractServiceImpl.class);
 
 	@Test
 	void uploadDocuments_shouldPushDocuments_whenBusinessStakeholderIsPassed() {
@@ -98,9 +99,9 @@ class HyperwalletDocumentUploadServiceImplTest {
         //@formatter:on
 
 		final List<HyperwalletVerificationDocument> usrOneBstOneFilesOneDataList = List
-				.of(usrOneBstOneFilesOneDataMock);
+			.of(usrOneBstOneFilesOneDataMock);
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
-				.thenReturn(hyperwalletApiClientMock);
+			.thenReturn(hyperwalletApiClientMock);
 
 		testObj.uploadDocument(userOneBstkOne, usrOneBstOneFilesOneDataList);
 
@@ -110,19 +111,19 @@ class HyperwalletDocumentUploadServiceImplTest {
 
 	@Test
 	void uploadDocuments_shouldPushDocuments_whenSellerIsPassed() {
-		final KYCDocumentSellerInfoModel kycDocumentSellerInfoModelOneStub = spy(
-				KYCDocumentSellerInfoModel.builder().clientUserId(CLIENT_USER_ID_ONE)
-						.userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
-								KYCConstants.HYPERWALLET_USER_TOKEN_FIELD, USR_TOKEN_ONE)))
-						.hyperwalletProgram(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-								KYCConstants.HW_PROGRAM, HYPERWALLET_PROGRAM)))
-						.build());
+		final KYCDocumentSellerInfoModel kycDocumentSellerInfoModelOneStub = spy(KYCDocumentSellerInfoModel.builder()
+			.clientUserId(CLIENT_USER_ID_ONE)
+			.userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
+					KYCConstants.HYPERWALLET_USER_TOKEN_FIELD, USR_TOKEN_ONE)))
+			.hyperwalletProgram(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+					KYCConstants.HW_PROGRAM, HYPERWALLET_PROGRAM)))
+			.build());
 		//@formatter:on
 
 		final List<HyperwalletVerificationDocument> sellerOneBstOneFilesOneDataList = List
-				.of(usrOneBstOneFilesOneDataMock);
+			.of(usrOneBstOneFilesOneDataMock);
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
-				.thenReturn(hyperwalletApiClientMock);
+			.thenReturn(hyperwalletApiClientMock);
 
 		testObj.uploadDocument(kycDocumentSellerInfoModelOneStub, sellerOneBstOneFilesOneDataList);
 
@@ -160,21 +161,21 @@ class HyperwalletDocumentUploadServiceImplTest {
 		//@formatter:on
 
 		final List<HyperwalletVerificationDocument> usrOneBstOneFilesOneDataList = List
-				.of(usrOneBstOneFilesOneDataMock);
+			.of(usrOneBstOneFilesOneDataMock);
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
-				.thenReturn(hyperwalletApiClientMock);
+			.thenReturn(hyperwalletApiClientMock);
 
 		final HyperwalletException expectedException = new HyperwalletException("Something went wrong");
 		when(hyperwalletApiClientMock.uploadStakeholderDocuments("usr-1", "stk-1", usrOneBstOneFilesOneDataList))
-				.thenThrow(expectedException);
+			.thenThrow(expectedException);
 
 		assertThatThrownBy(() -> testObj.uploadDocument(userOneBstkOne, usrOneBstOneFilesOneDataList))
-				.isInstanceOf(HMCHyperwalletAPIException.class);
+			.isInstanceOf(HMCHyperwalletAPIException.class);
 
 		verify(hyperwalletApiClientMock).uploadStakeholderDocuments("usr-1", "stk-1", usrOneBstOneFilesOneDataList);
 		verify(kycMailNotificationUtilMock).sendPlainTextEmail("Issue detected pushing documents into Hyperwallet",
 				"Something went wrong pushing documents to Hyperwallet for Shop Id [2000] and Business Stakeholder number [1]%n%s"
-						.formatted(HyperwalletLoggingErrorsUtil.stringify(expectedException)));
+					.formatted(HyperwalletLoggingErrorsUtil.stringify(expectedException)));
 	}
 
 }

@@ -37,7 +37,7 @@ class AbstractAccountingDocumentBatchJobExtractorTest {
 	@Test
 	void getItems_shouldCallGetItemsWithParamIncludePaidFalse_whenIncludePaidIsFalse() {
 		when(batchJobContextMock.getJobExecutionContext().getJobDetail().getJobDataMap().get(INCLUDE_PAID_KEY))
-				.thenReturn(false);
+			.thenReturn(false);
 
 		testObj.getItems(batchJobContextMock, DELTA);
 
@@ -47,7 +47,7 @@ class AbstractAccountingDocumentBatchJobExtractorTest {
 	@Test
 	void getItems_shouldCallGetItemsWithParamIncludePaidTrue_whenIncludePaidIsTrue() {
 		when(batchJobContextMock.getJobExecutionContext().getJobDetail().getJobDataMap().get(INCLUDE_PAID_KEY))
-				.thenReturn(true);
+			.thenReturn(true);
 
 		testObj.getItems(batchJobContextMock, DELTA);
 
@@ -57,7 +57,7 @@ class AbstractAccountingDocumentBatchJobExtractorTest {
 	@Test
 	void getItems_shouldCallGetItemsWithParamIncludePaidTrue_whenIncludePaidIsNull() {
 		when(batchJobContextMock.getJobExecutionContext().getJobDetail().getJobDataMap().get(INCLUDE_PAID_KEY))
-				.thenReturn(null);
+			.thenReturn(null);
 
 		testObj.getItems(batchJobContextMock, DELTA);
 

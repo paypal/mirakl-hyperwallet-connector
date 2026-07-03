@@ -3,7 +3,6 @@ package com.paypal.kyc.incomingnotifications.services;
 import com.callibrity.logging.test.LogTracker;
 import com.callibrity.logging.test.LogTrackerStub;
 import com.paypal.kyc.incomingnotifications.model.KYCRejectionReasonTypeEnum;
-import com.paypal.kyc.incomingnotifications.services.KYCRejectionReasonServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -23,8 +22,9 @@ class KYCRejectionReasonServiceImplTest {
 	private KYCRejectionReasonServiceImpl testObj;
 
 	@RegisterExtension
-	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.WARN)
-			.recordForType(KYCRejectionReasonServiceImpl.class);
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create()
+		.recordForLevel(LogTracker.LogLevel.WARN)
+		.recordForType(KYCRejectionReasonServiceImpl.class);
 
 	@Test
 	void getReasonTypes_shouldReturnVERIFICATIONSTATUS_IND_REQUIRED_WhenVerificationStatusIsREQUIREDAndUserIsINDIVIDUAL() {

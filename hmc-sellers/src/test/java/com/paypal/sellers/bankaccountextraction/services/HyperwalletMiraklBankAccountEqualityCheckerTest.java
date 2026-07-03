@@ -172,6 +172,7 @@ class HyperwalletMiraklBankAccountEqualityCheckerTest {
 		return hyperwalletBankAccount;
 	}
 
+	@SuppressWarnings("java:S4144")
 	private static HyperwalletBankAccount createUKHyperwalletBankAccount(final String currency, final String country, final String bankId,
 																		 final String bankAccountId) {
 		final HyperwalletBankAccount hyperwalletBankAccount = new HyperwalletBankAccount();

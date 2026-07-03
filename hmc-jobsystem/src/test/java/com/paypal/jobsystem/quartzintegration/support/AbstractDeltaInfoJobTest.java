@@ -1,7 +1,7 @@
 package com.paypal.jobsystem.quartzintegration.support;
 
-import com.paypal.jobsystem.quartzintegration.repositories.entities.JobExecutionInformationEntity;
 import com.paypal.jobsystem.quartzintegration.repositories.JobExecutionInformationRepository;
+import com.paypal.jobsystem.quartzintegration.repositories.entities.JobExecutionInformationEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -82,7 +82,7 @@ class AbstractDeltaInfoJobTest {
 		when(jobDetailMock.getJobDataMap()).thenReturn(jobDataMap);
 		doReturn(MyJob.class).when(jobDetailMock).getJobClass();
 		when(jobExecutionInformationRepository.findTopByTypeAndEndTimeIsNotNullOrderByIdDesc(any()))
-				.thenReturn(jobExecutionInformationEntityMock);
+			.thenReturn(jobExecutionInformationEntityMock);
 		when(jobExecutionInformationEntityMock.getStartTime()).thenReturn(now);
 
 		final Date result = testObj.getDelta(jobExecutionContextMock);
@@ -97,7 +97,7 @@ class AbstractDeltaInfoJobTest {
 		when(jobDetailMock.getJobDataMap()).thenReturn(jobDataMap);
 		doReturn(MyJob.class).when(jobDetailMock).getJobClass();
 		when(jobExecutionInformationRepository.findTopByTypeAndEndTimeIsNotNullOrderByIdDesc(any()))
-				.thenReturn(jobExecutionInformationEntityMock);
+			.thenReturn(jobExecutionInformationEntityMock);
 		when(jobExecutionInformationEntityMock.getStartTime()).thenReturn(null);
 
 		final Date result = testObj.getDelta(jobExecutionContextMock);
@@ -109,7 +109,7 @@ class AbstractDeltaInfoJobTest {
 
 		@Override
 		public void execute(final JobExecutionContext context) {
-
+			// test stub
 		}
 
 	}
@@ -118,7 +118,7 @@ class AbstractDeltaInfoJobTest {
 
 		@Override
 		public void execute(final JobExecutionContext context) {
-
+			// test stub
 		}
 
 	}

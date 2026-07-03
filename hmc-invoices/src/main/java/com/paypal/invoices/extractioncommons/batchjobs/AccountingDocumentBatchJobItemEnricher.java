@@ -33,7 +33,7 @@ public class AccountingDocumentBatchJobItemEnricher implements
 
 	private AccountingDocumentModel enrichedItem(final AccountingDocumentModel item) {
 		final Collection<HyperwalletItemLinkLocator> accountingDocumentLinks = accountingDocumentsLinksService
-				.findRequiredLinks(item);
+			.findRequiredLinks(item);
 
 		final String destinationToken = getDestinationToken(accountingDocumentLinks);
 		final String hyperwalletProgram = getHyperwalletProgram(accountingDocumentLinks);

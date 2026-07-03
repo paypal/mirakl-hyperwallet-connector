@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,19 +44,19 @@ class ExtractionDeltaCalculationITTest extends AbstractIntegrationTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.now());
 
 		final BatchJobTrackInfoEntity batchJobTrackInfoEntity1 = BatchJobTrackingEntitiesMother
-				.buildJobTrackingInfo('A', 1, 11);
+			.buildJobTrackingInfo('A', 1, 11);
 		final List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities1 = BatchJobTrackingEntitiesMother
-				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity1, 10);
+			.buildJobItemsTrackingInfo(batchJobTrackInfoEntity1, 10);
 		final BatchJobTrackInfoEntity batchJobTrackInfoEntity2 = BatchJobTrackingEntitiesMother
-				.buildJobTrackingInfo('A', 2, 10);
+			.buildJobTrackingInfo('A', 2, 10);
 		final BatchJobTrackInfoEntity batchJobTrackInfoEntity3 = BatchJobTrackingEntitiesMother
-				.buildJobTrackingInfo('A', 3, 10);
+			.buildJobTrackingInfo('A', 3, 10);
 		final List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities3 = BatchJobTrackingEntitiesMother
-				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity3, 10);
+			.buildJobItemsTrackingInfo(batchJobTrackInfoEntity3, 10);
 		final BatchJobTrackInfoEntity batchJobTrackInfoEntity4 = BatchJobTrackingEntitiesMother
-				.buildJobTrackingInfo('B', 4, 10);
+			.buildJobTrackingInfo('B', 4, 10);
 		final List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities4 = BatchJobTrackingEntitiesMother
-				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity4, 10);
+			.buildJobItemsTrackingInfo(batchJobTrackInfoEntity4, 10);
 
 		batchJobTrackingRepository.saveAll(List.of(batchJobTrackInfoEntity1, batchJobTrackInfoEntity2,
 				batchJobTrackInfoEntity3, batchJobTrackInfoEntity4));
@@ -75,20 +74,20 @@ class ExtractionDeltaCalculationITTest extends AbstractIntegrationTest {
 	@Test
 	void repository_shouldNotFindJobsWithItems_WhenTheyAreNotInDateRange() {
 		final BatchJobTrackInfoEntity batchJobTrackInfoEntity1 = BatchJobTrackingEntitiesMother
-				.buildJobTrackingInfo('A', 1, 3);
+			.buildJobTrackingInfo('A', 1, 3);
 		final List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities1 = BatchJobTrackingEntitiesMother
-				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity1, 10);
+			.buildJobItemsTrackingInfo(batchJobTrackInfoEntity1, 10);
 		final BatchJobTrackInfoEntity batchJobTrackInfoEntity2 = BatchJobTrackingEntitiesMother
-				.buildJobTrackingInfo('A', 2, 3);
+			.buildJobTrackingInfo('A', 2, 3);
 		final List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities2 = BatchJobTrackingEntitiesMother
-				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity2, 10);
+			.buildJobItemsTrackingInfo(batchJobTrackInfoEntity2, 10);
 		final BatchJobTrackInfoEntity batchJobTrackInfoEntity4 = BatchJobTrackingEntitiesMother
-				.buildJobTrackingInfo('B', 4, 10);
+			.buildJobTrackingInfo('B', 4, 10);
 		final List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities4 = BatchJobTrackingEntitiesMother
-				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity4, 10);
+			.buildJobItemsTrackingInfo(batchJobTrackInfoEntity4, 10);
 
 		batchJobTrackingRepository
-				.saveAll(List.of(batchJobTrackInfoEntity1, batchJobTrackInfoEntity2, batchJobTrackInfoEntity4));
+			.saveAll(List.of(batchJobTrackInfoEntity1, batchJobTrackInfoEntity2, batchJobTrackInfoEntity4));
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities1);
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities2);
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities4);
@@ -104,27 +103,27 @@ class ExtractionDeltaCalculationITTest extends AbstractIntegrationTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.now());
 
 		final BatchJobTrackInfoEntity batchJobTrackInfoEntity1 = BatchJobTrackingEntitiesMother
-				.buildJobTrackingInfo('A', 1, 3);
+			.buildJobTrackingInfo('A', 1, 3);
 		final List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities1 = BatchJobTrackingEntitiesMother
-				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity1, 10);
+			.buildJobItemsTrackingInfo(batchJobTrackInfoEntity1, 10);
 		final BatchJobTrackInfoEntity batchJobTrackInfoEntity2 = BatchJobTrackingEntitiesMother
-				.buildJobTrackingInfo('A', 2, 2);
+			.buildJobTrackingInfo('A', 2, 2);
 		final List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities2 = BatchJobTrackingEntitiesMother
-				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity2, 10);
+			.buildJobItemsTrackingInfo(batchJobTrackInfoEntity2, 10);
 		final BatchJobTrackInfoEntity batchJobTrackInfoEntity4 = BatchJobTrackingEntitiesMother
-				.buildJobTrackingInfo('B', 4, 10);
+			.buildJobTrackingInfo('B', 4, 10);
 		final List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities4 = BatchJobTrackingEntitiesMother
-				.buildJobItemsTrackingInfo(batchJobTrackInfoEntity4, 10);
+			.buildJobItemsTrackingInfo(batchJobTrackInfoEntity4, 10);
 
 		batchJobTrackingRepository
-				.saveAll(List.of(batchJobTrackInfoEntity1, batchJobTrackInfoEntity2, batchJobTrackInfoEntity4));
+			.saveAll(List.of(batchJobTrackInfoEntity1, batchJobTrackInfoEntity2, batchJobTrackInfoEntity4));
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities1);
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities2);
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities4);
 
 		final Optional<BatchJobTrackInfoEntity> result = batchJobTrackingService
-				.findLastJobExecutionWithNonEmptyExtraction(batchJobTrackInfoEntity1.getBatchJobType(),
-						TimeMachine.now().minusDays(2).minusSeconds(1));
+			.findLastJobExecutionWithNonEmptyExtraction(batchJobTrackInfoEntity1.getBatchJobType(),
+					TimeMachine.now().minusDays(2).minusSeconds(1));
 
 		assertThat(result).contains(batchJobTrackInfoEntity2);
 	}
@@ -153,7 +152,7 @@ class ExtractionDeltaCalculationITTest extends AbstractIntegrationTest {
 							.startTime(batchJobTrackInfo.getStartTime())
 							.status(BatchJobItemStatus.PENDING)
 							.build())
-					.collect(Collectors.toList());
+					.toList();
 			// @formatter:on
 		}
 

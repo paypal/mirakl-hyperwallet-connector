@@ -1,9 +1,9 @@
 package com.paypal.sellers.sellerextractioncommons.services.strategies;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
-import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
+import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import org.slf4j.Logger;

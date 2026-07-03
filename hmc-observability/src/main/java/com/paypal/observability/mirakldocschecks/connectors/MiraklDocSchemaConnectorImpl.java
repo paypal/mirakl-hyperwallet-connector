@@ -23,7 +23,7 @@ public class MiraklDocSchemaConnectorImpl implements MiraklDocSchemaConnector {
 
 		final MiraklGetDocumentsConfigurationRequest miraklGetDocumentsConfigurationRequest = new MiraklGetDocumentsConfigurationRequest();
 		final MiraklDocumentsConfigurations documentsConfiguration = miraklOperatorClient
-				.getDocumentsConfiguration(miraklGetDocumentsConfigurationRequest);
+			.getDocumentsConfiguration(miraklGetDocumentsConfigurationRequest);
 		if (documentsConfiguration.getDocuments() != null) {
 			return documentsConfiguration.getDocuments();
 		}

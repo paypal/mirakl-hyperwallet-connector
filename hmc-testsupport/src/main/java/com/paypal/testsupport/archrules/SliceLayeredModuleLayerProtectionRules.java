@@ -14,9 +14,17 @@ public final class SliceLayeredModuleLayerProtectionRules {
 
 	@ArchTest
 	public static final ArchRule layerAccessProtections = layeredArchitecture().consideringAllDependencies()
-			.layer("Controller").definedBy("..controllers..").layer("Persistence").definedBy("..repositories")
-			.layer("Connector").definedBy("..connectors..").layer("Service").definedBy("..services..")
-			.withOptionalLayers(true).whereLayer("Controller").mayNotBeAccessedByAnyLayer();
+		.layer("Controller")
+		.definedBy("..controllers..")
+		.layer("Persistence")
+		.definedBy("..repositories")
+		.layer("Connector")
+		.definedBy("..connectors..")
+		.layer("Service")
+		.definedBy("..services..")
+		.withOptionalLayers(true)
+		.whereLayer("Controller")
+		.mayNotBeAccessedByAnyLayer();
 
 	@ArchTest
 	public static final ArchRule sliceNoCycles = slices().matching("..com.paypal.*.(*)..").should().beFreeOfCycles();

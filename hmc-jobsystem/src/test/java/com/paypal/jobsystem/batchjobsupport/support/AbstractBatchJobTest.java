@@ -4,11 +4,9 @@ import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.jobsystem.batchjobsupport.model.BatchJobItemProcessor;
 import com.paypal.jobsystem.batchjobsupport.model.BatchJobItemsExtractor;
-import com.paypal.jobsystem.batchjobsupport.support.AbstractExtractBatchJob;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -20,7 +18,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class AbstractBatchJobTest {
 
-	@InjectMocks
 	private MyAbstractBatchJob testObj;
 
 	@Mock
@@ -28,6 +25,11 @@ class AbstractBatchJobTest {
 
 	@Mock
 	private BatchJobItemProcessor<BatchJobContext, BatchJobItem<Object>> batchJobItemProcessorMock;
+
+	@BeforeEach
+	void setUp() {
+		testObj = new MyAbstractBatchJob(batchJobItemProcessorMock, batchJobItemsExtractorMock);
+	}
 
 	@Mock
 	private BatchJobContext batchJobContextMock;

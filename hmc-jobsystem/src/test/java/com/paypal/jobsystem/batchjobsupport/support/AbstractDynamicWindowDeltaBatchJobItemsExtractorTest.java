@@ -6,9 +6,13 @@ import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.jobsystem.batchjobaudit.repositories.entities.BatchJobTrackInfoEntity;
 import com.paypal.jobsystem.batchjobaudit.services.BatchJobTrackingService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.Answers;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
@@ -26,12 +30,15 @@ class AbstractDynamicWindowDeltaBatchJobItemsExtractorTest {
 
 	public static final int EXTRACTION_MAX_DAYS = 30;
 
-	@Spy
-	@InjectMocks
 	private MyDynamicWindowDeltaBatchJobItemsExtractor testObj;
 
 	@Mock
 	private BatchJobTrackingService batchJobTrackingServiceMock;
+
+	@BeforeEach
+	void setUp() {
+		testObj = spy(new MyDynamicWindowDeltaBatchJobItemsExtractor(batchJobTrackingServiceMock));
+	}
 
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	private BatchJobContext batchJobContextMock;
@@ -50,7 +57,8 @@ class AbstractDynamicWindowDeltaBatchJobItemsExtractorTest {
 		when(batchJobContextMock.getJobName()).thenReturn("JOBNAME");
 
 		when(batchJobTrackingServiceMock.findLastJobExecutionWithNonEmptyExtraction(eq("JOBNAME"),
-				any(LocalDateTime.class))).thenReturn(Optional.of(batchJobTrackInfoEntityMock));
+				any(LocalDateTime.class)))
+			.thenReturn(Optional.of(batchJobTrackInfoEntityMock));
 
 		when(batchJobTrackInfoEntityMock.getStartTime()).thenReturn(TimeMachine.now());
 
@@ -71,7 +79,8 @@ class AbstractDynamicWindowDeltaBatchJobItemsExtractorTest {
 		when(batchJobContextMock.getJobName()).thenReturn("JOBNAME");
 
 		when(batchJobTrackingServiceMock.findLastJobExecutionWithNonEmptyExtraction(eq("JOBNAME"),
-				any(LocalDateTime.class))).thenReturn(Optional.empty());
+				any(LocalDateTime.class)))
+			.thenReturn(Optional.empty());
 
 		final Date result = testObj.getCalculatedDelta(batchJobContextMock);
 

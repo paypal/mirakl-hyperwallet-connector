@@ -24,8 +24,11 @@ public class HmcIgnoredProgramsStartUpCheckServiceImpl implements HmcIgnoredProg
 		final boolean subset = CollectionUtils.isEmpty(ignoredHyperwalletPrograms)
 				|| new HashSet<>(hyperwalletPrograms).containsAll(ignoredHyperwalletPrograms);
 
-		return HmcIgnoredProgramsCheck.builder().isSubset(subset).programs(hyperwalletPrograms)
-				.ignoredPrograms(ignoredHyperwalletPrograms).build();
+		return HmcIgnoredProgramsCheck.builder()
+			.isSubset(subset)
+			.programs(hyperwalletPrograms)
+			.ignoredPrograms(ignoredHyperwalletPrograms)
+			.build();
 	}
 
 }

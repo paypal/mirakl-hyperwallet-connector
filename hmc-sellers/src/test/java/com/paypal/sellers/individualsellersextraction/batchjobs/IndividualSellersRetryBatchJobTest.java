@@ -3,10 +3,6 @@ package com.paypal.sellers.individualsellersextraction.batchjobs;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjobsupport.model.BatchJobItemProcessor;
 import com.paypal.jobsystem.batchjobsupport.model.BatchJobItemsExtractor;
-import com.paypal.sellers.individualsellersextraction.batchjobs.IndividualSellersExtractBatchJobItemProcessor;
-import com.paypal.sellers.individualsellersextraction.batchjobs.IndividualSellersExtractJobItem;
-import com.paypal.sellers.individualsellersextraction.batchjobs.IndividualSellersRetryBatchJob;
-import com.paypal.sellers.individualsellersextraction.batchjobs.IndividualSellersRetryBatchJobItemExtractor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,7 +27,7 @@ class IndividualSellersRetryBatchJobTest {
 	void getBatchJobItemProcessor_ShouldReturnIndividualSellersExtractBatchJobItemProcessor() {
 
 		final BatchJobItemProcessor<BatchJobContext, IndividualSellersExtractJobItem> result = testObj
-				.getBatchJobItemProcessor();
+			.getBatchJobItemProcessor();
 
 		assertThat(result).isEqualTo(individualSellersExtractBatchJobItemProcessorMock);
 	}
@@ -40,7 +36,7 @@ class IndividualSellersRetryBatchJobTest {
 	void getBatchJobItemsExtractor_ShouldReturnIndividualSellersRetryBatchJobItemExtractor() {
 
 		final BatchJobItemsExtractor<BatchJobContext, IndividualSellersExtractJobItem> result = testObj
-				.getBatchJobItemsExtractor();
+			.getBatchJobItemsExtractor();
 
 		assertThat(result).isEqualTo(individualSellersRetryBatchJobItemExtractorMock);
 	}

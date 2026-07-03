@@ -1,18 +1,14 @@
 package com.paypal.sellers.bankaccountextraction.services.converters.currency;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.paypal.sellers.bankaccountextraction.model.TransferType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @ExtendWith(MockitoExtension.class)
 class HyperwalletBankAccountCurrencyRestrictionsLoaderTest {
-
-	private static final String PROPERTY_PREFIX = "payment.hyperwallet.country-currencies.";
-
-	private static final String ENV_PREFIX = "PAYMENT_HYPERWALLET_COUNTRY-CURRENCIES_";
 
 	private final HyperwalletBankAccountCurrencyRestrictionsLoader testObj = new HyperwalletBankAccountCurrencyRestrictionsLoader();
 
@@ -28,8 +24,9 @@ class HyperwalletBankAccountCurrencyRestrictionsLoaderTest {
 		assertThat(result.getCurrenciesFor("ABA", "US").get(0).getCurrency()).isEqualTo("USD");
 		assertThat(result.getCurrenciesFor("ABA", "US").get(1).getCurrency()).isEqualTo("USD");
 		assertThat(result.getCurrenciesFor("UK", "GB")).size().isEqualTo(1);
-		assertThat(result.getCurrenciesFor("UK", "GB").get(0).getCurrency()).isEqualTo("GBP");
-		assertThat(result.getCurrenciesFor("UK", "GB").get(0).getTransferType()).isEqualTo(TransferType.BANK_ACCOUNT);
+		assertThat(result.getCurrenciesFor("UK", "GB").getFirst().getCurrency()).isEqualTo("GBP");
+		assertThat(result.getCurrenciesFor("UK", "GB").getFirst().getTransferType())
+			.isEqualTo(TransferType.BANK_ACCOUNT);
 		assertThat(result.getCurrenciesFor("IBAN", "GB")).size().isEqualTo(2);
 		assertThat(result.getCurrenciesFor("IBAN", "GB").get(0).getCurrency()).isEqualTo("EUR");
 		assertThat(result.getCurrenciesFor("IBAN", "GB").get(0).getTransferType()).isEqualTo(TransferType.BANK_ACCOUNT);

@@ -1,9 +1,6 @@
 package com.paypal.sellers.bankaccountextraction.model;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
-import com.paypal.sellers.bankaccountextraction.model.BankAccountModel;
-import com.paypal.sellers.bankaccountextraction.model.BankAccountType;
-import com.paypal.sellers.bankaccountextraction.model.TransferType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

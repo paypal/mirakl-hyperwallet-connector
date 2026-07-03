@@ -2,10 +2,9 @@ package com.paypal.kyc.incomingnotifications.services.userstatus;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.mmp.domain.shop.MiraklShopKycStatus;
-
-import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
+import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.kyc.incomingnotifications.model.KYCDocumentNotificationModel;
 import com.paypal.kyc.incomingnotifications.model.KYCUserStatusNotificationBodyModel;
 import com.paypal.kyc.incomingnotifications.services.KYCRejectionReasonService;
@@ -37,12 +36,15 @@ public class BusinessKYCUserStatusNotificationStrategy extends AbstractKYCUserSt
 	protected MiraklShopKycStatus expectedKycMiraklStatus(
 			final KYCUserStatusNotificationBodyModel incomingNotification) {
 		final String verificationStatus = Optional.ofNullable(incomingNotification.getVerificationStatus())
-				.map(Enum::name).orElse(null);
+			.map(Enum::name)
+			.orElse(null);
 		final String businessStakeHolderStatus = Optional
-				.ofNullable(incomingNotification.getBusinessStakeholderVerificationStatus()).map(Enum::name)
-				.orElse(null);
+			.ofNullable(incomingNotification.getBusinessStakeholderVerificationStatus())
+			.map(Enum::name)
+			.orElse(null);
 		final String letterStatus = Optional.ofNullable(incomingNotification.getLetterOfAuthorizationStatus())
-				.map(Enum::name).orElse(null);
+			.map(Enum::name)
+			.orElse(null);
 
 		final Triple<String, String, String> statuses = Triple.of(verificationStatus, businessStakeHolderStatus,
 				letterStatus);

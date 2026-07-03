@@ -1,8 +1,6 @@
 package com.paypal.sellers.bankaccountextraction.batchjobs;
 
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
-import com.paypal.sellers.bankaccountextraction.batchjobs.BankAccountExtractBatchJobItemsExtractor;
-import com.paypal.sellers.bankaccountextraction.batchjobs.BankAccountExtractJobItem;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import com.paypal.sellers.sellerextractioncommons.services.MiraklSellersExtractService;
 import org.junit.jupiter.api.Test;
@@ -39,9 +37,9 @@ class BankAccountExtractBatchJobItemsExtractorTest {
 	void getItems_ShouldRetrieveAllBankAccountExtractJobItemForTheGivenDelta() {
 
 		when(miraklSellersExtractServiceMock.extractIndividuals(DELTA))
-				.thenReturn(List.of(sellerModelMock1, sellerModelMock2));
+			.thenReturn(List.of(sellerModelMock1, sellerModelMock2));
 		when(miraklSellersExtractServiceMock.extractProfessionals(DELTA))
-				.thenReturn(List.of(sellerModelMock3, sellerModelMock4));
+			.thenReturn(List.of(sellerModelMock3, sellerModelMock4));
 
 		final Collection<BankAccountExtractJobItem> result = testObj.getItems(batchJobContextMock, DELTA);
 

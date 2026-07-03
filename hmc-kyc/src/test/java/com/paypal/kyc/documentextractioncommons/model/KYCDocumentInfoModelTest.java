@@ -1,7 +1,5 @@
 package com.paypal.kyc.documentextractioncommons.model;
 
-import com.paypal.kyc.documentextractioncommons.model.KYCDocumentInfoModel;
-import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -35,7 +33,7 @@ class KYCDocumentInfoModelTest {
 		final KYCDocumentInfoModel kycDocumentBusinessStakeHolderInfoModelTwo = createAnotherKYCDocumentInfoModelObject();
 
 		final boolean result = kycDocumentBusinessStakeHolderInfoModelOne
-				.equals(kycDocumentBusinessStakeHolderInfoModelTwo);
+			.equals(kycDocumentBusinessStakeHolderInfoModelTwo);
 
 		assertThat(result).isFalse();
 	}
@@ -45,7 +43,7 @@ class KYCDocumentInfoModelTest {
 		final KYCDocumentInfoModel kycDocumentBusinessStakeHolderInfoModelOne = createKYCDocumentInfoModelObject();
 
 		final boolean result = kycDocumentBusinessStakeHolderInfoModelOne
-				.equals(kycDocumentBusinessStakeHolderInfoModelOne);
+			.equals(kycDocumentBusinessStakeHolderInfoModelOne);
 
 		assertThat(result).isTrue();
 	}

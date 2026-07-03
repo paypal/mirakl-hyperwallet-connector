@@ -1,9 +1,8 @@
 package com.paypal.sellers.professionalsellersextraction.controllers;
 
-import com.paypal.jobsystem.quartzintegration.support.AbstractDeltaInfoJob;
 import com.paypal.jobsystem.quartzintegration.services.JobService;
+import com.paypal.jobsystem.quartzintegration.support.AbstractDeltaInfoJob;
 import com.paypal.sellers.professionalsellersextraction.jobs.ProfessionalSellersExtractJob;
-import com.paypal.sellers.professionalsellersextraction.controllers.ProfessionalSellersExtractJobController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

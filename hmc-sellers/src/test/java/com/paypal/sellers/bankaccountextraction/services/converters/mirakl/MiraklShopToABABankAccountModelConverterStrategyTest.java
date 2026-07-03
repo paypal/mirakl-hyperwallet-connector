@@ -122,7 +122,8 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
 				USA_COUNTRY_ISO, USD_CURRENCY, TransferType.BANK_ACCOUNT);
 		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.ABA.name(),
-				USA_COUNTRY_ISO, USD_CURRENCY)).thenReturn(hyperwalletBankAccountCurrencyInfo);
+				USA_COUNTRY_ISO, USD_CURRENCY))
+			.thenReturn(hyperwalletBankAccountCurrencyInfo);
 
 		final ABABankAccountModel result = testObj.execute(miraklShopMock);
 
@@ -176,7 +177,8 @@ class MiraklShopToABABankAccountModelConverterStrategyTest {
 		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
 				USA_COUNTRY_ISO, USD_CURRENCY, TransferType.BANK_ACCOUNT);
 		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.ABA.name(),
-				USA_COUNTRY_ISO, USD_CURRENCY)).thenReturn(hyperwalletBankAccountCurrencyInfo);
+				USA_COUNTRY_ISO, USD_CURRENCY))
+			.thenReturn(hyperwalletBankAccountCurrencyInfo);
 
 		final ABABankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off

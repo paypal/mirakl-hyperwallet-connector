@@ -54,7 +54,7 @@ class MiraklFieldSchemaStartupAdapterITTest extends AbstractObservabilityIntegra
 		final StartupCheck startupCheck = miraklFieldSchemaStartupCheckProvider.check();
 		assertThat(startupCheck.getStatus()).isEqualTo(StartupCheckStatus.NOT_READY);
 		assertThat(startupCheck.getStatusMessage())
-				.contains("The current schema in Mirakl server is not compatible with this version of HMC.");
+			.contains("The current schema in Mirakl server is not compatible with this version of HMC.");
 
 		final String[] report = miraklFieldSchemaStartupCheckPrinter.print(startupCheck);
 		assertThat(report).hasSize(7);

@@ -2,7 +2,6 @@ package com.paypal.kyc.incomingnotifications.services;
 
 import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.kyc.incomingnotifications.model.KYCBusinessStakeholderStatusNotificationBodyModel;
-import com.paypal.kyc.incomingnotifications.services.KYCBusinessStakeholderStatusExecutor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

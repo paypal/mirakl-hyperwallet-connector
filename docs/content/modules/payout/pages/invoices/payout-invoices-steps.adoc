@@ -43,7 +43,7 @@ The connector retrieves all invoices with `PENDING` payment status created since
 [mermaid,invoices-extraction]
 ....
 sequenceDiagram
-    Connector ->> Mirakl: (IV01 GET) Retrieve pending invoices
+    Connector ->> Mirakl: (SBC11 GET) Retrieve pending seller billing cycles
     Mirakl -->> Connector: List of invoices
 ....
 

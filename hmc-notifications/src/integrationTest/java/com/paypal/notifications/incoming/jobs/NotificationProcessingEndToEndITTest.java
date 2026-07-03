@@ -13,23 +13,19 @@ import com.paypal.testsupport.TestJobExecutor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Integration test for the end-to-end notification processing engine.
@@ -97,10 +93,10 @@ class NotificationProcessingEndToEndITTest extends AbstractMockEnabledIntegratio
 	 * Mocked handler registered as a Spring bean. All tests configure this via
 	 * {@code when(notificationHandler.supports(...))} as needed.
 	 */
-	@MockBean
+	@MockitoBean
 	private NotificationHandler notificationHandler;
 
-	@SpyBean
+	@MockitoSpyBean
 	private MailNotificationUtil mailNotificationUtil;
 
 	// ------------------------------------------------------------------
@@ -127,7 +123,7 @@ class NotificationProcessingEndToEndITTest extends AbstractMockEnabledIntegratio
 		notificationProcessingQueueService.enqueue(duplicate);
 
 		final List<NotificationEntity> stored = notificationEntityRepository
-				.findNotificationsByWebHookToken(WEBHOOK_TOKEN_DUPLICATE);
+			.findNotificationsByWebHookToken(WEBHOOK_TOKEN_DUPLICATE);
 		assertThat(stored).hasSize(1);
 	}
 
@@ -156,7 +152,7 @@ class NotificationProcessingEndToEndITTest extends AbstractMockEnabledIntegratio
 		notificationProcessingQueueService.enqueue(notification);
 
 		final List<NotificationEntity> stored = notificationEntityRepository
-				.findNotificationsByWebHookToken(WEBHOOK_TOKEN_USR);
+			.findNotificationsByWebHookToken(WEBHOOK_TOKEN_USR);
 		assertThat(stored).hasSize(1);
 		assertThat(stored.get(0).getStatus()).isEqualTo(NotificationStatus.PENDING);
 		assertThat(stored.get(0).getRetryCounter()).isZero();
@@ -422,8 +418,9 @@ class NotificationProcessingEndToEndITTest extends AbstractMockEnabledIntegratio
 		given(notificationHandler.supports(any(NotificationType.class))).willReturn(true);
 
 		// fail on first process(), succeed on second
-		willThrow(new RuntimeException("transient error")).willDoNothing().given(notificationHandler).process(any(),
-				any());
+		willThrow(new RuntimeException("transient error")).willDoNothing()
+			.given(notificationHandler)
+			.process(any(), any());
 
 		final HyperwalletWebhookNotification notification = buildNotification(WEBHOOK_TOKEN_RETRY,
 				"USERS.UPDATED.VERIFICATION_STATUS.REQUIRED", "usr-retry", new Date());
@@ -598,7 +595,7 @@ class NotificationProcessingEndToEndITTest extends AbstractMockEnabledIntegratio
 
 	private NotificationEntity getSingleEntity(final String webhookToken) {
 		final List<NotificationEntity> results = notificationEntityRepository
-				.findNotificationsByWebHookToken(webhookToken);
+			.findNotificationsByWebHookToken(webhookToken);
 		assertThat(results).hasSize(1);
 		return results.get(0);
 	}

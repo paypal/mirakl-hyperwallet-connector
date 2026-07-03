@@ -84,7 +84,7 @@ public class MiraklInvoiceLinksServiceImpl implements MiraklInvoiceLinksService 
 		final List<MiraklShop> miraklShops = partitionedShopIds.stream()
 				.map(this::getAllShopsWithoutPartitioning)
 				.flatMap(List::stream)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 
 		return miraklShops.stream().collect(Collectors.toMap(MiraklShop::getId, Function.identity()));
@@ -103,7 +103,7 @@ public class MiraklInvoiceLinksServiceImpl implements MiraklInvoiceLinksService 
 		catch (final MiraklApiException ex) {
 			log.warn(
 					"Error while recovering shop info during invoice processing. Failing shop ids[%s]. Failure reason: %s"
-							.formatted(String.join(",", shopIds), MiraklLoggingErrorsUtil.stringify(ex)));
+						.formatted(String.join(",", shopIds), MiraklLoggingErrorsUtil.stringify(ex)));
 			return Collections.emptyList();
 		}
 	}

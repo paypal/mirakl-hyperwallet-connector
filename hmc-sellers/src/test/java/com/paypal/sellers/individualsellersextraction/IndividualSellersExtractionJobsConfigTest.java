@@ -62,7 +62,8 @@ class IndividualSellersExtractionJobsConfigTest {
 	@Test
 	void sellerExtractRetryTrigger_shouldReturnATriggerCreatedWithTheCronExpressionPassedAsArgumentAndJob() {
 		final JobDetail jobDetail = QuartzBatchJobBuilder.newJob(individualSellersRetryBatchJobMock)
-				.withIdentity(INDIVIDUAL_SELLERS_EXTRACT_RETRY_JOB_IDENTITY).build();
+			.withIdentity(INDIVIDUAL_SELLERS_EXTRACT_RETRY_JOB_IDENTITY)
+			.build();
 
 		final Trigger result = testObj.sellerExtractTrigger(jobDetail, CRON_EXPRESSION);
 

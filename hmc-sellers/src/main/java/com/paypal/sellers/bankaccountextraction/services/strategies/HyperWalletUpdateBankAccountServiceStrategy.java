@@ -37,7 +37,7 @@ public class HyperWalletUpdateBankAccountServiceStrategy extends AbstractHyperwa
 	protected HyperwalletBankAccount callHyperwalletAPI(final String hyperwalletProgram,
 			final HyperwalletBankAccount hyperwalletBankAccount) {
 		final Hyperwallet hyperwallet = userHyperwalletSDKService
-				.getHyperwalletInstanceByHyperwalletProgram(hyperwalletProgram);
+			.getHyperwalletInstanceByHyperwalletProgram(hyperwalletProgram);
 		return hyperwallet.updateBankAccount(hyperwalletBankAccount);
 	}
 

@@ -46,13 +46,15 @@ public abstract class AbstractKycNotificationBodyModelConverter<T extends KYCNot
 				SimpleBeanPropertyFilter.serializeAll());
 
 		return new ObjectMapper().configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
-				.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
-				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-				.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-				.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
-				.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false)
-				.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, false).setDateFormat(dateFormat)
-				.setFilterProvider(filterProvider).setSerializationInclusion(JsonInclude.Include.ALWAYS);
+			.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
+			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+			.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
+			.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false)
+			.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, false)
+			.setDateFormat(dateFormat)
+			.setFilterProvider(filterProvider)
+			.setDefaultPropertyInclusion(JsonInclude.Include.ALWAYS);
 	}
 
 }

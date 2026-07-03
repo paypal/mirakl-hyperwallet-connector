@@ -43,8 +43,8 @@ public class MiraklShopToCanadianBankAccountModelConverterStrategy implements St
 		final MiraklContactInformation contactInformation = source.getContactInformation();
 
 		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = hyperwalletBankAccountCurrencyResolver
-				.getCurrencyForCountry(BankAccountType.CANADIAN.name(), Locale.CANADA.getCountry(),
-						source.getCurrencyIsoCode().name());
+			.getCurrencyForCountry(BankAccountType.CANADIAN.name(), Locale.CANADA.getCountry(),
+					source.getCurrencyIsoCode().name());
 
 		//@formatter:off
 		return CanadianBankAccountModel.builder()

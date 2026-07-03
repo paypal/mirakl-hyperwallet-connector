@@ -50,7 +50,7 @@ class AbstractHyperwalletBankAccountStrategyTest {
 	@Test
 	void execute_shouldCallHyperwalletAPI() {
 		when(sellerModelToHyperwalletBankAccountStrategyExecutorMock.execute(sellerModelMock))
-				.thenReturn(hyperwalletBankAccountMock);
+			.thenReturn(hyperwalletBankAccountMock);
 		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 		testObj.execute(sellerModelMock);
 
@@ -64,17 +64,17 @@ class AbstractHyperwalletBankAccountStrategyTest {
 		when(sellerModelMock.getClientUserId()).thenReturn("2001");
 		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 		when(sellerModelToHyperwalletBankAccountStrategyExecutorMock.execute(sellerModelMock))
-				.thenReturn(hyperwalletBankAccountMock);
+			.thenReturn(hyperwalletBankAccountMock);
 		doThrow(hyperwalletException).when(testObj).callHyperwalletAPI(HYPERWALLET_PROGRAM, hyperwalletBankAccountMock);
 
 		AssertionsForClassTypes.assertThatThrownBy(() -> testObj.execute(sellerModelMock))
-				.isInstanceOf(HMCHyperwalletAPIException.class)
-				.hasMessageContaining("An error has occurred while invoking Hyperwallet API");
+			.isInstanceOf(HMCHyperwalletAPIException.class)
+			.hasMessageContaining("An error has occurred while invoking Hyperwallet API");
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail(
 				"Issue detected when creating or updating bank account in Hyperwallet",
 				(ERROR_MESSAGE_PREFIX + "Bank account not created or updated for seller with clientId [%s]%n%s")
-						.formatted("2001", HyperwalletLoggingErrorsUtil.stringify(hyperwalletException)));
+					.formatted("2001", HyperwalletLoggingErrorsUtil.stringify(hyperwalletException)));
 	}
 
 	@Test
@@ -82,13 +82,13 @@ class AbstractHyperwalletBankAccountStrategyTest {
 		when(sellerModelMock.getClientUserId()).thenReturn("2001");
 		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 		when(sellerModelToHyperwalletBankAccountStrategyExecutorMock.execute(sellerModelMock))
-				.thenReturn(hyperwalletBankAccountMock);
-		doThrow(MiraklApiException.class).when(testObj).callHyperwalletAPI(HYPERWALLET_PROGRAM,
-				hyperwalletBankAccountMock);
+			.thenReturn(hyperwalletBankAccountMock);
+		doThrow(MiraklApiException.class).when(testObj)
+			.callHyperwalletAPI(HYPERWALLET_PROGRAM, hyperwalletBankAccountMock);
 
 		AssertionsForClassTypes.assertThatThrownBy(() -> testObj.execute(sellerModelMock))
-				.isInstanceOf(HMCMiraklAPIException.class)
-				.hasMessageContaining("An error has occurred while invoking Mirakl API");
+			.isInstanceOf(HMCMiraklAPIException.class)
+			.hasMessageContaining("An error has occurred while invoking Mirakl API");
 	}
 
 	private static class MyAbstractHyperwalletBankAccountStrategy extends AbstractHyperwalletBankAccountStrategy {

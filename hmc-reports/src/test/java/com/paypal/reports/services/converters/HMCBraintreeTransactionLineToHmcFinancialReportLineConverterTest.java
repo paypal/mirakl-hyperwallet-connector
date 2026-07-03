@@ -4,7 +4,6 @@ import com.paypal.infrastructure.support.date.TimeMachine;
 import com.paypal.reports.model.HmcBraintreeTransactionLine;
 import com.paypal.reports.model.HmcFinancialReportLine;
 import com.paypal.reports.model.graphql.braintree.paymentransaction.BraintreeTransactionTypeEnum;
-import com.paypal.reports.services.converters.BraintreeTransactionLineToFinancialReportLineConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,7 +31,7 @@ class HMCBraintreeTransactionLineToHmcFinancialReportLineConverterTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 45));
 		final LocalDateTime now = TimeMachine.now();
 		//@formatter:off
-		final HmcBraintreeTransactionLine HmcBraintreeTransactionLineStub = HmcBraintreeTransactionLine.builder()
+		final HmcBraintreeTransactionLine hmcBraintreeTransactionLineStub = HmcBraintreeTransactionLine.builder()
 				.orderId(ORDER_ID)
 				.amount(BigDecimal.TEN)
 				.currencyIsoCode(EUR_CURRENCY_ISO_CODE)
@@ -42,14 +41,14 @@ class HMCBraintreeTransactionLineToHmcFinancialReportLineConverterTest {
 				.build();
 		//@formatter:on
 
-		final HmcFinancialReportLine result = testObj.convert(HmcBraintreeTransactionLineStub);
+		final HmcFinancialReportLine result = testObj.convert(hmcBraintreeTransactionLineStub);
 		assertThat(result.getBraintreeCommerceOrderId()).isEqualTo(ORDER_ID);
 		assertThat(result.getCurrencyIsoCode()).isEqualTo(EUR_CURRENCY_ISO_CODE);
 		assertThat(result.getBraintreeAmount()).isEqualTo(BigDecimal.TEN);
 		assertThat(result.getBraintreeTransactionId()).isEqualTo(PAYMENT_TRANSACTION_ID);
 		assertThat(result.getBraintreeTransactionTime()).isEqualTo(now);
 		assertThat(result.getMiraklTransactionType())
-				.isEqualTo(BraintreeTransactionTypeEnum.OPERATOR_ORDER_AMOUNT.name());
+			.isEqualTo(BraintreeTransactionTypeEnum.OPERATOR_ORDER_AMOUNT.name());
 	}
 
 	@Test

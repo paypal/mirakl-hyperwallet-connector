@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class IndividualSellersRetryBatchJobItemExtractor
@@ -27,8 +26,10 @@ public class IndividualSellersRetryBatchJobItemExtractor
 
 	@Override
 	protected Collection<IndividualSellersExtractJobItem> getItems(final List<String> ids) {
-		return miraklSellersExtractService.extractSellers(ids).stream().map(IndividualSellersExtractJobItem::new)
-				.collect(Collectors.toList());
+		return miraklSellersExtractService.extractSellers(ids)
+			.stream()
+			.map(IndividualSellersExtractJobItem::new)
+			.toList();
 	}
 
 }

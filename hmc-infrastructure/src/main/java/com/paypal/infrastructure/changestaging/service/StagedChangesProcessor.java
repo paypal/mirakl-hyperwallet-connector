@@ -59,7 +59,7 @@ public class StagedChangesProcessor {
 	private void processStagedChanges(final StagedChangesExecutorInfo stagedChangesExecutorInfo,
 			final List<StagedChangeEntity> stagedChanges) {
 		final StagedChangesExecutor stagedChangesExecutor = stagedChangesOperationRegistry
-				.getStagedChangesExecutor(stagedChangesExecutorInfo);
+			.getStagedChangesExecutor(stagedChangesExecutorInfo);
 
 		try {
 			stagedChangesExecutor.execute(stagedChangesEntityConverter.from(stagedChanges));

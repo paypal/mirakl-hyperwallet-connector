@@ -14,12 +14,15 @@ class BatchJobFailedItemCacheTestContextITTest extends AbstractBatchJobTestSuppo
 		final TestBatchJobItem testBatchJobFailedItem = new TestBatchJobItem("id1", "val1");
 		batchJobFailedItemService.saveItemFailed(testBatchJobFailedItem);
 
-		Assertions.assertThat(batchJobFailedItemCacheService.retrieveItem(TestBatchJobItem.class,
-				TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE, "id1")).isPresent();
+		Assertions
+			.assertThat(batchJobFailedItemCacheService.retrieveItem(TestBatchJobItem.class,
+					TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE, "id1"))
+			.isPresent();
 
-		Assertions.assertThat(batchJobFailedItemRepository.findById(
-				new BatchJobFailedItemId(testBatchJobFailedItem.getItemId(), testBatchJobFailedItem.getItemType())))
-				.isPresent();
+		Assertions
+			.assertThat(batchJobFailedItemRepository.findById(
+					new BatchJobFailedItemId(testBatchJobFailedItem.getItemId(), testBatchJobFailedItem.getItemType())))
+			.isPresent();
 	}
 
 	@Test
@@ -28,8 +31,10 @@ class BatchJobFailedItemCacheTestContextITTest extends AbstractBatchJobTestSuppo
 		batchJobFailedItemService.saveItemFailed(testBatchJobFailedItem);
 		batchJobFailedItemService.removeItemProcessed(testBatchJobFailedItem);
 
-		Assertions.assertThat(batchJobFailedItemCacheService.retrieveItem(TestBatchJobItem.class,
-				TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE, "id1")).isEmpty();
+		Assertions
+			.assertThat(batchJobFailedItemCacheService.retrieveItem(TestBatchJobItem.class,
+					TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE, "id1"))
+			.isEmpty();
 	}
 
 	@Test
@@ -40,9 +45,12 @@ class BatchJobFailedItemCacheTestContextITTest extends AbstractBatchJobTestSuppo
 		batchJobFailedItemService.saveItemFailed(testBatchJobFailedItem);
 		batchJobFailedItemService.checkUpdatedFailedItems(List.of(testBatchJobFailedItemUpdated));
 
-		Assertions.assertThat(batchJobFailedItemCacheService
-				.retrieveItem(TestBatchJobItem.class, TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE, "id1").get().getItem())
-				.isEqualTo("val2");
+		Assertions
+			.assertThat(batchJobFailedItemCacheService
+				.retrieveItem(TestBatchJobItem.class, TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE, "id1")
+				.get()
+				.getItem())
+			.isEqualTo("val2");
 	}
 
 	@Test
@@ -51,8 +59,10 @@ class BatchJobFailedItemCacheTestContextITTest extends AbstractBatchJobTestSuppo
 
 		batchJobFailedItemService.checkUpdatedFailedItems(List.of(testBatchJobFailedItemUpdated));
 
-		Assertions.assertThat(batchJobFailedItemCacheService.retrieveItem(TestBatchJobItem.class,
-				TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE, "id1")).isEmpty();
+		Assertions
+			.assertThat(batchJobFailedItemCacheService.retrieveItem(TestBatchJobItem.class,
+					TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE, "id1"))
+			.isEmpty();
 	}
 
 }

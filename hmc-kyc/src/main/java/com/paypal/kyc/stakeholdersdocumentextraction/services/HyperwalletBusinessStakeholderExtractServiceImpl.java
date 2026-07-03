@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.hyperwallet.clientsdk.model.HyperwalletBusinessStakeholder.VerificationStatus.REQUIRED;
 
@@ -47,30 +46,33 @@ public class HyperwalletBusinessStakeholderExtractServiceImpl
 	public List<String> getKYCRequiredVerificationBusinessStakeHolders(final String hyperwalletProgram,
 			final String userToken) {
 		final Hyperwallet hyperwallet = getHyperwalletSDKService()
-				.getHyperwalletInstanceByHyperwalletProgram(hyperwalletProgram);
+			.getHyperwalletInstanceByHyperwalletProgram(hyperwalletProgram);
 		final List<HyperwalletBusinessStakeholder> businessStakeholders = getBusinessStakeholders(userToken,
 				hyperwallet);
 
 		return businessStakeholders.stream()
-				.filter(hyperwalletBusinessStakeholder -> REQUIRED
-						.equals(hyperwalletBusinessStakeholder.getVerificationStatus()))
-				.map(HyperwalletBusinessStakeholder::getToken).collect(Collectors.toList());
+			.filter(hyperwalletBusinessStakeholder -> REQUIRED
+				.equals(hyperwalletBusinessStakeholder.getVerificationStatus()))
+			.map(HyperwalletBusinessStakeholder::getToken)
+			.toList();
 	}
 
 	private List<HyperwalletBusinessStakeholder> getBusinessStakeholders(final String userToken,
 			final Hyperwallet hyperwallet) {
 		final HyperwalletList<HyperwalletBusinessStakeholder> businessStakeHolders = hyperwallet
-				.listBusinessStakeholders(userToken);
+			.listBusinessStakeholders(userToken);
 
-		return Optional.ofNullable(businessStakeHolders).map(HyperwalletList::getData)
-				.filter(CollectionUtils::isNotEmpty).orElse(Collections.emptyList());
+		return Optional.ofNullable(businessStakeHolders)
+			.map(HyperwalletList::getData)
+			.filter(CollectionUtils::isNotEmpty)
+			.orElse(Collections.emptyList());
 	}
 
 	@Override
 	protected List<HyperwalletVerificationDocument> getHyperwalletVerificationDocuments(
 			final KYCDocumentBusinessStakeHolderInfoModel kycBusinessStakeHolderInfoModel) {
 		return kycBusinessStakeholderDocumentInfoModelToHWVerificationDocumentExecutor
-				.execute(kycBusinessStakeHolderInfoModel);
+			.execute(kycBusinessStakeHolderInfoModel);
 	}
 
 }

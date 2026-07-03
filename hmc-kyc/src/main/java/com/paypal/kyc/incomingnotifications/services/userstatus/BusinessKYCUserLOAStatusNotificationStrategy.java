@@ -33,8 +33,8 @@ public class BusinessKYCUserLOAStatusNotificationStrategy extends AbstractKYCBus
 	public Void execute(
 			final KYCBusinessStakeholderStatusNotificationBodyModel kycBusinessStakeholderStatusNotificationBodyModel) {
 		Optional.ofNullable(getHyperWalletUser(kycBusinessStakeholderStatusNotificationBodyModel))
-				.ifPresent(hyperWalletUser -> updateMiraklLOAStatus(hyperWalletUser.getClientUserId(),
-						hyperWalletUser.getLetterOfAuthorizationStatus()));
+			.ifPresent(hyperWalletUser -> updateMiraklLOAStatus(hyperWalletUser.getClientUserId(),
+					hyperWalletUser.getLetterOfAuthorizationStatus()));
 		return null;
 	}
 
@@ -43,8 +43,8 @@ public class BusinessKYCUserLOAStatusNotificationStrategy extends AbstractKYCBus
 			final KYCBusinessStakeholderStatusNotificationBodyModel kycBusinessStakeholderStatusNotificationBodyModel) {
 		return kycBusinessStakeholderStatusNotificationBodyModel.getIsBusinessContact()
 				&& kycBusinessStakeholderStatusNotificationBodyModel.getIsDirector()
-				&& KYCConstants.HwWebhookNotificationType.USERS_BUSINESS_STAKEHOLDERS_CREATED.equals(
-						kycBusinessStakeholderStatusNotificationBodyModel.getHyperwalletWebhookNotificationType());
+				&& KYCConstants.HwWebhookNotificationType.USERS_BUSINESS_STAKEHOLDERS_CREATED
+					.equals(kycBusinessStakeholderStatusNotificationBodyModel.getHyperwalletWebhookNotificationType());
 	}
 
 	protected void updateMiraklLOAStatus(final String miraklShopId,
@@ -52,7 +52,7 @@ public class BusinessKYCUserLOAStatusNotificationStrategy extends AbstractKYCBus
 
 		final MiraklUpdateShop updateShop = new MiraklUpdateShop();
 		final String isLetterOfAuthorizationRequired = Boolean
-				.toString(isLetterOfAuthorizationRequired(letterOfAuthorizationStatus));
+			.toString(isLetterOfAuthorizationRequired(letterOfAuthorizationStatus));
 
 		final MiraklSimpleRequestAdditionalFieldValue miraklSimpleRequestAdditionalFieldValue = new MiraklSimpleRequestAdditionalFieldValue(
 				KYCConstants.HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD,

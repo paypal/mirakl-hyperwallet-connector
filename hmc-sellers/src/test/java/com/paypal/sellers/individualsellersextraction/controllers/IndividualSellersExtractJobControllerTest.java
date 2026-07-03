@@ -1,10 +1,9 @@
 package com.paypal.sellers.individualsellersextraction.controllers;
 
-import com.paypal.jobsystem.quartzintegration.support.AbstractDeltaInfoJob;
-import com.paypal.jobsystem.quartzintegration.services.JobService;
 import com.paypal.infrastructure.support.date.DateUtil;
 import com.paypal.infrastructure.support.date.TimeMachine;
-import com.paypal.sellers.individualsellersextraction.controllers.IndividualSellersExtractJobController;
+import com.paypal.jobsystem.quartzintegration.services.JobService;
+import com.paypal.jobsystem.quartzintegration.support.AbstractDeltaInfoJob;
 import com.paypal.sellers.individualsellersextraction.jobs.IndividualSellersExtractJob;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

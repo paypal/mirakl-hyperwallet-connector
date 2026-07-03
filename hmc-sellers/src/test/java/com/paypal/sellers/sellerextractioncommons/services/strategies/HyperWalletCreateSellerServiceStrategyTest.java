@@ -46,7 +46,7 @@ class HyperWalletCreateSellerServiceStrategyTest extends HyperwalletSellerServic
 		ensureHyperwalletSDKThrowsAnHMCException();
 
 		assertThatThrownBy(() -> testObj.pushToHyperwallet(hyperwalletUserRequestMock))
-				.isInstanceOf(HMCHyperwalletAPIException.class);
+			.isInstanceOf(HMCHyperwalletAPIException.class);
 	}
 
 	@Test
@@ -56,7 +56,7 @@ class HyperWalletCreateSellerServiceStrategyTest extends HyperwalletSellerServic
 		ensureHyperwalletSDKThrowsAnHMCException();
 
 		assertThatThrownBy(() -> testObj.pushToHyperwallet(hyperwalletUserRequestMock))
-				.isInstanceOf(HMCHyperwalletAPIException.class);
+			.isInstanceOf(HMCHyperwalletAPIException.class);
 
 		verify(testObj).reportError("Issue detected when creating seller in Hyperwallet",
 				(ERROR_MESSAGE_PREFIX + "Seller not created with clientId [%s]%n%s").formatted(CLIENT_USER_ID,
@@ -70,7 +70,7 @@ class HyperWalletCreateSellerServiceStrategyTest extends HyperwalletSellerServic
 		ensureHyperwalletSDKThrowsAnHMCException();
 
 		assertThatThrownBy(() -> testObj.pushToHyperwallet(hyperwalletUserRequestMock))
-				.isInstanceOf(HMCHyperwalletAPIException.class);
+			.isInstanceOf(HMCHyperwalletAPIException.class);
 
 		verify(testObj).logErrors(
 				eq("Error creating seller in hyperwallet with clientUserId [%s].%n%s".formatted(CLIENT_USER_ID,
@@ -96,7 +96,7 @@ class HyperWalletCreateSellerServiceStrategyTest extends HyperwalletSellerServic
 		ensureMiraklSDKThrowsAnHMCException();
 
 		assertThatThrownBy(() -> testObj.pushToHyperwallet(hyperwalletUserRequestMock))
-				.isInstanceOf(HMCMiraklAPIException.class);
+			.isInstanceOf(HMCMiraklAPIException.class);
 	}
 
 	@Test
@@ -107,7 +107,7 @@ class HyperWalletCreateSellerServiceStrategyTest extends HyperwalletSellerServic
 		ensureMiraklSDKThrowsAnHMCException();
 
 		assertThatThrownBy(() -> testObj.pushToHyperwallet(hyperwalletUserRequestMock))
-				.isInstanceOf(HMCMiraklAPIException.class);
+			.isInstanceOf(HMCMiraklAPIException.class);
 
 		verify(testObj).reportError("Issue detected when updating seller in Mirakl",
 				(ERROR_MESSAGE_PREFIX + "Seller token not updated with clientId [%s]%n%s").formatted(CLIENT_USER_ID,
@@ -122,7 +122,7 @@ class HyperWalletCreateSellerServiceStrategyTest extends HyperwalletSellerServic
 		ensureMiraklSDKThrowsAnHMCException();
 
 		assertThatThrownBy(() -> testObj.pushToHyperwallet(hyperwalletUserRequestMock))
-				.isInstanceOf(HMCMiraklAPIException.class);
+			.isInstanceOf(HMCMiraklAPIException.class);
 
 		verify(testObj).logErrors(
 				eq("Error updating token in mirakl with clientUserId [%s]: [{}]".formatted(CLIENT_USER_ID)),

@@ -1,10 +1,8 @@
 package com.paypal.kyc.sellersdocumentextraction.batchjobs;
 
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
-import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentsExtractionResult;
-import com.paypal.kyc.sellersdocumentextraction.batchjobs.SellersDocumentsExtractBatchJobItem;
-import com.paypal.kyc.sellersdocumentextraction.batchjobs.SellersDocumentsExtractBatchJobItemExtractor;
+import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.sellersdocumentextraction.services.MiraklSellerDocumentsExtractService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,14 +41,14 @@ class SellersDocumentsExtractBatchJobItemExtractorTest {
 	@Test
 	void getItems_ShouldReturnAllSellerDocumentsForAGivenDelta_WhenNoPartialErrorsHappened() {
 		when(miraklSellerDocumentsExtractServiceMock.extractProofOfIdentityAndBusinessSellerDocuments(DELTA))
-				.thenReturn(kycDocumentsExtractionResultMock);
+			.thenReturn(kycDocumentsExtractionResultMock);
 		when(kycDocumentsExtractionResultMock.getExtractedDocuments())
-				.thenReturn(List.of(kycDocumentSellerInfoModelMock1, kycDocumentSellerInfoModelMock2));
+			.thenReturn(List.of(kycDocumentSellerInfoModelMock1, kycDocumentSellerInfoModelMock2));
 
 		final Collection<SellersDocumentsExtractBatchJobItem> result = testObj.getItems(batchJobContextMock, DELTA);
 
 		assertThat(result.stream().map(SellersDocumentsExtractBatchJobItem::getItem).collect(Collectors.toList()))
-				.containsExactlyInAnyOrder(kycDocumentSellerInfoModelMock1, kycDocumentSellerInfoModelMock2);
+			.containsExactlyInAnyOrder(kycDocumentSellerInfoModelMock1, kycDocumentSellerInfoModelMock2);
 
 		verify(batchJobContextMock, times(1)).setPartialItemExtraction(false);
 	}
@@ -58,15 +56,15 @@ class SellersDocumentsExtractBatchJobItemExtractorTest {
 	@Test
 	void getItems_ShouldReturnNotFailedSellerDocumentsForAGivenDeltaAndSetAPartialExtraction_WhenPartialErrorsHappened() {
 		when(miraklSellerDocumentsExtractServiceMock.extractProofOfIdentityAndBusinessSellerDocuments(DELTA))
-				.thenReturn(kycDocumentsExtractionResultMock);
+			.thenReturn(kycDocumentsExtractionResultMock);
 		when(kycDocumentsExtractionResultMock.getExtractedDocuments())
-				.thenReturn(List.of(kycDocumentSellerInfoModelMock1, kycDocumentSellerInfoModelMock2));
+			.thenReturn(List.of(kycDocumentSellerInfoModelMock1, kycDocumentSellerInfoModelMock2));
 		when(kycDocumentsExtractionResultMock.hasFailed()).thenReturn(true);
 
 		final Collection<SellersDocumentsExtractBatchJobItem> result = testObj.getItems(batchJobContextMock, DELTA);
 
 		assertThat(result.stream().map(SellersDocumentsExtractBatchJobItem::getItem).collect(Collectors.toList()))
-				.containsExactlyInAnyOrder(kycDocumentSellerInfoModelMock1, kycDocumentSellerInfoModelMock2);
+			.containsExactlyInAnyOrder(kycDocumentSellerInfoModelMock1, kycDocumentSellerInfoModelMock2);
 
 		verify(batchJobContextMock, times(1)).setPartialItemExtraction(true);
 	}

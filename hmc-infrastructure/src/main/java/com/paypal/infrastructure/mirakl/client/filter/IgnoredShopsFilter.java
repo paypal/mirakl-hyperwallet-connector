@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -23,8 +22,7 @@ public class IgnoredShopsFilter implements ShopsFilter {
 	}
 
 	public void filterShops(final MiraklShops shops) {
-		final List<MiraklShop> validShops = shops.getShops().stream().filter(Predicate.not(this::isIgnored))
-				.collect(Collectors.toList());
+		final List<MiraklShop> validShops = shops.getShops().stream().filter(Predicate.not(this::isIgnored)).toList();
 
 		shops.setShops(validShops);
 		shops.setTotalCount((long) validShops.size());
@@ -36,7 +34,7 @@ public class IgnoredShopsFilter implements ShopsFilter {
 		if (program.isPresent()) {
 			final String programValue = program.get();
 			final boolean isIgnored = hyperwalletProgramsConfiguration.getProgramConfiguration(programValue)
-					.isIgnored();
+				.isIgnored();
 			if (isIgnored) {
 				log.info("Shop with id [{}] contains program [{}] which is in the ignored list, skipping processing",
 						miraklShop.getId(), programValue);

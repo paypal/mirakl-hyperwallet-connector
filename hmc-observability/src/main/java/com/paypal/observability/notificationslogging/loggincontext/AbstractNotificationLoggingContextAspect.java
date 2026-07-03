@@ -41,7 +41,7 @@ public abstract class AbstractNotificationLoggingContextAspect {
 		notificationLoggingTransaction.setTargetToken(getPropertyIfExists(notification.getObject(), "token"));
 		notificationLoggingTransaction.setMiraklShopId(getPropertyIfExists(notification.getObject(), "clientUserId"));
 		notificationLoggingTransaction
-				.setClientPaymentId(getPropertyIfExists(notification.getObject(), "clientPaymentId"));
+			.setClientPaymentId(getPropertyIfExists(notification.getObject(), "clientPaymentId"));
 
 		return notificationLoggingTransaction;
 	}

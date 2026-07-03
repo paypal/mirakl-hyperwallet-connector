@@ -26,7 +26,7 @@ the connector in the
 
 For building and running the connector, you will need the following software:
 
-* Java JDK 17
+* Java JDK 25
 * Docker (Optional)
 
 For the build process you will need to configure these two variables, since the
@@ -48,9 +48,9 @@ command:
 
 Additionally, you can create an executable JAR with the following command:
 
-* `./gradlew app:bootJar`
+* `./gradlew hmc-app:bootJar`
 
-that will generate the JAR in the directory  `app/build/libs`
+that will generate the JAR in the directory  `hmc-app/build/libs`
 
 ### Running the Connector
 

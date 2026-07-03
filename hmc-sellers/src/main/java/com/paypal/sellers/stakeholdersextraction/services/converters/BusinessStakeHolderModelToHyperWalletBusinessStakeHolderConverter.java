@@ -40,7 +40,8 @@ public class BusinessStakeHolderModelToHyperWalletBusinessStakeHolderConverter
 		hyperwalletBusinessStakeholder.countryOfBirth(source.getCountryOfBirth());
 		hyperwalletBusinessStakeholder.setCountryOfNationality(source.getCountryOfNationality());
 
-		Optional.ofNullable(source.getGender()).ifPresent(gender -> hyperwalletBusinessStakeholder
+		Optional.ofNullable(source.getGender())
+			.ifPresent(gender -> hyperwalletBusinessStakeholder
 				.setGender(EnumUtils.getEnum(HyperwalletBusinessStakeholder.Gender.class, gender.name())));
 
 		hyperwalletBusinessStakeholder.setPhoneNumber(source.getPhoneNumber());
@@ -48,9 +49,9 @@ public class BusinessStakeHolderModelToHyperWalletBusinessStakeHolderConverter
 		hyperwalletBusinessStakeholder.setEmail(source.getEmail());
 		hyperwalletBusinessStakeholder.setGovernmentId(source.getGovernmentId());
 
-		Optional.ofNullable(source.getGovernmentIdType()).ifPresent(
-				sellerGovernmentIdType -> hyperwalletBusinessStakeholder.setGovernmentIdType(EnumUtils.getEnum(
-						HyperwalletBusinessStakeholder.GovernmentIdType.class, sellerGovernmentIdType.name())));
+		Optional.ofNullable(source.getGovernmentIdType())
+			.ifPresent(sellerGovernmentIdType -> hyperwalletBusinessStakeholder.setGovernmentIdType(EnumUtils
+				.getEnum(HyperwalletBusinessStakeholder.GovernmentIdType.class, sellerGovernmentIdType.name())));
 
 		hyperwalletBusinessStakeholder.setDriversLicenseId(source.getDriversLicenseId());
 		hyperwalletBusinessStakeholder.setAddressLine1(source.getAddressLine1());

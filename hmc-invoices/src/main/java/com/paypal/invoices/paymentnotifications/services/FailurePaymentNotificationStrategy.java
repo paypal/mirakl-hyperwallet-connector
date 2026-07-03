@@ -102,7 +102,7 @@ public class FailurePaymentNotificationStrategy implements Strategy<PaymentNotif
 
 	HyperwalletUser getHyperwalletUserInfo(final PaymentNotificationBodyModel paymentNotificationBodyModel) {
 		final Hyperwallet hyperwallet = userHyperwalletSDKService
-				.getHyperwalletInstanceByProgramToken(paymentNotificationBodyModel.getProgramToken());
+			.getHyperwalletInstanceByProgramToken(paymentNotificationBodyModel.getProgramToken());
 
 		try {
 			return hyperwallet.getUser(paymentNotificationBodyModel.getDestinationToken());

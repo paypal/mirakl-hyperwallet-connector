@@ -79,14 +79,14 @@ public class FinancialReportServiceImpl implements FinancialReportService {
 
 		financialReportLines.addAll(convertUncommonBraintreeTransactionLines(uncommonHmcBraintreeTransactionLines));
 		financialReportLines
-				.addAll(convertUncommonMiraklTransactionLines(miraklTransactionLinesWithEmptyTransactionNumber));
+			.addAll(convertUncommonMiraklTransactionLines(miraklTransactionLinesWithEmptyTransactionNumber));
 		financialReportLines.addAll(convertCommonTransactionLines(commonTransactions));
 		financialReportLines.addAll(convertUncommonMiraklTransactionLines(uncommonMiraklTransactionLines));
 
 		//@formatter:off
 		final List<String> financialReportStringLines = financialReportLines.stream()
 				.map(HmcFinancialReportLine::toString)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 
 		final String fileName;
@@ -112,7 +112,7 @@ public class FinancialReportServiceImpl implements FinancialReportService {
 				.filter(Predicate.not(braintreeTransactionLines::containsKey))
 				.map(miraklCommonTransactionLines::get)
 				.flatMap(Collection::stream)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 
@@ -140,7 +140,7 @@ public class FinancialReportServiceImpl implements FinancialReportService {
 				.filter(Predicate.not(miraklCommonTransactionLines::containsKey))
 				.map(braintreeTransactionLines::get)
 				.flatMap(Collection::stream)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 
@@ -152,7 +152,7 @@ public class FinancialReportServiceImpl implements FinancialReportService {
 		return Stream.ofNullable(miraklTransactions)
 				.flatMap(Collection::stream)
 				.filter(miraklTransaction -> StringUtils.isEmpty(miraklTransaction.getTransactionNumber()))
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 
@@ -185,12 +185,11 @@ public class FinancialReportServiceImpl implements FinancialReportService {
 		final List<HmcBraintreeTransactionLine> braintreeTransactionsAndRefunds = new ArrayList<>();
 
 		final List<HmcBraintreeTransactionLine> braintreeTransactions = reportsBraintreeTransactionsExtractService
-				.getAllTransactionsByTypeAndDateInterval(BraintreeTransactionStatusEnum.SETTLED.toString(), startDate,
-						endDate);
+			.getAllTransactionsByTypeAndDateInterval(BraintreeTransactionStatusEnum.SETTLED.toString(), startDate,
+					endDate);
 
 		final List<HmcBraintreeRefundLine> braintreeRefunds = reportsBraintreeRefundsExtractService
-				.getAllRefundsByTypeAndDateInterval(BraintreeTransactionStatusEnum.SETTLED.toString(), startDate,
-						endDate);
+			.getAllRefundsByTypeAndDateInterval(BraintreeTransactionStatusEnum.SETTLED.toString(), startDate, endDate);
 
 		braintreeTransactionsAndRefunds.addAll(braintreeTransactions);
 		braintreeTransactionsAndRefunds.addAll(braintreeRefunds);
@@ -201,32 +200,36 @@ public class FinancialReportServiceImpl implements FinancialReportService {
 	private List<HmcFinancialReportLine> generateFinancialReportLine(
 			final HmcBraintreeTransactionLine braintreeTransactionLine,
 			final List<HmcMiraklTransactionLine> miraklTransactionLines) {
-		return Optional.ofNullable(miraklTransactionLines).orElse(List.of()).stream()
-				.map(miraklTransactionLine -> financialReportConverterService
-						.convertBrainTreeAndMiraklTransactionLineIntoFinancialReportLine(braintreeTransactionLine,
-								miraklTransactionLine))
-				.collect(Collectors.toList());
+		return Optional.ofNullable(miraklTransactionLines)
+			.orElse(List.of())
+			.stream()
+			.map(miraklTransactionLine -> financialReportConverterService
+				.convertBrainTreeAndMiraklTransactionLineIntoFinancialReportLine(braintreeTransactionLine,
+						miraklTransactionLine))
+			.toList();
 	}
 
 	private List<HmcFinancialReportLine> convertCommonTransactionLines(
 			final Map<HmcBraintreeTransactionLine, List<HmcMiraklTransactionLine>> commonTransactions) {
-		return commonTransactions.entrySet().stream()
-				.map(entry -> generateFinancialReportLine(entry.getKey(), entry.getValue())).flatMap(Collection::stream)
-				.collect(Collectors.toList());
+		return commonTransactions.entrySet()
+			.stream()
+			.map(entry -> generateFinancialReportLine(entry.getKey(), entry.getValue()))
+			.flatMap(Collection::stream)
+			.toList();
 	}
 
 	private List<HmcFinancialReportLine> convertUncommonBraintreeTransactionLines(
 			final List<HmcBraintreeTransactionLine> uncommonHmcBraintreeTransactionLines) {
 		return uncommonHmcBraintreeTransactionLines.stream()
-				.map(financialReportConverterService::convertBraintreeTransactionLineIntoFinancialReportLine)
-				.collect(Collectors.toList());
+			.map(financialReportConverterService::convertBraintreeTransactionLineIntoFinancialReportLine)
+			.toList();
 	}
 
 	private List<HmcFinancialReportLine> convertUncommonMiraklTransactionLines(
 			final List<HmcMiraklTransactionLine> uncommonHmcMiraklTransactionLines) {
 		return uncommonHmcMiraklTransactionLines.stream()
-				.map(financialReportConverterService::convertMiraklTransactionLineIntoFinancialReportLine)
-				.collect(Collectors.toList());
+			.map(financialReportConverterService::convertMiraklTransactionLineIntoFinancialReportLine)
+			.toList();
 	}
 
 }

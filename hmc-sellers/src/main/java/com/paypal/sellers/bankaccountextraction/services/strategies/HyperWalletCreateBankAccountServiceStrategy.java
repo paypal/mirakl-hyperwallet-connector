@@ -37,7 +37,7 @@ public class HyperWalletCreateBankAccountServiceStrategy extends AbstractHyperwa
 	public Optional<HyperwalletBankAccount> execute(final SellerModel seller) {
 		final Optional<HyperwalletBankAccount> hwBankAccountCreated = callSuperExecute(seller);
 		hwBankAccountCreated
-				.ifPresent(bankAccount -> miraklBankAccountExtractService.updateBankAccountToken(seller, bankAccount));
+			.ifPresent(bankAccount -> miraklBankAccountExtractService.updateBankAccountToken(seller, bankAccount));
 		return hwBankAccountCreated;
 	}
 
@@ -45,7 +45,7 @@ public class HyperWalletCreateBankAccountServiceStrategy extends AbstractHyperwa
 	protected HyperwalletBankAccount callHyperwalletAPI(final String hyperwalletProgram,
 			final HyperwalletBankAccount hyperwalletBankAccount) {
 		final Hyperwallet hyperwallet = userHyperwalletSDKService
-				.getHyperwalletInstanceByHyperwalletProgram(hyperwalletProgram);
+			.getHyperwalletInstanceByHyperwalletProgram(hyperwalletProgram);
 		return hyperwallet.createBankAccount(hyperwalletBankAccount);
 	}
 

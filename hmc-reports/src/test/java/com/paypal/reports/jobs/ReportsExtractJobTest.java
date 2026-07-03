@@ -58,8 +58,9 @@ class ReportsExtractJobTest {
 
 		final JobDataMap result = ReportsExtractJob.createJobDataMap(startDate, endDate, fileName);
 
-		AssertionsForInterfaceTypes.assertThat(result).contains(Map.entry("startDate", startDate),
-				Map.entry("endDate", endDate), Map.entry("fileName", fileName));
+		AssertionsForInterfaceTypes.assertThat(result)
+			.contains(Map.entry("startDate", startDate), Map.entry("endDate", endDate),
+					Map.entry("fileName", fileName));
 	}
 
 	@Test

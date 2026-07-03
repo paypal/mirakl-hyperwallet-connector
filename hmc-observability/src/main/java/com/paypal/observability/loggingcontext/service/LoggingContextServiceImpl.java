@@ -43,7 +43,7 @@ public class LoggingContextServiceImpl implements LoggingContextService {
 	public void executeInLoggingContext(final TransactionContextRunnable runnable,
 			final LoggingTransaction loggingTransaction) throws Throwable {
 		final LoggingTransaction currentTransaction = loggingTransactionContext.getCurrentBusinessTransaction()
-				.orElse(loggingTransaction);
+			.orElse(loggingTransaction);
 		updateLoggingTransaction(currentTransaction);
 		runnable.run();
 		closeLoggingTransaction();

@@ -115,7 +115,7 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 		businessRegistrationCountryMiraklCustomField.setCode("hw-business-reg-country");
 		businessRegistrationCountryMiraklCustomField.setValue("US");
 		when(miraklShopMock.getAdditionalFieldValues()).thenReturn(List
-				.of(businessRegistrationStateProvinceMiraklCustomField, businessRegistrationCountryMiraklCustomField));
+			.of(businessRegistrationStateProvinceMiraklCustomField, businessRegistrationCountryMiraklCustomField));
 
 		final SellerModel.SellerModelBuilder sellerModelBuilderStub = SellerModel.builder();
 		doReturn(sellerModelBuilderStub).when(testObj).getCommonFieldsBuilder(miraklShopMock);
@@ -163,18 +163,21 @@ class MiraklShopToProfessionalSellerModelConverterTest {
 				driversLicenseCntTwoAdditionalFieldMock);
 
 		when(miraklShopMock.getAdditionalFieldValues()).thenReturn(additionalFieldValues)
-				.thenReturn(additionalFieldValues).thenReturn(additionalFieldValues).thenReturn(additionalFieldValues)
-				.thenReturn(additionalFieldValues).thenReturn(List.of());
+			.thenReturn(additionalFieldValues)
+			.thenReturn(additionalFieldValues)
+			.thenReturn(additionalFieldValues)
+			.thenReturn(additionalFieldValues)
+			.thenReturn(List.of());
 		when(businessStakeHolderModelConverterMock.convert(Triple.of(additionalFieldValues, 1, CLIENT_ID_1)))
-				.thenReturn(businessStakeHolderModelOneMock);
+			.thenReturn(businessStakeHolderModelOneMock);
 		when(businessStakeHolderModelConverterMock.convert(Triple.of(additionalFieldValues, 2, CLIENT_ID_1)))
-				.thenReturn(businessStakeHolderModelTwoMock);
+			.thenReturn(businessStakeHolderModelTwoMock);
 
 		final SellerModel.SellerModelBuilder sellerModelBuilderStub = SellerModel.builder();
 		doReturn(sellerModelBuilderStub).when(testObj).getCommonFieldsBuilder(miraklShopMock);
 
 		final BusinessStakeHolderModel.BusinessStakeHolderModelBuilder businessStakeHolderModelBuilder = BusinessStakeHolderModel
-				.builder();
+			.builder();
 		doReturn(businessStakeHolderModelBuilder).when(businessStakeHolderModelOneMock).toBuilder();
 		doReturn(businessStakeHolderModelBuilder).when(businessStakeHolderModelTwoMock).toBuilder();
 

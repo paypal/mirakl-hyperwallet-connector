@@ -1,11 +1,11 @@
 package com.paypal.observability.miraklfieldschecks.services;
 
 import com.mirakl.client.mmp.domain.additionalfield.MiraklFrontOperatorAdditionalField;
+import com.paypal.observability.miraklfieldschecks.connectors.MiraklFieldSchemaConnector;
 import com.paypal.observability.miraklfieldschecks.repository.MiraklFieldSchemaRepository;
+import com.paypal.observability.miraklfieldschecks.repository.model.MiraklFieldSchemaYaml;
 import com.paypal.observability.miraklfieldschecks.services.converters.MiraklFieldSchemaConnectorConverter;
 import com.paypal.observability.miraklfieldschecks.services.converters.MiraklFieldSchemaRepositoryConverter;
-import com.paypal.observability.miraklfieldschecks.connectors.MiraklFieldSchemaConnector;
-import com.paypal.observability.miraklfieldschecks.repository.model.MiraklFieldSchemaYaml;
 import com.paypal.observability.miraklschemadiffs.model.MiraklSchema;
 import com.paypal.observability.miraklschemadiffs.model.diff.MiraklSchemaDiff;
 import com.paypal.observability.miraklschemadiffs.model.report.MiraklSchemaDiffReport;
@@ -54,7 +54,7 @@ public class MiraklFieldSchemaCheckerServiceImpl implements MiraklFieldSchemaChe
 		final MiraklSchema remoteSchema = miraklFieldSchemaConnectorConverter.from(miraklFields);
 
 		final MiraklFieldSchemaYaml miraklFieldSchemaYaml = miraklFieldSchemaRepository
-				.loadCustomFieldsSchema(isKycAutomated);
+			.loadCustomFieldsSchema(isKycAutomated);
 		final MiraklSchema expectedSchema = miraklFieldSchemaRepositoryConverter.from(miraklFieldSchemaYaml);
 
 		final MiraklSchemaDiff miraklFieldSchemaDiff = miraklFieldSchemaComparator.compareSchemas(expectedSchema,

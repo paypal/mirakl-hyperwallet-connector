@@ -37,7 +37,7 @@ class InvoicesExtractBatchJobItemsExtractorTest {
 	void getItems_ShouldReturnACollectionOfInvoiceExtractJobItemForTheGivenDetla() {
 
 		when(miraklAccountingDocumentInvoicesExtractServiceMock.extractAccountingDocuments(DELTA, false))
-				.thenReturn(List.of(invoiceModelMock1, invoiceModelMock2));
+			.thenReturn(List.of(invoiceModelMock1, invoiceModelMock2));
 
 		final Collection<InvoiceExtractJobItem> result = testObj.getItems(batchJobContextMock, DELTA, false);
 

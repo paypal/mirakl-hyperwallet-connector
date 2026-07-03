@@ -1,6 +1,7 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 task updateDockerComposeFile {
+	shouldRunAfter('hmc-app:bootBuildImage')
 	doLast {
 		copy {
 			from(projectDir) {
@@ -16,7 +17,8 @@ task updateDockerComposeFile {
 			}
 
 			ext.dockerImageName = project.hasProperty('dockerImageName') ? project.getProperty('dockerImageName') : rootProject.name
-			ext.dockerImageTag = project.hasProperty('dockerImageTag') ? project.getProperty('dockerImageTag') : version
+			def effectiveVersion = rootProject.findProject('hmc-app')?.version ?: version
+			ext.dockerImageTag = project.hasProperty('dockerImageTag') ? project.getProperty('dockerImageTag') : effectiveVersion
 
 			filter(ReplaceTokens, tokens: [
 					'DOCKER_IMAGE_NAME': dockerImageName,

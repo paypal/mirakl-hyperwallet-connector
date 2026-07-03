@@ -2,9 +2,8 @@ package com.paypal.sellers.professionalsellersextraction.jobs;
 
 import com.paypal.jobsystem.batchjob.model.BatchJob;
 import com.paypal.jobsystem.quartzadapter.job.QuartzBatchJobAdapterFactory;
-import com.paypal.sellers.stakeholdersextraction.batchjobs.BusinessStakeholdersExtractBatchJob;
 import com.paypal.sellers.professionalsellersextraction.batchjobs.ProfessionalSellersExtractBatchJob;
-import com.paypal.sellers.professionalsellersextraction.jobs.ProfessionalSellersExtractJob;
+import com.paypal.sellers.stakeholdersextraction.batchjobs.BusinessStakeholdersExtractBatchJob;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

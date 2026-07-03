@@ -1,8 +1,8 @@
 package com.paypal.invoices.extractioninvoices.services;
 
+import com.paypal.invoices.extractioncommons.services.HyperWalletPaymentExtractService;
 import com.paypal.invoices.extractioninvoices.configuration.InvoicesOperatorCommissionsConfig;
 import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
-import com.paypal.invoices.extractioncommons.services.HyperWalletPaymentExtractService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

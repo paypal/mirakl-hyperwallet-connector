@@ -21,13 +21,17 @@ public final class TrafficAuditorAdapterUtils {
 	}
 
 	private static <T> Map<String, T> removeNullKeys(@NotNull final Map<String, T> map) {
-		return map.entrySet().stream().filter(entry -> entry.getKey() != null)
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		return map.entrySet()
+			.stream()
+			.filter(entry -> entry.getKey() != null)
+			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	private static <T> Map<String, T> obfuscateAuthorization(@NotNull final Map<String, T> map) {
-		return map.entrySet().stream().map(TrafficAuditorAdapterUtils::obfuscateAuthorizationEntry)
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		return map.entrySet()
+			.stream()
+			.map(TrafficAuditorAdapterUtils::obfuscateAuthorizationEntry)
+			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	@SuppressWarnings("unchecked")

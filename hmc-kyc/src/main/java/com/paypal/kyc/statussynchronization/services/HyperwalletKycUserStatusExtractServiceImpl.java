@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class HyperwalletKycUserStatusExtractServiceImpl implements HyperwalletKycUserStatusExtractService {
@@ -33,9 +32,9 @@ public class HyperwalletKycUserStatusExtractServiceImpl implements HyperwalletKy
 		options.setCreatedBefore(to);
 		final HyperwalletPaginationSupport hyperwalletPaginationSupport = new HyperwalletPaginationSupport(hyperwallet);
 		final List<HyperwalletUser> hyperwalletUsers = hyperwalletPaginationSupport
-				.get(() -> hyperwallet.listUsers(options));
+			.get(() -> hyperwallet.listUsers(options));
 
-		return hyperwalletUsers.stream().map(kycUserStatusInfoModelConverter::convert).collect(Collectors.toList());
+		return hyperwalletUsers.stream().map(kycUserStatusInfoModelConverter::convert).toList();
 	}
 
 }

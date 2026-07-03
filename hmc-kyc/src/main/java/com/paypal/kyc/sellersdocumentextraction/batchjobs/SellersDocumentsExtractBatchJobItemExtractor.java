@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 /**
  * Handles the extraction of seller documents. It retrieves all documents from shops that
@@ -45,7 +44,7 @@ public class SellersDocumentsExtractBatchJobItemExtractor
 
 		return kycDocumentsExtractionResult.getExtractedDocuments().stream()
 				.map(SellersDocumentsExtractBatchJobItem::new)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 

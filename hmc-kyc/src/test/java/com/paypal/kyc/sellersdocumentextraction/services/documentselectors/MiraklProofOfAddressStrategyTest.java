@@ -3,9 +3,9 @@ package com.paypal.kyc.sellersdocumentextraction.services.documentselectors;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
-import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.sellersdocumentextraction.model.KYCProofOfAddressEnum;
+import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,7 +50,8 @@ class MiraklProofOfAddressStrategyTest {
 	@Test
 	void isApplicable_shouldReturnFalseWhenIsProofOfBusinessAndObjectReceivedAsParameterIsNotKYCDocumentSellerInfoModel() {
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
-				.builder().build();
+			.builder()
+			.build();
 
 		final boolean result = testObj.isApplicable(kycDocumentBusinessStakeHolderInfoModel);
 

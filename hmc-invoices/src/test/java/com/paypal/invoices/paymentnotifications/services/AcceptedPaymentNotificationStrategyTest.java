@@ -1,11 +1,10 @@
 package com.paypal.invoices.paymentnotifications.services;
 
 import com.mirakl.client.mmp.domain.common.currency.MiraklIsoCurrencyCode;
-import com.mirakl.client.mmp.domain.invoice.MiraklAccountingDocumentPaymentConfirmation;
-import com.mirakl.client.mmp.request.invoice.MiraklConfirmAccountingDocumentPaymentRequest;
-import com.paypal.infrastructure.hyperwallet.constants.HyperWalletConstants;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklPayOutState;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklSellerBillingCyclePaymentConfirmation;
+import com.mirakl.client.mmp.operator.request.payment.sellerbillingcycle.MiraklConfirmSellerBillingCyclePaymentRequest;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
-import com.paypal.infrastructure.support.date.DateUtil;
 import com.paypal.invoices.paymentnotifications.configuration.PaymentNotificationConfig;
 import com.paypal.invoices.paymentnotifications.model.PaymentNotificationBodyModel;
 import org.junit.jupiter.api.Test;
@@ -16,9 +15,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Collection;
 import java.util.Set;
-import java.util.TimeZone;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -33,7 +34,7 @@ class AcceptedPaymentNotificationStrategyTest {
 
 	private static final String AMOUNT = "123.45";
 
-	private static final String INVOICE_ID = "1234";
+	private static final String CLIENT_PAYMENT_ID = "123e4567-e89b-12d3-a456-426614174000";
 
 	private static final String CURRENCY_EUR_ISO_CODE = "EUR";
 
@@ -52,60 +53,29 @@ class AcceptedPaymentNotificationStrategyTest {
 	private MiraklClient miraklClientMock;
 
 	@Captor
-	ArgumentCaptor<MiraklConfirmAccountingDocumentPaymentRequest> miraklConfirmAccountingDocumentPaymentRequestArgumentCaptor;
+	ArgumentCaptor<MiraklConfirmSellerBillingCyclePaymentRequest> miraklConfirmRequestCaptor;
 
 	@Test
 	void execute_shouldSendConfirmationPaymentToMirakl() {
 		when(paymentNotificationBodyModelMock.getAmount()).thenReturn(AMOUNT);
-		when(paymentNotificationBodyModelMock.getClientPaymentId()).thenReturn(INVOICE_ID);
+		when(paymentNotificationBodyModelMock.getClientPaymentId()).thenReturn(CLIENT_PAYMENT_ID);
 		when(paymentNotificationBodyModelMock.getCurrency()).thenReturn(CURRENCY_EUR_ISO_CODE);
 		when(paymentNotificationBodyModelMock.getCreatedOn()).thenReturn(CREATED_ON);
 
 		testObj.execute(paymentNotificationBodyModelMock);
 
-		verify(miraklClientMock).confirmAccountingDocumentPayment(
-				miraklConfirmAccountingDocumentPaymentRequestArgumentCaptor.capture());
+		verify(miraklClientMock).confirmSellerBillingCyclePayment(miraklConfirmRequestCaptor.capture());
 
-		final MiraklConfirmAccountingDocumentPaymentRequest miraklConfirmAccountingDocumentPaymentRequest = miraklConfirmAccountingDocumentPaymentRequestArgumentCaptor
-				.getValue();
-		final List<MiraklAccountingDocumentPaymentConfirmation> accountingDocuments = miraklConfirmAccountingDocumentPaymentRequest
-				.getAccountingDocuments();
+		final MiraklConfirmSellerBillingCyclePaymentRequest request = miraklConfirmRequestCaptor.getValue();
+		final Collection<MiraklSellerBillingCyclePaymentConfirmation> confirmations = request.getSellerBillingCycles();
 
-		assertThat(miraklConfirmAccountingDocumentPaymentRequest.getAccountingDocuments()).hasSize(1);
-		assertThat(accountingDocuments.get(0).getAmount()).isEqualTo(AMOUNT);
-		assertThat(accountingDocuments.get(0).getInvoiceId()).isEqualTo(Long.valueOf(INVOICE_ID));
-		assertThat(accountingDocuments.get(0).getCurrencyIsoCode()).isEqualTo(MiraklIsoCurrencyCode.EUR);
-		assertThat(accountingDocuments.get(0).getTransactionDate()).isEqualTo(DateUtil.convertToDate(CREATED_ON,
-				HyperWalletConstants.HYPERWALLET_DATE_FORMAT, TimeZone.getTimeZone("UTC")));
-		assertThat(accountingDocuments.get(0).isConfirmLinkedManualDocuments()).isFalse();
-	}
-
-	@Test
-	void execute_shouldSendConfirmationPaymentToMiraklConfirmingLinkedManualDocuments() {
-		when(paymentNotificationConfigMock.isConfirmLinkedManualDocuments()).thenReturn(true);
-
-		when(paymentNotificationBodyModelMock.getAmount()).thenReturn(AMOUNT);
-		when(paymentNotificationBodyModelMock.getClientPaymentId()).thenReturn(INVOICE_ID);
-		when(paymentNotificationBodyModelMock.getCurrency()).thenReturn(CURRENCY_EUR_ISO_CODE);
-		when(paymentNotificationBodyModelMock.getCreatedOn()).thenReturn(CREATED_ON);
-
-		testObj.execute(paymentNotificationBodyModelMock);
-
-		verify(miraklClientMock).confirmAccountingDocumentPayment(
-				miraklConfirmAccountingDocumentPaymentRequestArgumentCaptor.capture());
-
-		final MiraklConfirmAccountingDocumentPaymentRequest miraklConfirmAccountingDocumentPaymentRequest = miraklConfirmAccountingDocumentPaymentRequestArgumentCaptor
-				.getValue();
-		final List<MiraklAccountingDocumentPaymentConfirmation> accountingDocuments = miraklConfirmAccountingDocumentPaymentRequest
-				.getAccountingDocuments();
-
-		assertThat(miraklConfirmAccountingDocumentPaymentRequest.getAccountingDocuments()).hasSize(1);
-		assertThat(accountingDocuments.get(0).getAmount()).isEqualTo(AMOUNT);
-		assertThat(accountingDocuments.get(0).getInvoiceId()).isEqualTo(Long.valueOf(INVOICE_ID));
-		assertThat(accountingDocuments.get(0).getCurrencyIsoCode()).isEqualTo(MiraklIsoCurrencyCode.EUR);
-		assertThat(accountingDocuments.get(0).getTransactionDate()).isEqualTo(DateUtil.convertToDate(CREATED_ON,
-				HyperWalletConstants.HYPERWALLET_DATE_FORMAT, TimeZone.getTimeZone("UTC")));
-		assertThat(accountingDocuments.get(0).isConfirmLinkedManualDocuments()).isTrue();
+		assertThat(confirmations).hasSize(1);
+		final MiraklSellerBillingCyclePaymentConfirmation confirmation = confirmations.iterator().next();
+		assertThat(confirmation.getId()).isEqualTo(UUID.fromString(CLIENT_PAYMENT_ID));
+		assertThat(confirmation.getAmountTransferredToSeller()).isEqualTo(new BigDecimal(AMOUNT));
+		assertThat(confirmation.getCurrencyIsoCode()).isEqualTo(MiraklIsoCurrencyCode.EUR);
+		assertThat(confirmation.getState()).isEqualTo(MiraklPayOutState.PAID);
+		assertThat(confirmation.getTransactionDate()).isEqualTo(Instant.parse(CREATED_ON + "Z"));
 	}
 
 	@Test

@@ -45,27 +45,27 @@ class DownloadReportControllerTest {
 
 	private static final byte[] FILE_BYTES = hexStringToByteArray();
 
-	private static MockedStatic<Paths> PATHS_MOCK;
+	private static MockedStatic<Paths> pathsMockedStatic;
 
-	private static MockedStatic<Files> FILES_MOCK;
+	private static MockedStatic<Files> filesMockedStatic;
 
 	@BeforeEach
 	void setUp() {
 		when(reportsConfigMock.getRepoPath()).thenReturn(REPO_PATH);
-		PATHS_MOCK = mockStatic(Paths.class);
-		FILES_MOCK = mockStatic(Files.class);
+		pathsMockedStatic = mockStatic(Paths.class);
+		filesMockedStatic = mockStatic(Files.class);
 	}
 
 	@AfterEach
 	void deRegisterStaticMocks() {
-		PATHS_MOCK.close();
-		FILES_MOCK.close();
+		pathsMockedStatic.close();
+		filesMockedStatic.close();
 	}
 
 	@Test
 	void getFinancialReport_shouldReturnHttpStatusOK_whenFileIsCorrectlyAllocated() {
-		PATHS_MOCK.when(() -> Paths.get(REPO_PATH + FILE_NAME)).thenReturn(pathMock);
-		FILES_MOCK.when(() -> Files.readAllBytes(pathMock)).thenReturn(FILE_BYTES);
+		pathsMockedStatic.when(() -> Paths.get(REPO_PATH + FILE_NAME)).thenReturn(pathMock);
+		filesMockedStatic.when(() -> Files.readAllBytes(pathMock)).thenReturn(FILE_BYTES);
 
 		final ResponseEntity<Resource> result = this.testObj.getFinancialReport(FILE_NAME);
 
@@ -74,9 +74,9 @@ class DownloadReportControllerTest {
 
 	@Test
 	void getFinancialReport_shouldReturnHttpStatusNOT_FOUND_whenFileDoesNotExist() {
-		PATHS_MOCK.when(() -> Paths.get(REPO_PATH + FILE_NAME)).thenReturn(pathMock);
+		pathsMockedStatic.when(() -> Paths.get(REPO_PATH + FILE_NAME)).thenReturn(pathMock);
 		final NoSuchFileException noSuchFileException = new NoSuchFileException("Something bad happened");
-		FILES_MOCK.when(() -> Files.readAllBytes(pathMock)).thenThrow(noSuchFileException);
+		filesMockedStatic.when(() -> Files.readAllBytes(pathMock)).thenThrow(noSuchFileException);
 		when(pathMock.toAbsolutePath()).thenReturn(absolutePathMock);
 		when(absolutePathMock.toString()).thenReturn(ABSOLUTE_PATH);
 
@@ -87,9 +87,9 @@ class DownloadReportControllerTest {
 
 	@Test
 	void getFinancialReport_shouldReturnHttpStatusBAD_REQUEST_whenFileCannotBeRead() {
-		PATHS_MOCK.when(() -> Paths.get(REPO_PATH + FILE_NAME)).thenReturn(pathMock);
+		pathsMockedStatic.when(() -> Paths.get(REPO_PATH + FILE_NAME)).thenReturn(pathMock);
 		final IOException ioException = new IOException("Something bad happened");
-		FILES_MOCK.when(() -> Files.readAllBytes(pathMock)).thenThrow(ioException);
+		filesMockedStatic.when(() -> Files.readAllBytes(pathMock)).thenThrow(ioException);
 
 		final ResponseEntity<Resource> result = this.testObj.getFinancialReport(FILE_NAME);
 

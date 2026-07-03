@@ -23,8 +23,8 @@ public class BusinessStakeHoldersEndpointMock {
 	public void uploadDocument(final String userToken, final String token) {
 		final String url = getUrl(userToken).concat(token);
 		mockServerClient.when(request().withMethod(HttpMethod.PUT.name()).withPath(url))
-				.respond(response().withStatusCode(HttpStatus.OK.value())
-						.withBody(HyperwalletJsonUtil.toJson(new HyperwalletBusinessStakeholder())));
+			.respond(response().withStatusCode(HttpStatus.OK.value())
+				.withBody(HyperwalletJsonUtil.toJson(new HyperwalletBusinessStakeholder())));
 	}
 
 	public void verifyUploadDocument(final String userToken, final String token) {

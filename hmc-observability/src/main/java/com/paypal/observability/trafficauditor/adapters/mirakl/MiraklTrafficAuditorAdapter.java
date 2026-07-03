@@ -3,8 +3,8 @@ package com.paypal.observability.trafficauditor.adapters.mirakl;
 import com.paypal.observability.trafficauditor.adapters.AbstractTrafficAuditorAdapter;
 import com.paypal.observability.trafficauditor.adapters.TrafficAuditorAdapter;
 import com.paypal.observability.trafficauditor.adapters.TrafficAuditorTraceHolder;
-import com.paypal.observability.trafficauditor.adapters.support.TrafficAuditorAdapterUtils;
 import com.paypal.observability.trafficauditor.adapters.support.QueryParamExtractor;
+import com.paypal.observability.trafficauditor.adapters.support.TrafficAuditorAdapterUtils;
 import com.paypal.observability.trafficauditor.configuration.TrafficAuditorConfiguration;
 import com.paypal.observability.trafficauditor.model.TrafficAuditorRequest;
 import com.paypal.observability.trafficauditor.model.TrafficAuditorResponse;
@@ -69,14 +69,14 @@ public class MiraklTrafficAuditorAdapter extends AbstractTrafficAuditorAdapter<H
 
 	private Map<String, List<String>> getHeaders(final Header[] headers) {
 		final Map<String, List<String>> headersMap = Arrays.stream(headers)
-				.collect(Collectors.toMap(Header::getName, header -> Arrays.asList(header.getValue()), this::merge));
+			.collect(Collectors.toMap(Header::getName, header -> Arrays.asList(header.getValue()), this::merge));
 
 		return TrafficAuditorAdapterUtils.cleanMap(headersMap);
 	}
 
 	@NotNull
 	private List<String> merge(final List<String> v1, final List<String> v2) {
-		return Stream.of(v1, v2).flatMap(List::stream).collect(Collectors.toList());
+		return Stream.of(v1, v2).flatMap(List::stream).toList();
 	}
 
 	@SneakyThrows

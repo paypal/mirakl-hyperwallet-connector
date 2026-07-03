@@ -56,7 +56,7 @@ class MiraklDocSchemaStartupAdapterITTest extends AbstractObservabilityIntegrati
 		final StartupCheck startupCheck = miraklDocSchemaStartupCheckProvider.check();
 		assertThat(startupCheck.getStatus()).isEqualTo(StartupCheckStatus.NOT_READY);
 		assertThat(startupCheck.getStatusMessage())
-				.contains("The current schema in Mirakl server is not compatible with this version of HMC.");
+			.contains("The current schema in Mirakl server is not compatible with this version of HMC.");
 
 		final String[] report = miraklDocSchemaStartupCheckPrinter.print(startupCheck);
 		assertThat(report).hasSize(4);

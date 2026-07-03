@@ -3,12 +3,12 @@ package com.paypal.kyc;
 import com.callibrity.logging.test.LogTracker;
 import com.callibrity.logging.test.LogTrackerStub;
 import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
-import com.paypal.kyc.documentextractioncommons.support.AbstractDocumentsBatchJobItemProcessor;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
+import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
+import com.paypal.kyc.documentextractioncommons.support.AbstractDocumentsBatchJobItemProcessor;
 import com.paypal.kyc.stakeholdersdocumentextraction.batchjobs.BusinessStakeholdersDocumentsExtractBatchJobItem;
 import com.paypal.kyc.stakeholdersdocumentextraction.batchjobs.BusinessStakeholdersDocumentsExtractBatchJobItemProcessor;
 import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
-import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
 import com.paypal.testsupport.AbstractMockEnabledIntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,8 +29,9 @@ class BusinessStakeholdersDocumentsExtractBatchJobItemProcessorITTest extends Ab
 	private BusinessStakeholdersDocumentsExtractBatchJobItemProcessor testObj;
 
 	@RegisterExtension
-	private final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.INFO)
-			.recordForType(AbstractDocumentsBatchJobItemProcessor.class);
+	private final LogTrackerStub logTrackerStub = LogTrackerStub.create()
+		.recordForLevel(LogTracker.LogLevel.INFO)
+		.recordForType(AbstractDocumentsBatchJobItemProcessor.class);
 
 	@Test
 	void processItem_shouldPushFlagNotifyAndCleanDocuments_whenDocumentsCanBePushed() throws IOException {
@@ -55,7 +56,7 @@ class BusinessStakeholdersDocumentsExtractBatchJobItemProcessorITTest extends Ab
 
 		Assertions.assertFalse(hello.exists());
 		assertThat(logTrackerStub.contains("File selected to be deleted [%s]".formatted(hello.getAbsolutePath())))
-				.isTrue();
+			.isTrue();
 
 	}
 
@@ -70,7 +71,7 @@ class BusinessStakeholdersDocumentsExtractBatchJobItemProcessorITTest extends Ab
 
 		Assertions.assertFalse(hello.exists());
 		assertThat(logTrackerStub.contains("File selected to be deleted [%s]".formatted(hello.getAbsolutePath())))
-				.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -86,17 +87,25 @@ class BusinessStakeholdersDocumentsExtractBatchJobItemProcessorITTest extends Ab
 
 		Assertions.assertFalse(hello.exists());
 		assertThat(logTrackerStub.contains("File selected to be deleted [%s]".formatted(hello.getAbsolutePath())))
-				.isTrue();
+			.isTrue();
 	}
 
 	private static BusinessStakeholdersDocumentsExtractBatchJobItem createValidItem(final File file,
 			final boolean requiresKYC, final String shopId, final String kycToken, final String userToken) {
-		final KYCDocumentModel document = KYCDocumentModel.builder().file(file)
-				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_AUTHORIZATION).build();
+		final KYCDocumentModel document = KYCDocumentModel.builder()
+			.file(file)
+			.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_AUTHORIZATION)
+			.build();
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocument = KYCDocumentBusinessStakeHolderInfoModel.builder()
-				.hyperwalletProgram("DEFAULT").requiresKYC(requiresKYC).requiresLetterOfAuthorization(true)
-				.contact(true).documents(List.of(document)).clientUserId(shopId).token(kycToken).userToken(userToken)
-				.build();
+			.hyperwalletProgram("DEFAULT")
+			.requiresKYC(requiresKYC)
+			.requiresLetterOfAuthorization(true)
+			.contact(true)
+			.documents(List.of(document))
+			.clientUserId(shopId)
+			.token(kycToken)
+			.userToken(userToken)
+			.build();
 
 		return new BusinessStakeholdersDocumentsExtractBatchJobItem(kycDocument);
 	}

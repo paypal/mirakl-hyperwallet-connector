@@ -1,9 +1,6 @@
 package com.paypal.observability.trafficauditor.adapters.support;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.InjectMocks;
 
 import java.util.Map;
 

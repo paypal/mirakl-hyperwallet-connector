@@ -1,9 +1,8 @@
 package com.paypal.invoices.extractioninvoices;
 
-import com.paypal.invoices.extractioninvoices.InvoicesExtractJobConfig;
-import com.paypal.jobsystem.quartzadapter.job.QuartzBatchJobBean;
-import com.paypal.invoices.extractioninvoices.batchjobs.InvoicesRetryBatchJob;
 import com.paypal.invoices.extractioncommons.jobs.InvoicesExtractJob;
+import com.paypal.invoices.extractioninvoices.batchjobs.InvoicesRetryBatchJob;
+import com.paypal.jobsystem.quartzadapter.job.QuartzBatchJobBean;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

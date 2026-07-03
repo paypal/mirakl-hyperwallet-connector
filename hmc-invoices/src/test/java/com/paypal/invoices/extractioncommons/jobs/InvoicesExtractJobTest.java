@@ -2,12 +2,12 @@ package com.paypal.invoices.extractioncommons.jobs;
 
 import com.callibrity.logging.test.LogTracker;
 import com.callibrity.logging.test.LogTrackerStub;
+import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNotesExtractBatchJob;
+import com.paypal.invoices.extractioncreditnotes.configuration.CreditNotesConfig;
+import com.paypal.invoices.extractioninvoices.batchjobs.InvoicesExtractBatchJob;
+import com.paypal.invoices.extractioninvoices.configuration.InvoicesOperatorCommissionsConfig;
 import com.paypal.jobsystem.batchjob.model.BatchJob;
 import com.paypal.jobsystem.quartzadapter.job.QuartzBatchJobAdapterFactory;
-import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNotesExtractBatchJob;
-import com.paypal.invoices.extractioninvoices.batchjobs.InvoicesExtractBatchJob;
-import com.paypal.invoices.extractioncreditnotes.configuration.CreditNotesConfig;
-import com.paypal.invoices.extractioninvoices.configuration.InvoicesOperatorCommissionsConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -38,8 +38,9 @@ class InvoicesExtractJobTest {
 	private InvoicesOperatorCommissionsConfig invoicesOperatorCommissionsConfigMock;
 
 	@RegisterExtension
-	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.INFO)
-			.recordForType(InvoicesExtractJob.class);
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create()
+		.recordForLevel(LogTracker.LogLevel.INFO)
+		.recordForType(InvoicesExtractJob.class);
 
 	@Mock
 	private CreditNotesConfig creditNotesConfigMock;
@@ -82,7 +83,7 @@ class InvoicesExtractJobTest {
 
 		assertThat(
 				logTrackerStub.contains("Payment of commissions is disabled, skipping processing payments to operator"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -95,7 +96,7 @@ class InvoicesExtractJobTest {
 		testObj.execute(jobExecutionContextMock);
 
 		assertThat(logTrackerStub.contains("Payment of commissions is enabled, retrieving payments for the operator"))
-				.isTrue();
+			.isTrue();
 	}
 
 	static class MyInvoicesExtractJob extends InvoicesExtractJob {

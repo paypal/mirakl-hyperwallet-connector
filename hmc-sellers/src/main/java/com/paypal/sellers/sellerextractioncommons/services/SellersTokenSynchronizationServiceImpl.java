@@ -69,7 +69,7 @@ public class SellersTokenSynchronizationServiceImpl implements TokenSynchronizat
 		}
 		catch (final MiraklException e) {
 			log.error("Error while updating Mirakl user by clientUserId [%s]"
-					.formatted(hyperwalletUser.getClientUserId()), e);
+				.formatted(hyperwalletUser.getClientUserId()), e);
 			throw new HMCMiraklAPIException(e);
 		}
 	}
@@ -88,7 +88,7 @@ public class SellersTokenSynchronizationServiceImpl implements TokenSynchronizat
 
 	private HyperwalletList<HyperwalletUser> getHwUserByClientUserId(final SellerModel sellerModel) {
 		final Hyperwallet hyperwalletSDK = userHyperwalletSDKService
-				.getHyperwalletInstanceByProgramToken(sellerModel.getProgramToken());
+			.getHyperwalletInstanceByProgramToken(sellerModel.getProgramToken());
 		final HyperwalletUsersListPaginationOptions paginationOptions = new HyperwalletUsersListPaginationOptions();
 		paginationOptions.setClientUserId(sellerModel.getClientUserId());
 		try {

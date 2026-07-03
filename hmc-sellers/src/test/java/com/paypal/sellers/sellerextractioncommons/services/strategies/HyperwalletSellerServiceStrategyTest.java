@@ -42,7 +42,7 @@ public abstract class HyperwalletSellerServiceStrategyTest {
 		when(hyperwalletUserRequestMock.getClientUserId()).thenReturn(CLIENT_USER_ID);
 		when(hyperwalletUserRequestMock.getProgramToken()).thenReturn(PROGRAM_TOKEN_VALUE);
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN_VALUE))
-				.thenReturn(hyperwalletMock);
+			.thenReturn(hyperwalletMock);
 	}
 
 }

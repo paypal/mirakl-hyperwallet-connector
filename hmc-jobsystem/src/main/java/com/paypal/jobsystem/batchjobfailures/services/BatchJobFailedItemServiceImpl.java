@@ -1,15 +1,15 @@
 package com.paypal.jobsystem.batchjobfailures.services;
 
-import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItemStatus;
-import com.paypal.jobsystem.batchjob.model.BatchJobItem;
-import com.paypal.jobsystem.batchjobaudit.services.BatchJobTrackingService;
-import com.paypal.jobsystem.batchjobaudit.repositories.entities.BatchJobItemTrackInfoEntity;
-import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
-import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItemId;
-import com.paypal.jobsystem.batchjobfailures.services.retrypolicies.BatchJobFailedItemRetryPolicy;
-import com.paypal.jobsystem.batchjobfailures.repositories.BatchJobFailedItemRepository;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.support.date.TimeMachine;
+import com.paypal.jobsystem.batchjob.model.BatchJobItem;
+import com.paypal.jobsystem.batchjobaudit.repositories.entities.BatchJobItemTrackInfoEntity;
+import com.paypal.jobsystem.batchjobaudit.services.BatchJobTrackingService;
+import com.paypal.jobsystem.batchjobfailures.repositories.BatchJobFailedItemRepository;
+import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
+import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItemId;
+import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItemStatus;
+import com.paypal.jobsystem.batchjobfailures.services.retrypolicies.BatchJobFailedItemRetryPolicy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -56,8 +56,9 @@ public class BatchJobFailedItemServiceImpl implements BatchJobFailedItemService 
 	public <T extends BatchJobItem<?>> void saveItemFailed(final T item) {
 
 		final var batchJobFailedItemId = new BatchJobFailedItemId(item.getItemId(), item.getItemType());
-		final var batchJobFailedItem = failedItemRepository.findById(batchJobFailedItemId).map(this::updateFailedItem)
-				.orElseGet(() -> newFailedItem(item));
+		final var batchJobFailedItem = failedItemRepository.findById(batchJobFailedItemId)
+			.map(this::updateFailedItem)
+			.orElseGet(() -> newFailedItem(item));
 
 		checkMaxAttempts(batchJobFailedItem);
 
@@ -104,15 +105,19 @@ public class BatchJobFailedItemServiceImpl implements BatchJobFailedItemService 
 	@Override
 	public List<BatchJobFailedItem> getFailedItemsForRetry(final String itemType) {
 		final List<BatchJobFailedItem> failedItems = failedItemRepository
-				.findByTypeAndStatusOrderByLastRetryTimestampAsc(itemType, BatchJobFailedItemStatus.RETRY_PENDING,
-						Pageable.ofSize(getMaxNumberOfFailedItems()));
+			.findByTypeAndStatusOrderByLastRetryTimestampAsc(itemType, BatchJobFailedItemStatus.RETRY_PENDING,
+					Pageable.ofSize(getMaxNumberOfFailedItems()));
 
 		final Set<String> itemsBeingProcessedIds = batchJobTrackingService
-				.getItemsBeingProcessedOrEnquedToProcess(itemType).stream().map(BatchJobItemTrackInfoEntity::getItemId)
-				.collect(Collectors.toSet());
+			.getItemsBeingProcessedOrEnquedToProcess(itemType)
+			.stream()
+			.map(BatchJobItemTrackInfoEntity::getItemId)
+			.collect(Collectors.toSet());
 
-		return failedItems.stream().filter(it -> !itemsBeingProcessedIds.contains(it.getId()))
-				.filter(this::shouldRetryFailedItem).collect(Collectors.toList());
+		return failedItems.stream()
+			.filter(it -> !itemsBeingProcessedIds.contains(it.getId()))
+			.filter(this::shouldRetryFailedItem)
+			.toList();
 	}
 
 	@Override
@@ -142,8 +147,10 @@ public class BatchJobFailedItemServiceImpl implements BatchJobFailedItemService 
 	}
 
 	private boolean shouldRetryFailedItem(final BatchJobFailedItem item) {
-		return batchJobFailedItemRetryPolicies.stream().filter(it -> !it.shouldRetryFailedItem(item)).findAny()
-				.isEmpty();
+		return batchJobFailedItemRetryPolicies.stream()
+			.filter(it -> !it.shouldRetryFailedItem(item))
+			.findAny()
+			.isEmpty();
 	}
 
 	private <T extends BatchJobItem<?>> BatchJobFailedItem newFailedItem(final T item) {

@@ -45,8 +45,9 @@ class ProfessionalSellersExtractionJobsConfigTest {
 
 	@Test
 	void sellerExtractTrigger_shouldReturnATriggerCreatedWithTheCronExpressionPassedAsArgumentAndJob() {
-		final JobDetail jobDetail = JobBuilder.newJob(ProfessionalSellersExtractJob.class).withIdentity(JOB_NAME)
-				.build();
+		final JobDetail jobDetail = JobBuilder.newJob(ProfessionalSellersExtractJob.class)
+			.withIdentity(JOB_NAME)
+			.build();
 
 		final Trigger result = this.testObj.professionalSellerExtractTrigger(jobDetail, CRON_EXPRESSION);
 

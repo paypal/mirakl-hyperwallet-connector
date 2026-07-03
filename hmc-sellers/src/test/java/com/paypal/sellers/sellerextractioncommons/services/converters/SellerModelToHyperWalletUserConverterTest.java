@@ -100,7 +100,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		when(sellerModelMock.getClientUserId()).thenReturn(CLIENT_USER_ID);
 		when(sellerModelMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 		when(hyperwalletProgramsConfiguration.getProgramConfiguration(HYPERWALLET_PROGRAM))
-				.thenReturn(hyperwalletProgramConfigurationMock);
+			.thenReturn(hyperwalletProgramConfigurationMock);
 		when(hyperwalletProgramConfigurationMock.getUsersProgramToken()).thenReturn(PROGRAM_TOKEN);
 		when(sellerModelMock.getBusinessName()).thenReturn(BUSINESS_NAME);
 		when(sellerModelMock.getBusinessType()).thenReturn(SellerBusinessType.PRIVATE_COMPANY);
@@ -113,7 +113,7 @@ class SellerModelToHyperWalletUserConverterTest {
 		when(sellerModelMock.getEmail()).thenReturn(EMAIL);
 		lenient().when(sellerModelMock.getCompanyRegistrationCountry()).thenReturn(COMPANY_REGISTRATION_COUNTRY);
 		lenient().when(sellerModelMock.getBusinessRegistrationStateProvince())
-				.thenReturn(BUSINESS_REGISTRATION_STATE_PROVINCE);
+			.thenReturn(BUSINESS_REGISTRATION_STATE_PROVINCE);
 		lenient().when(sellerModelMock.getCompanyRegistrationNumber()).thenReturn(COMPANY_REGISTRATION_NUMBER);
 		lenient().when(sellerModelMock.getAddressLine2()).thenReturn(ADDRESS_LINE_TWO);
 		lenient().when(sellerModelMock.getPhoneNumber()).thenReturn(PHONE_NUMBER);

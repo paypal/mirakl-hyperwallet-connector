@@ -1,6 +1,5 @@
 package com.paypal.invoices.extractioncommons.batchjobs;
 
-import com.paypal.invoices.extractioncommons.batchjobs.AbstractAccountingDocumentBatchJobItem;
 import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
 
 public abstract class AccountingDocumentBatchJobHandlersTestSupport {

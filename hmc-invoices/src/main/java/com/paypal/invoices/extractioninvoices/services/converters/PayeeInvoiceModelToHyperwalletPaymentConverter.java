@@ -1,11 +1,12 @@
 package com.paypal.invoices.extractioninvoices.services.converters;
 
 import com.hyperwallet.clientsdk.model.HyperwalletPayment;
+import com.paypal.infrastructure.hyperwallet.services.PaymentHyperwalletSDKService;
 import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
-import com.paypal.infrastructure.hyperwallet.services.PaymentHyperwalletSDKService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 
 /**
@@ -30,7 +31,7 @@ public class PayeeInvoiceModelToHyperwalletPaymentConverter implements Converter
 	public HyperwalletPayment convert(@NonNull final InvoiceModel source) {
 		final HyperwalletPayment target = new HyperwalletPayment();
 		target.setProgramToken(invoicesPaymentHyperwalletSDKService
-				.getProgramTokenByHyperwalletProgram(source.getHyperwalletProgram()));
+			.getProgramTokenByHyperwalletProgram(source.getHyperwalletProgram()));
 		target.setDestinationToken(source.getDestinationToken());
 		target.setClientPaymentId(source.getInvoiceNumber());
 		target.setAmount(BigDecimal.valueOf(source.getTransferAmount()).toPlainString());

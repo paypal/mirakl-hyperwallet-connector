@@ -1,8 +1,8 @@
 package com.paypal.jobsystem.quartzintegration.services;
 
-import com.paypal.jobsystem.quartzintegration.repositories.entities.JobStatus;
 import com.paypal.infrastructure.support.date.DateUtil;
 import com.paypal.infrastructure.support.date.TimeMachine;
+import com.paypal.jobsystem.quartzintegration.repositories.entities.JobStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -36,8 +36,9 @@ class JobServiceTest {
 	private Scheduler schedulerMock;
 
 	private final JobDetail runningJobDetail = JobBuilder.newJob(Job.class)
-			.setJobData(JobDataMapSupport.newJobDataMap(Map.of("status", JobStatus.RUNNING)))
-			.withIdentity("runningJobDetail").build();
+		.setJobData(JobDataMapSupport.newJobDataMap(Map.of("status", JobStatus.RUNNING)))
+		.withIdentity("runningJobDetail")
+		.build();
 
 	private final JobDetail noStatusJobDetail = JobBuilder.newJob(Job.class).withIdentity("noStatusJobDetail").build();
 
@@ -56,7 +57,7 @@ class JobServiceTest {
 	@Test
 	void getJobs_shouldReturnAllJobsRegisteredOnSystem() throws SchedulerException {
 		when(schedulerMock.getJobKeys(GroupMatcher.anyJobGroup()))
-				.thenReturn(Set.of(runningJobDetail.getKey(), noStatusJobDetail.getKey()));
+			.thenReturn(Set.of(runningJobDetail.getKey(), noStatusJobDetail.getKey()));
 
 		when(schedulerMock.getJobDetail(runningJobDetail.getKey())).thenReturn(runningJobDetail);
 		when(schedulerMock.getJobDetail(noStatusJobDetail.getKey())).thenReturn(noStatusJobDetail);
@@ -69,7 +70,7 @@ class JobServiceTest {
 	@Test
 	void getJobs_whenExceptionIsThrownByScheduler_shouldNotRetrieveJobs() throws SchedulerException {
 		when(schedulerMock.getJobKeys(GroupMatcher.anyJobGroup()))
-				.thenReturn(Set.of(runningJobDetail.getKey(), noStatusJobDetail.getKey()));
+			.thenReturn(Set.of(runningJobDetail.getKey(), noStatusJobDetail.getKey()));
 
 		when(schedulerMock.getJobDetail(runningJobDetail.getKey())).thenReturn(runningJobDetail);
 		doThrow(new SchedulerException()).when(schedulerMock).getJobDetail(noStatusJobDetail.getKey());
@@ -82,7 +83,7 @@ class JobServiceTest {
 	@Test
 	void getJobStatus_whenStatusInsideJobDataMapIsInRunningState_shouldReturnRunning() throws SchedulerException {
 		when(schedulerMock.getJobKeys(GroupMatcher.anyJobGroup()))
-				.thenReturn(Set.of(runningJobDetail.getKey(), noStatusJobDetail.getKey()));
+			.thenReturn(Set.of(runningJobDetail.getKey(), noStatusJobDetail.getKey()));
 
 		when(schedulerMock.getJobDetail(runningJobDetail.getKey())).thenReturn(runningJobDetail);
 		when(schedulerMock.getJobDetail(noStatusJobDetail.getKey())).thenReturn(noStatusJobDetail);
@@ -120,7 +121,7 @@ class JobServiceTest {
 	@Test
 	void getJobStatus_whenJobIsNotFound_shouldReturnUnknown() throws SchedulerException {
 		when(schedulerMock.getJobKeys(GroupMatcher.anyJobGroup()))
-				.thenReturn(Set.of(runningJobDetail.getKey(), noStatusJobDetail.getKey()));
+			.thenReturn(Set.of(runningJobDetail.getKey(), noStatusJobDetail.getKey()));
 
 		when(schedulerMock.getJobDetail(runningJobDetail.getKey())).thenReturn(runningJobDetail);
 		when(schedulerMock.getJobDetail(noStatusJobDetail.getKey())).thenReturn(noStatusJobDetail);
@@ -133,7 +134,7 @@ class JobServiceTest {
 	@Test
 	void getJobStatus_whenJobDataMapIsEmpty_shouldReturnUnknown() throws SchedulerException {
 		when(schedulerMock.getJobKeys(GroupMatcher.anyJobGroup()))
-				.thenReturn(Set.of(runningJobDetail.getKey(), noStatusJobDetail.getKey()));
+			.thenReturn(Set.of(runningJobDetail.getKey(), noStatusJobDetail.getKey()));
 
 		when(schedulerMock.getJobDetail(runningJobDetail.getKey())).thenReturn(runningJobDetail);
 		when(schedulerMock.getJobDetail(noStatusJobDetail.getKey())).thenReturn(noStatusJobDetail);

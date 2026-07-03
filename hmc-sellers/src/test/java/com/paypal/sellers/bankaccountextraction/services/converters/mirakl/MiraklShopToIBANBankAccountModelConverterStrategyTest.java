@@ -1,10 +1,18 @@
 package com.paypal.sellers.bankaccountextraction.services.converters.mirakl;
 
-import java.util.List;
-
+import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
+import com.mirakl.client.mmp.domain.common.currency.MiraklIsoCurrencyCode;
+import com.mirakl.client.mmp.domain.shop.MiraklContactInformation;
+import com.mirakl.client.mmp.domain.shop.MiraklShop;
+import com.mirakl.client.mmp.domain.shop.bank.MiraklAbaBankAccountInformation;
+import com.mirakl.client.mmp.domain.shop.bank.MiraklIbanBankAccountInformation;
 import com.mirakl.client.mmp.domain.shop.billing.MiraklDefaultBillingInformation;
+import com.paypal.sellers.bankaccountextraction.model.BankAccountType;
+import com.paypal.sellers.bankaccountextraction.model.IBANBankAccountModel;
+import com.paypal.sellers.bankaccountextraction.model.TransferType;
 import com.paypal.sellers.bankaccountextraction.services.converters.currency.HyperwalletBankAccountCurrencyInfo;
 import com.paypal.sellers.bankaccountextraction.services.converters.currency.HyperwalletBankAccountCurrencyResolver;
+import com.paypal.sellers.sellerextractioncommons.model.SellerModelConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,16 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
-import com.mirakl.client.mmp.domain.common.currency.MiraklIsoCurrencyCode;
-import com.mirakl.client.mmp.domain.shop.MiraklContactInformation;
-import com.mirakl.client.mmp.domain.shop.MiraklShop;
-import com.mirakl.client.mmp.domain.shop.bank.MiraklAbaBankAccountInformation;
-import com.mirakl.client.mmp.domain.shop.bank.MiraklIbanBankAccountInformation;
-import com.paypal.sellers.bankaccountextraction.model.BankAccountType;
-import com.paypal.sellers.bankaccountextraction.model.IBANBankAccountModel;
-import com.paypal.sellers.bankaccountextraction.model.TransferType;
-import com.paypal.sellers.sellerextractioncommons.model.SellerModelConstants;
+import java.util.List;
 
 import static com.paypal.sellers.sellerextractioncommons.model.SellerModelConstants.HYPERWALLET_BANK_ACCOUNT_STATE;
 import static com.paypal.sellers.sellerextractioncommons.model.SellerModelConstants.HYPERWALLET_BANK_ACCOUNT_TOKEN;
@@ -127,9 +126,11 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
 				ES_COUNTRY_ISO, EUR_CURRENCY, TransferType.BANK_ACCOUNT);
 		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.IBAN.name(),
-				ES_COUNTRY_ISO, EUR_CURRENCY)).thenReturn(hyperwalletBankAccountCurrencyInfo);
+				ES_COUNTRY_ISO, EUR_CURRENCY))
+			.thenReturn(hyperwalletBankAccountCurrencyInfo);
 		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.IBAN.name(),
-				ES_COUNTRY_ISO, EUR_CURRENCY)).thenReturn(hyperwalletBankAccountCurrencyInfo);
+				ES_COUNTRY_ISO, EUR_CURRENCY))
+			.thenReturn(hyperwalletBankAccountCurrencyInfo);
 
 		final IBANBankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off
@@ -183,7 +184,8 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
 				UK_COUNTRY_ISO, MiraklIsoCurrencyCode.GBP.name(), TransferType.BANK_ACCOUNT);
 		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.IBAN.name(),
-				UK_COUNTRY_ISO, MiraklIsoCurrencyCode.GBP.name())).thenReturn(hyperwalletBankAccountCurrencyInfo);
+				UK_COUNTRY_ISO, MiraklIsoCurrencyCode.GBP.name()))
+			.thenReturn(hyperwalletBankAccountCurrencyInfo);
 
 		final IBANBankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off
@@ -213,7 +215,7 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 		when(miraklShopMock.getDefaultBillingInformation()).thenReturn(miraklDefaultBillingInformationMock);
 		when(miraklDefaultBillingInformationMock.getCorporateInformation()).thenReturn(miraklCorporateInformationMock);
 		when(miraklShopMock.getAdditionalFieldValues())
-				.thenReturn(List.of(miraklBankAccountTokenFieldValueMock, miraklHyperwalletProgramFieldValueMock));
+			.thenReturn(List.of(miraklBankAccountTokenFieldValueMock, miraklHyperwalletProgramFieldValueMock));
 		when(miraklBankAccountTokenFieldValueMock.getCode()).thenReturn(HYPERWALLET_BANK_ACCOUNT_TOKEN);
 		when(miraklBankAccountTokenFieldValueMock.getValue()).thenReturn(TOKEN);
 		when(miraklHyperwalletProgramFieldValueMock.getCode()).thenReturn(SellerModelConstants.HYPERWALLET_PROGRAM);
@@ -234,7 +236,8 @@ class MiraklShopToIBANBankAccountModelConverterStrategyTest {
 		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
 				ES_COUNTRY_ISO, EUR_CURRENCY, TransferType.BANK_ACCOUNT);
 		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.IBAN.name(),
-				ES_COUNTRY_ISO, EUR_CURRENCY)).thenReturn(hyperwalletBankAccountCurrencyInfo);
+				ES_COUNTRY_ISO, EUR_CURRENCY))
+			.thenReturn(hyperwalletBankAccountCurrencyInfo);
 
 		final IBANBankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off

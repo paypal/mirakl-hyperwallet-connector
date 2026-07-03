@@ -1,7 +1,6 @@
 package com.paypal.infrastructure.support.exceptions;
 
 import com.hyperwallet.clientsdk.HyperwalletException;
-import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -17,8 +16,6 @@ class HMCHyperwalletAPIExceptionTest {
 
 	private static final String HYPERWALLET_EXCEPTION_FIELD = "hyperwalletException";
 
-	private static final String DETAIL_MESSAGE_FIELD = "detailMessage";
-
 	@Mock
 	private HyperwalletException hyperwalletExceptionMock;
 
@@ -29,8 +26,8 @@ class HMCHyperwalletAPIExceptionTest {
 				HMC_HYPERWALLET_EXCEPTION_MESSAGE, hyperwalletExceptionMock);
 
 		assertThat(hmcHyperwalletAPIException)
-				.hasFieldOrPropertyWithValue(HYPERWALLET_EXCEPTION_FIELD, hyperwalletExceptionMock)
-				.hasFieldOrPropertyWithValue(DETAIL_MESSAGE_FIELD, HMC_HYPERWALLET_EXCEPTION_MESSAGE);
+			.hasFieldOrPropertyWithValue(HYPERWALLET_EXCEPTION_FIELD, hyperwalletExceptionMock)
+			.hasMessage(HMC_HYPERWALLET_EXCEPTION_MESSAGE);
 	}
 
 	@Test
@@ -40,8 +37,8 @@ class HMCHyperwalletAPIExceptionTest {
 				hyperwalletExceptionMock);
 
 		assertThat(hmcHyperwalletAPIException)
-				.hasFieldOrPropertyWithValue(HYPERWALLET_EXCEPTION_FIELD, hyperwalletExceptionMock)
-				.hasFieldOrPropertyWithValue(DETAIL_MESSAGE_FIELD, DEFAULT_MSG);
+			.hasFieldOrPropertyWithValue(HYPERWALLET_EXCEPTION_FIELD, hyperwalletExceptionMock)
+			.hasMessage(DEFAULT_MSG);
 	}
 
 	@Test

@@ -9,6 +9,7 @@ sonar {
 		property "sonar.pullrequest.provider", "github"
 		property "sonar.projectKey", "paypal-hyperwallet"
 		property "sonar.projectName", "Paypal Hyperwallet"
+		property "sonar.exclusions", "$projectDir/hmc-testsupport/src/main/java/com/paypal/testsupport/mocks/**"
 		property "sonar.junit.reportPaths",
 						"$projectDir/hmc-app/build/test-results/test/," +
 						"$projectDir/hmc-app/build/test-results/integrationTest/," +

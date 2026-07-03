@@ -49,7 +49,7 @@ class KycBusinessStakeholderNotificationHandlerTest {
 		testObj.process(notificationEntityMock, hyperwalletWebhookNotificationMock);
 
 		verify(kycBusinessStakeholderNotificationServiceMock)
-				.updateBusinessStakeholderKYCStatus(hyperwalletWebhookNotificationMock);
+			.updateBusinessStakeholderKYCStatus(hyperwalletWebhookNotificationMock);
 	}
 
 }

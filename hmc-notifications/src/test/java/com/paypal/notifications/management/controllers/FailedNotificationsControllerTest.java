@@ -62,7 +62,7 @@ class FailedNotificationsControllerTest {
 		final PagedModel<EntityModel<FailedNotificationInfo>> pagedModel = PagedModel.empty();
 
 		given(notificationStorageServiceMock.getFailedNotifications(null, null, Pageable.unpaged()))
-				.willReturn(entityPage);
+			.willReturn(entityPage);
 		given(converterMock.from(entityPage)).willReturn(dtoPage);
 		given(pagedResourcesAssemblerMock.toModel(dtoPage)).willReturn(pagedModel);
 
@@ -80,7 +80,7 @@ class FailedNotificationsControllerTest {
 		final Pageable pageable = PageRequest.of(0, 10);
 
 		given(notificationStorageServiceMock.getFailedNotifications(NotificationType.USR, null, pageable))
-				.willReturn(entityPage);
+			.willReturn(entityPage);
 		given(converterMock.from(entityPage)).willReturn(dtoPage);
 		given(pagedResourcesAssemblerMock.toModel(dtoPage)).willReturn(pagedModel);
 
@@ -97,7 +97,7 @@ class FailedNotificationsControllerTest {
 		final Pageable pageable = PageRequest.of(0, 10);
 
 		given(notificationStorageServiceMock.getFailedNotifications(null, OBJECT_TOKEN, pageable))
-				.willReturn(entityPage);
+			.willReturn(entityPage);
 		given(converterMock.from(entityPage)).willReturn(dtoPage);
 		given(pagedResourcesAssemblerMock.toModel(dtoPage)).willReturn(pagedModel);
 
@@ -114,7 +114,7 @@ class FailedNotificationsControllerTest {
 		final Pageable pageable = Pageable.unpaged();
 
 		given(notificationStorageServiceMock.getFailedNotifications(NotificationType.UNK, null, pageable))
-				.willReturn(entityPage);
+			.willReturn(entityPage);
 		given(converterMock.from(entityPage)).willReturn(dtoPage);
 		given(pagedResourcesAssemblerMock.toModel(dtoPage)).willReturn(pagedModel);
 
@@ -131,7 +131,7 @@ class FailedNotificationsControllerTest {
 		final FailedNotificationInfo dto = buildDto(WEBHOOK_TOKEN);
 
 		given(notificationStorageServiceMock.getNotificationByWebHookToken(WEBHOOK_TOKEN))
-				.willReturn(Optional.of(entity));
+			.willReturn(Optional.of(entity));
 		given(converterMock.from(entity)).willReturn(dto);
 
 		final ResponseEntity<FailedNotificationInfo> response = testObj.get(WEBHOOK_TOKEN);
@@ -160,7 +160,7 @@ class FailedNotificationsControllerTest {
 		info.setRetryCounter(2);
 
 		given(notificationStorageServiceMock.saveNotification(any(NotificationEntity.class)))
-				.willAnswer(inv -> inv.getArgument(0));
+			.willAnswer(inv -> inv.getArgument(0));
 
 		testObj.add(info);
 
@@ -177,7 +177,7 @@ class FailedNotificationsControllerTest {
 		info.setRetryCounter(5);
 
 		given(notificationStorageServiceMock.getNotificationByWebHookToken(WEBHOOK_TOKEN))
-				.willReturn(Optional.of(entity));
+			.willReturn(Optional.of(entity));
 		given(notificationStorageServiceMock.saveNotification(entity)).willReturn(entity);
 		given(converterMock.from(entity)).willReturn(info);
 
@@ -207,10 +207,10 @@ class FailedNotificationsControllerTest {
 		final FailedNotificationInfo newInfo = buildDto("wbh-new-001");
 
 		given(notificationStorageServiceMock.getFailedNotifications(null, null, Pageable.unpaged()))
-				.willReturn(existingPage);
+			.willReturn(existingPage);
 		willDoNothing().given(notificationStorageServiceMock).deleteNotificationByWebHookToken("wbh-old-001");
 		given(notificationStorageServiceMock.saveNotification(any(NotificationEntity.class)))
-				.willAnswer(inv -> inv.getArgument(0));
+			.willAnswer(inv -> inv.getArgument(0));
 
 		testObj.replace(List.of(newInfo));
 
@@ -224,7 +224,7 @@ class FailedNotificationsControllerTest {
 		final Page<NotificationEntity> existingPage = new PageImpl<>(List.of(existing));
 
 		given(notificationStorageServiceMock.getFailedNotifications(null, null, Pageable.unpaged()))
-				.willReturn(existingPage);
+			.willReturn(existingPage);
 		willDoNothing().given(notificationStorageServiceMock).deleteNotificationByWebHookToken("wbh-old-001");
 
 		testObj.replace(List.of());
@@ -239,7 +239,7 @@ class FailedNotificationsControllerTest {
 	void delete_whenTokenExists_shouldDeleteAndReturn200() {
 		final NotificationEntity entity = buildEntity(WEBHOOK_TOKEN);
 		given(notificationStorageServiceMock.getNotificationByWebHookToken(WEBHOOK_TOKEN))
-				.willReturn(Optional.of(entity));
+			.willReturn(Optional.of(entity));
 		willDoNothing().given(notificationStorageServiceMock).deleteNotificationByWebHookToken(WEBHOOK_TOKEN);
 
 		final ResponseEntity<Void> response = testObj.delete(WEBHOOK_TOKEN);
@@ -276,7 +276,7 @@ class FailedNotificationsControllerTest {
 		final PagedModel<EntityModel<FailedNotificationInfo>> pagedModel = PagedModel.empty();
 
 		given(notificationStorageServiceMock.getFailedNotifications(null, null, Pageable.unpaged()))
-				.willReturn(entityPage);
+			.willReturn(entityPage);
 		given(converterMock.from(entityPage)).willReturn(dtoPage);
 		given(pagedResourcesAssemblerMock.toModel(dtoPage)).willReturn(pagedModel);
 
@@ -296,7 +296,7 @@ class FailedNotificationsControllerTest {
 		final Page<NotificationEntity> existingPage = new PageImpl<>(List.of(failedEntity, retryingEntity));
 
 		given(notificationStorageServiceMock.getFailedNotifications(null, null, Pageable.unpaged()))
-				.willReturn(existingPage);
+			.willReturn(existingPage);
 		willDoNothing().given(notificationStorageServiceMock).deleteNotificationByWebHookToken(any());
 
 		testObj.replace(List.of());
@@ -314,7 +314,7 @@ class FailedNotificationsControllerTest {
 		retryingEntity.setRetryCounter(1);
 
 		given(notificationStorageServiceMock.getNotificationByWebHookToken(WEBHOOK_TOKEN))
-				.willReturn(Optional.of(retryingEntity));
+			.willReturn(Optional.of(retryingEntity));
 		willDoNothing().given(notificationStorageServiceMock).deleteNotificationByWebHookToken(WEBHOOK_TOKEN);
 
 		final ResponseEntity<Void> response = testObj.delete(WEBHOOK_TOKEN);

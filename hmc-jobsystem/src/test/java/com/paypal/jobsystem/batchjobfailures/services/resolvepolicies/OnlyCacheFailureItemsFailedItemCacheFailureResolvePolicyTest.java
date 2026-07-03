@@ -1,8 +1,6 @@
 package com.paypal.jobsystem.batchjobfailures.services.resolvepolicies;
 
 import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
-import com.paypal.jobsystem.batchjobfailures.services.resolvepolicies.OnlyCacheFailureItemsFailedItemCacheFailureResolvePolicy;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,7 +27,7 @@ class OnlyCacheFailureItemsFailedItemCacheFailureResolvePolicyTest {
 		when(batchJobFailedItemMock2.getType()).thenReturn("itemType");
 
 		final List<BatchJobFailedItem> result = testObj
-				.itemsToReloadOnCacheFailure(List.of(batchJobFailedItemMock1, batchJobFailedItemMock2));
+			.itemsToReloadOnCacheFailure(List.of(batchJobFailedItemMock1, batchJobFailedItemMock2));
 
 		assertThat(result).containsExactlyInAnyOrder(batchJobFailedItemMock1, batchJobFailedItemMock2);
 	}

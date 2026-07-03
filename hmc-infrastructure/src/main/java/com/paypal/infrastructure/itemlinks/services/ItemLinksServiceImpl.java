@@ -36,8 +36,8 @@ public class ItemLinksServiceImpl implements ItemLinksService {
 			final Collection<HyperwalletItemLinkLocator> hyperwalletItemLocators) {
 		// formatter:off
 		final Collection<ItemLinkEntity> itemLinkEntities = hyperwalletItemLocators.stream()
-				.map(hwItemLocator -> itemLinksModelEntityConverter.from(miraklItemLocator, hwItemLocator))
-				.collect(Collectors.toSet());
+			.map(hwItemLocator -> itemLinksModelEntityConverter.from(miraklItemLocator, hwItemLocator))
+			.collect(Collectors.toSet());
 		// formatter:on
 
 		itemLinkRepository.saveAll(itemLinkEntities);
@@ -48,7 +48,7 @@ public class ItemLinksServiceImpl implements ItemLinksService {
 			final Collection<MiraklItemLinkLocator> sourceItem, final Set<HyperwalletItemTypes> targetTypes) {
 		// formatter:off
 		return sourceItem.stream()
-				.collect(Collectors.toMap(Function.identity(), source -> findLinks(source, targetTypes)));
+			.collect(Collectors.toMap(Function.identity(), source -> findLinks(source, targetTypes)));
 		// formatter_on
 	}
 
@@ -57,14 +57,14 @@ public class ItemLinksServiceImpl implements ItemLinksService {
 			final Set<HyperwalletItemTypes> hyperwalletItemTypes) {
 		// formatter:off
 		final List<ItemLinkEntity> itemLinkEntityList = itemLinkRepository
-				.findBySourceSystemAndSourceIdAndSourceTypeAndTargetSystemAndTargetTypeIn(
-						sourceItem.getSystem().toString(), sourceItem.getId(), sourceItem.getType().toString(),
-						ItemLinkExternalSystem.HYPERWALLET.toString(),
-						hyperwalletItemTypes.stream().map(HyperwalletItemTypes::toString).collect(Collectors.toSet()));
+			.findBySourceSystemAndSourceIdAndSourceTypeAndTargetSystemAndTargetTypeIn(sourceItem.getSystem().toString(),
+					sourceItem.getId(), sourceItem.getType().toString(), ItemLinkExternalSystem.HYPERWALLET.toString(),
+					hyperwalletItemTypes.stream().map(HyperwalletItemTypes::toString).collect(Collectors.toSet()));
 		// formatter:on
 
-		return itemLinkEntityList.stream().map(itemLinksModelEntityConverter::hyperwalletLocatorFromLinkTarget)
-				.collect(Collectors.toSet());
+		return itemLinkEntityList.stream()
+			.map(itemLinksModelEntityConverter::hyperwalletLocatorFromLinkTarget)
+			.collect(Collectors.toSet());
 	}
 
 }

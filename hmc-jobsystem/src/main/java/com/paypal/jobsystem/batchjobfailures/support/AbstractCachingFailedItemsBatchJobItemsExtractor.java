@@ -2,10 +2,10 @@ package com.paypal.jobsystem.batchjobfailures.support;
 
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
-import com.paypal.jobsystem.batchjobfailures.services.resolvepolicies.BatchJobFailedItemCacheFailureResolvePolicy;
-import com.paypal.jobsystem.batchjobfailures.services.cache.BatchJobFailedItemCacheService;
 import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 import com.paypal.jobsystem.batchjobfailures.services.BatchJobFailedItemService;
+import com.paypal.jobsystem.batchjobfailures.services.cache.BatchJobFailedItemCacheService;
+import com.paypal.jobsystem.batchjobfailures.services.resolvepolicies.BatchJobFailedItemCacheFailureResolvePolicy;
 
 import java.util.Collection;
 import java.util.List;
@@ -41,7 +41,7 @@ public abstract class AbstractCachingFailedItemsBatchJobItemsExtractor<C extends
 				.values().stream()
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 

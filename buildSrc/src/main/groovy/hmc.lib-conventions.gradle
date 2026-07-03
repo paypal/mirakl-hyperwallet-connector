@@ -10,5 +10,5 @@ bootJar {
 
 dependencies {
 	api 'com.hyperwallet:sdk:3.0.2'
-	api 'com.mirakl:mmp-sdk-operator:10.6.0'
+	api 'com.mirakl:mmp-sdk-operator:10.10.0'
 }

@@ -68,16 +68,18 @@ class TrafficAuditorManagementControllerTest extends AbstractIntegrationTest {
 		final TrafficAuditorConfigurationDto requestBody = new TrafficAuditorConfigurationDto(true);
 
 		this.mockMvc
-				.perform(put("/management/traffic-auditor/configuration").contentType(MediaType.APPLICATION_JSON)
-						.content(serializeCommissionsConfigurationDto(requestBody)))
-				.andDo(print()).andExpect(status().isOk());
+			.perform(put("/management/traffic-auditor/configuration").contentType(MediaType.APPLICATION_JSON)
+				.content(serializeCommissionsConfigurationDto(requestBody)))
+			.andDo(print())
+			.andExpect(status().isOk());
 
 		assertThat(trafficAuditorConfiguration.isTrafficAuditorEnabled()).isTrue();
 	}
 
 	private TrafficAuditorConfigurationDto doGetTrafficAuditorConfiguration() throws Exception {
 		final ResultActions resultActions = this.mockMvc.perform(get("/management/traffic-auditor/configuration"))
-				.andDo(print()).andExpect(status().isOk());
+			.andDo(print())
+			.andExpect(status().isOk());
 
 		final TrafficAuditorConfigurationDto response = getCommissionsConfigurationDto(resultActions);
 

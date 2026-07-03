@@ -4,11 +4,11 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.core.exception.MiraklException;
+import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
+import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
-import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
-import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.support.logging.HyperwalletLoggingErrorsUtil;
 import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
@@ -43,7 +43,7 @@ public class HyperWalletCreateSellerServiceStrategy extends AbstractHyperwalletS
 	@Override
 	protected HyperwalletUser pushToHyperwallet(final HyperwalletUser hyperwalletUser) {
 		final Hyperwallet hyperwallet = userHyperwalletSDKService
-				.getHyperwalletInstanceByProgramToken(hyperwalletUser.getProgramToken());
+			.getHyperwalletInstanceByProgramToken(hyperwalletUser.getProgramToken());
 		try {
 			final HyperwalletUser hwUser = hyperwallet.createUser(hyperwalletUser);
 
@@ -55,19 +55,19 @@ public class HyperWalletCreateSellerServiceStrategy extends AbstractHyperwalletS
 		}
 		catch (final HyperwalletException e) {
 			logErrors("Error creating seller in hyperwallet with clientUserId [%s].%n%s"
-					.formatted(hyperwalletUser.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)), e, log);
+				.formatted(hyperwalletUser.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)), e, log);
 			reportError("Issue detected when creating seller in Hyperwallet",
 					(ERROR_MESSAGE_PREFIX + "Seller not created with clientId [%s]%n%s")
-							.formatted(hyperwalletUser.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)));
+						.formatted(hyperwalletUser.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)));
 
 			throw new HMCHyperwalletAPIException(e);
 		}
 		catch (final MiraklException e) {
 			logErrors("Error updating token in mirakl with clientUserId [%s]: [{}]"
-					.formatted(hyperwalletUser.getClientUserId()), e, log);
+				.formatted(hyperwalletUser.getClientUserId()), e, log);
 			reportError("Issue detected when updating seller in Mirakl",
 					(ERROR_MESSAGE_PREFIX + "Seller token not updated with clientId [%s]%n%s")
-							.formatted(hyperwalletUser.getClientUserId(), MiraklLoggingErrorsUtil.stringify(e)));
+						.formatted(hyperwalletUser.getClientUserId(), MiraklLoggingErrorsUtil.stringify(e)));
 			throw new HMCMiraklAPIException(e);
 		}
 	}

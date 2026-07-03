@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -63,20 +62,20 @@ public class ReportsBraintreeTransactionsExtractServiceImpl
 	protected List<HmcBraintreeTransactionLine> getEdges(final BraintreeTypeEnum braintreeType,
 			final Map<String, Object> search) {
 		final List<Map<String, Object>> edges = (List<Map<String, Object>>) ((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) search
-				.get(DATA)).get(SEARCH)).get(braintreeType.getTypeName())).get(EDGES);
+			.get(DATA)).get(SEARCH)).get(braintreeType.getTypeName())).get(EDGES);
 
 		//@formatter:off
 		return edges.stream()
 				.map(value -> (Map<String, Object>) value.get(NODE))
 				.map(mapToBraintreeTransactionLineConverter::convert)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 
 	protected String getSearchQuery() {
 		try {
 			final InputStream transactionSearchQueryInputStream = ReportsBraintreeTransactionsExtractServiceImpl.class
-					.getResourceAsStream("/transactionSearchQuery.graphql");
+				.getResourceAsStream("/transactionSearchQuery.graphql");
 			return IOUtils.toString(transactionSearchQueryInputStream, StandardCharsets.UTF_8.name());
 		}
 		catch (final IOException ex) {

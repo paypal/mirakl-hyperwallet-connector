@@ -42,8 +42,9 @@ class BusinessStakeholdersDocumentsExtractBatchJobItemExtractorITTest extends Ab
 
 		final Collection<BusinessStakeholdersDocumentsExtractBatchJobItem> result = invokeGetItems(delta);
 
-		assertThat(result.stream().map(BusinessStakeholdersDocumentsExtractBatchJobItem::getItem)
-				.collect(Collectors.toList())).hasSize(4);
+		assertThat(result.stream()
+			.map(BusinessStakeholdersDocumentsExtractBatchJobItem::getItem)
+			.collect(Collectors.toList())).hasSize(4);
 
 		verify(batchJobContextMock, times(1)).setPartialItemExtraction(false);
 		verify(batchJobContextMock, times(1)).setNumberOfItemsNotSuccessfullyExtracted(0);
@@ -61,8 +62,9 @@ class BusinessStakeholdersDocumentsExtractBatchJobItemExtractorITTest extends Ab
 
 		final Collection<BusinessStakeholdersDocumentsExtractBatchJobItem> result = invokeGetItems(delta);
 
-		assertThat(result.stream().map(BusinessStakeholdersDocumentsExtractBatchJobItem::getItem)
-				.collect(Collectors.toList())).hasSize(1);
+		assertThat(result.stream()
+			.map(BusinessStakeholdersDocumentsExtractBatchJobItem::getItem)
+			.collect(Collectors.toList())).hasSize(1);
 
 		verify(batchJobContextMock, times(1)).setPartialItemExtraction(true);
 		verify(batchJobContextMock, times(1)).setNumberOfItemsNotSuccessfullyExtracted(3);

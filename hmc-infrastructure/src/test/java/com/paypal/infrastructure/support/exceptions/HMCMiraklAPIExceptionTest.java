@@ -1,7 +1,6 @@
 package com.paypal.infrastructure.support.exceptions;
 
 import com.mirakl.client.core.exception.MiraklException;
-import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -17,8 +16,6 @@ class HMCMiraklAPIExceptionTest {
 
 	private static final String MIRAKL_EXCEPTION_FIELD = "miraklException";
 
-	private static final String DETAIL_MESSAGE_FIELD = "detailMessage";
-
 	@Mock
 	private MiraklException miraklExceptionMock;
 
@@ -29,7 +26,7 @@ class HMCMiraklAPIExceptionTest {
 				miraklExceptionMock);
 
 		assertThat(hmcMiraklAPIException).hasFieldOrPropertyWithValue(MIRAKL_EXCEPTION_FIELD, miraklExceptionMock)
-				.hasFieldOrPropertyWithValue(DETAIL_MESSAGE_FIELD, HMC_MIRAKL_EXCEPTION_MESSAGE);
+			.hasMessage(HMC_MIRAKL_EXCEPTION_MESSAGE);
 	}
 
 	@Test
@@ -38,7 +35,7 @@ class HMCMiraklAPIExceptionTest {
 		final HMCMiraklAPIException hmcMiraklAPIException = new HMCMiraklAPIException(miraklExceptionMock);
 
 		assertThat(hmcMiraklAPIException).hasFieldOrPropertyWithValue(MIRAKL_EXCEPTION_FIELD, miraklExceptionMock)
-				.hasFieldOrPropertyWithValue(DETAIL_MESSAGE_FIELD, DEFAULT_MSG);
+			.hasMessage(DEFAULT_MSG);
 	}
 
 	@Test

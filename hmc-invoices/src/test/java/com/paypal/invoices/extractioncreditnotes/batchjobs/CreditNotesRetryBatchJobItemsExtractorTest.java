@@ -1,11 +1,9 @@
 package com.paypal.invoices.extractioncreditnotes.batchjobs;
 
-import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNoteExtractJobItem;
-import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNotesRetryBatchJobItemsExtractor;
+import com.paypal.invoices.extractioncommons.services.MiraklAccountingDocumentExtractService;
+import com.paypal.invoices.extractioncreditnotes.model.CreditNoteModel;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.jobsystem.batchjobfailures.services.resolvepolicies.AllRetryPendingFailedItemCacheFailureResolvePolicy;
-import com.paypal.invoices.extractioncreditnotes.model.CreditNoteModel;
-import com.paypal.invoices.extractioncommons.services.MiraklAccountingDocumentExtractService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -48,22 +46,22 @@ class CreditNotesRetryBatchJobItemsExtractorTest {
 	@Test
 	void getBatchJobFailedItemCacheFailureResolvePolicy_shouldReturnRetryAllPendingItemsPolicy() {
 		assertThat(testObj.getBatchJobFailedItemCacheFailureResolvePolicy())
-				.contains(allRetryPendingFailedItemCacheFailureResolvePolicyMock);
+			.contains(allRetryPendingFailedItemCacheFailureResolvePolicyMock);
 	}
 
 	@Test
 	void getItems_shouldReturnAllInvoicesByGivenIds() {
 		when(miraklAccountingDocumentCreditNotesExtractServiceMock
-				.extractAccountingDocuments(List.of(CREDIT_NOTE_ID_1, CREDIT_NOTE_ID_2)))
-						.thenReturn(List.of(creditNoteModel1Mock, creditNoteModel2Mock));
+			.extractAccountingDocuments(List.of(CREDIT_NOTE_ID_1, CREDIT_NOTE_ID_2)))
+			.thenReturn(List.of(creditNoteModel1Mock, creditNoteModel2Mock));
 		when(creditNoteModel1Mock.getInvoiceNumber()).thenReturn("1");
 		when(creditNoteModel2Mock.getInvoiceNumber()).thenReturn("2");
 
 		final Collection<CreditNoteExtractJobItem> result = testObj
-				.getItems(List.of(CREDIT_NOTE_ID_1, CREDIT_NOTE_ID_2));
+			.getItems(List.of(CREDIT_NOTE_ID_1, CREDIT_NOTE_ID_2));
 
 		assertThat(result.stream().map(BatchJobItem::getItemId).collect(Collectors.toList()))
-				.containsExactlyInAnyOrder(CREDIT_NOTE_ID_1, CREDIT_NOTE_ID_2);
+			.containsExactlyInAnyOrder(CREDIT_NOTE_ID_1, CREDIT_NOTE_ID_2);
 	}
 
 }

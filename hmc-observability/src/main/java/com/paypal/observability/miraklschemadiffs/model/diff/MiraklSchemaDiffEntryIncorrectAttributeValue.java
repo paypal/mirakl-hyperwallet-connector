@@ -27,7 +27,7 @@ public class MiraklSchemaDiffEntryIncorrectAttributeValue implements MiraklSchem
 
 	private String getAttributeValueDetails() {
 		return "Property '%s' doesn't have the correct value.%nExpected value: '%s'%nActual value: '%s'"
-				.formatted(attributeName, getFieldValue(expected), getFieldValue(actual));
+			.formatted(attributeName, getFieldValue(expected), getFieldValue(actual));
 	}
 
 	@Override

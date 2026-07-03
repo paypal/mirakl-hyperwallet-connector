@@ -1,10 +1,10 @@
 package com.paypal.kyc.stakeholdersdocumentextraction.services.documentselectors;
 
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
-import com.paypal.kyc.documentextractioncommons.support.AbstractMiraklDocumentsSelectorStrategy;
-import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
+import com.paypal.kyc.documentextractioncommons.support.AbstractMiraklDocumentsSelectorStrategy;
+import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -4,9 +4,8 @@ import com.callibrity.logging.test.LogTracker;
 import com.callibrity.logging.test.LogTrackerStub;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
-import com.paypal.kyc.incomingnotifications.services.converters.HyperWalletObjectToKYCBusinessStakeholderStatusNotificationBodyModelConverter;
-import com.paypal.kyc.incomingnotifications.model.KYCBusinessStakeholderStatusNotificationBodyModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
+import com.paypal.kyc.incomingnotifications.model.KYCBusinessStakeholderStatusNotificationBodyModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,15 +32,15 @@ class HyperWalletObjectToKYCBusinessStakeholderStatusExecutorNotificationBodyMod
 	private HyperwalletWebhookNotification hyperwalletWebhookNotificationMock;
 
 	private static final LogTrackerStub LOG_TRACKER_STUB = LogTrackerStub.create()
-			.recordForLevel(LogTracker.LogLevel.WARN)
-			.recordForType(HyperWalletObjectToKYCBusinessStakeholderStatusNotificationBodyModelConverter.class);
+		.recordForLevel(LogTracker.LogLevel.WARN)
+		.recordForType(HyperWalletObjectToKYCBusinessStakeholderStatusNotificationBodyModelConverter.class);
 
 	@Test
 	void convert_shouldConvertTheRawNotificationIntoAnInternalNotificationModel() {
 		createHyperWalletKycBusinessStakeholderBodyNotification();
 
 		final KYCBusinessStakeholderStatusNotificationBodyModel result = testObj
-				.convert(hyperwalletWebhookNotificationMock);
+			.convert(hyperwalletWebhookNotificationMock);
 
 		assertThat(result.getToken()).isEqualTo(BUSINESS_STAKEHOLDER_TOKEN);
 		assertThat(result.getUserToken()).isEqualTo(USER_TOKEN);
@@ -50,7 +49,7 @@ class HyperWalletObjectToKYCBusinessStakeholderStatusExecutorNotificationBodyMod
 		assertThat(result.getIsBusinessContact()).isEqualTo(Boolean.FALSE);
 		assertThat(result.getIsDirector()).isEqualTo(Boolean.TRUE);
 		assertThat(result.getHyperwalletWebhookNotificationType())
-				.isEqualTo(KYCConstants.HwWebhookNotificationType.USERS_BUSINESS_STAKEHOLDERS_CREATED);
+			.isEqualTo(KYCConstants.HwWebhookNotificationType.USERS_BUSINESS_STAKEHOLDERS_CREATED);
 	}
 
 	private void createHyperWalletKycBusinessStakeholderBodyNotification() {
@@ -64,13 +63,13 @@ class HyperWalletObjectToKYCBusinessStakeholderStatusExecutorNotificationBodyMod
 
 		when(hyperwalletWebhookNotificationMock.getObject()).thenReturn(detailInfo);
 		when(hyperwalletWebhookNotificationMock.getType())
-				.thenReturn(KYCConstants.HwWebhookNotificationType.USERS_BUSINESS_STAKEHOLDERS_CREATED);
+			.thenReturn(KYCConstants.HwWebhookNotificationType.USERS_BUSINESS_STAKEHOLDERS_CREATED);
 	}
 
 	@Test
 	void convert_shouldReturnNullWhenInputisNotAMap() {
 		final KYCBusinessStakeholderStatusNotificationBodyModel result = testObj
-				.convert(hyperwalletWebhookNotificationMock);
+			.convert(hyperwalletWebhookNotificationMock);
 
 		assertThat(result).isNull();
 	}

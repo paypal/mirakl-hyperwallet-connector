@@ -47,7 +47,7 @@ public class UpdateStoredItemLinksAspect {
 			}
 
 			accountingDocumentsLinksService
-					.updateLinksFromShops(shops.getShops() != null ? shops.getShops() : List.of());
+				.updateLinksFromShops(shops.getShops() != null ? shops.getShops() : List.of());
 		}
 		catch (final Exception e) {
 			log.error("Error updating stored item links", e);

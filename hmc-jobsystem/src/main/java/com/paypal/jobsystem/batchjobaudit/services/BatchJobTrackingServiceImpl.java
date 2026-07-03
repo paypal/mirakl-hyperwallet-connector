@@ -1,21 +1,20 @@
 package com.paypal.jobsystem.batchjobaudit.services;
 
+import com.paypal.infrastructure.support.date.TimeMachine;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.jobsystem.batchjob.model.BatchJobItemStatus;
 import com.paypal.jobsystem.batchjob.model.BatchJobStatus;
+import com.paypal.jobsystem.batchjobaudit.repositories.BatchJobItemTrackingRepository;
+import com.paypal.jobsystem.batchjobaudit.repositories.BatchJobTrackingRepository;
 import com.paypal.jobsystem.batchjobaudit.repositories.entities.BatchJobItemTrackInfoEntity;
 import com.paypal.jobsystem.batchjobaudit.repositories.entities.BatchJobItemTrackingInfoId;
 import com.paypal.jobsystem.batchjobaudit.repositories.entities.BatchJobTrackInfoEntity;
-import com.paypal.jobsystem.batchjobaudit.repositories.BatchJobItemTrackingRepository;
-import com.paypal.jobsystem.batchjobaudit.repositories.BatchJobTrackingRepository;
-import com.paypal.infrastructure.support.date.TimeMachine;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -45,8 +44,12 @@ public class BatchJobTrackingServiceImpl implements BatchJobTrackingService {
 	 */
 	@Override
 	public void trackJobStart(final String batchJobId, final String batchJobType) {
-		final BatchJobTrackInfoEntity batchJobTrackInfoEntity = BatchJobTrackInfoEntity.builder().batchJobId(batchJobId)
-				.batchJobType(batchJobType).startTime(TimeMachine.now()).status(BatchJobStatus.RUNNING).build();
+		final BatchJobTrackInfoEntity batchJobTrackInfoEntity = BatchJobTrackInfoEntity.builder()
+			.batchJobId(batchJobId)
+			.batchJobType(batchJobType)
+			.startTime(TimeMachine.now())
+			.status(BatchJobStatus.RUNNING)
+			.build();
 
 		batchJobTrackingRepository.save(batchJobTrackInfoEntity);
 	}
@@ -69,21 +72,27 @@ public class BatchJobTrackingServiceImpl implements BatchJobTrackingService {
 	@Override
 	public void trackJobFailure(final String batchJobId, final String batchJobType) {
 		final Optional<BatchJobTrackInfoEntity> batchJobTrackInfoEntity = batchJobTrackingRepository
-				.findById(batchJobId);
+			.findById(batchJobId);
 		batchJobTrackInfoEntity.ifPresentOrElse(this::markJobAsFailed, () -> createFailedJob(batchJobId, batchJobType));
 	}
 
 	private void markJobAsFailed(final BatchJobTrackInfoEntity batchJobTrackInfoEntity) {
 		final BatchJobTrackInfoEntity batchJobTrackInfoUpdated = batchJobTrackInfoEntity.toBuilder()
-				.status(BatchJobStatus.FAILED).finishTime(TimeMachine.now()).build();
+			.status(BatchJobStatus.FAILED)
+			.finishTime(TimeMachine.now())
+			.build();
 
 		batchJobTrackingRepository.save(batchJobTrackInfoUpdated);
 	}
 
 	private void createFailedJob(final String batchJobId, final String batchJobType) {
-		final BatchJobTrackInfoEntity batchJobTrackInfo = BatchJobTrackInfoEntity.builder().batchJobId(batchJobId)
-				.batchJobType(batchJobType).status(BatchJobStatus.FAILED).startTime(TimeMachine.now())
-				.finishTime(TimeMachine.now()).build();
+		final BatchJobTrackInfoEntity batchJobTrackInfo = BatchJobTrackInfoEntity.builder()
+			.batchJobId(batchJobId)
+			.batchJobType(batchJobType)
+			.status(BatchJobStatus.FAILED)
+			.startTime(TimeMachine.now())
+			.finishTime(TimeMachine.now())
+			.build();
 
 		batchJobTrackingRepository.save(batchJobTrackInfo);
 	}
@@ -94,7 +103,7 @@ public class BatchJobTrackingServiceImpl implements BatchJobTrackingService {
 	@Override
 	public void markNonFinishedJobsAsAborted(final String batchJobType) {
 		final List<BatchJobTrackInfoEntity> batchJobTrackInfoEntities = batchJobTrackingRepository
-				.findByBatchJobTypeAndStatusIn(batchJobType, JOB_NOT_FINISHED_STATUSES);
+			.findByBatchJobTypeAndStatusIn(batchJobType, JOB_NOT_FINISHED_STATUSES);
 
 		batchJobTrackInfoEntities.forEach(this::markJobAsAborted);
 	}
@@ -102,7 +111,7 @@ public class BatchJobTrackingServiceImpl implements BatchJobTrackingService {
 	@Override
 	public void markNonFinishedJobsAsAborted() {
 		final List<BatchJobTrackInfoEntity> batchJobTrackInfoEntities = batchJobTrackingRepository
-				.findByStatusIn(JOB_NOT_FINISHED_STATUSES);
+			.findByStatusIn(JOB_NOT_FINISHED_STATUSES);
 
 		batchJobTrackInfoEntities.forEach(this::markJobAsAborted);
 	}
@@ -117,7 +126,7 @@ public class BatchJobTrackingServiceImpl implements BatchJobTrackingService {
 				.findByBatchJobId(batchJobTrackInfoEntity.getBatchJobId()).stream()
 					.filter(this::neededToMarkAsAbortedItems)
 					.map(it -> it.toBuilder().status(BatchJobItemStatus.ABORTED).build())
-					.collect(Collectors.toList());
+					.toList();
 		//@formatter:on
 
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntitiesUpdated);
@@ -133,15 +142,20 @@ public class BatchJobTrackingServiceImpl implements BatchJobTrackingService {
 	@Override
 	public <T extends BatchJobItem<?>> void trackJobItemsAdded(final String batchJobId, final Collection<T> items) {
 		final List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities = items.stream()
-				.map(it -> createJobItemTracking(batchJobId, it)).collect(Collectors.toList());
+			.map(it -> createJobItemTracking(batchJobId, it))
+			.toList();
 
 		batchJobItemTrackingRepository.saveAll(batchJobItemTrackInfoEntities);
 	}
 
 	private <T extends BatchJobItem<?>> BatchJobItemTrackInfoEntity createJobItemTracking(final String batchJobId,
 			final T item) {
-		return BatchJobItemTrackInfoEntity.builder().batchJobId(batchJobId).itemId(item.getItemId())
-				.itemType(item.getItemType()).status(BatchJobItemStatus.PENDING).build();
+		return BatchJobItemTrackInfoEntity.builder()
+			.batchJobId(batchJobId)
+			.itemId(item.getItemId())
+			.itemType(item.getItemType())
+			.status(BatchJobItemStatus.PENDING)
+			.build();
 	}
 
 	/**
@@ -164,10 +178,16 @@ public class BatchJobTrackingServiceImpl implements BatchJobTrackingService {
 	private <T extends BatchJobItem<?>> void updatedJobItemStatus(final String batchJobId, final T item,
 			final BatchJobItemStatus status) {
 		final BatchJobItemTrackingInfoId batchJobItemTrackingInfoId = BatchJobItemTrackingInfoId.builder()
-				.batchJobId(batchJobId).itemType(item.getItemType()).itemId(item.getItemId()).build();
+			.batchJobId(batchJobId)
+			.itemType(item.getItemType())
+			.itemId(item.getItemId())
+			.build();
 
 		final BatchJobItemTrackInfoEntity batchJobItemTrackingInfoUpdated = batchJobItemTrackingRepository
-				.getReferenceById(batchJobItemTrackingInfoId).toBuilder().status(status).build();
+			.getReferenceById(batchJobItemTrackingInfoId)
+			.toBuilder()
+			.status(status)
+			.build();
 
 		updateJobItemTimes(batchJobItemTrackingInfoUpdated);
 
@@ -214,7 +234,8 @@ public class BatchJobTrackingServiceImpl implements BatchJobTrackingService {
 	public Optional<BatchJobTrackInfoEntity> findLastJobExecutionWithNonEmptyExtraction(final String batchJobType,
 			final LocalDateTime from) {
 		return batchJobTrackingRepository.findLastJobExecutionsWithItems(batchJobType, from, Pageable.ofSize(1))
-				.stream().findFirst();
+			.stream()
+			.findFirst();
 	}
 
 }

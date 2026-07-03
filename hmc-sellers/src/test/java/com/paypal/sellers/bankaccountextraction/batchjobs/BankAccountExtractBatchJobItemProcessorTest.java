@@ -3,8 +3,6 @@ package com.paypal.sellers.bankaccountextraction.batchjobs;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.sellers.bankaccountextraction.services.BankAccountTokenSynchronizationServiceImpl;
 import com.paypal.sellers.bankaccountextraction.services.strategies.HyperWalletBankAccountStrategyExecutor;
-import com.paypal.sellers.bankaccountextraction.batchjobs.BankAccountExtractBatchJobItemProcessor;
-import com.paypal.sellers.bankaccountextraction.batchjobs.BankAccountExtractJobItem;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,7 +37,7 @@ class BankAccountExtractBatchJobItemProcessorTest {
 		final SellerModel synchronizedSellerModel = SellerModel.builder().build();
 
 		when(bankAccountTokenSynchronizationServiceMock.synchronizeToken(sellerModel))
-				.thenReturn(synchronizedSellerModel);
+			.thenReturn(synchronizedSellerModel);
 
 		testObj.processItem(batchJobContextMock, bankAccountExtractJobItem);
 

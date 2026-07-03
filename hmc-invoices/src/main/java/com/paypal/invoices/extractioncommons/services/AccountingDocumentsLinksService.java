@@ -10,12 +10,12 @@ import java.util.Collection;
 /**
  * This service manages the relationships between Mirakl and Hyperwallet items that are
  * needed for the invoice creation process.
- *
+ * <p>
  * It ensures that all the relationships required for the processing are stored in the HMC
  * and tries to recover from Mirakl the additional relationships that weren't found on the
  * HMC
  *
- * @see {@link MiraklInvoiceLinksService}
+ * @see com.paypal.invoices.extractioncommons.services.MiraklInvoiceLinksService
  */
 public interface AccountingDocumentsLinksService {
 

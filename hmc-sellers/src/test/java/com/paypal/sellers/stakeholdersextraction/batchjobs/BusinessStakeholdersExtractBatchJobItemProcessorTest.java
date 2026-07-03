@@ -1,7 +1,7 @@
 package com.paypal.sellers.stakeholdersextraction.batchjobs;
 
-import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.infrastructure.support.services.TokenSynchronizationService;
+import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import com.paypal.sellers.stakeholdersextraction.services.strategies.HyperWalletBusinessStakeHolderStrategyExecutor;
 import org.junit.jupiter.api.Test;
@@ -34,14 +34,16 @@ class BusinessStakeholdersExtractBatchJobItemProcessorTest {
 	void processItem_ShouldSynchronizedBusinessStakeHolderTokenAndExecuteIt() {
 
 		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder()
-				.clientUserId(CLIENT_USER_ID).build();
+			.clientUserId(CLIENT_USER_ID)
+			.build();
 		final BusinessStakeholderExtractJobItem businessStakeholderExtractJobItem = new BusinessStakeholderExtractJobItem(
 				businessStakeHolderModel);
 		final BusinessStakeHolderModel synchronizedBusinessStakeHolderModel = BusinessStakeHolderModel.builder()
-				.clientUserId(CLIENT_USER_ID).build();
+			.clientUserId(CLIENT_USER_ID)
+			.build();
 
 		when(businessStakeholderTokenSynchronizationServiceImplMock.synchronizeToken(businessStakeHolderModel))
-				.thenReturn(synchronizedBusinessStakeHolderModel);
+			.thenReturn(synchronizedBusinessStakeHolderModel);
 
 		testObj.processItem(batchJobContextMock, businessStakeholderExtractJobItem);
 

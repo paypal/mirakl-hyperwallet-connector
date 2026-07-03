@@ -49,7 +49,7 @@ public final class MiraklSchemaAssertions {
 
 	private static boolean matchsField(final MiraklSchemaDiffReportEntry entry, final String affectedField) {
 		return ((MiraklSchemaDiffEntryIncorrectAttributeValue) entry.getDiff()).getAttributeName()
-				.equals(affectedField);
+			.equals(affectedField);
 	}
 
 	private static boolean matchsItem(final MiraklSchemaDiffReportEntry entry, final String affectedItem) {

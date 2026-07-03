@@ -3,10 +3,10 @@ package com.paypal.sellers.sellerextractioncommons.services.strategies;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
-import com.paypal.infrastructure.support.converter.Converter;
-import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
+import com.paypal.infrastructure.support.converter.Converter;
+import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.support.logging.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class HyperWalletUpdateSellerServiceStrategy extends AbstractHyperwalletS
 
 		try {
 			final Hyperwallet hyperwallet = userHyperwalletSDKService
-					.getHyperwalletInstanceByProgramToken(hyperwalletUser.getProgramToken());
+				.getHyperwalletInstanceByProgramToken(hyperwalletUser.getProgramToken());
 			final HyperwalletUser updatedUser = hyperwallet.updateUser(hyperwalletUser);
 
 			log.info("Seller updated for seller with clientUserId [{}]", hyperwalletUser.getClientUserId());
@@ -42,11 +42,11 @@ public class HyperWalletUpdateSellerServiceStrategy extends AbstractHyperwalletS
 		}
 		catch (final HyperwalletException e) {
 			logErrors("Error updating seller in hyperwallet with clientUserId [%s].%n%s"
-					.formatted(hyperwalletUser.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)), e, log);
+				.formatted(hyperwalletUser.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)), e, log);
 
 			reportError("Issue detected when updating seller in Hyperwallet",
 					(ERROR_MESSAGE_PREFIX + "Seller not updated with clientId [%s]%n%s")
-							.formatted(hyperwalletUser.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)));
+						.formatted(hyperwalletUser.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)));
 
 			throw new HMCHyperwalletAPIException(e);
 		}

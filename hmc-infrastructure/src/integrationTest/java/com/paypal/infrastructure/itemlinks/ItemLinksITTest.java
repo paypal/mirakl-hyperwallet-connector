@@ -46,14 +46,14 @@ class ItemLinksITTest extends AbstractIntegrationTest {
 		itemLinksService.createLinks(miraklItemLinkLocator3, Set.of());
 
 		final Map<MiraklItemLinkLocator, Collection<HyperwalletItemLinkLocator>> miraklItemLinkLocatorLinks = itemLinksService
-				.findLinks(Set.of(miraklItemLinkLocator1, miraklItemLinkLocator2, miraklItemLinkLocator3),
-						Set.of(HyperwalletItemTypes.BANK_ACCOUNT, HyperwalletItemTypes.PROGRAM));
+			.findLinks(Set.of(miraklItemLinkLocator1, miraklItemLinkLocator2, miraklItemLinkLocator3),
+					Set.of(HyperwalletItemTypes.BANK_ACCOUNT, HyperwalletItemTypes.PROGRAM));
 
 		assertThat(miraklItemLinkLocatorLinks.entrySet()).hasSize(3);
 		assertThat(miraklItemLinkLocatorLinks.get(miraklItemLinkLocator1))
-				.containsExactlyInAnyOrder(hyperwalletItemLinkLocator1, hyperwalletItemLinkLocator2);
+			.containsExactlyInAnyOrder(hyperwalletItemLinkLocator1, hyperwalletItemLinkLocator2);
 		assertThat(miraklItemLinkLocatorLinks.get(miraklItemLinkLocator2))
-				.containsExactlyInAnyOrder(hyperwalletItemLinkLocator3);
+			.containsExactlyInAnyOrder(hyperwalletItemLinkLocator3);
 		assertThat(miraklItemLinkLocatorLinks.get(miraklItemLinkLocator3)).isEmpty();
 	}
 
@@ -76,14 +76,14 @@ class ItemLinksITTest extends AbstractIntegrationTest {
 		itemLinksService.createLinks(miraklItemLinkLocator2, Set.of(hyperwalletItemLinkLocator3));
 
 		final Map<MiraklItemLinkLocator, Collection<HyperwalletItemLinkLocator>> miraklItemLinkLocatorLinks = itemLinksService
-				.findLinks(Set.of(miraklItemLinkLocator1, miraklItemLinkLocator2),
-						Set.of(HyperwalletItemTypes.BANK_ACCOUNT, HyperwalletItemTypes.PROGRAM));
+			.findLinks(Set.of(miraklItemLinkLocator1, miraklItemLinkLocator2),
+					Set.of(HyperwalletItemTypes.BANK_ACCOUNT, HyperwalletItemTypes.PROGRAM));
 
 		assertThat(miraklItemLinkLocatorLinks.entrySet()).hasSize(2);
 		assertThat(miraklItemLinkLocatorLinks.get(miraklItemLinkLocator1))
-				.containsExactlyInAnyOrder(hyperwalletItemLinkLocator1);
+			.containsExactlyInAnyOrder(hyperwalletItemLinkLocator1);
 		assertThat(miraklItemLinkLocatorLinks.get(miraklItemLinkLocator2))
-				.containsExactlyInAnyOrder(hyperwalletItemLinkLocator3);
+			.containsExactlyInAnyOrder(hyperwalletItemLinkLocator3);
 	}
 
 	class ItemLinksMother {

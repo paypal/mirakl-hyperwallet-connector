@@ -36,7 +36,7 @@ public class HyperwalletMiraklBankAccountEqualityChecker {
 			final BankAccountModel bankAccountModel) {
 		return hyperwalletBankAccount.getTransferMethodCountry().equals(bankAccountModel.getTransferMethodCountry())
 				&& hyperwalletBankAccount.getTransferMethodCurrency()
-						.equals(bankAccountModel.getTransferMethodCurrency());
+					.equals(bankAccountModel.getTransferMethodCurrency());
 	}
 
 	private boolean sameBankAccountId(final HyperwalletBankAccount hyperwalletBankAccount,
@@ -71,7 +71,7 @@ public class HyperwalletMiraklBankAccountEqualityChecker {
 			final String obfuscatedBankAccountNumber) {
 		final String lastFourDigits = plainBankAccountNumber.substring(plainBankAccountNumber.length() - 4);
 		final String lastFourDigitsObfuscated = obfuscatedBankAccountNumber
-				.substring(obfuscatedBankAccountNumber.length() - 4);
+			.substring(obfuscatedBankAccountNumber.length() - 4);
 		return lastFourDigits.equals(lastFourDigitsObfuscated);
 	}
 

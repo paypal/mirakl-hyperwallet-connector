@@ -36,7 +36,7 @@ class MiraklFieldSchemaDiffEntrySeverityAssignerTest {
 			final MiraklFieldPermissions expectedPermissions, final MiraklFieldPermissions actualPermissions,
 			final MiraklSchemaDiffReportSeverity expectedSeverity) {
 		when(miraklSchemaDiffEntryIncorrectAttributeValueMock.getDiffType())
-				.thenReturn(MiraklSchemaDiffEntryType.INCORRECT_ATTRIBUTE_VALUE);
+			.thenReturn(MiraklSchemaDiffEntryType.INCORRECT_ATTRIBUTE_VALUE);
 		when(miraklSchemaDiffEntryIncorrectAttributeValueMock.getAttributeName()).thenReturn("permissions");
 		when(miraklSchemaDiffEntryIncorrectAttributeValueMock.getActual()).thenReturn(miraklFieldActualMock);
 		when(miraklSchemaDiffEntryIncorrectAttributeValueMock.getExpected()).thenReturn(miraklFieldExpectedMock);
@@ -45,7 +45,7 @@ class MiraklFieldSchemaDiffEntrySeverityAssignerTest {
 		when(miraklFieldActualMock.getPermissions()).thenReturn(actualPermissions);
 
 		final MiraklSchemaDiffReportSeverity result = testObj
-				.getSeverityFor(miraklSchemaDiffEntryIncorrectAttributeValueMock);
+			.getSeverityFor(miraklSchemaDiffEntryIncorrectAttributeValueMock);
 		assertThat(result).isEqualTo(expectedSeverity);
 	}
 

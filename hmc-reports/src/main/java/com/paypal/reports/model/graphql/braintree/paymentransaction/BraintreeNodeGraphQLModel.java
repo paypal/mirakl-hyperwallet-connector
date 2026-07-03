@@ -27,8 +27,10 @@ public class BraintreeNodeGraphQLModel {
 			return orderId;
 		}
 
-		final Map<String, String> customFieldsAsMap = Optional.ofNullable(customFields).orElse(List.of()).stream()
-				.collect(Collectors.toMap(entry -> entry.get("name"), entry -> entry.get("value")));
+		final Map<String, String> customFieldsAsMap = Optional.ofNullable(customFields)
+			.orElse(List.of())
+			.stream()
+			.collect(Collectors.toMap(entry -> entry.get("name"), entry -> entry.get("value")));
 		return customFieldsAsMap.get("order_id");
 	}
 

@@ -1,11 +1,14 @@
 package com.paypal.reports.services.converters;
 
 import com.mirakl.client.mmp.domain.common.currency.MiraklIsoCurrencyCode;
-import com.mirakl.client.mmp.domain.payment.MiraklTransactionLog;
 import com.mirakl.client.mmp.domain.payment.MiraklTransactionType;
+import com.mirakl.client.mmp.operator.domain.payment.transaction.MiraklTransactionLine;
+import com.mirakl.client.mmp.operator.domain.payment.transaction.MiraklTransactionShop;
+import com.mirakl.client.mmp.operator.domain.payment.transaction.entity.MiraklTransactionEntity;
+import com.mirakl.client.mmp.operator.domain.payment.transaction.entity.MiraklTransactionInfo;
+import com.mirakl.client.mmp.operator.domain.payment.transaction.entity.MiraklTransactionOrder;
 import com.paypal.infrastructure.support.date.DateUtil;
 import com.paypal.reports.model.HmcMiraklTransactionLine;
-import com.paypal.reports.services.converters.MiraklTransactionLogToMiraklTransactionLineModelConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,7 +21,7 @@ import java.util.Date;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-class MiraklTransactionLogToMiraklTransactionLineModelConverterTest {
+class MiraklTransactionLineToMiraklTransactionLineModelConverterTest {
 
 	private static final BigDecimal AMOUNT_CREDITED = BigDecimal.valueOf(20.00D);
 
@@ -46,19 +49,27 @@ class MiraklTransactionLogToMiraklTransactionLineModelConverterTest {
 		final Date now = new Date();
 		final LocalDateTime nowLocalDate = DateUtil.convertToLocalDateTime(now);
 
-		final MiraklTransactionLog miraklTransactionLog = new MiraklTransactionLog();
-		miraklTransactionLog.setAmountCredited(AMOUNT_CREDITED);
-		miraklTransactionLog.setAmountDebited(AMOUNT_DEBITED);
-		miraklTransactionLog.setAmount(AMOUNT);
-		miraklTransactionLog.setTransactionNumber(TRANSACTION_NUMBER);
-		miraklTransactionLog.setTransactionType(TRANSACTION_TYPE);
-		miraklTransactionLog.setId(ID);
-		miraklTransactionLog.setCurrencyIsoCode(CURRENCY_ISO_CODE);
-		miraklTransactionLog.setShopId(SHOP_ID);
-		miraklTransactionLog.setDateCreated(now);
-		miraklTransactionLog.setOrderId(ORDER_ID);
+		final MiraklTransactionLine miraklTransactionLine = new MiraklTransactionLine();
+		final MiraklTransactionEntity entity = new MiraklTransactionEntity();
+		final MiraklTransactionShop shop = new MiraklTransactionShop();
+		final MiraklTransactionOrder order = new MiraklTransactionOrder();
+		final MiraklTransactionInfo transactionInfo = new MiraklTransactionInfo();
+		transactionInfo.setNumber(TRANSACTION_NUMBER);
+		shop.setId(SHOP_ID);
+		order.setId(ORDER_ID);
+		entity.setTransactionInfo(transactionInfo);
+		entity.setOrder(order);
+		miraklTransactionLine.setAmountCredited(AMOUNT_CREDITED);
+		miraklTransactionLine.setAmountDebited(AMOUNT_DEBITED);
+		miraklTransactionLine.setAmount(AMOUNT);
+		miraklTransactionLine.setEntities(entity);
+		miraklTransactionLine.setType(String.valueOf(TRANSACTION_TYPE));
+		miraklTransactionLine.setId(ID);
+		miraklTransactionLine.setCurrencyIsoCode(String.valueOf(CURRENCY_ISO_CODE));
+		miraklTransactionLine.setShop(shop);
+		miraklTransactionLine.setDateCreated(now);
 
-		final HmcMiraklTransactionLine result = testObj.convert(miraklTransactionLog);
+		final HmcMiraklTransactionLine result = testObj.convert(miraklTransactionLine);
 
 		assertThat(result.getCreditAmount()).isEqualTo(AMOUNT_CREDITED);
 		assertThat(result.getDebitAmount()).isEqualTo(AMOUNT_DEBITED);

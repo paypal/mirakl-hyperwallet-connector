@@ -2,8 +2,6 @@ package com.paypal.jobsystem.quartzadapter.jobcontext;
 
 import com.paypal.jobsystem.batchjob.model.BatchJob;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
-import com.paypal.jobsystem.quartzadapter.jobcontext.QuartzBatchJobContextAdapter;
-import com.paypal.jobsystem.quartzadapter.jobcontext.QuartzBatchJobContextFactoryImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -18,7 +18,7 @@ public final class CountriesUtil {
 		final String[] countries = Locale.getISOCountries();
 		localeMap = new HashMap<>(countries.length * 2);
 		for (final String country : countries) {
-			final Locale locale = new Locale("", country);
+			final Locale locale = Locale.of("", country);
 			localeMap.put(locale.getISO3Country().toUpperCase(), locale);
 			localeMap.put(country.toUpperCase(), locale);
 		}
@@ -29,16 +29,16 @@ public final class CountriesUtil {
 	}
 
 	/**
-	 * Returns the {@link Locale} representation of a three letter isocode country
-	 * @param isocode the isocode representation
+	 * Returns the {@link Locale} representation of a three letter isoCode country
+	 * @param isoCode the isoCode representation
 	 * @return the {@link Locale}
 	 */
-	public static Optional<Locale> getLocaleByIsocode(final String isocode) {
-		if (StringUtils.isBlank(isocode)) {
+	public static Optional<Locale> getLocaleByIsoCode(final String isoCode) {
+		if (StringUtils.isBlank(isoCode)) {
 			return Optional.empty();
 		}
 
-		return Optional.ofNullable(localeMap.get(isocode.toUpperCase()));
+		return Optional.ofNullable(localeMap.get(isoCode.toUpperCase()));
 	}
 
 }

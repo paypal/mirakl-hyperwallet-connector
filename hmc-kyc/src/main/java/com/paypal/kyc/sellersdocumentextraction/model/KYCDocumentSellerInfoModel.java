@@ -2,11 +2,7 @@ package com.paypal.kyc.sellersdocumentextraction.model;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-import com.paypal.kyc.documentextractioncommons.model.KYCDocumentCategoryEnum;
-import com.paypal.kyc.documentextractioncommons.model.KYCDocumentInfoModel;
-import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
-import com.paypal.kyc.documentextractioncommons.model.KYCDocumentSideEnum;
-import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
+import com.paypal.kyc.documentextractioncommons.model.*;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -18,7 +14,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.paypal.kyc.documentextractioncommons.model.KYCConstants.*;
@@ -43,7 +38,7 @@ public class KYCDocumentSellerInfoModel extends KYCDocumentInfoModel {
 					.flatMap(Collection::stream)
 					.filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.IDENTIFICATION))
 					.filter(document -> document.getDocumentSide().equals(KYCDocumentSideEnum.FRONT))
-					.collect(Collectors.toList());
+					.toList();
 			//@formatter:on
 		}
 
@@ -51,7 +46,7 @@ public class KYCDocumentSellerInfoModel extends KYCDocumentInfoModel {
 		return Stream.ofNullable(getDocuments())
 				.flatMap(Collection::stream)
 				.filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.IDENTIFICATION))
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 
@@ -60,20 +55,21 @@ public class KYCDocumentSellerInfoModel extends KYCDocumentInfoModel {
 		return Stream.ofNullable(getDocuments())
 				.flatMap(Collection::stream)
 				.filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.ADDRESS))
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 
 	public List<KYCDocumentModel> getProofOfBusinessDocuments() {
-		return Stream.ofNullable(getDocuments()).flatMap(Collection::stream)
-				.filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.BUSINESS))
-				.collect(Collectors.toList());
+		return Stream.ofNullable(getDocuments())
+			.flatMap(Collection::stream)
+			.filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.BUSINESS))
+			.toList();
 	}
 
 	public boolean isIdentityDocumentsFilled() {
 		if (Objects.nonNull(this.getProofOfIdentity()) && Objects.nonNull(this.getDocuments())) {
 			return this.getIdentityDocuments().size() == KYCProofOfIdentityEnum.getMiraklFields(this.proofOfIdentity)
-					.size();
+				.size();
 
 		}
 		return false;
@@ -81,8 +77,9 @@ public class KYCDocumentSellerInfoModel extends KYCDocumentInfoModel {
 
 	@Override
 	public boolean existsDocumentInMirakl() {
-		final List<String> documentsExistingInMirakl = miraklShopDocuments.stream().map(MiraklShopDocument::getTypeCode)
-				.collect(Collectors.toList());
+		final List<String> documentsExistingInMirakl = miraklShopDocuments.stream()
+			.map(MiraklShopDocument::getTypeCode)
+			.toList();
 		final KYCProofOfIdentityEnum proofOfIdentity = this.getProofOfIdentity();
 		if (!isProfessional()) {
 			final List<String> proofOfIdentityMiraklFields = KYCProofOfIdentityEnum.getMiraklFields(proofOfIdentity);
@@ -219,68 +216,73 @@ public class KYCDocumentSellerInfoModel extends KYCDocumentInfoModel {
 
 		public Builder userToken(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklStringCustomFieldValue(fields, HYPERWALLET_USER_TOKEN_FIELD)
-					.ifPresent(retrievedToken -> userToken = retrievedToken);
+				.ifPresent(retrievedToken -> userToken = retrievedToken);
 			return this;
 		}
 
 		public Builder requiresKYC(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklBooleanCustomFieldValue(fields, HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_BUSINESS_FIELD)
-					.ifPresent(requiresKYCValue -> requiresKYC = Boolean.parseBoolean(requiresKYCValue));
+				.ifPresent(requiresKYCValue -> requiresKYC = Boolean.parseBoolean(requiresKYCValue));
 
 			return this;
 		}
 
 		@Override
 		public Builder documents(final List<KYCDocumentModel> documents) {
-			this.documents = Stream.ofNullable(documents).flatMap(Collection::stream).filter(Objects::nonNull)
-					.map(document -> document.toBuilder().build()).collect(Collectors.toList());
+			this.documents = Stream.ofNullable(documents)
+				.flatMap(Collection::stream)
+				.filter(Objects::nonNull)
+				.map(document -> document.toBuilder().build())
+				.toList();
 			return this;
 		}
 
 		public Builder proofOfIdentity(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklSingleValueListCustomFieldValue(fields, HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD)
-					.ifPresent(retrievedProofOfIdentity -> proofOfIdentity = EnumUtils
-							.getEnum(KYCProofOfIdentityEnum.class, retrievedProofOfIdentity));
+				.ifPresent(retrievedProofOfIdentity -> proofOfIdentity = EnumUtils.getEnum(KYCProofOfIdentityEnum.class,
+						retrievedProofOfIdentity));
 
 			return this;
 		}
 
 		public Builder proofOfAddress(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklSingleValueListCustomFieldValue(fields, HYPERWALLET_KYC_IND_PROOF_OF_ADDRESS_FIELD)
-					.ifPresent(retrievedProofOfAddress -> proofOfAddress = EnumUtils
-							.getEnum(KYCProofOfAddressEnum.class, retrievedProofOfAddress));
+				.ifPresent(retrievedProofOfAddress -> proofOfAddress = EnumUtils.getEnum(KYCProofOfAddressEnum.class,
+						retrievedProofOfAddress));
 
 			return this;
 		}
 
 		public Builder countryIsoCode(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklStringCustomFieldValue(fields, HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_COUNTRY_ISOCODE)
-					.ifPresent(retrievedCountryIsocode -> countryIsoCode = retrievedCountryIsocode);
+				.ifPresent(retrievedCountryIsocode -> countryIsoCode = retrievedCountryIsocode);
 			return this;
 		}
 
 		public Builder proofOfBusiness(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklSingleValueListCustomFieldValue(fields, HYPERWALLET_KYC_PROF_PROOF_OF_BUSINESS_FIELD)
-					.ifPresent(retrievedProofOfBusiness -> proofOfBusiness = EnumUtils
-							.getEnum(KYCProofOfBusinessEnum.class, retrievedProofOfBusiness));
+				.ifPresent(retrievedProofOfBusiness -> proofOfBusiness = EnumUtils.getEnum(KYCProofOfBusinessEnum.class,
+						retrievedProofOfBusiness));
 
 			return this;
 		}
 
 		@Override
 		public Builder miraklShopDocuments(final List<MiraklShopDocument> miraklShopDocuments) {
-			this.miraklShopDocuments = Stream.ofNullable(miraklShopDocuments).flatMap(Collection::stream)
-					.map(miraklShopDocument -> {
-						final MiraklShopDocument miraklShopDocumentCopy = new MiraklShopDocument();
-						miraklShopDocumentCopy.setId(miraklShopDocument.getId());
-						miraklShopDocumentCopy.setTypeCode(miraklShopDocument.getTypeCode());
-						miraklShopDocumentCopy.setDateDeleted(miraklShopDocument.getDateDeleted());
-						miraklShopDocumentCopy.setDateUploaded(miraklShopDocument.getDateUploaded());
-						miraklShopDocumentCopy.setFileName(miraklShopDocument.getFileName());
-						miraklShopDocumentCopy.setShopId(miraklShopDocument.getShopId());
+			this.miraklShopDocuments = Stream.ofNullable(miraklShopDocuments)
+				.flatMap(Collection::stream)
+				.map(miraklShopDocument -> {
+					final MiraklShopDocument miraklShopDocumentCopy = new MiraklShopDocument();
+					miraklShopDocumentCopy.setId(miraklShopDocument.getId());
+					miraklShopDocumentCopy.setTypeCode(miraklShopDocument.getTypeCode());
+					miraklShopDocumentCopy.setDateDeleted(miraklShopDocument.getDateDeleted());
+					miraklShopDocumentCopy.setDateUploaded(miraklShopDocument.getDateUploaded());
+					miraklShopDocumentCopy.setFileName(miraklShopDocument.getFileName());
+					miraklShopDocumentCopy.setShopId(miraklShopDocument.getShopId());
 
-						return miraklShopDocumentCopy;
-					}).collect(Collectors.toList());
+					return miraklShopDocumentCopy;
+				})
+				.toList();
 
 			return this;
 		}
@@ -292,18 +294,22 @@ public class KYCDocumentSellerInfoModel extends KYCDocumentInfoModel {
 
 		private Optional<String> getMiraklStringCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
 				final String customFieldCode) {
-			return fields.stream().filter(field -> field.getCode().equals(customFieldCode))
-					.filter(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::isInstance)
-					.map(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::cast).findAny()
-					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+			return fields.stream()
+				.filter(field -> field.getCode().equals(customFieldCode))
+				.filter(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::isInstance)
+				.map(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::cast)
+				.findAny()
+				.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
 		}
 
 		private Optional<String> getMiraklBooleanCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
 				final String customFieldCode) {
-			return fields.stream().filter(field -> field.getCode().equals(customFieldCode))
-					.filter(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::isInstance)
-					.map(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::cast).findAny()
-					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+			return fields.stream()
+				.filter(field -> field.getCode().equals(customFieldCode))
+				.filter(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::isInstance)
+				.map(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::cast)
+				.findAny()
+				.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
 		}
 
 	}

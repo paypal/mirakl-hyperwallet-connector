@@ -1,7 +1,6 @@
 package com.paypal.invoices.extractioninvoices.batchjobs;
 
 import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
-import com.paypal.invoices.extractioninvoices.batchjobs.InvoiceExtractJobItem;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

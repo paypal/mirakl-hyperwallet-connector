@@ -1,10 +1,10 @@
 package com.paypal.invoices.extractioninvoices.services.converters;
 
 import com.mirakl.client.mmp.domain.common.currency.MiraklIsoCurrencyCode;
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoice;
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoiceSummary;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklSellerBillingCycle;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklSellerBillingCycleShop;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklSellerBillingCycleSummary;
 import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
-import com.paypal.invoices.extractioninvoices.services.converters.MiraklInvoiceToInvoiceModelConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class MiraklInvoiceToInvoiceModelConverterTest {
 
-	private static final String INV_NUMBER = "INV-NUMBER";
+	private static final UUID INV_NUMBER = UUID.randomUUID();
 
 	private static final String EUR = "EUR";
 
@@ -35,25 +36,29 @@ class MiraklInvoiceToInvoiceModelConverterTest {
 	private MiraklInvoiceToInvoiceModelConverter testObj;
 
 	@Mock
-	private MiraklInvoice miraklInvoiceMock;
+	private MiraklSellerBillingCycle billingCycleMock;
 
 	@Mock
-	private MiraklInvoiceSummary miraklInvoiceSummaryMock;
+	private MiraklSellerBillingCycleSummary summaryMock;
+
+	@Mock
+	private MiraklSellerBillingCycleShop shopMock;
 
 	@Test
 	void convert_shouldConvertMiraklInvoiceIntoInvoiceModel() {
-		when(miraklInvoiceMock.getId()).thenReturn(INV_NUMBER);
-		when(miraklInvoiceMock.getShopId()).thenReturn(SHOP_ID);
-		when(miraklInvoiceMock.getCurrencyIsoCode()).thenReturn(MiraklIsoCurrencyCode.EUR);
-		when(miraklInvoiceMock.getSummary()).thenReturn(miraklInvoiceSummaryMock);
-		when(miraklInvoiceSummaryMock.getAmountTransferred()).thenReturn(TRANSFER_AMOUNT);
-		when(miraklInvoiceSummaryMock.getTotalCommissionsIT()).thenReturn(TOTAL_COMMISSION);
-		when(miraklInvoiceSummaryMock.getTotalSubscriptionIT()).thenReturn(TOTAL_SUBSCRIPTIONS);
-		when(miraklInvoiceSummaryMock.getAmountTransferredToOperator()).thenReturn(BigDecimal.TEN);
+		when(billingCycleMock.getId()).thenReturn(INV_NUMBER);
+		when(billingCycleMock.getShop()).thenReturn(shopMock);
+		when(shopMock.getShopId()).thenReturn(SHOP_ID);
+		when(billingCycleMock.getCurrencyIsoCode()).thenReturn(MiraklIsoCurrencyCode.EUR);
+		when(billingCycleMock.getSummary()).thenReturn(summaryMock);
+		when(billingCycleMock.getAmountTransferredToSeller()).thenReturn(TRANSFER_AMOUNT);
+		when(summaryMock.getTotalCommissionsIT()).thenReturn(TOTAL_COMMISSION);
+		when(summaryMock.getTotalSubscriptionIT()).thenReturn(TOTAL_SUBSCRIPTIONS);
+		when(billingCycleMock.getAmountTransferredToOperator()).thenReturn(BigDecimal.TEN);
 
-		final InvoiceModel result = testObj.convert(miraklInvoiceMock);
+		final InvoiceModel result = testObj.convert(billingCycleMock);
 
-		assertThat(result.getInvoiceNumber()).isEqualTo(INV_NUMBER);
+		assertThat(result.getInvoiceNumber()).isEqualTo(INV_NUMBER.toString());
 		assertThat(result.getCurrencyIsoCode()).isEqualTo(EUR);
 		assertThat(result.getTransferAmount()).isEqualTo(TRANSFER_AMOUNT.doubleValue());
 		assertThat(result.getSubscriptionAmountVat()).isEqualTo(TOTAL_SUBSCRIPTIONS.doubleValue());

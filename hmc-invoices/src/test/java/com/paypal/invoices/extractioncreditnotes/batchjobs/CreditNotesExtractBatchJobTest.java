@@ -1,9 +1,5 @@
 package com.paypal.invoices.extractioncreditnotes.batchjobs;
 
-import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNoteExtractJobItem;
-import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNotesExtractBatchJob;
-import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNotesExtractBatchJobItemProcessor;
-import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNotesExtractBatchJobItemsExtractor;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjob.model.BatchJobType;
 import com.paypal.jobsystem.batchjobsupport.model.BatchJobItemProcessor;
@@ -32,7 +28,7 @@ class CreditNotesExtractBatchJobTest {
 	void getBatchJobItemsExtractor_ShouldReturnCreditNotesExtractBatchJobItemsExtractor() {
 
 		final BatchJobItemsExtractor<BatchJobContext, CreditNoteExtractJobItem> result = testObj
-				.getBatchJobItemsExtractor();
+			.getBatchJobItemsExtractor();
 
 		assertThat(result).isEqualTo(creditNotesExtractBatchJobItemsExtractorMock);
 	}
@@ -41,7 +37,7 @@ class CreditNotesExtractBatchJobTest {
 	void getBatchJobItemProcessor_ShouldReturnCreditNotesExtractBatchJobItemProcessor() {
 
 		final BatchJobItemProcessor<BatchJobContext, CreditNoteExtractJobItem> result = testObj
-				.getBatchJobItemProcessor();
+			.getBatchJobItemProcessor();
 
 		assertThat(result).isEqualTo(creditNotesExtractBatchJobItemProcessorMock);
 	}

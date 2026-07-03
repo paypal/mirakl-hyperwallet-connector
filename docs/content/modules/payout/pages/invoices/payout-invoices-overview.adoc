@@ -31,7 +31,7 @@ Since the behavior of the invoice extraction is the same as the credit notes ext
 [mermaid,invoice-extraction]
 ....
 sequenceDiagram
-    Connector ->> Mirakl: (IV01 GET) Retrieve payment pending invoices
+    Connector ->> Mirakl: (SBC11 GET) Retrieve pending seller billing cycles
     Connector ->> Mirakl: (S20 GET) Retrieve shop information for invoices
     loop For each invoice
         Connector ->> Hyperwallet: (GET /payments) Check if a seller payment exists for the invoice

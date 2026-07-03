@@ -1,5 +1,16 @@
 plugins {
 	id 'hmc.lib-conventions'
+	id 'io.freefair.aspectj.post-compile-weaving'
+}
+
+sourceSets.main.java.srcDir 'src/main/aspectj'
+
+compileJava {
+	ajc {
+		options {
+			compilerArgs += ["-Xlint:cantFindType=warning"]
+		}
+	}
 }
 
 dependencies {
@@ -9,7 +20,7 @@ dependencies {
 
 	inpath 'org.apache.httpcomponents:httpclient'
 	inpath 'com.hyperwallet:sdk:3.0.2'
-	inpath 'com.mirakl:mmp-sdk-operator:10.6.0'
+	inpath 'com.mirakl:mmp-sdk-operator:10.10.0'
 
 	testImplementation project(":hmc-testsupport")
 }

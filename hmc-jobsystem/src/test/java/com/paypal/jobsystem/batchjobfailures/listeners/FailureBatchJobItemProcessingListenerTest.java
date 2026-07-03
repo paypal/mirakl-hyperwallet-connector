@@ -4,7 +4,6 @@ import com.paypal.jobsystem.batchjob.model.BatchJob;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.jobsystem.batchjob.model.BatchJobType;
-import com.paypal.jobsystem.batchjobfailures.listeners.FailureBatchJobItemProcessingListener;
 import com.paypal.jobsystem.batchjobfailures.services.BatchJobFailedItemService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,9 +48,9 @@ class FailureBatchJobItemProcessingListenerTest {
 	@Test
 	void onItemProcessingSuccess_ShouldCallBatchJobFailedItemServiceItemProcessedMethod() {
 
-		testObj.onItemProcessingFailure(batchJobContextMock, batchJobItemMock, exceptionMock);
+		testObj.onItemProcessingSuccess(batchJobContextMock, batchJobItemMock);
 
-		verify(batchJobFailedItemServiceMock).saveItemFailed(batchJobItemMock);
+		verify(batchJobFailedItemServiceMock).removeItemProcessed(batchJobItemMock);
 	}
 
 	@SuppressWarnings("unchecked")

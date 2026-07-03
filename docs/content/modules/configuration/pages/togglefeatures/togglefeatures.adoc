@@ -44,7 +44,7 @@ The `PAYPAL_HYPERWALLET_NEW_USER_MAPPING_ENABLED` variable can be set to the fol
 ====
 This mapping is important because it affects the KYC verification process, since the business legal name is used to check the validity of some documents.
 
-By default the new store name and legal name mapping is disabled, to ensure compatibililty with existing deployments that have already onboarded sellers.
+By default the new store name and legal name mapping is disabled, to ensure compatibility with existing deployments that have already onboarded sellers.
 
 If this variable changes its value after a seller has been onboarded, when the shop is updated the connector will update the Hyperwallet user changing its business legal name according to the variable new value, triggering a KYC verification process that can fail since the business legal name is different from the previous one.
 ====

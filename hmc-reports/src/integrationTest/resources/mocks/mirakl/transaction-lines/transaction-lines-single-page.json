@@ -1,0 +1,109 @@
+{
+  "data": [
+	{
+	  "id": "TXN001",
+	  "type": "ORDER_AMOUNT",
+	  "amount": 100.50,
+	  "amount_credited": 100.50,
+	  "amount_debited": 0.00,
+	  "currency_iso_code": "EUR",
+	  "date_created": "2023-01-15T10:00:00Z",
+	  "payment_state": "PAYABLE",
+	  "shop": {
+		"id": "2001"
+	  },
+	  "entities": {
+		"order": {
+		  "id": "order-001"
+		},
+		"transaction_info": {
+		  "number": "TN001"
+		}
+	  }
+	},
+	{
+	  "id": "TXN002",
+	  "type": "SUBSCRIPTION_AMOUNT",
+	  "amount": 50.00,
+	  "amount_credited": 0.00,
+	  "amount_debited": 50.00,
+	  "currency_iso_code": "USD",
+	  "date_created": "2023-01-15T11:00:00Z",
+	  "payment_state": "PAID",
+	  "shop": {
+		"id": "2002"
+	  },
+	  "entities": {
+		"order": {
+		  "id": "order-002"
+		},
+		"transaction_info": {
+		  "number": "TN002"
+		}
+	  }
+	},
+	{
+	  "id": "TXN003",
+	  "type": "ORDER_AMOUNT",
+	  "amount": 75.25,
+	  "amount_credited": 75.25,
+	  "amount_debited": 0.00,
+	  "currency_iso_code": "EUR",
+	  "date_created": "2023-01-15T12:00:00Z",
+	  "payment_state": "PAYABLE",
+	  "shop": {
+		"id": "2003"
+	  },
+	  "entities": {
+		"order": {
+		  "id": "order-003"
+		},
+		"transaction_info": {
+		  "number": "TN003"
+		}
+	  }
+	},
+	{
+	  "id": "TXN004",
+	  "type": "ORDER_AMOUNT",
+	  "amount": 200.00,
+	  "amount_credited": 200.00,
+	  "amount_debited": 0.00,
+	  "currency_iso_code": "EUR",
+	  "date_created": "2023-01-15T13:00:00Z",
+	  "payment_state": "PENDING",
+	  "shop": {
+		"id": "2004"
+	  },
+	  "entities": {
+		"order": {
+		  "id": "order-004"
+		},
+		"transaction_info": {
+		  "number": "TN004"
+		}
+	  }
+	},
+	{
+	  "id": "TXN005",
+	  "type": "SUBSCRIPTION_AMOUNT",
+	  "amount": 30.00,
+	  "amount_credited": 0.00,
+	  "amount_debited": 30.00,
+	  "currency_iso_code": "USD",
+	  "date_created": "2023-01-15T14:00:00Z",
+	  "payment_state": "PAID",
+	  "shop": {
+		"id": "2005"
+	  },
+	  "entities": {
+		"order": {
+		  "id": "order-005"
+		},
+		"transaction_info": {
+		  "number": "TN005"
+		}
+	  }
+	}
+  ]
+}

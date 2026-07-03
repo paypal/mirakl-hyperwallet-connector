@@ -1,14 +1,13 @@
 package com.paypal.sellers.stakeholdersextraction.services;
 
-import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
+import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * Class that creates the stakeholder in Hyperwallet
@@ -29,7 +28,7 @@ public class BusinessStakeholderExtractServiceImpl implements BusinessStakeholde
 				.map(SellerModel::getBusinessStakeHolderDetails)
 				.flatMap(Collection::stream)
 				.filter(Predicate.not(BusinessStakeHolderModel::isEmpty))
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 

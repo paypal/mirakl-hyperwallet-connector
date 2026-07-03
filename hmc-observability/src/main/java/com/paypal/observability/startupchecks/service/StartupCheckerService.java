@@ -1,6 +1,7 @@
 package com.paypal.observability.startupchecks.service;
 
 import com.paypal.observability.startupchecks.model.*;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -28,9 +29,11 @@ public class StartupCheckerService {
 
 	public static final String LOGMSG_SYSTEM_SHUTDOWN = "Some of the errors found during startup checks will cause the system to not work properly. System will shutdown.";
 
+	@Setter
 	@Value("${hmc.startup-checks.enabled}")
 	protected boolean startupChecksEnabled;
 
+	@Setter
 	@Value("${hmc.startup-checks.exit-on-fail}")
 	protected boolean startupChecksExitOnFail;
 
@@ -55,7 +58,7 @@ public class StartupCheckerService {
 		}
 	}
 
-	protected void doStartupChecks() {
+	public void doStartupChecks() {
 		final Map<String, StartupCheck> startupChecks = analyzeStartupChecks();
 		final StartupCheckStatus finalStatus = getStatus(startupChecks.values());
 		final StartupCheckReport startupCheckReport = buildStartupCheckReport(startupChecks, finalStatus);
@@ -69,7 +72,7 @@ public class StartupCheckerService {
 		}
 	}
 
-	protected void shutdownSpringApplication() {
+	public void shutdownSpringApplication() {
 		if (startupChecksExitOnFail) {
 			log.error(LOGMSG_SYSTEM_SHUTDOWN);
 			applicationContext.close();
@@ -86,7 +89,7 @@ public class StartupCheckerService {
 
 	private void logStartupCheck(final String startupCheckName, final StartupCheck startupCheck) {
 		final StartupCheckPrinter startupCheckPrinter = startupCheckPrinterRegistry
-				.getStartupCheckPrinter(startupCheckName);
+			.getStartupCheckPrinter(startupCheckName);
 		final String startupCheckText = String.join("\n---------\n", startupCheckPrinter.print(startupCheck));
 		final String logMessage = String.format("Startup Check: <%s>, Status <%s>, CheckDetails:%n%s", startupCheckName,
 				startupCheck.getStatus(), startupCheckText);
@@ -127,7 +130,7 @@ public class StartupCheckerService {
 
 	private Map<String, StartupCheck> analyzeStartupChecks() {
 		return startupCheckProviders.stream()
-				.collect(Collectors.toMap(StartupCheckProvider::getName, this::executeStartupCheck));
+			.collect(Collectors.toMap(StartupCheckProvider::getName, this::executeStartupCheck));
 	}
 
 	private StartupCheck executeStartupCheck(final StartupCheckProvider startupCheckProvider) {

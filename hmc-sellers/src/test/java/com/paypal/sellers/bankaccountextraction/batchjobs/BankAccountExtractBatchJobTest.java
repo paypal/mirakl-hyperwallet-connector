@@ -3,10 +3,6 @@ package com.paypal.sellers.bankaccountextraction.batchjobs;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjobsupport.model.BatchJobItemProcessor;
 import com.paypal.jobsystem.batchjobsupport.model.BatchJobItemsExtractor;
-import com.paypal.sellers.bankaccountextraction.batchjobs.BankAccountExtractBatchJob;
-import com.paypal.sellers.bankaccountextraction.batchjobs.BankAccountExtractBatchJobItemProcessor;
-import com.paypal.sellers.bankaccountextraction.batchjobs.BankAccountExtractBatchJobItemsExtractor;
-import com.paypal.sellers.bankaccountextraction.batchjobs.BankAccountExtractJobItem;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,7 +27,7 @@ class BankAccountExtractBatchJobTest {
 	void getBatchJobItemProcessor_ShouldReturnTheBankAccountExtractBatchJobItemProcessor() {
 
 		final BatchJobItemProcessor<BatchJobContext, BankAccountExtractJobItem> result = testObj
-				.getBatchJobItemProcessor();
+			.getBatchJobItemProcessor();
 
 		assertThat(result).isEqualTo(bankAccountExtractBatchJobItemProcessorMock);
 	}
@@ -40,7 +36,7 @@ class BankAccountExtractBatchJobTest {
 	void getBatchJobItemsExtractor_ShouldReturnTheBankAccountExtractBatchJobItemsExtractor() {
 
 		final BatchJobItemsExtractor<BatchJobContext, BankAccountExtractJobItem> result = testObj
-				.getBatchJobItemsExtractor();
+			.getBatchJobItemsExtractor();
 
 		assertThat(result).isEqualTo(bankAccountExtractBatchJobItemsExtractorMock);
 	}

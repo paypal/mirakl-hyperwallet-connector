@@ -133,7 +133,7 @@ class NotificationEntityRepositoryITTest extends AbstractIntegrationTest {
 
 		assertThat(result.getTotalElements()).isEqualTo(2);
 		assertThat(result.getContent()).extracting(NotificationEntity::getWebHookToken)
-				.containsExactlyInAnyOrder(TOKEN_1, TOKEN_2);
+			.containsExactlyInAnyOrder(TOKEN_1, TOKEN_2);
 	}
 
 	@Test
@@ -253,7 +253,7 @@ class NotificationEntityRepositoryITTest extends AbstractIntegrationTest {
 
 		final Date boundary = Date.from(Instant.now().minus(5, ChronoUnit.DAYS));
 		final List<NotificationEntity> result = repository
-				.findNotificationsByObjectTokenAndAndCreationDateAfter(OBJECT_TOKEN, boundary);
+			.findNotificationsByObjectTokenAndAndCreationDateAfter(OBJECT_TOKEN, boundary);
 
 		assertThat(result).hasSize(1).extracting(NotificationEntity::getWebHookToken).containsExactly(TOKEN_2);
 	}
@@ -407,10 +407,14 @@ class NotificationEntityRepositoryITTest extends AbstractIntegrationTest {
 
 		repository.updateStatusByWebHookToken(TOKEN_1, NotificationStatus.SUCCESS);
 
-		assertThat(repository.findByWebHookToken(TOKEN_1)).isPresent().get().extracting(NotificationEntity::getStatus)
-				.isEqualTo(NotificationStatus.SUCCESS);
-		assertThat(repository.findByWebHookToken(TOKEN_2)).isPresent().get().extracting(NotificationEntity::getStatus)
-				.isEqualTo(NotificationStatus.PENDING);
+		assertThat(repository.findByWebHookToken(TOKEN_1)).isPresent()
+			.get()
+			.extracting(NotificationEntity::getStatus)
+			.isEqualTo(NotificationStatus.SUCCESS);
+		assertThat(repository.findByWebHookToken(TOKEN_2)).isPresent()
+			.get()
+			.extracting(NotificationEntity::getStatus)
+			.isEqualTo(NotificationStatus.PENDING);
 	}
 
 	// ═══════════════════════════════════════════════════════════════════════════
@@ -502,7 +506,7 @@ class NotificationEntityRepositoryITTest extends AbstractIntegrationTest {
 		repository.deleteByReceptionDateBeforeAndStatusIn(cutoff, EnumSet.of(NotificationStatus.FAILED));
 
 		assertThat(repository.findAll()).extracting(NotificationEntity::getWebHookToken)
-				.containsExactlyInAnyOrder(TOKEN_2, TOKEN_3);
+			.containsExactlyInAnyOrder(TOKEN_2, TOKEN_3);
 	}
 
 	// ═══════════════════════════════════════════════════════════════════════════

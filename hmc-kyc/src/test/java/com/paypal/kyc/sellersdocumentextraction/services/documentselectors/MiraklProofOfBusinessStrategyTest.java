@@ -3,9 +3,9 @@ package com.paypal.kyc.sellersdocumentextraction.services.documentselectors;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
-import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.sellersdocumentextraction.model.KYCProofOfBusinessEnum;
+import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,9 +47,9 @@ class MiraklProofOfBusinessStrategyTest {
 	void isApplicable_shouldReturnTrueWhenIsProofOfBusinessAndObjectReceivedAsParameterIsKYCDocumentSellerInfoModel(
 			final String documentType) {
 		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
-				.proofOfBusiness(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-						KYCConstants.HYPERWALLET_KYC_PROF_PROOF_OF_BUSINESS_FIELD, documentType)))
-				.build();
+			.proofOfBusiness(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+					KYCConstants.HYPERWALLET_KYC_PROF_PROOF_OF_BUSINESS_FIELD, documentType)))
+			.build();
 		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModel);
 
 		assertThat(result).isTrue();
@@ -59,7 +59,8 @@ class MiraklProofOfBusinessStrategyTest {
 	@Test
 	void isApplicable_shouldReturnFalseWhenIsProofOfBusinessAndObjectReceivedAsParameterIsNotKYCDocumentSellerInfoModel() {
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
-				.builder().build();
+			.builder()
+			.build();
 
 		final boolean result = testObj.isApplicable(kycDocumentBusinessStakeHolderInfoModel);
 

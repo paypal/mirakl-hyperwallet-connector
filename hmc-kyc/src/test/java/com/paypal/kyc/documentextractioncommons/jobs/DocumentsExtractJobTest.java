@@ -2,9 +2,8 @@ package com.paypal.kyc.documentextractioncommons.jobs;
 
 import com.paypal.jobsystem.batchjob.model.BatchJob;
 import com.paypal.jobsystem.quartzadapter.job.QuartzBatchJobAdapterFactory;
-import com.paypal.kyc.documentextractioncommons.jobs.DocumentsExtractJob;
-import com.paypal.kyc.stakeholdersdocumentextraction.batchjobs.BusinessStakeholdersDocumentsExtractBatchJob;
 import com.paypal.kyc.sellersdocumentextraction.batchjobs.SellersDocumentsExtractBatchJob;
+import com.paypal.kyc.stakeholdersdocumentextraction.batchjobs.BusinessStakeholdersDocumentsExtractBatchJob;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -36,8 +35,8 @@ class DocumentsExtractJobTest {
 	@Test
 	void execute_ShouldCallBusinessStakeholderAndSellersDocumentExtractBatchJob() throws JobExecutionException {
 		doNothing().when(testObj).executeBatchJob(sellersDocumentsExtractBatchJobMock, jobExecutionContextMock);
-		doNothing().when(testObj).executeBatchJob(businessStakeholdersDocumentsExtractBatchJobMock,
-				jobExecutionContextMock);
+		doNothing().when(testObj)
+			.executeBatchJob(businessStakeholdersDocumentsExtractBatchJobMock, jobExecutionContextMock);
 
 		testObj.execute(jobExecutionContextMock);
 

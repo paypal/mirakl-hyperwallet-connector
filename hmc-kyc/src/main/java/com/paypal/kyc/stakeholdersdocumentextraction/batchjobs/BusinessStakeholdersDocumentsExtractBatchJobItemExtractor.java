@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 /**
  * Handles the extraction of business stakeholders documents. It retrieves all documents
@@ -48,7 +47,7 @@ public class BusinessStakeholdersDocumentsExtractBatchJobItemExtractor extends
 
 		return kycDocumentsExtractionResult.getExtractedDocuments().stream()
 				.map(BusinessStakeholdersDocumentsExtractBatchJobItem::new)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 

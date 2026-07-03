@@ -1,15 +1,15 @@
 package com.paypal.jobsystem.batchjobaudit.repositories.entities;
 
 import com.paypal.jobsystem.batchjob.model.BatchJobItemStatus;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data

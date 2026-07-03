@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @Component
 public class KYCUserStatusResyncBatchJobItemExtractor
@@ -32,7 +31,7 @@ public class KYCUserStatusResyncBatchJobItemExtractor
 		return hyperwalletKycUserStatusExtractService.extractKycUserStatuses(delta, new Date())
 				.stream()
 				.map(KYCUserStatusResyncBatchJobItem::new)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 

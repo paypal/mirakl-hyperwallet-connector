@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 public class AccountingDocumentsLinksServiceImpl implements AccountingDocumentsLinksService {
 
 	private static final Set<HyperwalletItemTypes> REQUIRED_HYPERWALLET_TYPES = Set
-			.of(HyperwalletItemTypes.BANK_ACCOUNT, HyperwalletItemTypes.PROGRAM);
+		.of(HyperwalletItemTypes.BANK_ACCOUNT, HyperwalletItemTypes.PROGRAM);
 
 	private final ItemLinksService itemLinksService;
 
@@ -34,7 +34,7 @@ public class AccountingDocumentsLinksServiceImpl implements AccountingDocumentsL
 	@Override
 	public <T extends AccountingDocumentModel> void storeRequiredLinks(final Collection<T> accountingDocumentModels) {
 		final Map<MiraklItemLinkLocator, Collection<HyperwalletItemLinkLocator>> retrievedFromHmcShopLinks = itemLinksService
-				.findLinks(getMiraklItemLocators(getShopIdsSet(accountingDocumentModels)), REQUIRED_HYPERWALLET_TYPES);
+			.findLinks(getMiraklItemLocators(getShopIdsSet(accountingDocumentModels)), REQUIRED_HYPERWALLET_TYPES);
 
 		//@formatter:off
 		final Set<MiraklItemLinkLocator> notFoundShopLinks = retrievedFromHmcShopLinks.entrySet().stream()
@@ -44,7 +44,7 @@ public class AccountingDocumentsLinksServiceImpl implements AccountingDocumentsL
 		//@formatter:on
 
 		final Map<MiraklItemLinkLocator, Collection<HyperwalletItemLinkLocator>> retrievedFromMiraklShopLinks = miraklInvoiceLinksService
-				.getInvoiceRelatedShopLinks(getShopIdsSet(notFoundShopLinks));
+			.getInvoiceRelatedShopLinks(getShopIdsSet(notFoundShopLinks));
 
 		retrievedFromMiraklShopLinks.forEach(itemLinksService::createLinks);
 	}
@@ -60,8 +60,10 @@ public class AccountingDocumentsLinksServiceImpl implements AccountingDocumentsL
 	@Override
 	public void updateLinksFromShops(@NotNull final Collection<MiraklShop> shops) {
 		final Map<MiraklItemLinkLocator, Collection<HyperwalletItemLinkLocator>> linksFromShops = shops.stream()
-				.map(this::getItemLocatorsFromShop).filter(Optional::isPresent).map(Optional::get)
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+			.map(this::getItemLocatorsFromShop)
+			.filter(Optional::isPresent)
+			.map(Optional::get)
+			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 		linksFromShops.forEach(itemLinksService::createLinks);
 	}
@@ -71,14 +73,17 @@ public class AccountingDocumentsLinksServiceImpl implements AccountingDocumentsL
 		final MiraklItemLinkLocator miraklItemLinkLocator = createMiraklItemLocator(shop.getId());
 
 		final Optional<HyperwalletItemLinkLocator> bankAccountItemLinkLocator = MiraklShopUtils
-				.getBankAccountToken(shop).map(bankAccountToken -> new HyperwalletItemLinkLocator(bankAccountToken,
-						HyperwalletItemTypes.BANK_ACCOUNT));
+			.getBankAccountToken(shop)
+			.map(bankAccountToken -> new HyperwalletItemLinkLocator(bankAccountToken,
+					HyperwalletItemTypes.BANK_ACCOUNT));
 		final Optional<HyperwalletItemLinkLocator> programItemLinkLocator = MiraklShopUtils.getProgram(shop)
-				.map(programToken -> new HyperwalletItemLinkLocator(programToken, HyperwalletItemTypes.PROGRAM));
+			.map(programToken -> new HyperwalletItemLinkLocator(programToken, HyperwalletItemTypes.PROGRAM));
 
 		final Collection<HyperwalletItemLinkLocator> hyperwalletItemLinkLocators = Stream
-				.of(bankAccountItemLinkLocator, programItemLinkLocator).filter(Optional::isPresent).map(Optional::get)
-				.toList();
+			.of(bankAccountItemLinkLocator, programItemLinkLocator)
+			.filter(Optional::isPresent)
+			.map(Optional::get)
+			.toList();
 
 		return hyperwalletItemLinkLocators.isEmpty() ? Optional.empty()
 				: Optional.of(Map.entry(miraklItemLinkLocator, hyperwalletItemLinkLocators));
@@ -88,8 +93,10 @@ public class AccountingDocumentsLinksServiceImpl implements AccountingDocumentsL
 		if (hyperwalletItemLinkLocators.isEmpty()) {
 			return false;
 		}
-		return hyperwalletItemLinkLocators.stream().map(HyperwalletItemLinkLocator::getType).collect(Collectors.toSet())
-				.containsAll(REQUIRED_HYPERWALLET_TYPES);
+		return hyperwalletItemLinkLocators.stream()
+			.map(HyperwalletItemLinkLocator::getType)
+			.collect(Collectors.toSet())
+			.containsAll(REQUIRED_HYPERWALLET_TYPES);
 	}
 
 	@NotNull

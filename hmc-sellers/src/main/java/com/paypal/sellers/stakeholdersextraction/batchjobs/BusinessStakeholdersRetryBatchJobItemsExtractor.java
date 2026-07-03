@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Extract business stakeholders for retry from the failed items cache.
@@ -40,10 +39,9 @@ public class BusinessStakeholdersRetryBatchJobItemsExtractor
 
 		final List<SellerModel> miraklProfessionalSellers = miraklSellersExtractService.extractProfessionals(ids);
 		final List<BusinessStakeHolderModel> businessStakeHolderModels = businessStakeholderExtractService
-				.extractBusinessStakeHolders(miraklProfessionalSellers);
+			.extractBusinessStakeHolders(miraklProfessionalSellers);
 
-		return businessStakeHolderModels.stream().map(BusinessStakeholderExtractJobItem::new)
-				.collect(Collectors.toList());
+		return businessStakeHolderModels.stream().map(BusinessStakeholderExtractJobItem::new).toList();
 	}
 
 }

@@ -14,7 +14,7 @@ public abstract class AbstractMiraklSchemaStartupCheckPrinter implements Startup
 	@Override
 	public String[] print(final StartupCheck check) {
 		final List<MiraklSchemaDiffReportEntry> diffs = (List<MiraklSchemaDiffReportEntry>) check.getDetails()
-				.get(MiraklDocSchemaStartupCheckProvider.STATUS_CHECK_DETAILS_DIFF_KEY);
+			.get(MiraklDocSchemaStartupCheckProvider.STATUS_CHECK_DETAILS_DIFF_KEY);
 		if (diffs != null) {
 			//@formatter:off
 			return diffs.stream()

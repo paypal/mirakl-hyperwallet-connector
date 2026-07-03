@@ -46,7 +46,7 @@ class TerminatedShopsFilterTest {
 
 		verify(miraklShopsMock, times(1)).setShops(argThat(x -> x.size() == 2));
 		verify(miraklShopsMock, times(1))
-				.setShops(argThat(x -> x.containsAll(List.of(miraklShop2Mock, miraklShop3Mock))));
+			.setShops(argThat(x -> x.containsAll(List.of(miraklShop2Mock, miraklShop3Mock))));
 	}
 
 }

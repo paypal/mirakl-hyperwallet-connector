@@ -2,9 +2,6 @@ package com.paypal.infrastructure.mirakl.support;
 
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.InjectMocks;
 
 import java.util.Optional;
 

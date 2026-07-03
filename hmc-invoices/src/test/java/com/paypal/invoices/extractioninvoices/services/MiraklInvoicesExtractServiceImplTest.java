@@ -1,10 +1,9 @@
 package com.paypal.invoices.extractioninvoices.services;
 
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoice;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklSellerBillingCycle;
 import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
 import com.paypal.invoices.extractioncommons.model.InvoiceTypeEnum;
-import com.paypal.invoices.extractioninvoices.services.MiraklInvoicesExtractServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,7 +19,7 @@ class MiraklInvoicesExtractServiceImplTest {
 	private MiraklInvoicesExtractServiceImpl testObj;
 
 	@Mock
-	private Converter<MiraklInvoice, InvoiceModel> miraklInvoiceToInvoiceModelConverterMock;
+	private Converter<MiraklSellerBillingCycle, InvoiceModel> miraklInvoiceToInvoiceModelConverterMock;
 
 	@Test
 	void shouldReturnCreditNoteType() {
@@ -30,7 +29,7 @@ class MiraklInvoicesExtractServiceImplTest {
 	@Test
 	void shouldReturnCreditNoteConverter() {
 		assertThat(testObj.getMiraklInvoiceToAccountingModelConverter())
-				.isEqualTo(miraklInvoiceToInvoiceModelConverterMock);
+			.isEqualTo(miraklInvoiceToInvoiceModelConverterMock);
 	}
 
 }

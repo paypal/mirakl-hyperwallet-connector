@@ -42,8 +42,8 @@ class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategyTest {
 	private static final String MSG_ERROR = "Something went wrong updating KYC business stakeholder information of shop [%s]. Details [%s]";
 
 	private static final LogTrackerStub LOG_TRACKER_STUB = LogTrackerStub.create()
-			.recordForLevel(LogTracker.LogLevel.ERROR)
-			.recordForType(KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy.class);
+		.recordForLevel(LogTracker.LogLevel.ERROR)
+		.recordForType(KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy.class);
 
 	@Spy
 	@InjectMocks
@@ -136,18 +136,17 @@ class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategyTest {
 		//@formatter:on
 
 		when(hyperwalletBusinessStakeholderExtractServiceMock
-				.getKYCRequiredVerificationBusinessStakeHolders(HYPERWALLET_PROGRAM, USER_TOKEN))
-						.thenReturn(List.of(BUSINESS_STAKE_HOLDER_TOKEN));
+			.getKYCRequiredVerificationBusinessStakeHolders(HYPERWALLET_PROGRAM, USER_TOKEN))
+			.thenReturn(List.of(BUSINESS_STAKE_HOLDER_TOKEN));
 
 		when(miraklBusinessStakeholderDocumentsExtractServiceMock
-				.getKYCCustomValuesRequiredVerificationBusinessStakeholders(SHOP_ID,
-						List.of(BUSINESS_STAKE_HOLDER_TOKEN)))
-								.thenReturn(List.of(HW_STAKEHOLDER_PROOF_IDENTITY_TYPE_1));
+			.getKYCCustomValuesRequiredVerificationBusinessStakeholders(SHOP_ID, List.of(BUSINESS_STAKE_HOLDER_TOKEN)))
+			.thenReturn(List.of(HW_STAKEHOLDER_PROOF_IDENTITY_TYPE_1));
 
 		testObj.execute(kycUserDocumentFlagsNotificationBodyModel);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock)
-				.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture());
+			.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture());
 		final MiraklUpdateShopsRequest miraklRequest = miraklUpdateShopsRequestArgumentCaptor.getValue();
 		assertThat(miraklRequest.getShops()).hasSize(1);
 		final MiraklUpdateShop updateShop = miraklRequest.getShops().get(0);
@@ -157,9 +156,9 @@ class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategyTest {
 		final MiraklRequestAdditionalFieldValue additionalFieldValue = additionalFieldValues.get(0);
 		assertThat(additionalFieldValue.getCode()).isEqualTo(HW_STAKEHOLDER_PROOF_IDENTITY_TYPE_1);
 		assertThat(additionalFieldValue)
-				.isInstanceOf(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class);
+			.isInstanceOf(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class);
 		assertThat(((MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue) additionalFieldValue)
-				.getValue()).isEqualTo(Boolean.TRUE.toString());
+			.getValue()).isEqualTo(Boolean.TRUE.toString());
 	}
 
 	@Test
@@ -176,7 +175,7 @@ class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategyTest {
 		//@formatter:on
 
 		when(hyperwalletBusinessStakeholderExtractServiceMock
-				.getKYCRequiredVerificationBusinessStakeHolders(HYPERWALLET_PROGRAM, USER_TOKEN)).thenReturn(List.of());
+			.getKYCRequiredVerificationBusinessStakeHolders(HYPERWALLET_PROGRAM, USER_TOKEN)).thenReturn(List.of());
 
 		testObj.execute(kycUserDocumentFlagsNotificationBodyModel);
 
@@ -197,13 +196,12 @@ class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategyTest {
 		//@formatter:on
 
 		when(hyperwalletBusinessStakeholderExtractServiceMock
-				.getKYCRequiredVerificationBusinessStakeHolders(HYPERWALLET_PROGRAM, USER_TOKEN))
-						.thenReturn(List.of(BUSINESS_STAKE_HOLDER_TOKEN));
+			.getKYCRequiredVerificationBusinessStakeHolders(HYPERWALLET_PROGRAM, USER_TOKEN))
+			.thenReturn(List.of(BUSINESS_STAKE_HOLDER_TOKEN));
 
 		when(miraklBusinessStakeholderDocumentsExtractServiceMock
-				.getKYCCustomValuesRequiredVerificationBusinessStakeholders(SHOP_ID,
-						List.of(BUSINESS_STAKE_HOLDER_TOKEN)))
-								.thenReturn(List.of(HW_STAKEHOLDER_PROOF_IDENTITY_TYPE_1));
+			.getKYCCustomValuesRequiredVerificationBusinessStakeholders(SHOP_ID, List.of(BUSINESS_STAKE_HOLDER_TOKEN)))
+			.thenReturn(List.of(HW_STAKEHOLDER_PROOF_IDENTITY_TYPE_1));
 
 		final MiraklException miraklException = new MiraklException("An error has occurred");
 		when(miraklMarketplacePlatformOperatorApiClientMock.updateShops(any())).thenThrow(miraklException);
@@ -217,7 +215,7 @@ class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategyTest {
 				"Issue detected updating KYC business stakeholder information in Mirakl",
 				(EMAIL_BODY_PREFIX
 						+ "Something went wrong updating KYC business stakeholder information for shop [%s]%n%s")
-								.formatted(SHOP_ID, MiraklLoggingErrorsUtil.stringify(miraklException)));
+					.formatted(SHOP_ID, MiraklLoggingErrorsUtil.stringify(miraklException)));
 	}
 
 }

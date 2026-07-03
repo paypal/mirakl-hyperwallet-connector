@@ -51,7 +51,7 @@ class HMCExceptionHandlerTest {
 		when(methodArgumentTypeMismatchExceptionMock.getSuppressed()).thenReturn(EMPTY_THROWABLE_ARRAY);
 
 		final HMCErrorResponse result = testObj
-				.handleMethodArgumentTypeMismatchException(methodArgumentTypeMismatchExceptionMock);
+			.handleMethodArgumentTypeMismatchException(methodArgumentTypeMismatchExceptionMock);
 
 		assertThat(result.getErrorMessage()).isEqualTo(HttpStatus.BAD_REQUEST.getReasonPhrase());
 	}
@@ -62,7 +62,7 @@ class HMCExceptionHandlerTest {
 		when(missingServletRequestParameterExceptionMock.getSuppressed()).thenReturn(EMPTY_THROWABLE_ARRAY);
 
 		final HMCErrorResponse result = testObj
-				.handleMissingRequestParametersException(missingServletRequestParameterExceptionMock);
+			.handleMissingRequestParametersException(missingServletRequestParameterExceptionMock);
 
 		assertThat(result.getErrorMessage()).isEqualTo(HttpStatus.BAD_REQUEST.getReasonPhrase());
 	}

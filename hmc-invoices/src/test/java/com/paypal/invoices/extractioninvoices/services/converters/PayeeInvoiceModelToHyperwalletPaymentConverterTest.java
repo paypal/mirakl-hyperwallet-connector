@@ -1,18 +1,18 @@
 package com.paypal.invoices.extractioninvoices.services.converters;
 
 import com.hyperwallet.clientsdk.model.HyperwalletPayment;
-import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
 import com.paypal.infrastructure.hyperwallet.services.PaymentHyperwalletSDKService;
+import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-
-import java.math.BigDecimal;
 
 @ExtendWith(MockitoExtension.class)
 class PayeeInvoiceModelToHyperwalletPaymentConverterTest {
@@ -40,7 +40,7 @@ class PayeeInvoiceModelToHyperwalletPaymentConverterTest {
 	@Test
 	void convert_shouldConvertAnInvoiceIntoHyperwalletPayment() {
 		when(paymentHyperwalletSDKServiceMock.getProgramTokenByHyperwalletProgram(HYPERWALLET_PROGRAM))
-				.thenReturn(PROGRAM_TOKEN);
+			.thenReturn(PROGRAM_TOKEN);
 
 		//@formatter:off
 		final InvoiceModel invoice = InvoiceModel.builder()

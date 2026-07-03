@@ -25,7 +25,7 @@ public class UsersEndpointMock {
 		final String url = getUrl(userToken);
 
 		mockServerClient.when(request().withMethod(HttpMethod.PUT.name()).withPath(url).withBody(json))
-				.respond(response().withStatusCode(HttpStatus.OK.value()).withBody(json));
+			.respond(response().withStatusCode(HttpStatus.OK.value()).withBody(json));
 	}
 
 	public void verifyUpdatedUser(final String userToken) {

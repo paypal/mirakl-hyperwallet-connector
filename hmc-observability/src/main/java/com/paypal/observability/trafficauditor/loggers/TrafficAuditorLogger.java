@@ -31,7 +31,7 @@ public final class TrafficAuditorLogger {
 
 	private ObjectMapper getObjectMapper() {
 		final ObjectMapper traceLogObjectMapper = new ObjectMapper();
-		traceLogObjectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		traceLogObjectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
 		return traceLogObjectMapper;
 	}
 

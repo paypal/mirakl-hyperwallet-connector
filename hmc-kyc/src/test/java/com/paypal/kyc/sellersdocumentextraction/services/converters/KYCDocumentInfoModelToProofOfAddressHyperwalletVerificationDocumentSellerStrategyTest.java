@@ -43,16 +43,19 @@ class KYCDocumentInfoModelToProofOfAddressHyperwalletVerificationDocumentSellerS
 	@BeforeEach
 	void setUp() {
 		documentProofOfAddressFront = KYCDocumentModel.builder()
-				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_ADDRESS).file(proofOfIdentityFileFrontMock)
-				.build();
+			.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_ADDRESS)
+			.file(proofOfIdentityFileFrontMock)
+			.build();
 
-		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder().clientUserId(CLIENT_USER_ID)
-				.userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
-						KYCConstants.HYPERWALLET_USER_TOKEN_FIELD, USR_TOKEN)))
-				.professional(false)
-				.proofOfAddress(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_ADDRESS_FIELD, "BANK_STATEMENT")))
-				.documents(List.of(documentProofOfAddressFront)).build();
+		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
+			.clientUserId(CLIENT_USER_ID)
+			.userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
+					KYCConstants.HYPERWALLET_USER_TOKEN_FIELD, USR_TOKEN)))
+			.professional(false)
+			.proofOfAddress(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+					KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_ADDRESS_FIELD, "BANK_STATEMENT")))
+			.documents(List.of(documentProofOfAddressFront))
+			.build();
 	}
 
 	@Test
@@ -79,9 +82,9 @@ class KYCDocumentInfoModelToProofOfAddressHyperwalletVerificationDocumentSellerS
 	@Test
 	void isApplicable_shouldReturnFalseWhenIdentityDocumentsIsEmpty() {
 		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
-				.proofOfAddress(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_ADDRESS_FIELD, "BANK_STATEMENT")))
-				.build();
+			.proofOfAddress(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+					KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_ADDRESS_FIELD, "BANK_STATEMENT")))
+			.build();
 
 		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModel);
 
@@ -91,7 +94,8 @@ class KYCDocumentInfoModelToProofOfAddressHyperwalletVerificationDocumentSellerS
 	@Test
 	void isApplicable_shouldReturnFalseWhenProofOfAddressIsEmpty() {
 		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
-				.documents(List.of(documentProofOfAddressFront)).build();
+			.documents(List.of(documentProofOfAddressFront))
+			.build();
 
 		final boolean result = testObj.isApplicable(kycDocumentSellerInfoModel);
 
@@ -100,8 +104,9 @@ class KYCDocumentInfoModelToProofOfAddressHyperwalletVerificationDocumentSellerS
 
 	@Test
 	void isApplicable_shouldReturnFalseWhenIsProfessional() {
-		final KYCDocumentSellerInfoModel professional = kycDocumentSellerInfoModel.toBuilder().professional(true)
-				.build();
+		final KYCDocumentSellerInfoModel professional = kycDocumentSellerInfoModel.toBuilder()
+			.professional(true)
+			.build();
 
 		final boolean result = testObj.isApplicable(professional);
 

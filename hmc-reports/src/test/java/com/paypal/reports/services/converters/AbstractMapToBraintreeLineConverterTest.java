@@ -2,7 +2,6 @@ package com.paypal.reports.services.converters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paypal.reports.model.graphql.braintree.paymentransaction.BraintreeNodeGraphQLModel;
-import com.paypal.reports.services.converters.AbstractMapToBraintreeLineConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

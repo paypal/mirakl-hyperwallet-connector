@@ -5,13 +5,13 @@ import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletBusinessStakeholder;
 import com.hyperwallet.clientsdk.model.HyperwalletList;
 import com.mirakl.client.core.exception.MiraklException;
+import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
+import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.support.exceptions.HMCException;
 import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
-import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
-import com.paypal.infrastructure.mail.services.MailNotificationUtil;
-import com.paypal.infrastructure.support.services.TokenSynchronizationService;
 import com.paypal.infrastructure.support.logging.HyperwalletLoggingErrorsUtil;
+import com.paypal.infrastructure.support.services.TokenSynchronizationService;
 import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -155,7 +155,7 @@ public class BusinessStakeholderTokenSynchronizationServiceImpl
 			final BusinessStakeHolderModel businessStakeHolderModel) {
 
 		final Hyperwallet hyperwalletSDK = userHyperwalletSDKService
-				.getHyperwalletInstanceByHyperwalletProgram(businessStakeHolderModel.getHyperwalletProgram());
+			.getHyperwalletInstanceByHyperwalletProgram(businessStakeHolderModel.getHyperwalletProgram());
 
 		try {
 

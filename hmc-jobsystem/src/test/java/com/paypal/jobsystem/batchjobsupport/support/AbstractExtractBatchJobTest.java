@@ -5,7 +5,6 @@ import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.jobsystem.batchjob.model.BatchJobType;
 import com.paypal.jobsystem.batchjobsupport.model.BatchJobItemProcessor;
 import com.paypal.jobsystem.batchjobsupport.model.BatchJobItemsExtractor;
-import com.paypal.jobsystem.batchjobsupport.support.AbstractExtractBatchJob;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

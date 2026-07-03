@@ -3,10 +3,10 @@ package com.paypal.kyc.sellersdocumentextraction.batchjobs;
 import com.callibrity.logging.test.LogTracker;
 import com.callibrity.logging.test.LogTrackerStub;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
-import com.paypal.kyc.documentextractioncommons.support.AbstractDocumentsBatchJobItemProcessor;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
-import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.documentextractioncommons.services.KYCReadyForReviewService;
+import com.paypal.kyc.documentextractioncommons.support.AbstractDocumentsBatchJobItemProcessor;
+import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.sellersdocumentextraction.services.HyperwalletSellerExtractService;
 import com.paypal.kyc.sellersdocumentextraction.services.MiraklSellerDocumentsExtractService;
 import org.junit.jupiter.api.Test;
@@ -55,8 +55,9 @@ class SellersDocumentsExtractBatchJobItemProcessorTest {
 	private BatchJobContext batchJobContextMock;
 
 	@RegisterExtension
-	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.INFO)
-			.recordForType(AbstractDocumentsBatchJobItemProcessor.class);
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create()
+		.recordForLevel(LogTracker.LogLevel.INFO)
+		.recordForType(AbstractDocumentsBatchJobItemProcessor.class);
 
 	@Test
 	void processItem_shouldPushFlagNotifyAndCleanDocuments_whenDocumentsCanBePushed() {
@@ -69,7 +70,7 @@ class SellersDocumentsExtractBatchJobItemProcessorTest {
 		testObj.processItem(batchJobContextMock, sellersDocumentsExtractBatchJobItemMock);
 		verify(hyperwalletSellerExtractServiceMock).pushDocuments(kycDocumentSellerInfoModelMock);
 		verify(miraklSellerDocumentsExtractServiceMock)
-				.setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(kycDocumentSellerInfoModelMock);
+			.setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(kycDocumentSellerInfoModelMock);
 		verify(kycReadyForReviewServiceMock).notifyReadyForReview(kycDocumentSellerInfoModelMock);
 		verify(fileMock).delete();
 
@@ -87,7 +88,7 @@ class SellersDocumentsExtractBatchJobItemProcessorTest {
 		testObj.processItem(batchJobContextMock, sellersDocumentsExtractBatchJobItemMock);
 		verify(hyperwalletSellerExtractServiceMock).pushDocuments(kycDocumentSellerInfoModelMock);
 		verify(miraklSellerDocumentsExtractServiceMock, times(0))
-				.setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(kycDocumentSellerInfoModelMock);
+			.setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(kycDocumentSellerInfoModelMock);
 		verify(kycReadyForReviewServiceMock, times(0)).notifyReadyForReview(kycDocumentSellerInfoModelMock);
 		verify(fileMock).delete();
 

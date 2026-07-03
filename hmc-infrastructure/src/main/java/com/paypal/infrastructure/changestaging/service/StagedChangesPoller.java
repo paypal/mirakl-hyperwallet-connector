@@ -41,8 +41,11 @@ public class StagedChangesPoller {
 		}
 
 		public StagedChangesExecutorInfo next() {
-			final StagedChangesExecutorInfo next = executions.entrySet().stream().min(Map.Entry.comparingByValue())
-					.map(Map.Entry::getKey).orElseThrow(() -> new IllegalStateException("No candidates found"));
+			final StagedChangesExecutorInfo next = executions.entrySet()
+				.stream()
+				.min(Map.Entry.comparingByValue())
+				.map(Map.Entry::getKey)
+				.orElseThrow(() -> new IllegalStateException("No candidates found"));
 			executions.put(next, executions.get(next) + 1);
 			return next;
 		}

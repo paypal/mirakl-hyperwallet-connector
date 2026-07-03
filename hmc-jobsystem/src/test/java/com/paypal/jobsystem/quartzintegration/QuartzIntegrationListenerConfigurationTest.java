@@ -1,6 +1,5 @@
 package com.paypal.jobsystem.quartzintegration;
 
-import com.paypal.jobsystem.quartzintegration.QuartzIntegrationListenerConfiguration;
 import com.paypal.jobsystem.quartzintegration.listener.JobExecutionInformationListener;
 import com.paypal.jobsystem.quartzintegration.listener.SameJobVetoingListener;
 import org.junit.jupiter.api.Test;
@@ -39,7 +38,7 @@ class QuartzIntegrationListenerConfigurationTest {
 	private ArgumentCaptor<JobExecutionInformationListener> jobExecutionInformationListenerArgumentCaptor;
 
 	@Captor
-	private ArgumentCaptor<SameJobVetoingListener> SameJobVetoingListenerArgumentCapture;
+	private ArgumentCaptor<SameJobVetoingListener> sameJobVetoingListenerArgumentCapture;
 
 	@Test
 	void jobDeltaListenerInit_shouldAddJobExecutionInformationAndSameJobVetoingListener() throws SchedulerException {
@@ -51,7 +50,7 @@ class QuartzIntegrationListenerConfigurationTest {
 		verify(listenerManagerMock).addJobListener(jobExecutionInformationListenerArgumentCaptor.capture());
 
 		assertThat(jobExecutionInformationListenerArgumentCaptor.getValue())
-				.isEqualTo(jobExecutionInformationListenerMock);
+			.isEqualTo(jobExecutionInformationListenerMock);
 	}
 
 	@Test
@@ -62,9 +61,9 @@ class QuartzIntegrationListenerConfigurationTest {
 
 		testObj.triggerSameJobVetoingListener();
 
-		verify(listenerManagerMock).addTriggerListener(SameJobVetoingListenerArgumentCapture.capture());
+		verify(listenerManagerMock).addTriggerListener(sameJobVetoingListenerArgumentCapture.capture());
 
-		assertThat(SameJobVetoingListenerArgumentCapture.getValue()).isEqualTo(sameJobVetoingListener);
+		assertThat(sameJobVetoingListenerArgumentCapture.getValue()).isEqualTo(sameJobVetoingListener);
 	}
 
 }

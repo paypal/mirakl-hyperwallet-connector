@@ -3,7 +3,6 @@ package com.paypal.kyc.incomingnotifications.services.converters;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.kyc.incomingnotifications.model.KYCDocumentNotificationModel;
-import com.paypal.kyc.incomingnotifications.services.converters.HyperWalletObjectToKYCUserStatusNotificationBodyModelConverter;
 import com.paypal.kyc.incomingnotifications.model.KYCRejectionReasonTypeEnum;
 import com.paypal.kyc.incomingnotifications.model.KYCUserStatusNotificationBodyModel;
 import com.paypal.kyc.incomingnotifications.services.KYCRejectionReasonService;
@@ -51,7 +50,7 @@ class HyperWalletObjectToKYCUserStatusExecutorNotificationBodyModelConverterTest
 				BUSINESS_PROFILE_TYPE);
 
 		when(kycRejectionReasonServiceMock.getReasonTypes(hyperWalletKycUserBodyNotification))
-				.thenReturn(List.of(KYCRejectionReasonTypeEnum.VERIFICATIONSTATUS_PROF_REQUIRED));
+			.thenReturn(List.of(KYCRejectionReasonTypeEnum.VERIFICATIONSTATUS_PROF_REQUIRED));
 
 		final KYCUserStatusNotificationBodyModel result = testObj.convert(hyperWalletKycUserBodyNotification);
 
@@ -59,10 +58,10 @@ class HyperWalletObjectToKYCUserStatusExecutorNotificationBodyModelConverterTest
 		assertThat(result.getProfileType()).isEqualTo(BUSINESS_PROFILE_TYPE);
 		assertThat(result.getVerificationStatus()).isEqualTo(REQUIRED_VERIFICATION_STATUS);
 		assertThat(result.getBusinessStakeholderVerificationStatus())
-				.isEqualTo(NOT_REQUIRED_BUSINESS_VERIFICATION_STATUS);
+			.isEqualTo(NOT_REQUIRED_BUSINESS_VERIFICATION_STATUS);
 		assertThat(result.getLetterOfAuthorizationStatus()).isEqualTo(FAILED_LETTER_VERIFICATION_STATUS);
 		assertThat(result.getReasonsType())
-				.containsExactlyInAnyOrder(KYCRejectionReasonTypeEnum.VERIFICATIONSTATUS_PROF_REQUIRED);
+			.containsExactlyInAnyOrder(KYCRejectionReasonTypeEnum.VERIFICATIONSTATUS_PROF_REQUIRED);
 		verify(objectKYCDocumentNotificationModelListConverterMock).convert(hyperWalletKycUserBodyNotification);
 	}
 
@@ -72,7 +71,7 @@ class HyperWalletObjectToKYCUserStatusExecutorNotificationBodyModelConverterTest
 				INDIVIDUAL_PROFILE_TYPE);
 
 		when(kycRejectionReasonServiceMock.getReasonTypes(hyperWalletKycUserBodyNotification))
-				.thenReturn(List.of(KYCRejectionReasonTypeEnum.VERIFICATIONSTATUS_IND_REQUIRED));
+			.thenReturn(List.of(KYCRejectionReasonTypeEnum.VERIFICATIONSTATUS_IND_REQUIRED));
 
 		final KYCUserStatusNotificationBodyModel result = testObj.convert(hyperWalletKycUserBodyNotification);
 
@@ -89,7 +88,7 @@ class HyperWalletObjectToKYCUserStatusExecutorNotificationBodyModelConverterTest
 				HyperwalletUser.LetterOfAuthorizationStatus.NOT_REQUIRED);
 
 		when(kycRejectionReasonServiceMock.getReasonTypes(hyperWalletKycUserBodyNotification))
-				.thenReturn(List.of(KYCRejectionReasonTypeEnum.BUSINESS_STAKEHOLDER_REQUIRED));
+			.thenReturn(List.of(KYCRejectionReasonTypeEnum.BUSINESS_STAKEHOLDER_REQUIRED));
 
 		final KYCUserStatusNotificationBodyModel result = testObj.convert(hyperWalletKycUserBodyNotification);
 
@@ -106,7 +105,7 @@ class HyperWalletObjectToKYCUserStatusExecutorNotificationBodyModelConverterTest
 				HyperwalletUser.LetterOfAuthorizationStatus.REQUIRED);
 
 		when(kycRejectionReasonServiceMock.getReasonTypes(hyperWalletKycUserBodyNotification))
-				.thenReturn(List.of(KYCRejectionReasonTypeEnum.LETTER_OF_AUTHORIZATION_REQUIRED));
+			.thenReturn(List.of(KYCRejectionReasonTypeEnum.LETTER_OF_AUTHORIZATION_REQUIRED));
 
 		final KYCUserStatusNotificationBodyModel result = testObj.convert(hyperWalletKycUserBodyNotification);
 
@@ -114,7 +113,7 @@ class HyperWalletObjectToKYCUserStatusExecutorNotificationBodyModelConverterTest
 		assertThat(result.getProfileType()).isEqualTo(BUSINESS_PROFILE_TYPE);
 		assertThat(result.getVerificationStatus()).isEqualTo(HyperwalletUser.VerificationStatus.NOT_REQUIRED);
 		assertThat(result.getReasonsType())
-				.containsExactly(KYCRejectionReasonTypeEnum.LETTER_OF_AUTHORIZATION_REQUIRED);
+			.containsExactly(KYCRejectionReasonTypeEnum.LETTER_OF_AUTHORIZATION_REQUIRED);
 	}
 
 	@Test

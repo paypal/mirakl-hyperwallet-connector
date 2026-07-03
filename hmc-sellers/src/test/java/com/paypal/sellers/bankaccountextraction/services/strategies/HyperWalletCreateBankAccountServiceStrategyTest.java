@@ -62,10 +62,10 @@ class HyperWalletCreateBankAccountServiceStrategyTest {
 	@Test
 	void callHyperwalletAPI_shouldCreateBankAccount() {
 		when(hyperwalletMock.createBankAccount(hyperwalletBankAccountRequestMock))
-				.thenReturn(hyperwalletBankAccountResultMock);
+			.thenReturn(hyperwalletBankAccountResultMock);
 
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
-				.thenReturn(hyperwalletMock);
+			.thenReturn(hyperwalletMock);
 
 		final HyperwalletBankAccount result = testObj.callHyperwalletAPI(HYPERWALLET_PROGRAM,
 				hyperwalletBankAccountRequestMock);

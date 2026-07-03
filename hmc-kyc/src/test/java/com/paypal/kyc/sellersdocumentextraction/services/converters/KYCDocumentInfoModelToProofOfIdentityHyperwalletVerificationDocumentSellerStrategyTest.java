@@ -3,9 +3,9 @@ package com.paypal.kyc.sellersdocumentextraction.services.converters;
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
-import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentCategoryEnum;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
+import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
 import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,14 +62,16 @@ class KYCDocumentInfoModelToProofOfIdentityHyperwalletVerificationDocumentSeller
 				.file(proofOfIdentityFileBackMock)
 				.build();
 		//@formatter:on
-		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder().clientUserId(CLIENT_USER_ID)
-				.userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
-						KYCConstants.HYPERWALLET_USER_TOKEN_FIELD, USR_TOKEN)))
-				.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD, "GOVERNMENT_ID")))
-				.countryIsoCode(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
-						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_COUNTRY_ISOCODE, "US")))
-				.documents(List.of(documentProofOfIdentityFront, documentProofOfIdentityBack)).build();
+		kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
+			.clientUserId(CLIENT_USER_ID)
+			.userToken(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
+					KYCConstants.HYPERWALLET_USER_TOKEN_FIELD, USR_TOKEN)))
+			.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+					KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD, "GOVERNMENT_ID")))
+			.countryIsoCode(List.of(new MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue(
+					KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_COUNTRY_ISOCODE, "US")))
+			.documents(List.of(documentProofOfIdentityFront, documentProofOfIdentityBack))
+			.build();
 		//@formatter:off
 	}
 

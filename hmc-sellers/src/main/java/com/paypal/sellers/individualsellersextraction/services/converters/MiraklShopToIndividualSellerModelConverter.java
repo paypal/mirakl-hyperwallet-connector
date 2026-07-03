@@ -4,9 +4,9 @@ import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.paypal.infrastructure.support.strategy.StrategyExecutor;
 import com.paypal.sellers.bankaccountextraction.model.BankAccountModel;
 import com.paypal.sellers.sellerextractioncommons.configuration.SellersMiraklApiConfig;
-import com.paypal.sellers.sellerextractioncommons.services.converters.AbstractMiraklShopToSellerModelConverter;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import com.paypal.sellers.sellerextractioncommons.model.SellerProfileType;
+import com.paypal.sellers.sellerextractioncommons.services.converters.AbstractMiraklShopToSellerModelConverter;
 import com.paypal.sellers.utils.LanguageConverter;
 import org.springframework.stereotype.Service;
 

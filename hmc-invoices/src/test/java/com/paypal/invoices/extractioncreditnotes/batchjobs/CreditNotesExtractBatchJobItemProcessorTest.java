@@ -1,10 +1,8 @@
 package com.paypal.invoices.extractioncreditnotes.batchjobs;
 
-import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNoteExtractJobItem;
-import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNotesExtractBatchJobItemProcessor;
-import com.paypal.jobsystem.batchjob.model.BatchJobContext;
-import com.paypal.invoices.extractioncreditnotes.model.CreditNoteModel;
 import com.paypal.invoices.extractioncommons.services.HyperWalletPaymentExtractService;
+import com.paypal.invoices.extractioncreditnotes.model.CreditNoteModel;
+import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -3,19 +3,13 @@ package com.paypal.jobsystem.batchjobsupport.support;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.testsupport.TestDateUtil;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
 
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 
@@ -41,7 +35,7 @@ class AbstractBatchJobItemExtractorTest {
 	void getDelta_shouldReturnJobDetailDelta_whenDeltaExistsInJobParameters() {
 		// given
 		when(batchJobContextMock.getJobExecutionContext().getJobDetail().getJobDataMap().get(DELTA_KEY))
-				.thenReturn(DELTA);
+			.thenReturn(DELTA);
 
 		// when
 		final Date result = testObj.getDelta(batchJobContextMock);
@@ -54,7 +48,7 @@ class AbstractBatchJobItemExtractorTest {
 	void getDelta_shouldReturnCalculatedDate_whenDeltaDoesntExistsInJobParameters() {
 		// given
 		when(batchJobContextMock.getJobExecutionContext().getJobDetail().getJobDataMap().get(DELTA_KEY))
-				.thenReturn(null);
+			.thenReturn(null);
 		doReturn(CALCULATED_DELTA).when(testObj).getCalculatedDelta(batchJobContextMock);
 
 		// when

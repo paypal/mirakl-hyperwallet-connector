@@ -29,7 +29,7 @@ public class MiraklSchemaDiffReportBuilderImpl implements MiraklSchemaDiffReport
 		final MiraklSchemaDiffReport miraklSchemaDiffReport = new MiraklSchemaDiffReport();
 
 		miraklSchemaDiff.getDifferences()
-				.forEach(diff -> addReportEntry(miraklSchemaDiffReport, diff, miraklSchemaDiff.getSchemaType()));
+			.forEach(diff -> addReportEntry(miraklSchemaDiffReport, diff, miraklSchemaDiff.getSchemaType()));
 
 		if (miraklSchemaDiffReport.hasFailSeverityEntries()) {
 			miraklSchemaDiffReport.setStatusMessage(STATUS_MESSAGE_FAIL);
@@ -47,7 +47,7 @@ public class MiraklSchemaDiffReportBuilderImpl implements MiraklSchemaDiffReport
 	private void addReportEntry(final MiraklSchemaDiffReport miraklSchemaDiffReport, final MiraklSchemaDiffEntry diff,
 			final Class<? extends MiraklSchemaItem> schemaType) {
 		final MiraklSchemaDiffEntrySeverityAssigner severityAssigner = miraklSchemaDiffEntrySeverityAssignerRegistry
-				.getMiraklSchemaDiffEntrySeverityAssigner(schemaType);
+			.getMiraklSchemaDiffEntrySeverityAssigner(schemaType);
 		miraklSchemaDiffReport.addReportEntry(diff, severityAssigner.getSeverityFor(diff));
 	}
 

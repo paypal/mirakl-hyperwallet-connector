@@ -41,9 +41,9 @@ public class KYCRejectionReasonServiceImpl implements KYCRejectionReasonService 
 					Optional.ofNullable(notificationDetails.get(VERIFICATION_STATUS)).orElse(null));
 
 			final HyperwalletUser.BusinessStakeholderVerificationStatus businessStakeholderVerificationStatus = EnumUtils
-					.getEnum(HyperwalletUser.BusinessStakeholderVerificationStatus.class,
-							Optional.ofNullable(notificationDetails.get(BUSINESS_STAKEHOLDER_VERIFICATION_STATUS))
-									.orElse(null));
+				.getEnum(HyperwalletUser.BusinessStakeholderVerificationStatus.class,
+						Optional.ofNullable(notificationDetails.get(BUSINESS_STAKEHOLDER_VERIFICATION_STATUS))
+							.orElse(null));
 
 			final HyperwalletUser.LetterOfAuthorizationStatus letterOfAuthorizationStatus = EnumUtils.getEnum(
 					HyperwalletUser.LetterOfAuthorizationStatus.class,
@@ -56,7 +56,7 @@ public class KYCRejectionReasonServiceImpl implements KYCRejectionReasonService 
 			//@formatter:on
 
 			if (HyperwalletUser.BusinessStakeholderVerificationStatus.REQUIRED
-					.equals(businessStakeholderVerificationStatus)) {
+				.equals(businessStakeholderVerificationStatus)) {
 				reasons.add(KYCRejectionReasonTypeEnum.BUSINESS_STAKEHOLDER_REQUIRED);
 			}
 
@@ -85,8 +85,9 @@ public class KYCRejectionReasonServiceImpl implements KYCRejectionReasonService 
 		if (Objects.isNull(reasonsType) || CollectionUtils.isEmpty(reasonsType)) {
 			return "";
 		}
-		final String reasonsDescription = reasonsType.stream().map(KYCRejectionReasonTypeEnum::getReason)
-				.collect(Collectors.joining(""));
+		final String reasonsDescription = reasonsType.stream()
+			.map(KYCRejectionReasonTypeEnum::getReason)
+			.collect(Collectors.joining(""));
 
 		return KYCRejectionReasonTypeEnum.getReasonHeader() + reasonsDescription
 				+ KYCRejectionReasonTypeEnum.getReasonFooter();

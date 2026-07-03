@@ -1,8 +1,7 @@
 package com.paypal.jobsystem.batchjobfailures.services.resolvepolicies;
 
-import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 import com.paypal.infrastructure.support.exceptions.HMCException;
-import org.assertj.core.api.Assertions;
+import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

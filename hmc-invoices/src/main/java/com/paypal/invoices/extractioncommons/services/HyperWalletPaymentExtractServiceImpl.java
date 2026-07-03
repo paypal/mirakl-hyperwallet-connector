@@ -3,15 +3,15 @@ package com.paypal.invoices.extractioncommons.services;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletList;
 import com.hyperwallet.clientsdk.model.HyperwalletPayment;
+import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.support.exceptions.HMCException;
-import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.support.logging.HyperwalletLoggingErrorsUtil;
 import com.paypal.invoices.extractioncommons.connectors.PaymentHyperwalletApiClient;
-import com.paypal.invoices.paymentnotifications.configuration.PaymentNotificationConfig;
 import com.paypal.invoices.extractioncommons.model.AccountingDocumentModel;
 import com.paypal.invoices.extractioncreditnotes.model.CreditNoteModel;
 import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
+import com.paypal.invoices.paymentnotifications.configuration.PaymentNotificationConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -100,13 +100,12 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 			return payment;
 		}
 		catch (final HyperwalletException e) {
-			mailNotificationUtil
-					.sendPlainTextEmail("Issue detected when creating payment for an invoice in Hyperwallet",
-							"Something went wrong creating payment for invoice [%s]%n%s".formatted(
-									hyperwalletPayment.getClientPaymentId(),
-									HyperwalletLoggingErrorsUtil.stringify(e)));
+			mailNotificationUtil.sendPlainTextEmail(
+					"Issue detected when creating payment for an invoice in Hyperwallet",
+					"Something went wrong creating payment for invoice [%s]%n%s"
+						.formatted(hyperwalletPayment.getClientPaymentId(), HyperwalletLoggingErrorsUtil.stringify(e)));
 			log.error("Something went wrong creating payment for invoice [%s].%n%s"
-					.formatted(hyperwalletPayment.getClientPaymentId(), HyperwalletLoggingErrorsUtil.stringify(e)), e);
+				.formatted(hyperwalletPayment.getClientPaymentId(), HyperwalletLoggingErrorsUtil.stringify(e)), e);
 
 			throw new HMCException("Error while invoking Hyperwallet", e);
 		}
@@ -115,8 +114,8 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 	protected boolean isInvoiceCreated(final HyperwalletPayment payment) {
 		try {
 			return getPayments(payment.getProgramToken(), payment.getClientPaymentId()).stream()
-					.map(HyperwalletPayment::getStatus)
-					.anyMatch(status -> !paymentNotificationConfig.getFailureStatuses().contains(status));
+				.map(HyperwalletPayment::getStatus)
+				.anyMatch(status -> !paymentNotificationConfig.getFailureStatuses().contains(status));
 		}
 		catch (final Exception e) {
 			// Let the flow of execution continue. Checking the existence of the payment
@@ -144,8 +143,11 @@ public class HyperWalletPaymentExtractServiceImpl implements HyperWalletPaymentE
 
 	private Collection<HyperwalletPayment> extractPaymentsFromQueryDTO(
 			final HyperwalletList<HyperwalletPayment> payments) {
-		return Stream.ofNullable(payments).map(HyperwalletList::getData).filter(Objects::nonNull)
-				.flatMap(Collection::stream).collect(Collectors.toUnmodifiableList());
+		return Stream.ofNullable(payments)
+			.map(HyperwalletList::getData)
+			.filter(Objects::nonNull)
+			.flatMap(Collection::stream)
+			.collect(Collectors.toUnmodifiableList());
 	}
 
 }

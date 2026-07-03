@@ -3,12 +3,11 @@ package com.paypal.kyc.documentextractioncommons.support;
 import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.domain.common.FileWrapper;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-
 import com.mirakl.client.mmp.request.shop.document.MiraklDownloadShopsDocumentsRequest;
-import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
-import com.paypal.infrastructure.support.strategy.Strategy;
+import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
+import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
 import lombok.extern.slf4j.Slf4j;
@@ -38,16 +37,19 @@ public abstract class AbstractMiraklDocumentsSelectorStrategy
 				miraklFields);
 
 		final List<Pair<String, MiraklDownloadShopsDocumentsRequest>> miraklDownloadShopRequests = fieldNameAnDocumentIdList
-				.entrySet().stream().map(fieldNameAndDocumentIdPair -> {
-					final MiraklDownloadShopsDocumentsRequest miraklDownloadDocumentRequest = new MiraklDownloadShopsDocumentsRequest();
-					miraklDownloadDocumentRequest.setDocumentIds(List.of(fieldNameAndDocumentIdPair.getKey()));
-					return Pair.of(fieldNameAndDocumentIdPair.getValue(), miraklDownloadDocumentRequest);
-				}).collect(Collectors.toList());
+			.entrySet()
+			.stream()
+			.map(fieldNameAndDocumentIdPair -> {
+				final MiraklDownloadShopsDocumentsRequest miraklDownloadDocumentRequest = new MiraklDownloadShopsDocumentsRequest();
+				miraklDownloadDocumentRequest.setDocumentIds(List.of(fieldNameAndDocumentIdPair.getKey()));
+				return Pair.of(fieldNameAndDocumentIdPair.getValue(), miraklDownloadDocumentRequest);
+			})
+			.toList();
 
 		// @formatter:off
 		return miraklDownloadShopRequests.stream()
 				.map(this::downloadDocument)
-				.collect(Collectors.toList());
+				.toList();
 		// @formatter:on
 	}
 
@@ -56,7 +58,7 @@ public abstract class AbstractMiraklDocumentsSelectorStrategy
 	private Map<String, String> getDocumentIds(final List<MiraklShopDocument> miraklShopDocuments,
 			final List<String> miraklFields) {
 		final Map<String, String> existingDocuments = miraklShopDocuments.stream()
-				.collect(Collectors.toMap(MiraklShopDocument::getTypeCode, MiraklShopDocument::getId));
+			.collect(Collectors.toMap(MiraklShopDocument::getTypeCode, MiraklShopDocument::getId));
 
 		//@formatter:off
 		return miraklFields.stream()
@@ -71,7 +73,7 @@ public abstract class AbstractMiraklDocumentsSelectorStrategy
 	private KYCDocumentModel downloadDocument(
 			final Pair<String, MiraklDownloadShopsDocumentsRequest> fieldNameAndDocumentIdPair) {
 		final MiraklDownloadShopsDocumentsRequest miraklDownloadShopsDocumentsRequest = fieldNameAndDocumentIdPair
-				.getValue();
+			.getValue();
 		final String fieldName = fieldNameAndDocumentIdPair.getKey();
 		final String documentId = miraklDownloadShopsDocumentsRequest.getDocumentIds().stream().findAny().orElse(null);
 		try {

@@ -1,6 +1,5 @@
 package com.paypal.invoices.extractioncommons.model;
 
-import com.paypal.invoices.extractioncommons.model.AccountingDocumentModel;
 import com.paypal.invoices.extractioncommons.model.AccountingDocumentModel.Builder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,17 +20,19 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class AccountingDocumentModelTest {
 
 	public static Stream<Arguments> provideValuesForTextAreaCustomFieldValues() {
-		return Stream
-				.of(Arguments.of(AccountingDocumentModel.builder().destinationToken(List.of(
-						populateStringCustomFieldValue("hw-bankaccount-token", "destinationTokenValue"))),
+		return Stream.of(
+				Arguments.of(
+						AccountingDocumentModel.builder()
+							.destinationToken(List
+								.of(populateStringCustomFieldValue("hw-bankaccount-token", "destinationTokenValue"))),
 						"destinationToken", "destinationTokenValue"),
-						Arguments.of(
-								AccountingDocumentModel.builder()
-										.hyperwalletProgram(List.of(populateMiraklValueListCustomFieldValue(
-												"hw-program", "hyperwalletProgramValue"))),
-								"hyperwalletProgram", "hyperwalletProgramValue"),
-						Arguments.of(AccountingDocumentModel.builder().destinationToken(Collections.emptyList()),
-								"destinationToken", null));
+				Arguments.of(
+						AccountingDocumentModel.builder()
+							.hyperwalletProgram(List
+								.of(populateMiraklValueListCustomFieldValue("hw-program", "hyperwalletProgramValue"))),
+						"hyperwalletProgram", "hyperwalletProgramValue"),
+				Arguments.of(AccountingDocumentModel.builder().destinationToken(Collections.emptyList()),
+						"destinationToken", null));
 	}
 
 	private static MiraklStringAdditionalFieldValue populateStringCustomFieldValue(final String code,

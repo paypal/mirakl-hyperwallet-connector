@@ -44,12 +44,12 @@ class HyperwalletPaginationSupportTest {
 		// given
 		when(paginatedFunctionMock.get()).thenReturn(hyperwalletList(NUM_ITEMS, PAGE_SIZE, 1));
 		doReturn(hyperwalletApiClientMock).when(testObj).getApiClient();
-		doReturn(hyperwalletList(NUM_ITEMS, PAGE_SIZE, 2)).when(hyperwalletApiClientMock).get(
-				argThat(x -> x.contains("page=2")), ArgumentMatchers.<TypeReference<HyperwalletList<Object>>>any());
-		doReturn(hyperwalletList(NUM_ITEMS, PAGE_SIZE, 3)).when(hyperwalletApiClientMock).get(
-				argThat(x -> x.contains("page=3")), ArgumentMatchers.<TypeReference<HyperwalletList<Object>>>any());
-		doReturn(hyperwalletList(NUM_ITEMS, PAGE_SIZE, 4)).when(hyperwalletApiClientMock).get(
-				argThat(x -> x.contains("page=4")), ArgumentMatchers.<TypeReference<HyperwalletList<Object>>>any());
+		doReturn(hyperwalletList(NUM_ITEMS, PAGE_SIZE, 2)).when(hyperwalletApiClientMock)
+			.get(argThat(x -> x.contains("page=2")), ArgumentMatchers.<TypeReference<HyperwalletList<Object>>>any());
+		doReturn(hyperwalletList(NUM_ITEMS, PAGE_SIZE, 3)).when(hyperwalletApiClientMock)
+			.get(argThat(x -> x.contains("page=3")), ArgumentMatchers.<TypeReference<HyperwalletList<Object>>>any());
+		doReturn(hyperwalletList(NUM_ITEMS, PAGE_SIZE, 4)).when(hyperwalletApiClientMock)
+			.get(argThat(x -> x.contains("page=4")), ArgumentMatchers.<TypeReference<HyperwalletList<Object>>>any());
 
 		// when
 		final List<Object> result = testObj.get(paginatedFunctionMock);

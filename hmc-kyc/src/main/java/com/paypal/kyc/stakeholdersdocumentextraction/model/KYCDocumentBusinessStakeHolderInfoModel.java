@@ -2,11 +2,7 @@ package com.paypal.kyc.stakeholdersdocumentextraction.model;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-import com.paypal.kyc.documentextractioncommons.model.KYCDocumentCategoryEnum;
-import com.paypal.kyc.documentextractioncommons.model.KYCDocumentInfoModel;
-import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
-import com.paypal.kyc.documentextractioncommons.model.KYCDocumentSideEnum;
-import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
+import com.paypal.kyc.documentextractioncommons.model.*;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -18,7 +14,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.paypal.kyc.documentextractioncommons.model.KYCConstants.*;
@@ -61,23 +56,24 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 					.flatMap(Collection::stream)
 					.filter(document -> KYCDocumentCategoryEnum.IDENTIFICATION.equals(document.getDocumentCategory()))
 					.filter(document -> document.getDocumentSide().equals(KYCDocumentSideEnum.FRONT))
-					.collect(Collectors.toList());
+					.toList();
 			//@formatter:on
 		}
 		//@formatter:off
 		return Stream.ofNullable(getDocuments())
 				.flatMap(Collection::stream)
 				.filter(document -> document.getDocumentCategory().equals(KYCDocumentCategoryEnum.IDENTIFICATION))
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 
 	public List<KYCDocumentModel> getLetterOfAuthorizationDocument() {
 		if (isContact() && isRequiresLetterOfAuthorization()) {
-			return Stream
-					.ofNullable(getDocuments()).flatMap(Collection::stream).filter(kycDocumentModel -> kycDocumentModel
-							.getDocumentCategory().equals(KYCDocumentCategoryEnum.AUTHORIZATION))
-					.collect(Collectors.toList());
+			return Stream.ofNullable(getDocuments())
+				.flatMap(Collection::stream)
+				.filter(kycDocumentModel -> kycDocumentModel.getDocumentCategory()
+					.equals(KYCDocumentCategoryEnum.AUTHORIZATION))
+				.toList();
 		}
 
 		return List.of();
@@ -86,7 +82,7 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 	public boolean isIdentityDocumentsFilled() {
 		if (Objects.nonNull(this.getProofOfIdentity()) && Objects.nonNull(this.getDocuments())) {
 			return this.getIdentityDocuments().size() == KYCProofOfIdentityEnum.getMiraklFields(this.proofOfIdentity)
-					.size();
+				.size();
 
 		}
 		return false;
@@ -94,7 +90,9 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 
 	public boolean existsLetterOfAuthorizationDocumentInMirakl() {
 		final List<String> documentsExistingInMirakl = Stream.ofNullable(miraklShopDocuments)
-				.flatMap(Collection::stream).map(MiraklShopDocument::getTypeCode).collect(Collectors.toList());
+			.flatMap(Collection::stream)
+			.map(MiraklShopDocument::getTypeCode)
+			.toList();
 		if (isRequiresLetterOfAuthorization()) {
 			return documentsExistingInMirakl.contains(PROOF_OF_AUTHORIZATION);
 		}
@@ -105,7 +103,9 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 	@Override
 	public boolean existsDocumentInMirakl() {
 		final List<String> documentsExistingInMirakl = Stream.ofNullable(miraklShopDocuments)
-				.flatMap(Collection::stream).map(MiraklShopDocument::getTypeCode).collect(Collectors.toList());
+			.flatMap(Collection::stream)
+			.map(MiraklShopDocument::getTypeCode)
+			.toList();
 		final KYCProofOfIdentityEnum proofOfIdentity = this.getProofOfIdentity();
 		final List<String> proofOfIdentityMiraklFields = KYCProofOfIdentityEnum.getMiraklFields(proofOfIdentity,
 				this.businessStakeholderMiraklNumber);
@@ -213,7 +213,7 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 
 		public Builder userToken(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklStringCustomFieldValue(fields, HYPERWALLET_USER_TOKEN_FIELD)
-					.ifPresent(retrievedToken -> userToken = retrievedToken);
+				.ifPresent(retrievedToken -> userToken = retrievedToken);
 			return this;
 		}
 
@@ -222,7 +222,7 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				token = getMiraklStringCustomFieldValue(fieldValues, getCustomFieldCode(
 						HYPERWALLET_PREFIX + STAKEHOLDER_PREFIX + STAKEHOLDER_TOKEN_PREFIX, businessStakeHolderNumber))
-								.orElse(null);
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -237,7 +237,7 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 				getMiraklBooleanCustomFieldValue(fields,
 						getCustomFieldCode(HYPERWALLET_PREFIX + STAKEHOLDER_PREFIX + REQUIRED_PROOF_IDENTITY,
 								businessStakeHolderNumber))
-										.ifPresent(termsConsent -> requiresKYC = Boolean.parseBoolean(termsConsent));
+					.ifPresent(termsConsent -> requiresKYC = Boolean.parseBoolean(termsConsent));
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -251,8 +251,8 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 				getMiraklSingleValueListCustomFieldValue(fields,
 						getCustomFieldCode(HYPERWALLET_PREFIX + STAKEHOLDER_PREFIX + STAKEHOLDER_PROOF_IDENTITY,
 								businessStakeHolderNumber))
-										.ifPresent(retrievedProofOfIdentity -> proofOfIdentity = EnumUtils
-												.getEnum(KYCProofOfIdentityEnum.class, retrievedProofOfIdentity));
+					.ifPresent(retrievedProofOfIdentity -> proofOfIdentity = EnumUtils
+						.getEnum(KYCProofOfIdentityEnum.class, retrievedProofOfIdentity));
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -266,7 +266,7 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 				getMiraklStringCustomFieldValue(fields,
 						getCustomFieldCode(HYPERWALLET_PREFIX + STAKEHOLDER_PREFIX + PROOF_IDENTITY_PREFIX
 								+ STAKEHOLDER_COUNTRY_PREFIX, businessStakeHolderNumber))
-										.ifPresent(retrievedCountryIsoCode -> countryIsoCode = retrievedCountryIsoCode);
+					.ifPresent(retrievedCountryIsoCode -> countryIsoCode = retrievedCountryIsoCode);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -276,8 +276,8 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 
 		public Builder requiresLetterOfAuthorization(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklBooleanCustomFieldValue(fields, HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD)
-					.ifPresent(requiresLetterOfAuthorizationValue -> requiresLetterOfAuthorization = Boolean
-							.parseBoolean(requiresLetterOfAuthorizationValue));
+				.ifPresent(requiresLetterOfAuthorizationValue -> requiresLetterOfAuthorization = Boolean
+					.parseBoolean(requiresLetterOfAuthorizationValue));
 
 			return this;
 		}
@@ -287,7 +287,7 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 				getMiraklBooleanCustomFieldValue(fields,
 						getCustomFieldCode(HYPERWALLET_PREFIX + STAKEHOLDER_PREFIX + CONTACT,
 								businessStakeholderNumber))
-										.ifPresent(isContact -> contact = Boolean.parseBoolean(isContact));
+					.ifPresent(isContact -> contact = Boolean.parseBoolean(isContact));
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeholderNumber);
@@ -297,8 +297,11 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 
 		@Override
 		public Builder documents(final List<KYCDocumentModel> documents) {
-			this.documents = Stream.ofNullable(documents).flatMap(Collection::stream).filter(Objects::nonNull)
-					.map(document -> document.toBuilder().build()).collect(Collectors.toList());
+			this.documents = Stream.ofNullable(documents)
+				.flatMap(Collection::stream)
+				.filter(Objects::nonNull)
+				.map(document -> document.toBuilder().build())
+				.toList();
 			return this;
 		}
 
@@ -328,18 +331,22 @@ public class KYCDocumentBusinessStakeHolderInfoModel extends KYCDocumentInfoMode
 
 		private Optional<String> getMiraklStringCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
 				final String customFieldCode) {
-			return fields.stream().filter(field -> field.getCode().equals(customFieldCode))
-					.filter(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::isInstance)
-					.map(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::cast).findAny()
-					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+			return fields.stream()
+				.filter(field -> field.getCode().equals(customFieldCode))
+				.filter(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::isInstance)
+				.map(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::cast)
+				.findAny()
+				.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
 		}
 
 		private Optional<String> getMiraklBooleanCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
 				final String customFieldCode) {
-			return fields.stream().filter(field -> field.getCode().equals(customFieldCode))
-					.filter(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::isInstance)
-					.map(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::cast).findAny()
-					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+			return fields.stream()
+				.filter(field -> field.getCode().equals(customFieldCode))
+				.filter(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::isInstance)
+				.map(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::cast)
+				.findAny()
+				.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
 		}
 
 		public Builder requiresLetterOfAuthorization(final boolean requiresLetterOfAuthorization) {

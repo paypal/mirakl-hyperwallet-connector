@@ -12,8 +12,16 @@ compileJava {
 	dependsOn format
 }
 
+tasks.withType(io.spring.javaformat.gradle.tasks.CheckFormat).configureEach { checkTask ->
+	def formatTaskName = checkTask.name.replace('checkFormat', 'format')
+	def formatTask = tasks.findByName(formatTaskName)
+	if (formatTask != null) {
+		checkTask.dependsOn(formatTask)
+	}
+}
+
 jacoco {
-	toolVersion = "0.8.8"
+	toolVersion = "0.8.14"
 }
 
 jacocoTestReport {
@@ -26,7 +34,8 @@ jacocoTestReport {
 }
 
 checkstyle {
-	toolVersion = "8.45.1"
+	// Pending upgrade
+	toolVersion = "13.6.0"
 	configDirectory = file("${rootDir}/buildSrc/config/checkstyle")
 	checkstyleTest.enabled = false
 }

@@ -38,7 +38,7 @@ class BatchJobFailedItemServiceImplITTest extends AbstractIntegrationTest {
 		batchJobFailedItemService.saveItemFailed(failedItem6);
 
 		final List<BatchJobFailedItem> failedItemsForRetry = batchJobFailedItemService
-				.getFailedItemsForRetry(MyItem.class.getSimpleName());
+			.getFailedItemsForRetry(MyItem.class.getSimpleName());
 
 		assertThat(failedItemsForRetry).hasSize(5);
 	}

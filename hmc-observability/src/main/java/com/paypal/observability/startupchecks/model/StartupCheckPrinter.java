@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public interface StartupCheckPrinter {
 
-	default String[] print(StartupCheck check) {
+	default String[] print(final StartupCheck check) {
 		final StringWriter stringWriter = new StringWriter();
 		final PrintWriter printWriter = new PrintWriter(stringWriter);
 

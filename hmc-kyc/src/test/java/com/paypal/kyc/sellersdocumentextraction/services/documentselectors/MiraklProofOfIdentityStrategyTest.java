@@ -3,9 +3,9 @@ package com.paypal.kyc.sellersdocumentextraction.services.documentselectors;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
-import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
-import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
+import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
+import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -83,7 +83,8 @@ class MiraklProofOfIdentityStrategyTest {
 	@Test
 	void isApplicable_shouldReturnFalseWhenIsProofOfBusinessAndObjectReceivedAsParameterIsNotKYCDocumentSellerInfoModel() {
 		final KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel = KYCDocumentBusinessStakeHolderInfoModel
-				.builder().build();
+			.builder()
+			.build();
 
 		final boolean result = testObj.isApplicable(kycDocumentBusinessStakeHolderInfoModel);
 
@@ -97,7 +98,7 @@ class MiraklProofOfIdentityStrategyTest {
 		testObj.getMiraklFieldNames(kycDocumentSellerInfoModel);
 
 		kycProofOfIdentityEnumMockedStatic
-				.verify(() -> KYCProofOfIdentityEnum.getMiraklFields(kycDocumentSellerInfoModel.getProofOfIdentity()));
+			.verify(() -> KYCProofOfIdentityEnum.getMiraklFields(kycDocumentSellerInfoModel.getProofOfIdentity()));
 	}
 
 }

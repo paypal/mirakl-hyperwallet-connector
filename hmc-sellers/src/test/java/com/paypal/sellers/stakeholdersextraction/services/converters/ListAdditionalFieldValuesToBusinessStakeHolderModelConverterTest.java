@@ -3,7 +3,6 @@ package com.paypal.sellers.stakeholdersextraction.services.converters;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.paypal.sellers.sellerextractioncommons.configuration.SellersMiraklApiConfig;
 import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
-import com.paypal.sellers.stakeholdersextraction.services.converters.ListAdditionalFieldValuesToBusinessStakeHolderModelConverter;
 import org.apache.commons.lang3.tuple.Triple;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,64 +48,74 @@ class ListAdditionalFieldValuesToBusinessStakeHolderModelConverterTest {
 		when(sellersMiraklApiConfigMock.getTimeZone()).thenReturn(UTC);
 		when(businessStakeHolderModelBuilderMock.timeZone(UTC)).thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.userToken(miraklAdditionalFieldValues))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.clientUserId(CLIENT_ID))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.token(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.businessContact(miraklAdditionalFieldValues,
-				BUSINESS_STAKE_HOLDER_NUMBER)).thenReturn(businessStakeHolderModelBuilderMock);
+				BUSINESS_STAKE_HOLDER_NUMBER))
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.director(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.ubo(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.smo(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.firstName(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.middleName(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.lastName(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.dateOfBirth(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.countryOfBirth(miraklAdditionalFieldValues,
-				BUSINESS_STAKE_HOLDER_NUMBER)).thenReturn(businessStakeHolderModelBuilderMock);
+				BUSINESS_STAKE_HOLDER_NUMBER))
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.countryOfNationality(miraklAdditionalFieldValues,
-				BUSINESS_STAKE_HOLDER_NUMBER)).thenReturn(businessStakeHolderModelBuilderMock);
+				BUSINESS_STAKE_HOLDER_NUMBER))
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.gender(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.phoneNumber(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.mobileNumber(miraklAdditionalFieldValues,
-				BUSINESS_STAKE_HOLDER_NUMBER)).thenReturn(businessStakeHolderModelBuilderMock);
+				BUSINESS_STAKE_HOLDER_NUMBER))
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.email(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.governmentId(miraklAdditionalFieldValues,
-				BUSINESS_STAKE_HOLDER_NUMBER)).thenReturn(businessStakeHolderModelBuilderMock);
+				BUSINESS_STAKE_HOLDER_NUMBER))
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.governmentIdType(miraklAdditionalFieldValues,
-				BUSINESS_STAKE_HOLDER_NUMBER)).thenReturn(businessStakeHolderModelBuilderMock);
+				BUSINESS_STAKE_HOLDER_NUMBER))
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.driversLicenseId(miraklAdditionalFieldValues,
-				BUSINESS_STAKE_HOLDER_NUMBER)).thenReturn(businessStakeHolderModelBuilderMock);
+				BUSINESS_STAKE_HOLDER_NUMBER))
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.addressLine1(miraklAdditionalFieldValues,
-				BUSINESS_STAKE_HOLDER_NUMBER)).thenReturn(businessStakeHolderModelBuilderMock);
+				BUSINESS_STAKE_HOLDER_NUMBER))
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.addressLine2(miraklAdditionalFieldValues,
-				BUSINESS_STAKE_HOLDER_NUMBER)).thenReturn(businessStakeHolderModelBuilderMock);
+				BUSINESS_STAKE_HOLDER_NUMBER))
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.city(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.stateProvince(miraklAdditionalFieldValues,
-				BUSINESS_STAKE_HOLDER_NUMBER)).thenReturn(businessStakeHolderModelBuilderMock);
+				BUSINESS_STAKE_HOLDER_NUMBER))
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.country(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.postalCode(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.build()).thenReturn(businessStakeHolderModelMock);
 		when(businessStakeHolderModelBuilderMock.stkId(1)).thenReturn(businessStakeHolderModelBuilderMock);
 		when(businessStakeHolderModelBuilderMock.hyperwalletProgram(miraklAdditionalFieldValues))
-				.thenReturn(businessStakeHolderModelBuilderMock);
+			.thenReturn(businessStakeHolderModelBuilderMock);
 
 		final BusinessStakeHolderModel result = testObj
-				.convert(Triple.of(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER, CLIENT_ID));
+			.convert(Triple.of(miraklAdditionalFieldValues, BUSINESS_STAKE_HOLDER_NUMBER, CLIENT_ID));
 
 		verifyAttributes(miraklAdditionalFieldValues);
 

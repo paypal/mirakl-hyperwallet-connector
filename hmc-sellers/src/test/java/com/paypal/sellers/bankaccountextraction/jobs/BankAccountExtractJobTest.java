@@ -3,7 +3,6 @@ package com.paypal.sellers.bankaccountextraction.jobs;
 import com.paypal.jobsystem.batchjob.model.BatchJob;
 import com.paypal.jobsystem.quartzadapter.job.QuartzBatchJobAdapterFactory;
 import com.paypal.sellers.bankaccountextraction.batchjobs.BankAccountExtractBatchJob;
-import com.paypal.sellers.bankaccountextraction.jobs.BankAccountExtractJob;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

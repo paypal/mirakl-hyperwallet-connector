@@ -72,33 +72,43 @@ class BatchJobFailedItemRetryITTest extends AbstractBatchJobTestSupport {
 			throws SchedulerException, InterruptedException {
 		runJob(testRetryJob);
 		Assertions
-				.assertThat(batchJobFailedItemService.getFailedItemsForRetry(TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE))
-				.isEmpty();
+			.assertThat(batchJobFailedItemService.getFailedItemsForRetry(TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE))
+			.isEmpty();
 		Assertions.assertThat(testBatchJobItemProcessor.itemsProcessedSuccesfully).hasSize(2);
 	}
 
 	private void runRetryJobAndCheckThatItemThatHasFailedIsRetried() throws SchedulerException, InterruptedException {
 		runJob(testRetryJob);
 		Assertions
-				.assertThat(batchJobFailedItemService.getFailedItemsForRetry(TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE))
-				.hasSize(1);
-		Assertions.assertThat(batchJobFailedItemRepository
-				.findById(new BatchJobFailedItemId("1", TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE)).get()
-				.getNumberOfRetries()).isEqualTo(1);
+			.assertThat(batchJobFailedItemService.getFailedItemsForRetry(TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE))
+			.hasSize(1);
+		Assertions
+			.assertThat(batchJobFailedItemRepository
+				.findById(new BatchJobFailedItemId("1", TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE))
+				.get()
+				.getNumberOfRetries())
+			.isEqualTo(1);
 	}
 
 	private void runJobAndCheckThatItemThatFailsIsAddedForRetry() throws SchedulerException, InterruptedException {
 		runJob(testJob);
-		Assertions.assertThat(batchJobFailedItemCacheService.retrieveItem(TestBatchJobItem.class,
-				TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE, "1")).isPresent();
-		Assertions.assertThat(batchJobFailedItemCacheService.retrieveItem(TestBatchJobItem.class,
-				TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE, "2")).isNotPresent();
 		Assertions
-				.assertThat(batchJobFailedItemService.getFailedItemsForRetry(TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE))
-				.hasSize(1);
-		Assertions.assertThat(batchJobFailedItemRepository
-				.findById(new BatchJobFailedItemId("1", TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE)).get()
-				.getNumberOfRetries()).isZero();
+			.assertThat(batchJobFailedItemCacheService.retrieveItem(TestBatchJobItem.class,
+					TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE, "1"))
+			.isPresent();
+		Assertions
+			.assertThat(batchJobFailedItemCacheService.retrieveItem(TestBatchJobItem.class,
+					TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE, "2"))
+			.isNotPresent();
+		Assertions
+			.assertThat(batchJobFailedItemService.getFailedItemsForRetry(TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE))
+			.hasSize(1);
+		Assertions
+			.assertThat(batchJobFailedItemRepository
+				.findById(new BatchJobFailedItemId("1", TestBatchJobItem.TEST_BATCH_JOB_ITEM_TYPE))
+				.get()
+				.getNumberOfRetries())
+			.isZero();
 	}
 
 }

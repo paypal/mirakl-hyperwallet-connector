@@ -43,7 +43,7 @@ public class KYCReadyForReviewServiceImpl implements KYCReadyForReviewService {
 			final String hyperwalletProgram = kycDocumentInfoModel.getHyperwalletProgram();
 			if (StringUtils.isNotEmpty(hyperwalletProgram)) {
 				final Hyperwallet hyperwallet = userHyperwalletSDKService
-						.getHyperwalletInstanceByHyperwalletProgram(hyperwalletProgram);
+					.getHyperwalletInstanceByHyperwalletProgram(hyperwalletProgram);
 				final HyperwalletUser hyperwalletUser = hyperwallet.updateUser(user);
 				log.info("Seller with id [{}] has been set as Ready for review", hyperwalletUser.getClientUserId());
 			}
@@ -63,7 +63,7 @@ public class KYCReadyForReviewServiceImpl implements KYCReadyForReviewService {
 	private void reportHyperwalletAPIError(final KYCDocumentInfoModel kycDocumentInfoModel,
 			final HyperwalletException e) {
 		log.error("Error notifying to Hyperwallet that all documents were sent.%n%s"
-				.formatted(HyperwalletLoggingErrorsUtil.stringify(e)), e);
+			.formatted(HyperwalletLoggingErrorsUtil.stringify(e)), e);
 
 		kycMailNotificationUtil.sendPlainTextEmail("Issue in Hyperwallet status notification", String.format(
 				"There was an error notifying Hyperwallet all documents were sent for shop Id [%s], so Hyperwallet will not be notified about this new situation%n%s",

@@ -48,7 +48,7 @@ public interface StagedChangesEntityConverter {
 	@SuppressWarnings("java:S3740")
 	default ObjectMapper getObjectMapper() {
 		final ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
 		final SimpleModule module = new SimpleModule();
 		module.addSerializer(Patch.class, new PatchSerializer());
 		objectMapper.registerModule(module);

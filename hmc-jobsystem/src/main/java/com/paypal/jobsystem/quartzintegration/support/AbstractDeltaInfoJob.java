@@ -1,8 +1,8 @@
 package com.paypal.jobsystem.quartzintegration.support;
 
+import com.paypal.jobsystem.quartzintegration.repositories.JobExecutionInformationRepository;
 import com.paypal.jobsystem.quartzintegration.repositories.entities.JobExecutionInformationEntity;
 import jakarta.annotation.Resource;
-import com.paypal.jobsystem.quartzintegration.repositories.JobExecutionInformationRepository;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -54,9 +54,10 @@ public abstract class AbstractDeltaInfoJob implements Job {
 		final Date delta = (Date) context.getJobDetail().getJobDataMap().get(DELTA);
 
 		return delta == null ? Optional
-				.ofNullable(jobExecutionInformationRepository.findTopByTypeAndEndTimeIsNotNullOrderByIdDesc(
-						context.getJobDetail().getJobClass().getSimpleName()))
-				.map(JobExecutionInformationEntity::getStartTime).orElse(null) : delta;
+			.ofNullable(jobExecutionInformationRepository
+				.findTopByTypeAndEndTimeIsNotNullOrderByIdDesc(context.getJobDetail().getJobClass().getSimpleName()))
+			.map(JobExecutionInformationEntity::getStartTime)
+			.orElse(null) : delta;
 	}
 
 }

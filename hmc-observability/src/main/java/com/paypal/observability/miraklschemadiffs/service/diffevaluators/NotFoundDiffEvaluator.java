@@ -17,8 +17,11 @@ public class NotFoundDiffEvaluator implements MiraklSchemaSetDiffEvaluator {
 	@Override
 	public List<MiraklSchemaDiffEntry> getDifferences(final MiraklSchema expected, final MiraklSchema actual) {
 		final Set<String> actualFieldsCodes = toCodeSet(actual);
-		return expected.getItems().stream().filter(f -> !actualFieldsCodes.contains(f.getCode()))
-				.map(MiraklSchemaDiffEntryItemNotFound::new).collect(Collectors.toList());
+		return expected.getItems()
+			.stream()
+			.filter(f -> !actualFieldsCodes.contains(f.getCode()))
+			.map(MiraklSchemaDiffEntryItemNotFound::new)
+			.collect(Collectors.toList());
 	}
 
 	private Set<String> toCodeSet(final MiraklSchema docSet) {

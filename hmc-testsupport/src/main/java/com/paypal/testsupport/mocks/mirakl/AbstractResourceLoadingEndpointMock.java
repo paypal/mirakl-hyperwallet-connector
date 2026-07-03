@@ -2,10 +2,9 @@ package com.paypal.testsupport.mocks.mirakl;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import org.mockserver.client.MockServerClient;
 import org.springframework.util.ResourceUtils;
-
 import java.io.File;
 import java.nio.file.Files;
 
@@ -15,12 +14,11 @@ public abstract class AbstractResourceLoadingEndpointMock {
 
 	protected final MockServerClient mockServerClient;
 
-	@SuppressWarnings("java:S1874")
 	protected AbstractResourceLoadingEndpointMock(final MockServerClient mockServerClient) {
 		this.mapper = new ObjectMapper();
 		this.mockServerClient = mockServerClient;
-		this.mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-		this.mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+		this.mapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY);
+		this.mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 	}
 
 	protected String loadResource(final String responseFile) {

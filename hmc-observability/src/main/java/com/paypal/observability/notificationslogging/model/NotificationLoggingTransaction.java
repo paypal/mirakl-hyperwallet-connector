@@ -36,7 +36,7 @@ public class NotificationLoggingTransaction implements LoggingTransaction {
 	@Override
 	public ObjectNode toJson() {
 		final ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
 
 		return objectMapper.valueToTree(this);
 	}

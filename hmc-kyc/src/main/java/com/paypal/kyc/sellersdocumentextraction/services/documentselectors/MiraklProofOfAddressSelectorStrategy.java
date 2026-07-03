@@ -1,8 +1,8 @@
 package com.paypal.kyc.sellersdocumentextraction.services.documentselectors;
 
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
-import com.paypal.kyc.documentextractioncommons.support.AbstractMiraklDocumentsSelectorStrategy;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentInfoModel;
+import com.paypal.kyc.documentextractioncommons.support.AbstractMiraklDocumentsSelectorStrategy;
 import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.sellersdocumentextraction.model.KYCProofOfAddressEnum;
 import lombok.extern.slf4j.Slf4j;

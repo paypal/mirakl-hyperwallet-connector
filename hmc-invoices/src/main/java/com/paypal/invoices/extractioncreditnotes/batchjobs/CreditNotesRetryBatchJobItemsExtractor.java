@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Extract credit notes for retry from the failed items cache.
@@ -42,7 +41,7 @@ public class CreditNotesRetryBatchJobItemsExtractor
 		return miraklAccountingDocumentCreditNotesExtractService.extractAccountingDocuments(ids)
 				.stream()
 				.map(CreditNoteExtractJobItem::new)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 

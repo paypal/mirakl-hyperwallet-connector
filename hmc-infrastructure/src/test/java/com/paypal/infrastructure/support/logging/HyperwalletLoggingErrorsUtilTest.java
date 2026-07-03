@@ -4,7 +4,6 @@ import cc.protea.util.http.Response;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletError;
 import com.hyperwallet.clientsdk.model.HyperwalletErrorList;
-import com.paypal.infrastructure.support.logging.HyperwalletLoggingErrorsUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -30,15 +29,15 @@ class HyperwalletLoggingErrorsUtilTest {
                   "responseMessage" : "RESPONSE_MESSAGE",
                   "responseBody" : "{field1:\\"value1\\"}"
                 }""");
-        //@formatter:om
-    }
+        //@formatter:on
+	}
 
-    @Test
-    void stringify_shouldPrintAllExceptionFields_forHyperwalletExceptionTypeB() {
-        final HyperwalletException hyperwalletException = buildHyperwalletExceptionTypeB();
-        final String result = HyperwalletLoggingErrorsUtil.stringify(hyperwalletException);
+	@Test
+	void stringify_shouldPrintAllExceptionFields_forHyperwalletExceptionTypeB() {
+		final HyperwalletException hyperwalletException = buildHyperwalletExceptionTypeB();
+		final String result = HyperwalletLoggingErrorsUtil.stringify(hyperwalletException);
 
-        //@formatter:off
+		//@formatter:off
         assertThat(result).isEqualTo("""
                 {
                   "errorCode" : "CODE-0",
@@ -59,15 +58,15 @@ class HyperwalletLoggingErrorsUtilTest {
                     "relatedResources" : [ "RELATED_RESOURCE-1-1", "RELATED_RESOURCE-111" ]
                   } ]
                 }""");
-        //@formatter:om
-    }
+        //@formatter:on
+	}
 
-    @Test
-    void stringify_shouldPrintAllExceptionFields_forHyperwalletExceptionTypeC() {
-        final HyperwalletException hyperwalletException = buildHyperwalletExceptionTypeC();
-        final String result = HyperwalletLoggingErrorsUtil.stringify(hyperwalletException);
+	@Test
+	void stringify_shouldPrintAllExceptionFields_forHyperwalletExceptionTypeC() {
+		final HyperwalletException hyperwalletException = buildHyperwalletExceptionTypeC();
+		final String result = HyperwalletLoggingErrorsUtil.stringify(hyperwalletException);
 
-        //@formatter:off
+		//@formatter:off
         assertThat(result).isEqualTo("""
                 {
                   "exceptionMessage" : "java.lang.RuntimeException: EXCEPTION_MESSAGE"

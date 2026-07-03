@@ -17,7 +17,7 @@ public interface ReportsBraintreeTransactionsExtractService {
 	 * @param transactionType e.g. SETTLED
 	 * @param startDate Starting date
 	 * @param endDate Ending date
-	 * @return a filtered {@link List< HmcBraintreeTransactionLine >}
+	 * @return a filtered {@link List<HmcBraintreeTransactionLine>}
 	 */
 	List<HmcBraintreeTransactionLine> getAllTransactionsByTypeAndDateInterval(String transactionType, Date startDate,
 			Date endDate);

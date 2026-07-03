@@ -33,7 +33,7 @@ class PaymentNotificationServiceImplTest {
 	@Test
 	void processPaymentNotification_shouldNotSendAnyEmailWhenPaymentNotificationIsNull() {
 		when(paymentNotificationBodyModelConverterMock.convert(hyperwalletWebhookNotificationMock.getObject()))
-				.thenReturn(paymentNotificationBodyModelMock);
+			.thenReturn(paymentNotificationBodyModelMock);
 
 		testObj.processPaymentNotification(hyperwalletWebhookNotificationMock);
 

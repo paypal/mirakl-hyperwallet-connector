@@ -1,11 +1,9 @@
 package com.paypal.invoices.extractioninvoices.batchjobs;
 
-import com.paypal.invoices.extractioninvoices.batchjobs.InvoiceExtractJobItem;
-import com.paypal.invoices.extractioninvoices.batchjobs.InvoicesRetryBatchJobItemsExtractor;
+import com.paypal.invoices.extractioncommons.services.MiraklAccountingDocumentExtractService;
+import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.jobsystem.batchjobfailures.services.resolvepolicies.AllRetryPendingFailedItemCacheFailureResolvePolicy;
-import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
-import com.paypal.invoices.extractioncommons.services.MiraklAccountingDocumentExtractService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -48,21 +46,21 @@ class InvoicesRetryBatchJobItemsExtractorTest {
 	@Test
 	void getBatchJobFailedItemCacheFailureResolvePolicy_shouldReturnRetryAllPendingItemsPolicy() {
 		assertThat(testObj.getBatchJobFailedItemCacheFailureResolvePolicy())
-				.contains(allRetryPendingFailedItemCacheFailureResolvePolicyMock);
+			.contains(allRetryPendingFailedItemCacheFailureResolvePolicyMock);
 	}
 
 	@Test
 	void getItems_shouldReturnAllInvoicesByGivenIds() {
 		when(miraklAccountingDocumentInvoicesExtractService
-				.extractAccountingDocuments(List.of(INVOICE_ID_1, INVOICE_ID_2)))
-						.thenReturn(List.of(invoiceModel1Mock, invoiceModel2Mock));
+			.extractAccountingDocuments(List.of(INVOICE_ID_1, INVOICE_ID_2)))
+			.thenReturn(List.of(invoiceModel1Mock, invoiceModel2Mock));
 		when(invoiceModel1Mock.getInvoiceNumber()).thenReturn("1");
 		when(invoiceModel2Mock.getInvoiceNumber()).thenReturn("2");
 
 		final Collection<InvoiceExtractJobItem> result = testObj.getItems(List.of(INVOICE_ID_1, INVOICE_ID_2));
 
 		assertThat(result.stream().map(BatchJobItem::getItemId).collect(Collectors.toList()))
-				.containsExactlyInAnyOrder(INVOICE_ID_1, INVOICE_ID_2);
+			.containsExactlyInAnyOrder(INVOICE_ID_1, INVOICE_ID_2);
 	}
 
 }

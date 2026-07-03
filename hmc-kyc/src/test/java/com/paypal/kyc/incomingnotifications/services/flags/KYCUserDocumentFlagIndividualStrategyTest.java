@@ -1,7 +1,6 @@
 package com.paypal.kyc.incomingnotifications.services.flags;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
-import com.paypal.kyc.incomingnotifications.services.flags.KYCUserDocumentFlagIndividualStrategy;
 import com.paypal.kyc.incomingnotifications.model.KYCUserDocumentFlagsNotificationBodyModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

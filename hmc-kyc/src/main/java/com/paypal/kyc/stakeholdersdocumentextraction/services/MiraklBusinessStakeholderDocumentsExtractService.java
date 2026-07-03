@@ -1,8 +1,8 @@
 package com.paypal.kyc.stakeholdersdocumentextraction.services;
 
-import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentsExtractionResult;
 import com.paypal.kyc.documentextractioncommons.services.MiraklDocumentsExtractService;
+import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 
 import java.util.Date;
 import java.util.List;

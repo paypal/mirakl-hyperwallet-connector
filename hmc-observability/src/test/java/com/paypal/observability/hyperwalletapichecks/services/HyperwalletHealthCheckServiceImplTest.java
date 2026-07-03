@@ -35,7 +35,7 @@ class HyperwalletHealthCheckServiceImplTest {
 	void check_ShouldReturnAPICheck_FromResponse_WhenGetHyperwalletProgramReturnsAnything() {
 		when(hyperwalletAPIHealthCheckConnectorMock.getProgram()).thenReturn(hyperwalletProgramMock);
 		when(hyperwalletAPIHealthCheckConnectorConverterMock.from(hyperwalletProgramMock))
-				.thenReturn(hyperwalletAPICheckMock);
+			.thenReturn(hyperwalletAPICheckMock);
 
 		final HyperwalletAPICheck hyperwalletAPICheck = testObj.check();
 

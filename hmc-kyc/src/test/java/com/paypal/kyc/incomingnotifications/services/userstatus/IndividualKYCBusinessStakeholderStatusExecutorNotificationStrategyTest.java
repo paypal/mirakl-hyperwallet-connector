@@ -8,11 +8,11 @@ import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.paypal.infrastructure.hyperwallet.configuration.HyperwalletProgramsConfiguration;
-import com.paypal.infrastructure.support.exceptions.HMCException;
 import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
-import com.paypal.kyc.incomingnotifications.model.KYCBusinessStakeholderStatusNotificationBodyModel;
+import com.paypal.infrastructure.support.exceptions.HMCException;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
+import com.paypal.kyc.incomingnotifications.model.KYCBusinessStakeholderStatusNotificationBodyModel;
 import com.paypal.kyc.stakeholdersdocumentextraction.services.MiraklBusinessStakeholderDocumentsExtractService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -102,7 +102,7 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	@Test
 	void isApplicable_whenBusinessStakeholderTypeIsNotIndividual_shouldReturnFalse() {
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getProfileType())
-				.thenReturn(HyperwalletUser.ProfileType.BUSINESS);
+			.thenReturn(HyperwalletUser.ProfileType.BUSINESS);
 
 		final boolean result = testObj.isApplicable(kycBusinessStakeholderStatusNotificationBodyModelMock);
 
@@ -112,7 +112,7 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	@Test
 	void isApplicable_whenBusinessStakeholderTypeIsIndividualAndNotificationTypeIsVerificationStatus_shouldReturnTrue() {
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getProfileType())
-				.thenReturn(HyperwalletUser.ProfileType.INDIVIDUAL);
+			.thenReturn(HyperwalletUser.ProfileType.INDIVIDUAL);
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getHyperwalletWebhookNotificationType()).thenReturn(
 				KYCConstants.HwWebhookNotificationType.USERS_BUSINESS_STAKEHOLDERS_VERIFICATION_STATUS + ".REQUIRED");
 
@@ -124,9 +124,9 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	@Test
 	void isApplicable_whenBusinessStakeholderTypeIsIndividualAndNotificationTypeIsNotVerificationStatus_shouldReturnTrue() {
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getProfileType())
-				.thenReturn(HyperwalletUser.ProfileType.INDIVIDUAL);
+			.thenReturn(HyperwalletUser.ProfileType.INDIVIDUAL);
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getHyperwalletWebhookNotificationType())
-				.thenReturn(KYCConstants.HwWebhookNotificationType.USERS_BUSINESS_STAKEHOLDERS_CREATED);
+			.thenReturn(KYCConstants.HwWebhookNotificationType.USERS_BUSINESS_STAKEHOLDERS_CREATED);
 
 		final boolean result = testObj.isApplicable(kycBusinessStakeholderStatusNotificationBodyModelMock);
 
@@ -161,7 +161,7 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 		when(hyperwalletMock.getUser(USER_TOKEN)).thenReturn(hyperwalletUserMock);
 
 		final HyperwalletUser result = testObj
-				.getHyperWalletUser(kycBusinessStakeholderStatusNotificationBodyModelMock);
+			.getHyperWalletUser(kycBusinessStakeholderStatusNotificationBodyModelMock);
 
 		verify(hyperwalletMock, times(2)).getUser(USER_TOKEN);
 		assertThat(result).isEqualTo(hyperwalletUserMock);
@@ -200,18 +200,19 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	@Test
 	void updateMiraklProofIdentityFlagStatus_whenStatusIsRequired_shouldUpdateMiraklWithProofOfIdentityNeeded() {
 		when(miraklMarketplacePlatformOperatorApiClientMock
-				.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenReturn(miraklUpdatedShopsMock);
+			.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenReturn(miraklUpdatedShopsMock);
 
 		testObj.updateMiraklProofIdentityFlagStatus(MIRAKL_SHOP_ID, BSTK_PROOF_IDENTITY_FIELD,
 				HyperwalletUser.VerificationStatus.REQUIRED);
 
 		final MiraklUpdateShopsRequest result = miraklUpdateShopsRequestArgumentCaptor.getValue();
-		final List<MiraklRequestAdditionalFieldValue> additionalFieldValuesToBeChanged = result.getShops().get(0)
-				.getAdditionalFieldValues();
+		final List<MiraklRequestAdditionalFieldValue> additionalFieldValuesToBeChanged = result.getShops()
+			.get(0)
+			.getAdditionalFieldValues();
 
 		assertThat(additionalFieldValuesToBeChanged).hasSize(1);
 		final MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue miraklSimpleRequestAdditionalFieldValue = (MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue) additionalFieldValuesToBeChanged
-				.get(0);
+			.get(0);
 		assertThat(miraklSimpleRequestAdditionalFieldValue.getCode()).isEqualTo(BSTK_PROOF_IDENTITY_FIELD);
 		assertThat(miraklSimpleRequestAdditionalFieldValue.getValue()).isEqualTo("true");
 	}
@@ -219,18 +220,19 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	@Test
 	void updateMiraklProofIdentityFlagStatus_whenStatusIsNotRequired_shouldUpdateMiraklWithProofOfIdentityNotNeeded() {
 		when(miraklMarketplacePlatformOperatorApiClientMock
-				.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenReturn(miraklUpdatedShopsMock);
+			.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenReturn(miraklUpdatedShopsMock);
 
 		testObj.updateMiraklProofIdentityFlagStatus(MIRAKL_SHOP_ID, BSTK_PROOF_IDENTITY_FIELD,
 				HyperwalletUser.VerificationStatus.NOT_REQUIRED);
 
 		final MiraklUpdateShopsRequest result = miraklUpdateShopsRequestArgumentCaptor.getValue();
-		final List<MiraklRequestAdditionalFieldValue> additionalFieldValuesToBeChanged = result.getShops().get(0)
-				.getAdditionalFieldValues();
+		final List<MiraklRequestAdditionalFieldValue> additionalFieldValuesToBeChanged = result.getShops()
+			.get(0)
+			.getAdditionalFieldValues();
 
 		assertThat(additionalFieldValuesToBeChanged).hasSize(1);
 		final MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue miraklSimpleRequestAdditionalFieldValue = (MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue) additionalFieldValuesToBeChanged
-				.get(0);
+			.get(0);
 		assertThat(miraklSimpleRequestAdditionalFieldValue.getCode()).isEqualTo(BSTK_PROOF_IDENTITY_FIELD);
 		assertThat(miraklSimpleRequestAdditionalFieldValue.getValue()).isEqualTo("false");
 	}
@@ -239,19 +241,20 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 	void updateMiraklProofIdentityFlagStatus_whenAPICallThrowsException_shouldThrowException() {
 		final MiraklException exception = new MiraklException("An error has occurred");
 		when(miraklMarketplacePlatformOperatorApiClientMock
-				.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenThrow(exception);
+			.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenThrow(exception);
 
 		final Throwable throwable = catchThrowable(() -> testObj.updateMiraklProofIdentityFlagStatus(MIRAKL_SHOP_ID,
 				BSTK_PROOF_IDENTITY_FIELD, HyperwalletUser.VerificationStatus.REQUIRED));
 		assertThat(throwable).isEqualTo(exception);
 
 		final MiraklUpdateShopsRequest result = miraklUpdateShopsRequestArgumentCaptor.getValue();
-		final List<MiraklRequestAdditionalFieldValue> additionalFieldValuesToBeChanged = result.getShops().get(0)
-				.getAdditionalFieldValues();
+		final List<MiraklRequestAdditionalFieldValue> additionalFieldValuesToBeChanged = result.getShops()
+			.get(0)
+			.getAdditionalFieldValues();
 
 		assertThat(additionalFieldValuesToBeChanged).hasSize(1);
 		final MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue miraklSimpleRequestAdditionalFieldValue = (MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue) additionalFieldValuesToBeChanged
-				.get(0);
+			.get(0);
 		assertThat(miraklSimpleRequestAdditionalFieldValue.getCode()).isEqualTo(BSTK_PROOF_IDENTITY_FIELD);
 		assertThat(miraklSimpleRequestAdditionalFieldValue.getValue()).isEqualTo("true");
 	}
@@ -268,7 +271,7 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 				() -> testObj.execute(kycBusinessStakeholderStatusNotificationBodyModelMock));
 
 		verify(miraklBusinessStakeholderDocumentsExtractServiceMock, never())
-				.getKYCCustomValuesRequiredVerificationBusinessStakeholders(anyString(), anyList());
+			.getKYCCustomValuesRequiredVerificationBusinessStakeholders(anyString(), anyList());
 		assertThat(throwable).isInstanceOf(HMCException.class);
 		assertThat(throwable.getMessage()).isEqualTo(HMC_EXCEPTION_MESSAGE.formatted(USER_TOKEN));
 	}
@@ -283,15 +286,14 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 		when(hyperwalletMock.getUser(USER_TOKEN)).thenReturn(hyperwalletUserMock);
 		when(hyperwalletUserMock.getClientUserId()).thenReturn(CLIENT_ID);
 		when(miraklBusinessStakeholderDocumentsExtractServiceMock
-				.getKYCCustomValuesRequiredVerificationBusinessStakeholders(anyString(), anyList()))
-						.thenReturn(List.of());
+			.getKYCCustomValuesRequiredVerificationBusinessStakeholders(anyString(), anyList())).thenReturn(List.of());
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getVerificationStatus())
-				.thenReturn(HyperwalletUser.VerificationStatus.REQUIRED);
+			.thenReturn(HyperwalletUser.VerificationStatus.REQUIRED);
 
 		testObj.execute(kycBusinessStakeholderStatusNotificationBodyModelMock);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock, never())
-				.updateShops(isA(MiraklUpdateShopsRequest.class));
+			.updateShops(isA(MiraklUpdateShopsRequest.class));
 	}
 
 	@Test
@@ -304,10 +306,10 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 		when(hyperwalletMock.getUser(USER_TOKEN)).thenReturn(hyperwalletUserMock);
 		when(hyperwalletUserMock.getClientUserId()).thenReturn(CLIENT_ID);
 		when(miraklBusinessStakeholderDocumentsExtractServiceMock
-				.getKYCCustomValuesRequiredVerificationBusinessStakeholders(anyString(), anyList()))
-						.thenReturn(List.of(CUSTOM_FIELD_1, CUSTOM_FIELD_2));
+			.getKYCCustomValuesRequiredVerificationBusinessStakeholders(anyString(), anyList()))
+			.thenReturn(List.of(CUSTOM_FIELD_1, CUSTOM_FIELD_2));
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getVerificationStatus())
-				.thenReturn(HyperwalletUser.VerificationStatus.REQUIRED);
+			.thenReturn(HyperwalletUser.VerificationStatus.REQUIRED);
 
 		testObj.execute(kycBusinessStakeholderStatusNotificationBodyModelMock);
 
@@ -316,7 +318,7 @@ class IndividualKYCBusinessStakeholderStatusExecutorNotificationStrategyTest {
 
 	private void mockProgramsConfiguration() {
 		lenient().when(hyperwalletProgramsConfigurationMock.getAllProgramConfigurations())
-				.thenReturn(List.of(hyperwalletProgramConfiguration1Mock, hyperwalletProgramConfiguration2Mock));
+			.thenReturn(List.of(hyperwalletProgramConfiguration1Mock, hyperwalletProgramConfiguration2Mock));
 		lenient().when(hyperwalletProgramConfiguration1Mock.getProgramName()).thenReturn(DEFAULT_PROGRAM);
 		lenient().when(hyperwalletProgramConfiguration1Mock.getUsersProgramToken()).thenReturn(DEFAULT_TOKEN);
 		lenient().when(hyperwalletProgramConfiguration2Mock.getProgramName()).thenReturn(UK_PROGRAM);

@@ -1,8 +1,8 @@
 package com.paypal.observability.mirakldocschecks.startup;
 
 import com.paypal.observability.mirakldocschecks.services.MiraklDocSchemaCheckerService;
-import com.paypal.observability.miraklschemadiffs.startup.converters.MiraklSchemaStartupCheckConverter;
 import com.paypal.observability.miraklschemadiffs.model.report.MiraklSchemaDiffReport;
+import com.paypal.observability.miraklschemadiffs.startup.converters.MiraklSchemaStartupCheckConverter;
 import com.paypal.observability.startupchecks.model.StartupCheck;
 import com.paypal.observability.startupchecks.model.StartupCheckProvider;
 import org.springframework.stereotype.Component;

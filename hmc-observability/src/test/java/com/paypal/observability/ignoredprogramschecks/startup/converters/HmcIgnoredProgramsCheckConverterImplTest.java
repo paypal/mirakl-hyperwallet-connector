@@ -22,26 +22,31 @@ class HmcIgnoredProgramsCheckConverterImplTest {
 	@Test
 	void from_shouldConvertIgnoredProgramsCheckToStartUpCheckAndEnsureTheErrorMessageIsShownWhenIgnoredProgramsAreNotSubsetOfPrograms() {
 		final HmcIgnoredProgramsCheck ignoredProgramsCheck = HmcIgnoredProgramsCheck.builder()
-				.ignoredPrograms(List.of("PROGRAM1", "PROGRAM2")).programs(List.of("PROGRAM3", "PROGRAM4"))
-				.isSubset(false).build();
+			.ignoredPrograms(List.of("PROGRAM1", "PROGRAM2"))
+			.programs(List.of("PROGRAM3", "PROGRAM4"))
+			.isSubset(false)
+			.build();
 
 		final StartupCheck result = testObj.from(ignoredProgramsCheck);
 
 		assertThat(result).hasFieldOrPropertyWithValue("status", StartupCheckStatus.READY_WITH_WARNINGS)
-				.hasFieldOrPropertyWithValue("statusMessage",
-						Optional.of("The [%s] list of ignored programs is not a subset of [%s] programs"
-								.formatted("PROGRAM1,PROGRAM2", "PROGRAM3,PROGRAM4")));
+			.hasFieldOrPropertyWithValue("statusMessage",
+					Optional.of("The [%s] list of ignored programs is not a subset of [%s] programs"
+						.formatted("PROGRAM1,PROGRAM2", "PROGRAM3,PROGRAM4")));
 	}
 
 	@Test
 	void from_shouldConvertIgnoredProgramsCheckToStartUpCheckAndEnsureTheErrorMessageIsNotShownWhenIgnoredProgramsAreSubsetOfPrograms() {
 		final HmcIgnoredProgramsCheck ignoredProgramsCheck = HmcIgnoredProgramsCheck.builder()
-				.ignoredPrograms(List.of("PROGRAM1")).programs(List.of("PROGRAM1", "PROGRAM2")).isSubset(true).build();
+			.ignoredPrograms(List.of("PROGRAM1"))
+			.programs(List.of("PROGRAM1", "PROGRAM2"))
+			.isSubset(true)
+			.build();
 
 		final StartupCheck result = testObj.from(ignoredProgramsCheck);
 
 		assertThat(result).hasFieldOrPropertyWithValue("status", StartupCheckStatus.READY)
-				.hasFieldOrPropertyWithValue("statusMessage", Optional.empty());
+			.hasFieldOrPropertyWithValue("statusMessage", Optional.empty());
 	}
 
 }

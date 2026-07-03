@@ -48,8 +48,8 @@ class HyperwalletUserToKycUserStatusNotificationBodyModelConverterTest {
 
 		final HyperwalletUser hyperwalletUser = new HyperwalletUser();
 		hyperwalletUser.setVerificationStatus(HyperwalletUser.VerificationStatus.VERIFIED);
-		hyperwalletUser.setBusinessStakeholderVerificationStatus(
-				HyperwalletUser.BusinessStakeholderVerificationStatus.VERIFIED);
+		hyperwalletUser
+			.setBusinessStakeholderVerificationStatus(HyperwalletUser.BusinessStakeholderVerificationStatus.VERIFIED);
 		hyperwalletUser.setClientUserId(CLIENT_1_ID);
 		hyperwalletUser.setProfileType(HyperwalletUser.ProfileType.INDIVIDUAL);
 		hyperwalletUser.setLetterOfAuthorizationStatus(HyperwalletUser.LetterOfAuthorizationStatus.VERIFIED);
@@ -57,20 +57,21 @@ class HyperwalletUserToKycUserStatusNotificationBodyModelConverterTest {
 		hyperwalletVerificationDocument.setCategory(KYCConstants.HwDocuments.PROOF_OF_ADDRESS);
 		hyperwalletUser.setDocuments(List.of(hyperwalletVerificationDocument));
 		when(hyperWalletObjectToKYCUserStatusNotificationBodyModelConverterMock.convert(any()))
-				.thenReturn(kycUserStatusNotificationBodyModelMock);
+			.thenReturn(kycUserStatusNotificationBodyModelMock);
 
 		final KYCUserStatusNotificationBodyModel result = testObj.convert(hyperwalletUser);
 		assertThat(result).isEqualTo(kycUserStatusNotificationBodyModelMock);
 
 		verify(hyperWalletObjectToKYCUserStatusNotificationBodyModelConverterMock)
-				.convert(hyperwalletUserMapCaptor.capture());
+			.convert(hyperwalletUserMapCaptor.capture());
 		final Map<String, Object> hyperwalletUserMapCaptorValue = hyperwalletUserMapCaptor.getValue();
 		assertThat(hyperwalletUserMapCaptorValue).containsEntry("verificationStatus", "VERIFIED")
-				.containsEntry("businessStakeholderVerificationStatus", "VERIFIED")
-				.containsEntry("clientUserId", CLIENT_1_ID).containsEntry("profileType", "INDIVIDUAL")
-				.containsEntry("letterOfAuthorizationStatus", "VERIFIED");
+			.containsEntry("businessStakeholderVerificationStatus", "VERIFIED")
+			.containsEntry("clientUserId", CLIENT_1_ID)
+			.containsEntry("profileType", "INDIVIDUAL")
+			.containsEntry("letterOfAuthorizationStatus", "VERIFIED");
 		final List<Map<String, Object>> documents = (List<Map<String, Object>>) hyperwalletUserMapCaptorValue
-				.get("documents");
+			.get("documents");
 		assertThat(documents.get(0)).containsEntry("category", KYCConstants.HwDocuments.PROOF_OF_ADDRESS);
 	}
 

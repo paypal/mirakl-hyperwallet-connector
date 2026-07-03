@@ -24,7 +24,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static org.awaitility.Awaitility.await;
 
@@ -249,7 +248,7 @@ public abstract class AbstractBatchJobTestSupport extends AbstractIntegrationTes
 
 		@Override
 		public Collection<TestBatchJobItem> getItems(final BatchJobContext ctx) {
-			return itemsIdsToExtract.stream().map(TestBatchJobItem::new).collect(Collectors.toList());
+			return itemsIdsToExtract.stream().map(TestBatchJobItem::new).toList();
 		}
 
 	}
@@ -263,8 +262,9 @@ public abstract class AbstractBatchJobTestSupport extends AbstractIntegrationTes
 		@Override
 		public void prepareForProcessing(final BatchJobContext ctx,
 				final Collection<TestBatchJobItem> itemsToBeProcessed) {
-			if (itemsToBeProcessed.stream().map(BatchJobItem::getItemId)
-					.anyMatch(itemId -> itemsIdsToFail.contains(itemId))) {
+			if (itemsToBeProcessed.stream()
+				.map(BatchJobItem::getItemId)
+				.anyMatch(itemId -> itemsIdsToFail.contains(itemId))) {
 				throw new RuntimeException("Item Failed");
 			}
 			else {

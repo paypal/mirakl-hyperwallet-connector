@@ -15,8 +15,8 @@ public class MiraklSchemaDiffEntrySeverityAssignerRegistry {
 
 	public MiraklSchemaDiffEntrySeverityAssignerRegistry(
 			final List<MiraklSchemaDiffEntrySeverityAssigner> severityAssigners) {
-		registry = severityAssigners.stream().collect(
-				Collectors.toMap(MiraklSchemaDiffEntrySeverityAssigner::getTargetSchemaType, Function.identity()));
+		registry = severityAssigners.stream()
+			.collect(Collectors.toMap(MiraklSchemaDiffEntrySeverityAssigner::getTargetSchemaType, Function.identity()));
 	}
 
 	public MiraklSchemaDiffEntrySeverityAssigner getMiraklSchemaDiffEntrySeverityAssigner(

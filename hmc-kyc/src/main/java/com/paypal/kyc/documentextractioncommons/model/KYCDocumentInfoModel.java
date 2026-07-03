@@ -153,7 +153,7 @@ public class KYCDocumentInfoModel implements Serializable {
 
 		public T hyperwalletProgram(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklSingleValueListCustomFieldValue(fields, HW_PROGRAM)
-					.ifPresent(retrievedHyperwalletProgram -> this.hyperwalletProgram = retrievedHyperwalletProgram);
+				.ifPresent(retrievedHyperwalletProgram -> this.hyperwalletProgram = retrievedHyperwalletProgram);
 
 			return getThis();
 		}

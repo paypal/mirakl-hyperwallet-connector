@@ -540,7 +540,7 @@ public class AccountingDocumentModel {
 
 		public T destinationToken(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklStringCustomFieldValue(fields, HYPERWALLET_BANK_ACCOUNT_TOKEN)
-					.ifPresent(retrievedToken -> destinationToken = retrievedToken);
+				.ifPresent(retrievedToken -> destinationToken = retrievedToken);
 
 			return getThis();
 		}
@@ -552,7 +552,7 @@ public class AccountingDocumentModel {
 
 		public T hyperwalletProgram(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklSingleValueListCustomFieldValue(fields, HYPERWALLET_PROGRAM)
-					.ifPresent(retrievedHyperwalletProgram -> this.hyperwalletProgram = retrievedHyperwalletProgram);
+				.ifPresent(retrievedHyperwalletProgram -> this.hyperwalletProgram = retrievedHyperwalletProgram);
 
 			return getThis();
 		}

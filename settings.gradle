@@ -1,3 +1,7 @@
+plugins {
+	id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
 rootProject.name = 'hyperwallet-mirakl-connector'
 
 include 'hmc-infrastructure', 'hmc-jobsystem', 'hmc-sellers', 'hmc-invoices', 'hmc-app', 'hmc-notifications', 'hmc-kyc', 'hmc-reports', 'hmc-observability', 'hmc-testsupport'

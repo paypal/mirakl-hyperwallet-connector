@@ -79,7 +79,7 @@ class AccountingDocumentsLinksServiceImplTest {
 		when(itemLinksServiceMock.findLinks(
 				(MiraklItemLinkLocator) argThat(x -> ((MiraklItemLinkLocator) x).getId().equals("SHOP-1")),
 				eq(Set.of(HyperwalletItemTypes.BANK_ACCOUNT, HyperwalletItemTypes.PROGRAM))))
-						.thenReturn(List.of(hyperwalletItemLink1LocatorMock, hyperwalletItemLink2LocatorMock));
+			.thenReturn(List.of(hyperwalletItemLink1LocatorMock, hyperwalletItemLink2LocatorMock));
 
 		final Collection<HyperwalletItemLinkLocator> result = testObj.findRequiredLinks(accountingDocumentModel1Mock);
 
@@ -107,9 +107,9 @@ class AccountingDocumentsLinksServiceImplTest {
 
 		// then
 		final ArgumentCaptor<MiraklItemLinkLocator> miraklItemLinkLocatorArgumentCaptor = ArgumentCaptor
-				.forClass(MiraklItemLinkLocator.class);
+			.forClass(MiraklItemLinkLocator.class);
 		final ArgumentCaptor<Collection<HyperwalletItemLinkLocator>> hyperwalletItemLinkLocatorArgumentCaptor = ArgumentCaptor
-				.forClass(Collection.class);
+			.forClass(Collection.class);
 
 		verify(itemLinksServiceMock, times(2)).createLinks(miraklItemLinkLocatorArgumentCaptor.capture(),
 				hyperwalletItemLinkLocatorArgumentCaptor.capture());
@@ -132,9 +132,10 @@ class AccountingDocumentsLinksServiceImplTest {
 	private List<CreateItemLinksResult> getItemlLinksFromCreateLinksResult(
 			final List<MiraklItemLinkLocator> miraklItemLinkLocators,
 			final List<Collection<HyperwalletItemLinkLocator>> hyperwalletItemLinkLocators) {
-		return IntStream.range(0, miraklItemLinkLocators.size()).mapToObj(
-				i -> new CreateItemLinksResult(miraklItemLinkLocators.get(i), hyperwalletItemLinkLocators.get(i)))
-				.sorted(Comparator.comparing(x -> x.miraklItemLinkLocator.getId())).collect(Collectors.toList());
+		return IntStream.range(0, miraklItemLinkLocators.size())
+			.mapToObj(i -> new CreateItemLinksResult(miraklItemLinkLocators.get(i), hyperwalletItemLinkLocators.get(i)))
+			.sorted(Comparator.comparing(x -> x.miraklItemLinkLocator.getId()))
+			.toList();
 	}
 
 	@Test
@@ -154,8 +155,10 @@ class AccountingDocumentsLinksServiceImplTest {
 		@Override
 		public boolean matches(final Collection<MiraklItemLinkLocator> argument) {
 			// formatter:off
-			return argument.stream().map(MiraklItemLinkLocator::getId).collect(Collectors.toSet())
-					.containsAll(Set.of(SHOP_ID_1, SHOP_ID_2));
+			return argument.stream()
+				.map(MiraklItemLinkLocator::getId)
+				.collect(Collectors.toSet())
+				.containsAll(Set.of(SHOP_ID_1, SHOP_ID_2));
 			// formatter:on
 		}
 

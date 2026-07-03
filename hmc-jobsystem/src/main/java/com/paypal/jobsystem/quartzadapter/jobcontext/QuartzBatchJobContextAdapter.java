@@ -223,7 +223,7 @@ public class QuartzBatchJobContextAdapter implements BatchJobContext {
 
 	private int getIntValue(final String key, final int defaultValue) {
 		return Optional.ofNullable((Integer) jobExecutionContext.getJobDetail().getJobDataMap().get(key))
-				.orElse(defaultValue);
+			.orElse(defaultValue);
 	}
 
 	private Optional<Integer> getOptionalIntValue(final String key) {
@@ -241,8 +241,8 @@ public class QuartzBatchJobContextAdapter implements BatchJobContext {
 
 	private BatchJobStatus getStatusValue() {
 		return (BatchJobStatus) Optional
-				.ofNullable(jobExecutionContext.getJobDetail().getJobDataMap().get(KEY_BATCH_JOB_STATUS))
-				.orElse(BatchJobStatus.NOT_STARTED);
+			.ofNullable(jobExecutionContext.getJobDetail().getJobDataMap().get(KEY_BATCH_JOB_STATUS))
+			.orElse(BatchJobStatus.NOT_STARTED);
 	}
 
 	private String getStringValue(final String key) {

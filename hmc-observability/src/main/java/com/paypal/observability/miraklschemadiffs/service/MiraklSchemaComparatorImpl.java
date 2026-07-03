@@ -74,13 +74,14 @@ public class MiraklSchemaComparatorImpl implements MiraklSchemaComparator {
 				.map(e -> e.check(expected, actual))
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 
 	private Map<String, MiraklSchemaItem> buildCustomFieldMap(final MiraklSchema miraklSchema) {
-		return miraklSchema.getItems().stream()
-				.collect(Collectors.toMap(MiraklSchemaItem::getCode, Function.identity()));
+		return miraklSchema.getItems()
+			.stream()
+			.collect(Collectors.toMap(MiraklSchemaItem::getCode, Function.identity()));
 	}
 
 }

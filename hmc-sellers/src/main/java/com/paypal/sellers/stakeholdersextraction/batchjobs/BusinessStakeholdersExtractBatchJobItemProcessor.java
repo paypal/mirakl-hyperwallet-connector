@@ -36,7 +36,7 @@ public class BusinessStakeholdersExtractBatchJobItemProcessor
 	public void processItem(final BatchJobContext ctx, final BusinessStakeholderExtractJobItem jobItem) {
 
 		final BusinessStakeHolderModel synchronizedBusinessStakeHolderModel = businessStakeholderTokenSynchronizationService
-				.synchronizeToken(jobItem.getItem());
+			.synchronizeToken(jobItem.getItem());
 
 		hyperWalletBusinessStakeHolderStrategyExecutor.execute(synchronizedBusinessStakeHolderModel);
 	}

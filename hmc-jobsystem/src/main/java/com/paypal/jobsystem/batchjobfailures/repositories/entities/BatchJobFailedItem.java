@@ -1,11 +1,11 @@
 package com.paypal.jobsystem.batchjobfailures.repositories.entities;
 
-import lombok.Data;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
 /**

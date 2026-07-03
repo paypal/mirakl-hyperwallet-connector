@@ -40,7 +40,7 @@ class HyperWalletUpdateSellerServiceStrategyTest extends HyperwalletSellerServic
 		ensureHyperwalletSDKThrowsAnHMCException();
 
 		assertThatThrownBy(() -> testObj.pushToHyperwallet(hyperwalletUserRequestMock))
-				.isInstanceOf(HMCHyperwalletAPIException.class);
+			.isInstanceOf(HMCHyperwalletAPIException.class);
 	}
 
 	@Test
@@ -50,7 +50,7 @@ class HyperWalletUpdateSellerServiceStrategyTest extends HyperwalletSellerServic
 		ensureHyperwalletSDKThrowsAnHMCException();
 
 		assertThatThrownBy(() -> testObj.pushToHyperwallet(hyperwalletUserRequestMock))
-				.isInstanceOf(HMCHyperwalletAPIException.class);
+			.isInstanceOf(HMCHyperwalletAPIException.class);
 
 		verify(testObj).reportError("Issue detected when updating seller in Hyperwallet",
 				(ERROR_MESSAGE_PREFIX + "Seller not updated with clientId [%s]%n%s").formatted(CLIENT_USER_ID,
@@ -64,7 +64,7 @@ class HyperWalletUpdateSellerServiceStrategyTest extends HyperwalletSellerServic
 		ensureHyperwalletSDKThrowsAnHMCException();
 
 		assertThatThrownBy(() -> testObj.pushToHyperwallet(hyperwalletUserRequestMock))
-				.isInstanceOf(HMCHyperwalletAPIException.class);
+			.isInstanceOf(HMCHyperwalletAPIException.class);
 
 		verify(testObj).logErrors(
 				eq("Error updating seller in hyperwallet with clientUserId [%s].%n%s".formatted(CLIENT_USER_ID,

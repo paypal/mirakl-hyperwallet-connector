@@ -1,8 +1,8 @@
 package com.paypal.sellers.individualsellersextraction.batchjobs;
 
+import com.paypal.infrastructure.support.services.TokenSynchronizationService;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjobsupport.model.BatchJobItemProcessor;
-import com.paypal.infrastructure.support.services.TokenSynchronizationService;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import com.paypal.sellers.sellerextractioncommons.services.strategies.HyperWalletUserServiceStrategyExecutor;
 import org.springframework.stereotype.Component;

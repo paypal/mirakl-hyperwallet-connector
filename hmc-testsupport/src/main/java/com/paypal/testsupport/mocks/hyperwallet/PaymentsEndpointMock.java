@@ -30,40 +30,45 @@ public class PaymentsEndpointMock {
 
 	public void createPaymentRequest(final HyperwalletPayment payment) {
 		mockServerClient
-				.when(request().withMethod(HttpMethod.POST.name()).withPath(URL)
-						.withBody(HyperwalletJsonUtil.toJson(payment)))
-				.respond(
-						response().withStatusCode(HttpStatus.OK.value()).withBody(HyperwalletJsonUtil.toJson(payment)));
+			.when(request().withMethod(HttpMethod.POST.name())
+				.withPath(URL)
+				.withBody(HyperwalletJsonUtil.toJson(payment)))
+			.respond(response().withStatusCode(HttpStatus.OK.value()).withBody(HyperwalletJsonUtil.toJson(payment)));
 	}
 
 	public void createPaymentErrorRequest(final HyperwalletPayment payment) {
 		mockServerClient
-				.when(request().withMethod(HttpMethod.POST.name()).withPath(URL)
-						.withBody(HyperwalletJsonUtil.toJson(payment)))
-				.respond(response().withStatusCode(HttpStatus.BAD_REQUEST.value()));
+			.when(request().withMethod(HttpMethod.POST.name())
+				.withPath(URL)
+				.withBody(HyperwalletJsonUtil.toJson(payment)))
+			.respond(response().withStatusCode(HttpStatus.BAD_REQUEST.value()));
 	}
 
 	public void listPaymentsRequest(final String clientPaymentId, final Collection<String> statuses) {
 		final HyperwalletList<HyperwalletPayment> response = createHyperwalletListWithStatus(statuses);
 		mockServerClient
-				.when(request().withMethod(HttpMethod.GET.name()).withPath(URL)
-						.withQueryStringParameter(PARAMETER_CLIENT_PAYMENT_ID, clientPaymentId))
-				.respond(response().withStatusCode(HttpStatus.OK.value()).withContentType(MediaType.APPLICATION_JSON)
-						.withBody(new Gson().toJson(response)));
+			.when(request().withMethod(HttpMethod.GET.name())
+				.withPath(URL)
+				.withQueryStringParameter(PARAMETER_CLIENT_PAYMENT_ID, clientPaymentId))
+			.respond(response().withStatusCode(HttpStatus.OK.value())
+				.withContentType(MediaType.APPLICATION_JSON)
+				.withBody(new Gson().toJson(response)));
 	}
 
 	public void listPaymentsErrorRequest(final String clientPaymentId) {
 		mockServerClient
-				.when(request().withMethod(HttpMethod.GET.name()).withPath(URL)
-						.withQueryStringParameter(PARAMETER_CLIENT_PAYMENT_ID, clientPaymentId))
-				.respond(response().withStatusCode(HttpStatus.BAD_REQUEST.value())
-						.withContentType(MediaType.APPLICATION_JSON));
+			.when(request().withMethod(HttpMethod.GET.name())
+				.withPath(URL)
+				.withQueryStringParameter(PARAMETER_CLIENT_PAYMENT_ID, clientPaymentId))
+			.respond(response().withStatusCode(HttpStatus.BAD_REQUEST.value())
+				.withContentType(MediaType.APPLICATION_JSON));
 	}
 
 	private HyperwalletList<HyperwalletPayment> createHyperwalletListWithStatus(final Collection<String> statuses) {
 		final HyperwalletList<HyperwalletPayment> response = new HyperwalletList<>();
 		final List<HyperwalletPayment> dataWithAllFailures = statuses.stream()
-				.map(status -> new HyperwalletPayment().status(status)).collect(Collectors.toUnmodifiableList());
+			.map(status -> new HyperwalletPayment().status(status))
+			.collect(Collectors.toUnmodifiableList());
 		response.setData(dataWithAllFailures);
 		return response;
 	}

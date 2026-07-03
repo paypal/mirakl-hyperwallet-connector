@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -39,31 +40,31 @@ class HMCFileServiceImplTest {
 	@InjectMocks
 	private HMCFileServiceImpl testObj;
 
-	private static MockedStatic<DateUtil> DATEUTIL_MOCK;
+	private static MockedStatic<DateUtil> dateUtilMockedStatic;
 
-	private static MockedStatic<LocalDateTime> LOCALDATETIME_MOCK;
+	private static MockedStatic<LocalDateTime> localDateTimeMockedStatic;
 
-	private static LocalDateTime NOW;
+	private static LocalDateTime localDateTimeNow;
 
 	@BeforeEach
 	void setUp() {
-		NOW = LocalDateTime.of(2020, 11, 10, 20, 45);
-		DATEUTIL_MOCK = mockStatic(DateUtil.class);
-		LOCALDATETIME_MOCK = mockStatic(LocalDateTime.class);
+		localDateTimeNow = LocalDateTime.of(2020, 11, 10, 20, 45);
+		dateUtilMockedStatic = mockStatic(DateUtil.class);
+		localDateTimeMockedStatic = mockStatic(LocalDateTime.class);
 	}
 
 	@AfterEach
 	void deRegisterStaticMocks() {
-		DATEUTIL_MOCK.close();
-		LOCALDATETIME_MOCK.close();
+		dateUtilMockedStatic.close();
+		localDateTimeMockedStatic.close();
 	}
 
 	@Test
 	void saveCSVFile_shouldSaveCSVFile_whenPathAndContentAreNotNull() throws IOException {
 		final String path = getClass().getResource("").getPath();
 		doReturn(FILE_NAME).when(testObj).printCSVFile(Paths.get(path + FILE_NAME), HEADERS, FILE_NAME, CONTENT_LINES);
-		LOCALDATETIME_MOCK.when(LocalDateTime::now).thenReturn(NOW);
-		DATEUTIL_MOCK.when(() -> DateUtil.convertToString(NOW, DATE_FORMAT)).thenReturn(DATE);
+		localDateTimeMockedStatic.when(LocalDateTime::now).thenReturn(localDateTimeNow);
+		dateUtilMockedStatic.when(() -> DateUtil.convertToString(localDateTimeNow, DATE_FORMAT)).thenReturn(DATE);
 
 		final String resultFileName = testObj.saveCSVFile(path, PREFIX_FILE, CONTENT_LINES, HEADERS);
 
@@ -73,7 +74,7 @@ class HMCFileServiceImplTest {
 
 	@Test
 	void saveCSVFile_shouldEmptyString_whenContentIsNull() {
-		final String path = getClass().getResource("").getPath();
+		final String path = Objects.requireNonNull(getClass().getResource("")).getPath();
 		final String resultFileName = testObj.saveCSVFile(path, PREFIX_FILE, null, HEADERS);
 
 		assertThat(resultFileName).isEqualTo(StringUtils.EMPTY);

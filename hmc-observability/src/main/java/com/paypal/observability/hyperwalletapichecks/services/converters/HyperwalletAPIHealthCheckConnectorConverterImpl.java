@@ -18,9 +18,11 @@ public class HyperwalletAPIHealthCheckConnectorConverterImpl implements Hyperwal
 	@Override
 	public HyperwalletAPICheck from(final HyperwalletProgram hyperwalletProgram) {
 		return HyperwalletAPICheck.builder()
-				.hyperwalletAPICheckStatus(
-						isHealthy(hyperwalletProgram) ? HyperwalletAPICheckStatus.UP : HyperwalletAPICheckStatus.DOWN)
-				.location(hyperwalletEnvironment).error(getError(hyperwalletProgram)).build();
+			.hyperwalletAPICheckStatus(
+					isHealthy(hyperwalletProgram) ? HyperwalletAPICheckStatus.UP : HyperwalletAPICheckStatus.DOWN)
+			.location(hyperwalletEnvironment)
+			.error(getError(hyperwalletProgram))
+			.build();
 		//@formatter:on
 	}
 

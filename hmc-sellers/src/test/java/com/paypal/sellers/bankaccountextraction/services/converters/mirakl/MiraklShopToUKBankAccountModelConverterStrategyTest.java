@@ -122,7 +122,8 @@ class MiraklShopToUKBankAccountModelConverterStrategyTest {
 		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
 				UK_COUNTRY_ISO, GBP_CURRENCY, TransferType.BANK_ACCOUNT);
 		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.UK.name(), UK_COUNTRY_ISO,
-				GBP_CURRENCY)).thenReturn(hyperwalletBankAccountCurrencyInfo);
+				GBP_CURRENCY))
+			.thenReturn(hyperwalletBankAccountCurrencyInfo);
 
 		final BankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off
@@ -153,7 +154,7 @@ class MiraklShopToUKBankAccountModelConverterStrategyTest {
 		when(miraklShopMock.getDefaultBillingInformation()).thenReturn(miraklDefaultBillingInformationMock);
 		when(miraklDefaultBillingInformationMock.getCorporateInformation()).thenReturn(miraklCorporateInformationMock);
 		when(miraklShopMock.getAdditionalFieldValues())
-				.thenReturn(List.of(miraklBankAccountTokenFieldValueMock, miraklHyperwalletProgramFieldValueMock));
+			.thenReturn(List.of(miraklBankAccountTokenFieldValueMock, miraklHyperwalletProgramFieldValueMock));
 		when(miraklBankAccountTokenFieldValueMock.getCode()).thenReturn(HYPERWALLET_BANK_ACCOUNT_TOKEN);
 		when(miraklBankAccountTokenFieldValueMock.getValue()).thenReturn(TOKEN);
 		when(miraklHyperwalletProgramFieldValueMock.getCode()).thenReturn(SellerModelConstants.HYPERWALLET_PROGRAM);
@@ -174,7 +175,8 @@ class MiraklShopToUKBankAccountModelConverterStrategyTest {
 		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = new HyperwalletBankAccountCurrencyInfo(
 				UK_COUNTRY_ISO, GBP_CURRENCY, TransferType.BANK_ACCOUNT);
 		when(hyperwalletBankAccountCurrencyResolverMock.getCurrencyForCountry(BankAccountType.UK.name(), UK_COUNTRY_ISO,
-				GBP_CURRENCY)).thenReturn(hyperwalletBankAccountCurrencyInfo);
+				GBP_CURRENCY))
+			.thenReturn(hyperwalletBankAccountCurrencyInfo);
 
 		final BankAccountModel result = testObj.execute(miraklShopMock);
 		//@formatter:off

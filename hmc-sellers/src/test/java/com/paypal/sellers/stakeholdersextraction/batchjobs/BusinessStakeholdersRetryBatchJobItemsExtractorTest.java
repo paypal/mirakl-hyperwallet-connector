@@ -1,11 +1,9 @@
 package com.paypal.sellers.stakeholdersextraction.batchjobs;
 
-import com.paypal.sellers.stakeholdersextraction.batchjobs.BusinessStakeholderExtractJobItem;
-import com.paypal.sellers.stakeholdersextraction.batchjobs.BusinessStakeholdersRetryBatchJobItemsExtractor;
-import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
-import com.paypal.sellers.stakeholdersextraction.services.BusinessStakeholderExtractService;
 import com.paypal.sellers.sellerextractioncommons.services.MiraklSellersExtractService;
+import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
+import com.paypal.sellers.stakeholdersextraction.services.BusinessStakeholderExtractService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -52,18 +50,18 @@ class BusinessStakeholdersRetryBatchJobItemsExtractorTest {
 	void getItems_ShouldReturnBusinessStakeholderExtractJobItems() {
 
 		when(miraklSellersExtractServiceMock
-				.extractProfessionals(List.of(PROFESSIONAL_SELLER_1, PROFESSIONAL_SELLER_2)))
-						.thenReturn(List.of(sellerModelMock1, sellerModelMock2));
+			.extractProfessionals(List.of(PROFESSIONAL_SELLER_1, PROFESSIONAL_SELLER_2)))
+			.thenReturn(List.of(sellerModelMock1, sellerModelMock2));
 
 		when(businessStakeholderExtractServiceMock
-				.extractBusinessStakeHolders(List.of(sellerModelMock1, sellerModelMock2)))
-						.thenReturn(List.of(businessStakeHolderModelMock1, businessStakeHolderModelMock2));
+			.extractBusinessStakeHolders(List.of(sellerModelMock1, sellerModelMock2)))
+			.thenReturn(List.of(businessStakeHolderModelMock1, businessStakeHolderModelMock2));
 
 		final Collection<BusinessStakeholderExtractJobItem> result = testObj
-				.getItems(List.of(PROFESSIONAL_SELLER_1, PROFESSIONAL_SELLER_2));
+			.getItems(List.of(PROFESSIONAL_SELLER_1, PROFESSIONAL_SELLER_2));
 
 		assertThat(result.stream().map(BusinessStakeholderExtractJobItem::getItem).collect(Collectors.toList()))
-				.containsExactlyInAnyOrder(businessStakeHolderModelMock1, businessStakeHolderModelMock2);
+			.containsExactlyInAnyOrder(businessStakeHolderModelMock1, businessStakeHolderModelMock2);
 	}
 
 }

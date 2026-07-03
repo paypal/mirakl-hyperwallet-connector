@@ -3,10 +3,6 @@ package com.paypal.sellers.stakeholdersextraction.batchjobs;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjobsupport.model.BatchJobItemProcessor;
 import com.paypal.jobsystem.batchjobsupport.model.BatchJobItemsExtractor;
-import com.paypal.sellers.stakeholdersextraction.batchjobs.BusinessStakeholderExtractJobItem;
-import com.paypal.sellers.stakeholdersextraction.batchjobs.BusinessStakeholdersExtractBatchJob;
-import com.paypal.sellers.stakeholdersextraction.batchjobs.BusinessStakeholdersExtractBatchJobItemProcessor;
-import com.paypal.sellers.stakeholdersextraction.batchjobs.BusinessStakeholdersExtractBatchJobItemsExtractor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,7 +27,7 @@ class BusinessStakeholdersExtractBatchJobTest {
 	void getBatchJobItemProcessor_ShouldReturnBusinessStakeholdersExtractBatchJobItemProcessor() {
 
 		final BatchJobItemProcessor<BatchJobContext, BusinessStakeholderExtractJobItem> result = testObj
-				.getBatchJobItemProcessor();
+			.getBatchJobItemProcessor();
 
 		assertThat(result).isEqualTo(professionalSellersExtractBatchJobItemProcessorMock);
 	}
@@ -40,7 +36,7 @@ class BusinessStakeholdersExtractBatchJobTest {
 	void getBatchJobItemsExtractor_ShouldReturnBusinessStakeholdersExtractBatchJobItemsExtractor() {
 
 		final BatchJobItemsExtractor<BatchJobContext, BusinessStakeholderExtractJobItem> result = testObj
-				.getBatchJobItemsExtractor();
+			.getBatchJobItemsExtractor();
 
 		assertThat(result).isEqualTo(professionalSellersExtractBatchJobItemsExtractorMock);
 	}
