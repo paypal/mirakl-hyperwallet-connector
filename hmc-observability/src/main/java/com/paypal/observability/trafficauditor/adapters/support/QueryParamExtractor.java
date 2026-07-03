@@ -17,8 +17,9 @@ public final class QueryParamExtractor {
 	}
 
 	private static Map<String, String> parseQueryString(@NotNull final String queryString) {
-		return Arrays.stream(queryString.split("&")).map(param -> param.split("="))
-				.collect(Collectors.toMap(param -> param[0], param -> param[1]));
+		return Arrays.stream(queryString.split("&"))
+			.map(param -> param.split("="))
+			.collect(Collectors.toMap(param -> param[0], param -> param[1]));
 	}
 
 }

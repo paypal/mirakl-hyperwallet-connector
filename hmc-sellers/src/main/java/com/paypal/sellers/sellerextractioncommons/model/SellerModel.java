@@ -1,8 +1,8 @@
 package com.paypal.sellers.sellerextractioncommons.model;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
-import com.paypal.sellers.bankaccountextraction.model.BankAccountModel;
 import com.paypal.infrastructure.support.countries.CountriesUtil;
+import com.paypal.sellers.bankaccountextraction.model.BankAccountModel;
 import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +18,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.paypal.sellers.sellerextractioncommons.model.SellerModelConstants.*;
@@ -156,8 +155,8 @@ public class SellerModel {
 		final SellerModel that = (SellerModel) o;
 
 		return EqualsBuilder.reflectionEquals(this, that, "businessStakeHolderDetails") && CollectionUtils
-				.isEqualCollection(Optional.ofNullable(getBusinessStakeHolderDetails()).orElse(List.of()),
-						Optional.ofNullable(that.businessStakeHolderDetails).orElse(List.of()));
+			.isEqualCollection(Optional.ofNullable(getBusinessStakeHolderDetails()).orElse(List.of()),
+					Optional.ofNullable(that.businessStakeHolderDetails).orElse(List.of()));
 	}
 
 	@Override
@@ -190,7 +189,7 @@ public class SellerModel {
 
 		public SellerModelBuilder companyRegistrationCountry(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklStringCustomFieldValue(fields, HYPERWALLET_BUSINESS_REGISTRATION_COUNTRY)
-					.ifPresent(countryIsocode -> companyRegistrationCountry = countryIsocode);
+				.ifPresent(countryIsocode -> companyRegistrationCountry = countryIsocode);
 
 			return this;
 		}
@@ -204,7 +203,7 @@ public class SellerModel {
 
 		public SellerModelBuilder token(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklStringCustomFieldValue(fields, HYPERWALLET_USER_TOKEN)
-					.ifPresent(retrievedToken -> token = retrievedToken);
+				.ifPresent(retrievedToken -> token = retrievedToken);
 			return this;
 		}
 
@@ -227,60 +226,61 @@ public class SellerModel {
 
 		public SellerModelBuilder hwTermsConsent(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklBooleanCustomFieldValue(fields, HYPERWALLET_TERMS_CONSENT)
-					.ifPresent(termsConsent -> hwTermsConsent = Boolean.parseBoolean(termsConsent));
+				.ifPresent(termsConsent -> hwTermsConsent = Boolean.parseBoolean(termsConsent));
 			return this;
 		}
 
 		public SellerModelBuilder countryOfBirth(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklStringCustomFieldValue(fields, COUNTRY_OF_BIRTH)
-					.ifPresent(retrievedCountryOfBirth -> countryOfBirth = retrievedCountryOfBirth);
+				.ifPresent(retrievedCountryOfBirth -> countryOfBirth = retrievedCountryOfBirth);
 			return this;
 		}
 
 		public SellerModelBuilder countryOfNationality(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklStringCustomFieldValue(fields, COUNTRY_OF_NATIONALITY)
-					.ifPresent(retrievedCountryOfNationality -> countryOfNationality = retrievedCountryOfNationality);
+				.ifPresent(retrievedCountryOfNationality -> countryOfNationality = retrievedCountryOfNationality);
 			return this;
 		}
 
 		public SellerModelBuilder governmentId(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklStringCustomFieldValue(fields, GOVERNMENT_ID)
-					.ifPresent(retrievedGovernmentId -> governmentId = retrievedGovernmentId);
+				.ifPresent(retrievedGovernmentId -> governmentId = retrievedGovernmentId);
 			return this;
 		}
 
 		public SellerModelBuilder governmentIdType(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklSingleValueListCustomFieldValue(fields, GOVERNMENT_ID_TYPE)
-					.ifPresent(retrievedGovernmentIdType -> governmentIdType = EnumUtils
-							.getEnum(SellerGovernmentIdType.class, retrievedGovernmentIdType));
+				.ifPresent(retrievedGovernmentIdType -> governmentIdType = EnumUtils
+					.getEnum(SellerGovernmentIdType.class, retrievedGovernmentIdType));
 			return this;
 		}
 
 		public SellerModelBuilder passportId(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklStringCustomFieldValue(fields, PASSPORT_ID)
-					.ifPresent(retrievedPassportId -> passportId = retrievedPassportId);
+				.ifPresent(retrievedPassportId -> passportId = retrievedPassportId);
 			return this;
 		}
 
 		public SellerModelBuilder driversLicenseId(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklStringCustomFieldValue(fields, DRIVERS_LICENSE_ID)
-					.ifPresent(retrievedDriversLicenseId -> driversLicenseId = retrievedDriversLicenseId);
+				.ifPresent(retrievedDriversLicenseId -> driversLicenseId = retrievedDriversLicenseId);
 			return this;
 		}
 
 		public SellerModelBuilder businessType(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklSingleValueListCustomFieldValue(fields, BUSINESS_TYPE)
-					.ifPresent(retrievedBusinessType -> businessType = EnumUtils.getEnum(SellerBusinessType.class,
-							retrievedBusinessType));
+				.ifPresent(retrievedBusinessType -> businessType = EnumUtils.getEnum(SellerBusinessType.class,
+						retrievedBusinessType));
 			return this;
 		}
 
 		public SellerModelBuilder businessStakeHolderDetails(
 				final List<BusinessStakeHolderModel> businessStakeHolderModels) {
-			businessStakeHolderDetails = Stream.ofNullable(businessStakeHolderModels).flatMap(Collection::stream)
-					.filter(Objects::nonNull)
-					.map(businessStakeHolderModel -> businessStakeHolderModel.toBuilder().build())
-					.collect(Collectors.toList());
+			businessStakeHolderDetails = Stream.ofNullable(businessStakeHolderModels)
+				.flatMap(Collection::stream)
+				.filter(Objects::nonNull)
+				.map(businessStakeHolderModel -> businessStakeHolderModel.toBuilder().build())
+				.toList();
 
 			return this;
 
@@ -288,7 +288,7 @@ public class SellerModel {
 
 		public SellerModelBuilder hyperwalletProgram(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklSingleValueListCustomFieldValue(fields, HYPERWALLET_PROGRAM)
-					.ifPresent(hyperwalletProgramValue -> hyperwalletProgram = hyperwalletProgramValue);
+				.ifPresent(hyperwalletProgramValue -> hyperwalletProgram = hyperwalletProgramValue);
 
 			return this;
 		}
@@ -306,23 +306,28 @@ public class SellerModel {
 
 		private Optional<String> getMiraklStringCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
 				final String customFieldCode) {
-			return fields.stream().filter(field -> field.getCode().equals(customFieldCode))
-					.filter(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::isInstance)
-					.map(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::cast).findAny()
-					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+			return fields.stream()
+				.filter(field -> field.getCode().equals(customFieldCode))
+				.filter(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::isInstance)
+				.map(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::cast)
+				.findAny()
+				.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
 		}
 
 		private Optional<String> getMiraklBooleanCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
 				final String customFieldCode) {
-			return fields.stream().filter(field -> field.getCode().equals(customFieldCode))
-					.filter(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::isInstance)
-					.map(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::cast).findAny()
-					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+			return fields.stream()
+				.filter(field -> field.getCode().equals(customFieldCode))
+				.filter(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::isInstance)
+				.map(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::cast)
+				.findAny()
+				.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
 		}
 
 		private String transform3CharIsocodeTo2CharIsocode(final String country) {
-			final Locale countryLocale = CountriesUtil.getLocaleByIsocode(country).orElseThrow(
-					() -> new IllegalStateException("Country with isocode: [%s] not valid".formatted(country)));
+			final Locale countryLocale = CountriesUtil.getLocaleByIsoCode(country)
+				.orElseThrow(
+						() -> new IllegalStateException("Country with isocode: [%s] not valid".formatted(country)));
 
 			return countryLocale.getCountry();
 		}

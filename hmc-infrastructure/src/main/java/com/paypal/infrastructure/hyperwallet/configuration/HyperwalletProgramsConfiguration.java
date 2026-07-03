@@ -93,7 +93,7 @@ public class HyperwalletProgramsConfiguration {
 	}
 
 	private List<String> removeEmptyStringValues(final List<String> ignoredHyperwalletPrograms) {
-		return ignoredHyperwalletPrograms.stream().filter(program -> !program.equals("")).collect(Collectors.toList());
+		return ignoredHyperwalletPrograms.stream().filter(program -> !program.equals("")).toList();
 	}
 
 	@Data

@@ -4,7 +4,6 @@ import com.paypal.infrastructure.support.date.TimeMachine;
 import com.paypal.reports.model.HmcBraintreeTransactionLine;
 import com.paypal.reports.model.HmcFinancialReportLine;
 import com.paypal.reports.model.HmcMiraklTransactionLine;
-import com.paypal.reports.services.converters.BrainTreeMiraklTransactionLinesIntoFinancialReportLineConverter;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +40,7 @@ class BrainTreeHMCMiraklTransactionLinesIntoHmcFinancialReportLineConverterTest 
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 45));
 		final LocalDateTime now = TimeMachine.now();
 		//@formatter:off
-		final HmcBraintreeTransactionLine HmcBraintreeTransactionLineStub = HmcBraintreeTransactionLine.builder()
+		final HmcBraintreeTransactionLine hmcBraintreeTransactionLineStub = HmcBraintreeTransactionLine.builder()
 				.orderId(BRAINTREE_ORDER_ID)
 				.amount(BigDecimal.TEN)
 				.currencyIsoCode(EUR_CURRENCY_ISO_CODE)
@@ -51,7 +50,7 @@ class BrainTreeHMCMiraklTransactionLinesIntoHmcFinancialReportLineConverterTest 
 		//@formatter:on
 
 		//@formatter:off
-		final HmcMiraklTransactionLine HmcMiraklTransactionLineStub = HmcMiraklTransactionLine.builder()
+		final HmcMiraklTransactionLine hmcMiraklTransactionLineStub = HmcMiraklTransactionLine.builder()
 				.orderId(MIRAKL_ORDER_ID)
 				.sellerId(MIRAKL_SELLER_ID)
 				.transactionLineId(MIRAKL_TRANSACTION_LINE_ID)
@@ -65,7 +64,7 @@ class BrainTreeHMCMiraklTransactionLinesIntoHmcFinancialReportLineConverterTest 
 		//@formatter:on
 
 		final HmcFinancialReportLine result = testObj
-				.convert(Pair.of(HmcBraintreeTransactionLineStub, HmcMiraklTransactionLineStub));
+			.convert(Pair.of(hmcBraintreeTransactionLineStub, hmcMiraklTransactionLineStub));
 		assertThat(result.getBraintreeCommerceOrderId()).isEqualTo(BRAINTREE_ORDER_ID);
 		assertThat(result.getMiraklOrderId()).isEqualTo(MIRAKL_ORDER_ID);
 		assertThat(result.getMiraklSellerId()).isEqualTo(MIRAKL_SELLER_ID);
@@ -85,7 +84,7 @@ class BrainTreeHMCMiraklTransactionLinesIntoHmcFinancialReportLineConverterTest 
 		final LocalDateTime now = TimeMachine.now();
 
 		//@formatter:off
-		final HmcMiraklTransactionLine HmcMiraklTransactionLineStub = HmcMiraklTransactionLine.builder()
+		final HmcMiraklTransactionLine hmcMiraklTransactionLineStub = HmcMiraklTransactionLine.builder()
 				.orderId(MIRAKL_ORDER_ID)
 				.sellerId(MIRAKL_SELLER_ID)
 				.transactionLineId(MIRAKL_TRANSACTION_LINE_ID)
@@ -98,7 +97,7 @@ class BrainTreeHMCMiraklTransactionLinesIntoHmcFinancialReportLineConverterTest 
 				.build();
 		//@formatter:on
 
-		final HmcFinancialReportLine result = testObj.convert(Pair.of(null, HmcMiraklTransactionLineStub));
+		final HmcFinancialReportLine result = testObj.convert(Pair.of(null, hmcMiraklTransactionLineStub));
 		assertThat(result).isNull();
 	}
 
@@ -108,7 +107,7 @@ class BrainTreeHMCMiraklTransactionLinesIntoHmcFinancialReportLineConverterTest 
 		final LocalDateTime now = TimeMachine.now();
 
 		//@formatter:off
-		final HmcBraintreeTransactionLine HmcBraintreeTransactionLineStub = HmcBraintreeTransactionLine.builder()
+		final HmcBraintreeTransactionLine hmcBraintreeTransactionLineStub = HmcBraintreeTransactionLine.builder()
 				.orderId(BRAINTREE_ORDER_ID)
 				.amount(BigDecimal.TEN)
 				.currencyIsoCode(EUR_CURRENCY_ISO_CODE)
@@ -117,7 +116,7 @@ class BrainTreeHMCMiraklTransactionLinesIntoHmcFinancialReportLineConverterTest 
 				.build();
 		//@formatter:on
 
-		final HmcFinancialReportLine result = testObj.convert(Pair.of(HmcBraintreeTransactionLineStub, null));
+		final HmcFinancialReportLine result = testObj.convert(Pair.of(hmcBraintreeTransactionLineStub, null));
 		assertThat(result).isNull();
 	}
 
@@ -126,7 +125,7 @@ class BrainTreeHMCMiraklTransactionLinesIntoHmcFinancialReportLineConverterTest 
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 45));
 		final LocalDateTime now = TimeMachine.now();
 		//@formatter:off
-		final HmcBraintreeTransactionLine HmcBraintreeTransactionLineStub = HmcBraintreeTransactionLine.builder()
+		final HmcBraintreeTransactionLine hmcBraintreeTransactionLineStub = HmcBraintreeTransactionLine.builder()
 				.orderId(BRAINTREE_ORDER_ID)
 				.amount(BigDecimal.TEN)
 				.currencyIsoCode(EUR_CURRENCY_ISO_CODE)
@@ -136,7 +135,7 @@ class BrainTreeHMCMiraklTransactionLinesIntoHmcFinancialReportLineConverterTest 
 		//@formatter:on
 
 		//@formatter:off
-		final HmcMiraklTransactionLine HmcMiraklTransactionLineStub = HmcMiraklTransactionLine.builder()
+		final HmcMiraklTransactionLine hmcMiraklTransactionLineStub = HmcMiraklTransactionLine.builder()
 				.orderId(MIRAKL_ORDER_ID)
 				.sellerId(MIRAKL_SELLER_ID)
 				.transactionLineId(MIRAKL_TRANSACTION_LINE_ID)
@@ -150,7 +149,7 @@ class BrainTreeHMCMiraklTransactionLinesIntoHmcFinancialReportLineConverterTest 
 		//@formatter:on
 
 		final HmcFinancialReportLine result = testObj
-				.convert(Pair.of(HmcBraintreeTransactionLineStub, HmcMiraklTransactionLineStub));
+			.convert(Pair.of(hmcBraintreeTransactionLineStub, hmcMiraklTransactionLineStub));
 		assertThat(result).isNull();
 	}
 

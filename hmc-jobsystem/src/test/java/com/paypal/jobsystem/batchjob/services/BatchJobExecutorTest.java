@@ -1,12 +1,8 @@
 package com.paypal.jobsystem.batchjob.services;
 
 import com.callibrity.logging.test.LogTrackerStub;
-import com.paypal.jobsystem.batchjob.model.BatchJob;
-import com.paypal.jobsystem.batchjob.model.BatchJobContext;
-import com.paypal.jobsystem.batchjob.model.BatchJobItem;
+import com.paypal.jobsystem.batchjob.model.*;
 import com.paypal.jobsystem.batchjob.model.listeners.BatchJobProcessingListener;
-import com.paypal.jobsystem.batchjob.model.BatchJobItemValidationResult;
-import com.paypal.jobsystem.batchjob.model.BatchJobItemValidationStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,17 +50,17 @@ class BatchJobExecutorTest {
 	private Collection<BatchJobItem<Object>> itemCollection;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		testObj.batchJobProcessingListeners = List.of(listenerMock1, listenerMock2);
 		itemCollection = List.of(itemMock1, itemMock2);
 		lenient().when(batchJobMock.getItems(any(BatchJobContext.class))).thenReturn(itemCollection);
 
 		lenient().when(batchJobMock.validateItem(any(), any()))
-				.thenReturn(BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.VALID).build());
+			.thenReturn(BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.VALID).build());
 		lenient().when(batchJobMock.enrichItem(any(BatchJobContext.class), eq(itemMock1)))
-				.thenReturn(enrichedItemMock1);
+			.thenReturn(enrichedItemMock1);
 		lenient().when(batchJobMock.enrichItem(any(BatchJobContext.class), eq(itemMock2)))
-				.thenReturn(enrichedItemMock2);
+			.thenReturn(enrichedItemMock2);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -80,10 +76,10 @@ class BatchJobExecutorTest {
 		inOrder.verify(listenerMock1).beforeItemExtraction(any(BatchJobContext.class));
 		inOrder.verify(listenerMock2).beforeItemExtraction(any(BatchJobContext.class));
 		inOrder.verify(batchJobMock).getItems(any(BatchJobContext.class));
-		inOrder.verify(listenerMock1).onItemExtractionSuccessful(any(BatchJobContext.class),
-				(Collection) eq(itemCollection));
-		inOrder.verify(listenerMock2).onItemExtractionSuccessful(any(BatchJobContext.class),
-				(Collection) eq(itemCollection));
+		inOrder.verify(listenerMock1)
+			.onItemExtractionSuccessful(any(BatchJobContext.class), (Collection) eq(itemCollection));
+		inOrder.verify(listenerMock2)
+			.onItemExtractionSuccessful(any(BatchJobContext.class), (Collection) eq(itemCollection));
 
 		inOrder.verify(batchJobMock).prepareForItemProcessing(any(BatchJobContext.class), any());
 
@@ -108,8 +104,8 @@ class BatchJobExecutorTest {
 	@Test
 	void execute_ShouldContinueProcessing_WhenItemValidationReturnsAWarning() {
 
-		when(batchJobMock.validateItem(any(), eq(enrichedItemMock2))).thenReturn(
-				BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.WARNING).build());
+		when(batchJobMock.validateItem(any(), eq(enrichedItemMock2)))
+			.thenReturn(BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.WARNING).build());
 
 		testObj.execute(batchJobMock, batchJobContextMock);
 
@@ -127,8 +123,8 @@ class BatchJobExecutorTest {
 	@Test
 	void execute_ShouldAbortItemProcessingAndRegisterFailure_WhenItemValidationReturnsAnInvalid() {
 
-		when(batchJobMock.validateItem(any(), eq(enrichedItemMock2))).thenReturn(
-				BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.INVALID).build());
+		when(batchJobMock.validateItem(any(), eq(enrichedItemMock2)))
+			.thenReturn(BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.INVALID).build());
 
 		testObj.execute(batchJobMock, batchJobContextMock);
 
@@ -166,8 +162,8 @@ class BatchJobExecutorTest {
 	@Test
 	void execute_ShouldLogAnError_WhenOnItemExtractionSuccessfulThrowsARunTimeException() {
 
-		doThrow(RuntimeException.class).when(listenerMock1).onItemExtractionSuccessful(any(BatchJobContext.class),
-				any());
+		doThrow(RuntimeException.class).when(listenerMock1)
+			.onItemExtractionSuccessful(any(BatchJobContext.class), any());
 
 		testObj.execute(batchJobMock, batchJobContextMock);
 
@@ -189,8 +185,8 @@ class BatchJobExecutorTest {
 	void execute_ShouldLogAnError_WhenOnItemExtractionFailureThrowsARunTimeException() {
 
 		doThrow(RuntimeException.class).when(batchJobMock).getItems(any(BatchJobContext.class));
-		doThrow(RuntimeException.class).when(listenerMock1).onItemExtractionFailure(any(BatchJobContext.class),
-				any(RuntimeException.class));
+		doThrow(RuntimeException.class).when(listenerMock1)
+			.onItemExtractionFailure(any(BatchJobContext.class), any(RuntimeException.class));
 
 		testObj.execute(batchJobMock, batchJobContextMock);
 
@@ -215,7 +211,7 @@ class BatchJobExecutorTest {
 
 		doThrow(RuntimeException.class).when(batchJobMock).prepareForItemProcessing(any(), any());
 		doThrow(RuntimeException.class).when(listenerMock1)
-				.onPreparationForProcessingFailure(any(BatchJobContext.class), any(RuntimeException.class));
+			.onPreparationForProcessingFailure(any(BatchJobContext.class), any(RuntimeException.class));
 
 		testObj.execute(batchJobMock, batchJobContextMock);
 
@@ -226,8 +222,8 @@ class BatchJobExecutorTest {
 	void execute_ShouldLogAnError_WhenOnBatchJobFailureThrowsARunTimeException() {
 
 		doThrow(RuntimeException.class).when(batchJobMock).getItems(any(BatchJobContext.class));
-		doThrow(RuntimeException.class).when(listenerMock1).onBatchJobFailure(any(BatchJobContext.class),
-				any(RuntimeException.class));
+		doThrow(RuntimeException.class).when(listenerMock1)
+			.onBatchJobFailure(any(BatchJobContext.class), any(RuntimeException.class));
 
 		testObj.execute(batchJobMock, batchJobContextMock);
 

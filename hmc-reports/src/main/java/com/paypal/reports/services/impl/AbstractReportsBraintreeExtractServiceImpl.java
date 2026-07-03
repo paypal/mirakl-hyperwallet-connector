@@ -57,12 +57,12 @@ public abstract class AbstractReportsBraintreeExtractServiceImpl<T extends HmcBr
 
 	protected String getCursor(final BraintreeTypeEnum braintreeType, final Map<String, Object> result) {
 		return (String) ((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) result
-				.get(DATA)).get(SEARCH)).get(braintreeType.getTypeName())).get(PAGE_INFO)).get(END_CURSOR);
+			.get(DATA)).get(SEARCH)).get(braintreeType.getTypeName())).get(PAGE_INFO)).get(END_CURSOR);
 	}
 
 	protected Boolean getHasNextPage(final BraintreeTypeEnum braintreeType, final Map<String, Object> result) {
 		return (Boolean) ((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) result
-				.get(DATA)).get(SEARCH)).get((braintreeType.getTypeName()))).get(PAGE_INFO)).get(HAS_NEXT_PAGE);
+			.get(DATA)).get(SEARCH)).get((braintreeType.getTypeName()))).get(PAGE_INFO)).get(HAS_NEXT_PAGE);
 	}
 
 	protected Map<String, Object> populateVars(final String transactionStatus, final Date startDate, final Date endDate,

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Extract invoices for retry from the failed items cache.
@@ -42,7 +41,7 @@ public class InvoicesRetryBatchJobItemsExtractor
 		return miraklAccountingDocumentInvoicesExtractService.extractAccountingDocuments(ids)
 				.stream()
 				.map(InvoiceExtractJobItem::new)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 

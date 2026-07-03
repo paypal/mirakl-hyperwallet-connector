@@ -9,7 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -223,14 +222,14 @@ class HyperwalletBankAccountCurrencyPriorityResolverTest {
 		return IntStream.range(0, args.length)
 				.filter(i -> i % 2 == 0)
 				.mapToObj(i -> new HyperwalletBankAccountCurrencyInfo("COUNTRY", (String) args[i], (TransferType) args[i + 1]))
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	private static List<HyperwalletBankAccountCurrencyInfo> currenciesWithCountry(final Object... args) {
 		return IntStream.range(0, args.length)
 				.filter(i -> i % 3 == 0)
 				.mapToObj(i -> new HyperwalletBankAccountCurrencyInfo((String) args[i], (String) args[i + 1], (TransferType) args[i + 2]))
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	private void assertSortedList(final List<HyperwalletBankAccountCurrencyInfo> result, final List<HyperwalletBankAccountCurrencyInfo> expected) {

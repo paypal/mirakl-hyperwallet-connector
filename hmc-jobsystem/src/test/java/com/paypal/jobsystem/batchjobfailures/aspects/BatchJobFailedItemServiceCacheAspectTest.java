@@ -1,7 +1,6 @@
 package com.paypal.jobsystem.batchjobfailures.aspects;
 
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
-import com.paypal.jobsystem.batchjobfailures.aspects.BatchJobFailedItemServiceCacheAspect;
 import com.paypal.jobsystem.batchjobfailures.services.cache.BatchJobFailedItemCacheService;
 import org.aspectj.lang.JoinPoint;
 import org.junit.jupiter.api.Test;
@@ -56,7 +55,7 @@ class BatchJobFailedItemServiceCacheAspectTest {
 		testObj.beforeCheckUpdatedItems(joinPointMock);
 
 		verify(batchJobFailedItemCacheService)
-				.refreshCachedItems(argThat((Collection c) -> c.contains(batchJobItemMock)));
+			.refreshCachedItems(argThat((Collection c) -> c.contains(batchJobItemMock)));
 	}
 
 }

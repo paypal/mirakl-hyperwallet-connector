@@ -3,7 +3,6 @@ package com.paypal.sellers.sellerextractioncommons.services.converters;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
-import com.paypal.sellers.sellerextractioncommons.services.converters.MiraklShopToSellerConverterExecutor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

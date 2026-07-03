@@ -2,19 +2,19 @@ package com.paypal.invoices.extractioninvoices.services.converters;
 
 import com.hyperwallet.clientsdk.model.HyperwalletPayment;
 import com.paypal.infrastructure.hyperwallet.configuration.HyperwalletProgramsConfiguration;
-import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
 import com.paypal.infrastructure.hyperwallet.services.PaymentHyperwalletSDKService;
+import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
+
 import static com.paypal.infrastructure.hyperwallet.constants.HyperWalletConstants.PAYMENT_OPERATOR_SUFFIX;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-
-import java.math.BigDecimal;
 
 @ExtendWith(MockitoExtension.class)
 class OperatorInvoiceModelToHyperwalletPaymentConverterTest {
@@ -49,9 +49,9 @@ class OperatorInvoiceModelToHyperwalletPaymentConverterTest {
 	void convert_shouldConvertAnInvoiceIntoHyperwalletPayment() {
 		final Double transferAmountToOperator = 100.10D;
 		when(paymentHyperwalletSDKServiceMock.getProgramTokenByHyperwalletProgram(HYPERWALLET_PROGRAM))
-				.thenReturn(PROGRAM_TOKEN);
+			.thenReturn(PROGRAM_TOKEN);
 		when(hyperwalletProgramsConfigurationMock.getProgramConfiguration(HYPERWALLET_PROGRAM))
-				.thenReturn(hyperwalletProgramConfigurationMock);
+			.thenReturn(hyperwalletProgramConfigurationMock);
 		when(hyperwalletProgramConfigurationMock.getBankAccountToken()).thenReturn(OPERATOR_BANK_ACCOUNT_TOKEN);
 
 		//@formatter:off

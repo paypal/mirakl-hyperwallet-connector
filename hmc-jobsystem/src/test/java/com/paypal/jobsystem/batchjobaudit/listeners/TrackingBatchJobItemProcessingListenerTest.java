@@ -3,7 +3,6 @@ package com.paypal.jobsystem.batchjobaudit.listeners;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.jobsystem.batchjobaudit.services.BatchJobTrackingService;
-import com.paypal.jobsystem.batchjobaudit.listeners.TrackingBatchJobItemProcessingListener;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

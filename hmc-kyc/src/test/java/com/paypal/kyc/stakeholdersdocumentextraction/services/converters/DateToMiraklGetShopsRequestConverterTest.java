@@ -1,7 +1,6 @@
 package com.paypal.kyc.stakeholdersdocumentextraction.services.converters;
 
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
-import com.paypal.kyc.stakeholdersdocumentextraction.services.converters.DateToMiraklGetShopsRequestConverter;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;

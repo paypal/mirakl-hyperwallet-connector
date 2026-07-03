@@ -177,9 +177,9 @@ public class BankAccountModel {
 		public abstract T getThis();
 
 		public T transferMethodCountry(final String transferMethodCountry) {
-			final Locale countryLocale = CountriesUtil.getLocaleByIsocode(transferMethodCountry)
-					.orElseThrow(() -> new IllegalStateException(
-							"Country with isocode: [%s] not valid".formatted(transferMethodCountry)));
+			final Locale countryLocale = CountriesUtil.getLocaleByIsoCode(transferMethodCountry)
+				.orElseThrow(() -> new IllegalStateException(
+						"Country with isocode: [%s] not valid".formatted(transferMethodCountry)));
 
 			this.transferMethodCountry = countryLocale.getCountry();
 			return getThis();
@@ -193,7 +193,7 @@ public class BankAccountModel {
 		public T transferMethodCurrency(final String transferMethodCurrency) {
 			try {
 				Optional.of(Monetary.getCurrency(transferMethodCurrency))
-						.ifPresent(currency -> this.transferMethodCurrency = currency.getCurrencyCode());
+					.ifPresent(currency -> this.transferMethodCurrency = currency.getCurrencyCode());
 			}
 			catch (final UnknownCurrencyException ex) {
 				throw new IllegalStateException(
@@ -238,8 +238,9 @@ public class BankAccountModel {
 		}
 
 		public T country(final String country) {
-			final Locale countryLocale = CountriesUtil.getLocaleByIsocode(country).orElseThrow(
-					() -> new IllegalStateException("Country with isocode: [%s] not valid".formatted(country)));
+			final Locale countryLocale = CountriesUtil.getLocaleByIsoCode(country)
+				.orElseThrow(
+						() -> new IllegalStateException("Country with isocode: [%s] not valid".formatted(country)));
 
 			this.country = countryLocale.getCountry();
 			return getThis();
@@ -298,7 +299,7 @@ public class BankAccountModel {
 
 		public T hyperwalletProgram(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklSingleValueListCustomFieldValue(fields, HYPERWALLET_PROGRAM)
-					.ifPresent(hyperwalletProgramValue -> this.hyperwalletProgram = hyperwalletProgramValue);
+				.ifPresent(hyperwalletProgramValue -> this.hyperwalletProgram = hyperwalletProgramValue);
 
 			return getThis();
 		}

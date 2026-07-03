@@ -43,11 +43,11 @@ public class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy extends
 	public Void execute(final KYCUserDocumentFlagsNotificationBodyModel source) {
 
 		final List<String> businessStakeholdersPendingToBeVerified = hyperwalletBusinessStakeholderExtractService
-				.getKYCRequiredVerificationBusinessStakeHolders(source.getHyperwalletProgram(), source.getUserToken());
+			.getKYCRequiredVerificationBusinessStakeHolders(source.getHyperwalletProgram(), source.getUserToken());
 
 		final List<String> kycCustomValuesRequiredVerificationBusinessStakeholders = miraklBusinessStakeholderDocumentsExtractService
-				.getKYCCustomValuesRequiredVerificationBusinessStakeholders(source.getClientUserId(),
-						businessStakeholdersPendingToBeVerified);
+			.getKYCCustomValuesRequiredVerificationBusinessStakeholders(source.getClientUserId(),
+					businessStakeholdersPendingToBeVerified);
 
 		fillMiraklProofIdentityOrBusinessFlagStatus(source, kycCustomValuesRequiredVerificationBusinessStakeholders);
 		return null;
@@ -60,7 +60,7 @@ public class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy extends
 	public boolean isApplicable(final KYCUserDocumentFlagsNotificationBodyModel source) {
 		return HyperwalletUser.ProfileType.BUSINESS.equals(source.getProfileType())
 				&& HyperwalletUser.BusinessStakeholderVerificationStatus.REQUIRED
-						.equals(source.getBusinessStakeholderVerificationStatus());
+					.equals(source.getBusinessStakeholderVerificationStatus());
 	}
 
 	protected void fillMiraklProofIdentityOrBusinessFlagStatus(final KYCUserDocumentFlagsNotificationBodyModel source,
@@ -69,10 +69,10 @@ public class KYCUserDocumentFlagProofIdentityBusinessStakeHolderStrategy extends
 			final MiraklUpdateShop updateShop = new MiraklUpdateShop();
 
 			final List<MiraklRequestAdditionalFieldValue> additionalFieldValues = kycCustomValuesRequiredVerificationBusinessStakeholders
-					.stream()
-					.map(kycCustomValueRequiredVerification -> new MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue(
-							kycCustomValueRequiredVerification, Boolean.TRUE.toString()))
-					.collect(Collectors.toList());
+				.stream()
+				.map(kycCustomValueRequiredVerification -> new MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue(
+						kycCustomValueRequiredVerification, Boolean.TRUE.toString()))
+				.collect(Collectors.toList());
 
 			updateShop.setShopId(Long.valueOf(source.getClientUserId()));
 			updateShop.setAdditionalFieldValues(additionalFieldValues);

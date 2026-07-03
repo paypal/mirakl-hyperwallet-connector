@@ -2,8 +2,8 @@ package com.paypal.jobsystem.batchjobaudit.listeners;
 
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
-import com.paypal.jobsystem.batchjobaudit.services.BatchJobTrackingService;
 import com.paypal.jobsystem.batchjob.support.AbstractBatchJobProcessingListener;
+import com.paypal.jobsystem.batchjobaudit.services.BatchJobTrackingService;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;

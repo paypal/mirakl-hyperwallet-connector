@@ -1,7 +1,5 @@
 package com.paypal.kyc.documentextractioncommons.model;
 
-import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
-import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -10,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class KYCProofOfIdentityEnumTest {
 
-	private final static String PREFIX_FIELD_NAME = KYCConstants.HYPERWALLET_PREFIX + KYCConstants.INDIVIDUAL_PREFIX
+	private static final String PREFIX_FIELD_NAME = KYCConstants.HYPERWALLET_PREFIX + KYCConstants.INDIVIDUAL_PREFIX
 			+ KYCConstants.PROOF_IDENTITY_PREFIX;
 
 	@Test

@@ -3,7 +3,6 @@ package com.paypal.kyc.incomingnotifications.services;
 import com.paypal.kyc.incomingnotifications.model.KYCRejectionReasonTypeEnum;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Service that manages KYC Reasons
@@ -11,11 +10,11 @@ import java.util.Map;
 public interface KYCRejectionReasonService {
 
 	/**
-	 * Receives a notification object based on a {@link Map <String,String>} and returns
-	 * verificationStatus, businessStakeholderVerificationStatus,
+	 * Receives a notification object based on a {@link java.util.Map<String,String>} and
+	 * returns verificationStatus, businessStakeholderVerificationStatus,
 	 * letterOfAuthorizationStatus {@link KYCRejectionReasonTypeEnum} types
-	 * @param notificationObject
-	 * @return {@link List< KYCRejectionReasonTypeEnum >}
+	 * @param notificationObject - the object that contains the notification
+	 * @return {@link List<KYCRejectionReasonTypeEnum>}
 	 */
 	List<KYCRejectionReasonTypeEnum> getReasonTypes(final Object notificationObject);
 

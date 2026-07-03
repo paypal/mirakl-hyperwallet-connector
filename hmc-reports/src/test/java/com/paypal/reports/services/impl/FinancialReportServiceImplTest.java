@@ -94,23 +94,23 @@ class FinancialReportServiceImplTest {
 
 		when(reportsBraintreeTransactionsExtractServiceMock.getAllTransactionsByTypeAndDateInterval(
 				BraintreeTransactionStatusEnum.SETTLED.toString(), startDate, endDate))
-						.thenReturn(List.of(braintreeCommonTransactionLine, unjoinableBraintreeTransactionLine));
+			.thenReturn(List.of(braintreeCommonTransactionLine, unjoinableBraintreeTransactionLine));
 
 		when(reportsMiraklExtractServiceMock.getAllTransactionLinesByDate(startDate, endDate))
-				.thenReturn(List.of(unjoinableMiraklTransactionLine, miraklCommonTransactionLine));
+			.thenReturn(List.of(unjoinableMiraklTransactionLine, miraklCommonTransactionLine));
 
 		when(financialReportConverterServiceMock
-				.convertBraintreeTransactionLineIntoFinancialReportLine(unjoinableBraintreeTransactionLine))
-						.thenReturn(unjoinableBraintreeFinancialLine);
+			.convertBraintreeTransactionLineIntoFinancialReportLine(unjoinableBraintreeTransactionLine))
+			.thenReturn(unjoinableBraintreeFinancialLine);
 		when(financialReportConverterServiceMock
-				.convertMiraklTransactionLineIntoFinancialReportLine(unjoinableMiraklTransactionLine))
-						.thenReturn(unjoinableMiraklFinancialLine);
+			.convertMiraklTransactionLineIntoFinancialReportLine(unjoinableMiraklTransactionLine))
+			.thenReturn(unjoinableMiraklFinancialLine);
 		when(financialReportConverterServiceMock.convertBrainTreeAndMiraklTransactionLineIntoFinancialReportLine(
 				braintreeCommonTransactionLine, miraklCommonTransactionLine))
-						.thenReturn(commonBraintreeAndMiraklFinancialLine);
+			.thenReturn(commonBraintreeAndMiraklFinancialLine);
 
 		when(hmcFileServiceMock.saveCSVFile(REPO_PATH, PREFIX_FILE_NAME, FINANCIAL_REPORT_LINES, HEADER))
-				.thenReturn(FILE_NAME);
+			.thenReturn(FILE_NAME);
 
 		testObj.generateFinancialReport(startDate, endDate, PREFIX_FILE_NAME);
 

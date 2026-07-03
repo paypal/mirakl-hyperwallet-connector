@@ -9,7 +9,6 @@ import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue.MiraklValu
 import com.paypal.sellers.sellerextractioncommons.model.SellerGender;
 import com.paypal.sellers.sellerextractioncommons.model.SellerGovernmentIdType;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModelConstants;
-import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -30,8 +29,9 @@ class BusinessStakeHolderModelTest {
 	private static final String UTC = "UTC";
 
 	@RegisterExtension
-	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.WARN)
-			.recordForType(BusinessStakeHolderModel.class);
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create()
+		.recordForLevel(LogTracker.LogLevel.WARN)
+		.recordForType(BusinessStakeHolderModel.class);
 
 	private static final Integer BUSINESS_STAKE_HOLDER_NUMBER = 1;
 
@@ -118,7 +118,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -148,7 +148,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -178,7 +178,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -208,7 +208,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -238,7 +238,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -268,7 +268,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -298,7 +298,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -328,7 +328,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -390,7 +390,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -420,7 +420,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -450,7 +450,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -480,7 +480,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -510,7 +510,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -540,7 +540,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -570,7 +570,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -586,7 +586,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -616,7 +616,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -646,7 +646,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -676,7 +676,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -706,7 +706,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -736,7 +736,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -766,7 +766,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -796,7 +796,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -826,7 +826,7 @@ class BusinessStakeHolderModelTest {
 
 		assertThat(logTrackerStub.contains(
 				"Business Stake Holder number 0 incorrect. System only allows Business stake holder attributes from 1 to 5"))
-						.isTrue();
+			.isTrue();
 	}
 
 	@Test
@@ -989,8 +989,10 @@ class BusinessStakeHolderModelTest {
 
 	@Test
 	void isEmpty_shouldReturnFalseIfAnyAttributeIsNotNullExceptStkId() {
-		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder().stkId(1)
-				.token("token").build();
+		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder()
+			.stkId(1)
+			.token("token")
+			.build();
 
 		final boolean result = businessStakeHolderModel.isEmpty();
 

@@ -2,7 +2,10 @@ package com.paypal.kyc.incomingnotifications.services.converters;
 
 import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentCategoryEnum;
-import com.paypal.kyc.incomingnotifications.model.*;
+import com.paypal.kyc.incomingnotifications.model.KYCDocumentNotificationModel;
+import com.paypal.kyc.incomingnotifications.model.KYCDocumentRejectedReasonEnum;
+import com.paypal.kyc.incomingnotifications.model.KYCDocumentStatusEnum;
+import com.paypal.kyc.incomingnotifications.model.KYCDocumentTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Service;
@@ -27,10 +30,11 @@ public class HyperWalletObjectToKYCDocumentNotificationModelsConverter
 		if (notificationObject instanceof Map) {
 			final Map<String, Object> notificationDetails = (Map<String, Object>) notificationObject;
 			final List<Map<String, Object>> documents = Optional
-					.ofNullable((List<Map<String, Object>>) notificationDetails.get("documents"))
-					.orElse(Collections.emptyList());
+				.ofNullable((List<Map<String, Object>>) notificationDetails.get("documents"))
+				.orElse(Collections.emptyList());
 
-			return documents.stream().map(document -> KYCDocumentNotificationModel.builder()
+			return documents.stream()
+				.map(document -> KYCDocumentNotificationModel.builder()
 					.documentStatus(EnumUtils.getEnum(KYCDocumentStatusEnum.class, (String) document.get("status")))
 					.documentType(EnumUtils.getEnum(KYCDocumentTypeEnum.class, (String) document.get("type")))
 					.createdOn(LocalDateTime.parse((String) document.get("createdOn")))
@@ -38,15 +42,18 @@ public class HyperWalletObjectToKYCDocumentNotificationModelsConverter
 							EnumUtils.getEnum(KYCDocumentCategoryEnum.class, (String) document.get("category")))
 					.documentRejectedReasons(getRejectedReasons(
 							Optional.ofNullable((List<Map<String, String>>) document.get("reasons")).orElse(List.of())))
-					.build()).collect(Collectors.toList());
+					.build())
+				.collect(Collectors.toList());
 		}
 		return List.of();
 	}
 
 	private List<KYCDocumentRejectedReasonEnum> getRejectedReasons(final List<Map<String, String>> reasons) {
-		return Optional.ofNullable(reasons).orElseGet(List::of).stream()
-				.map(reason -> EnumUtils.getEnum(KYCDocumentRejectedReasonEnum.class, reason.get("name")))
-				.collect(Collectors.toList());
+		return Optional.ofNullable(reasons)
+			.orElseGet(List::of)
+			.stream()
+			.map(reason -> EnumUtils.getEnum(KYCDocumentRejectedReasonEnum.class, reason.get("name")))
+			.toList();
 	}
 
 }

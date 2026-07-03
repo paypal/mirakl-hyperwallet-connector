@@ -1,15 +1,14 @@
 package com.paypal.jobsystem.batchjobaudit.services;
 
+import com.paypal.infrastructure.support.date.TimeMachine;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.jobsystem.batchjob.model.BatchJobItemStatus;
 import com.paypal.jobsystem.batchjob.model.BatchJobStatus;
+import com.paypal.jobsystem.batchjobaudit.repositories.BatchJobItemTrackingRepository;
+import com.paypal.jobsystem.batchjobaudit.repositories.BatchJobTrackingRepository;
 import com.paypal.jobsystem.batchjobaudit.repositories.entities.BatchJobItemTrackInfoEntity;
 import com.paypal.jobsystem.batchjobaudit.repositories.entities.BatchJobItemTrackingInfoId;
 import com.paypal.jobsystem.batchjobaudit.repositories.entities.BatchJobTrackInfoEntity;
-import com.paypal.jobsystem.batchjobaudit.repositories.BatchJobItemTrackingRepository;
-import com.paypal.jobsystem.batchjobaudit.repositories.BatchJobTrackingRepository;
-import com.paypal.infrastructure.support.date.TimeMachine;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -82,7 +81,11 @@ class BatchJobTrackingServiceImplTest {
 		verify(batchJobTrackingRepositoryMock).save(batchJobTrackInfoEntityArgumentCaptor.capture());
 
 		assertThat(batchJobTrackInfoEntityArgumentCaptor.getValue()).isEqualTo(BatchJobTrackInfoEntity.builder()
-				.batchJobId(JOB_ID).batchJobType(JOB_TYPE).startTime(now).status(BatchJobStatus.RUNNING).build());
+			.batchJobId(JOB_ID)
+			.batchJobType(JOB_TYPE)
+			.startTime(now)
+			.status(BatchJobStatus.RUNNING)
+			.build());
 	}
 
 	@Test
@@ -128,7 +131,7 @@ class BatchJobTrackingServiceImplTest {
 		when(batchJobTrackInfoEntityMock.toBuilder()).thenReturn(batchJobTrackInfoEntityBuilderMock);
 
 		when(batchJobTrackInfoEntityBuilderMock.status(BatchJobStatus.FAILED))
-				.thenReturn(batchJobTrackInfoEntityBuilderMock);
+			.thenReturn(batchJobTrackInfoEntityBuilderMock);
 		when(batchJobTrackInfoEntityBuilderMock.finishTime(now)).thenReturn(batchJobTrackInfoEntityBuilderMock);
 		when(batchJobTrackInfoEntityBuilderMock.build()).thenReturn(batchJobTrackInfoEntityMock);
 
@@ -151,23 +154,30 @@ class BatchJobTrackingServiceImplTest {
 
 		verify(batchJobTrackingRepositoryMock).save(batchJobTrackInfoEntityArgumentCaptor.capture());
 
-		assertThat(batchJobTrackInfoEntityArgumentCaptor.getValue())
-				.isEqualTo(BatchJobTrackInfoEntity.builder().batchJobId(JOB_ID).batchJobType(JOB_TYPE)
-						.status(BatchJobStatus.FAILED).startTime(now).finishTime(now).build());
+		assertThat(batchJobTrackInfoEntityArgumentCaptor.getValue()).isEqualTo(BatchJobTrackInfoEntity.builder()
+			.batchJobId(JOB_ID)
+			.batchJobType(JOB_TYPE)
+			.status(BatchJobStatus.FAILED)
+			.startTime(now)
+			.finishTime(now)
+			.build());
 	}
 
 	@Test
 	void markNonFinishedJobsAsAbortedByBatchJobType_ShouldMarkAsAbortedTheNotFinishedBatchJobTrackInfoEntitiesAndTheBatchJobItemTrackInfoEntities_WhenBatchJobItemTrackInfoEntitiesStatusesAreFinishedStatuses() {
 
-		final BatchJobTrackInfoEntity batchJobTrackInfoEntity = BatchJobTrackInfoEntity.builder().batchJobId(JOB_ID)
-				.build();
+		final BatchJobTrackInfoEntity batchJobTrackInfoEntity = BatchJobTrackInfoEntity.builder()
+			.batchJobId(JOB_ID)
+			.build();
 		when(batchJobTrackingRepositoryMock.findByBatchJobTypeAndStatusIn(JOB_TYPE, JOB_NOT_FINISHED_STATUSES))
-				.thenReturn(List.of(batchJobTrackInfoEntity));
+			.thenReturn(List.of(batchJobTrackInfoEntity));
 
 		final BatchJobItemTrackInfoEntity batchJobItemTrackInfoEntity = BatchJobItemTrackInfoEntity.builder()
-				.batchJobId(JOB_ID).status(BatchJobItemStatus.FAILED).build();
+			.batchJobId(JOB_ID)
+			.status(BatchJobItemStatus.FAILED)
+			.build();
 		when(batchJobItemTrackingRepositoryMock.findByBatchJobId(JOB_ID))
-				.thenReturn(List.of(batchJobItemTrackInfoEntity));
+			.thenReturn(List.of(batchJobItemTrackInfoEntity));
 
 		testObj.markNonFinishedJobsAsAborted(JOB_TYPE);
 
@@ -183,15 +193,18 @@ class BatchJobTrackingServiceImplTest {
 	@Test
 	void markNonFinishedJobsAsAbortedByBatchJobType_ShouldMarkAsAbortedTheNotFinishedBatchJobTrackInfoEntitiesAndNotTheBatchJobItemTrackInfoEntities_WhenBatchJobItemTrackInfoEntitiesStatusesAreNotFinishedStatuses() {
 
-		final BatchJobTrackInfoEntity batchJobTrackInfoEntity = BatchJobTrackInfoEntity.builder().batchJobId(JOB_ID)
-				.build();
+		final BatchJobTrackInfoEntity batchJobTrackInfoEntity = BatchJobTrackInfoEntity.builder()
+			.batchJobId(JOB_ID)
+			.build();
 		when(batchJobTrackingRepositoryMock.findByBatchJobTypeAndStatusIn(JOB_TYPE, JOB_NOT_FINISHED_STATUSES))
-				.thenReturn(List.of(batchJobTrackInfoEntity));
+			.thenReturn(List.of(batchJobTrackInfoEntity));
 
 		final BatchJobItemTrackInfoEntity batchJobItemTrackInfoEntity = BatchJobItemTrackInfoEntity.builder()
-				.batchJobId(JOB_ID).status(BatchJobItemStatus.PENDING).build();
+			.batchJobId(JOB_ID)
+			.status(BatchJobItemStatus.PENDING)
+			.build();
 		when(batchJobItemTrackingRepositoryMock.findByBatchJobId(JOB_ID))
-				.thenReturn(List.of(batchJobItemTrackInfoEntity));
+			.thenReturn(List.of(batchJobItemTrackInfoEntity));
 
 		testObj.markNonFinishedJobsAsAborted(JOB_TYPE);
 
@@ -205,15 +218,18 @@ class BatchJobTrackingServiceImplTest {
 	@Test
 	void markNonFinishedJobsAsAborted_ShouldMarkAsAbortedTheNotFinishedBatchJobTrackInfoEntitiesAndTheBatchJobItemTrackInfoEntities_WhenBatchJobItemTrackInfoEntitiesStatusesAreFinishedStatuses() {
 
-		final BatchJobTrackInfoEntity batchJobTrackInfoEntity = BatchJobTrackInfoEntity.builder().batchJobId(JOB_ID)
-				.build();
+		final BatchJobTrackInfoEntity batchJobTrackInfoEntity = BatchJobTrackInfoEntity.builder()
+			.batchJobId(JOB_ID)
+			.build();
 		when(batchJobTrackingRepositoryMock.findByStatusIn(JOB_NOT_FINISHED_STATUSES))
-				.thenReturn(List.of(batchJobTrackInfoEntity));
+			.thenReturn(List.of(batchJobTrackInfoEntity));
 
 		final BatchJobItemTrackInfoEntity batchJobItemTrackInfoEntity = BatchJobItemTrackInfoEntity.builder()
-				.batchJobId(JOB_ID).status(BatchJobItemStatus.FAILED).build();
+			.batchJobId(JOB_ID)
+			.status(BatchJobItemStatus.FAILED)
+			.build();
 		when(batchJobItemTrackingRepositoryMock.findByBatchJobId(JOB_ID))
-				.thenReturn(List.of(batchJobItemTrackInfoEntity));
+			.thenReturn(List.of(batchJobItemTrackInfoEntity));
 
 		testObj.markNonFinishedJobsAsAborted();
 
@@ -229,15 +245,18 @@ class BatchJobTrackingServiceImplTest {
 	@Test
 	void markNonFinishedJobsAsAborted_ShouldMarkAsAbortedTheNotFinishedBatchJobTrackInfoEntitiesAndNotTheBatchJobItemTrackInfoEntities_WhenBatchJobItemTrackInfoEntitiesStatusesAreNotFinishedStatuses() {
 
-		final BatchJobTrackInfoEntity batchJobTrackInfoEntity = BatchJobTrackInfoEntity.builder().batchJobId(JOB_ID)
-				.build();
+		final BatchJobTrackInfoEntity batchJobTrackInfoEntity = BatchJobTrackInfoEntity.builder()
+			.batchJobId(JOB_ID)
+			.build();
 		when(batchJobTrackingRepositoryMock.findByStatusIn(JOB_NOT_FINISHED_STATUSES))
-				.thenReturn(List.of(batchJobTrackInfoEntity));
+			.thenReturn(List.of(batchJobTrackInfoEntity));
 
 		final BatchJobItemTrackInfoEntity batchJobItemTrackInfoEntity = BatchJobItemTrackInfoEntity.builder()
-				.batchJobId(JOB_ID).status(BatchJobItemStatus.PENDING).build();
+			.batchJobId(JOB_ID)
+			.status(BatchJobItemStatus.PENDING)
+			.build();
 		when(batchJobItemTrackingRepositoryMock.findByBatchJobId(JOB_ID))
-				.thenReturn(List.of(batchJobItemTrackInfoEntity));
+			.thenReturn(List.of(batchJobItemTrackInfoEntity));
 
 		testObj.markNonFinishedJobsAsAborted();
 
@@ -258,8 +277,12 @@ class BatchJobTrackingServiceImplTest {
 
 		verify(batchJobItemTrackingRepositoryMock).saveAll(batchJobItemTrackInfoEntitiesArgumentCaptor.capture());
 		assertThat(batchJobItemTrackInfoEntitiesArgumentCaptor.getValue())
-				.containsExactly(BatchJobItemTrackInfoEntity.builder().batchJobId(JOB_ID).itemId(BATCH_JOB_ITEM_ID)
-						.itemType(JOB_TYPE).status(BatchJobItemStatus.PENDING).build());
+			.containsExactly(BatchJobItemTrackInfoEntity.builder()
+				.batchJobId(JOB_ID)
+				.itemId(BATCH_JOB_ITEM_ID)
+				.itemType(JOB_TYPE)
+				.status(BatchJobItemStatus.PENDING)
+				.build());
 	}
 
 	@Test
@@ -269,17 +292,20 @@ class BatchJobTrackingServiceImplTest {
 		when(batchJobItemMock.getItemType()).thenReturn(JOB_TYPE);
 
 		when(batchJobItemTrackingRepositoryMock.getReferenceById(batchJobItemTrackingInfoIdArgumentCaptor.capture()))
-				.thenReturn(batchJobItemTrackInfoEntityMock);
+			.thenReturn(batchJobItemTrackInfoEntityMock);
 
 		when(batchJobItemTrackInfoEntityMock.toBuilder()).thenReturn(batchJobItemTrackInfoEntityBuilderMock);
 		when(batchJobItemTrackInfoEntityBuilderMock.status(BatchJobItemStatus.IN_PROGRESS))
-				.thenReturn(batchJobItemTrackInfoEntityBuilderMock);
+			.thenReturn(batchJobItemTrackInfoEntityBuilderMock);
 		when(batchJobItemTrackInfoEntityBuilderMock.build()).thenReturn(batchJobItemTrackInfoEntityMock);
 
 		testObj.trackJobItemProcessingStarted(JOB_ID, batchJobItemMock);
 
 		assertThat(batchJobItemTrackingInfoIdArgumentCaptor.getValue()).isEqualTo(BatchJobItemTrackingInfoId.builder()
-				.batchJobId(JOB_ID).itemType(JOB_TYPE).itemId(BATCH_JOB_ITEM_ID).build());
+			.batchJobId(JOB_ID)
+			.itemType(JOB_TYPE)
+			.itemId(BATCH_JOB_ITEM_ID)
+			.build());
 
 		verify(batchJobItemTrackingRepositoryMock).save(batchJobItemTrackInfoEntityMock);
 	}
@@ -291,17 +317,20 @@ class BatchJobTrackingServiceImplTest {
 		when(batchJobItemMock.getItemType()).thenReturn(JOB_TYPE);
 
 		when(batchJobItemTrackingRepositoryMock.getReferenceById(batchJobItemTrackingInfoIdArgumentCaptor.capture()))
-				.thenReturn(batchJobItemTrackInfoEntityMock);
+			.thenReturn(batchJobItemTrackInfoEntityMock);
 
 		when(batchJobItemTrackInfoEntityMock.toBuilder()).thenReturn(batchJobItemTrackInfoEntityBuilderMock);
 		when(batchJobItemTrackInfoEntityBuilderMock.status(BatchJobItemStatus.SUCCESSFUL))
-				.thenReturn(batchJobItemTrackInfoEntityBuilderMock);
+			.thenReturn(batchJobItemTrackInfoEntityBuilderMock);
 		when(batchJobItemTrackInfoEntityBuilderMock.build()).thenReturn(batchJobItemTrackInfoEntityMock);
 
 		testObj.trackJobItemProcessingFinished(JOB_ID, batchJobItemMock, true);
 
 		assertThat(batchJobItemTrackingInfoIdArgumentCaptor.getValue()).isEqualTo(BatchJobItemTrackingInfoId.builder()
-				.batchJobId(JOB_ID).itemType(JOB_TYPE).itemId(BATCH_JOB_ITEM_ID).build());
+			.batchJobId(JOB_ID)
+			.itemType(JOB_TYPE)
+			.itemId(BATCH_JOB_ITEM_ID)
+			.build());
 
 		verify(batchJobItemTrackingRepositoryMock).save(batchJobItemTrackInfoEntityMock);
 	}
@@ -313,17 +342,20 @@ class BatchJobTrackingServiceImplTest {
 		when(batchJobItemMock.getItemType()).thenReturn(JOB_TYPE);
 
 		when(batchJobItemTrackingRepositoryMock.getReferenceById(batchJobItemTrackingInfoIdArgumentCaptor.capture()))
-				.thenReturn(batchJobItemTrackInfoEntityMock);
+			.thenReturn(batchJobItemTrackInfoEntityMock);
 
 		when(batchJobItemTrackInfoEntityMock.toBuilder()).thenReturn(batchJobItemTrackInfoEntityBuilderMock);
 		when(batchJobItemTrackInfoEntityBuilderMock.status(BatchJobItemStatus.FAILED))
-				.thenReturn(batchJobItemTrackInfoEntityBuilderMock);
+			.thenReturn(batchJobItemTrackInfoEntityBuilderMock);
 		when(batchJobItemTrackInfoEntityBuilderMock.build()).thenReturn(batchJobItemTrackInfoEntityMock);
 
 		testObj.trackJobItemProcessingFinished(JOB_ID, batchJobItemMock, false);
 
 		assertThat(batchJobItemTrackingInfoIdArgumentCaptor.getValue()).isEqualTo(BatchJobItemTrackingInfoId.builder()
-				.batchJobId(JOB_ID).itemType(JOB_TYPE).itemId(BATCH_JOB_ITEM_ID).build());
+			.batchJobId(JOB_ID)
+			.itemType(JOB_TYPE)
+			.itemId(BATCH_JOB_ITEM_ID)
+			.build());
 
 		verify(batchJobItemTrackingRepositoryMock).save(batchJobItemTrackInfoEntityMock);
 	}
@@ -332,7 +364,7 @@ class BatchJobTrackingServiceImplTest {
 	void getItemsBeingProcessedOrEnquedToProcess_ShouldReturnTheBatchJobItemTrackInfoEntityWithStatusNotFinished() {
 
 		when(batchJobItemTrackingRepositoryMock.findByItemTypeAndStatusIn(JOB_TYPE, ITEM_NOT_FINISHED_STATUSES))
-				.thenReturn(List.of(batchJobItemTrackInfoEntityMock));
+			.thenReturn(List.of(batchJobItemTrackInfoEntityMock));
 
 		final List<BatchJobItemTrackInfoEntity> result = testObj.getItemsBeingProcessedOrEnquedToProcess(JOB_TYPE);
 
@@ -344,7 +376,8 @@ class BatchJobTrackingServiceImplTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.now());
 
 		when(batchJobTrackingRepositoryMock.findLastJobExecutionsWithItems(JOB_TYPE, TimeMachine.now(),
-				Pageable.ofSize(1))).thenReturn(List.of(batchJobTrackInfoEntityMock));
+				Pageable.ofSize(1)))
+			.thenReturn(List.of(batchJobTrackInfoEntityMock));
 
 		final Optional<BatchJobTrackInfoEntity> result = testObj.findLastJobExecutionWithNonEmptyExtraction(JOB_TYPE,
 				TimeMachine.now());
@@ -357,7 +390,8 @@ class BatchJobTrackingServiceImplTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.now());
 
 		when(batchJobTrackingRepositoryMock.findLastJobExecutionsWithItems(JOB_TYPE, TimeMachine.now(),
-				Pageable.ofSize(1))).thenReturn(List.of());
+				Pageable.ofSize(1)))
+			.thenReturn(List.of());
 
 		final Optional<BatchJobTrackInfoEntity> result = testObj.findLastJobExecutionWithNonEmptyExtraction(JOB_TYPE,
 				TimeMachine.now());

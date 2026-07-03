@@ -7,8 +7,8 @@ import com.paypal.testsupport.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
@@ -45,7 +45,7 @@ class IncomingHyperwalletNotificationWebhookControllerITTest extends AbstractInt
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@MockBean
+	@MockitoBean
 	private NotificationProcessingQueueService notificationProcessingQueueService;
 
 	// -------------------------------------------------------------------------
@@ -57,8 +57,10 @@ class IncomingHyperwalletNotificationWebhookControllerITTest extends AbstractInt
 		final HyperwalletWebhookNotification notification = buildNotification(WEBHOOK_TOKEN,
 				"USERS.UPDATED.VERIFICATION_STATUS.REQUIRED");
 
-		mockMvc.perform(post(ENDPOINT).contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(notification))).andExpect(status().isOk());
+		mockMvc
+			.perform(post(ENDPOINT).contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(notification)))
+			.andExpect(status().isOk());
 
 		verify(notificationProcessingQueueService).enqueue(any(HyperwalletWebhookNotification.class));
 	}
@@ -68,8 +70,10 @@ class IncomingHyperwalletNotificationWebhookControllerITTest extends AbstractInt
 		final HyperwalletWebhookNotification notification = buildNotification(WEBHOOK_TOKEN,
 				"PAYMENTS.UPDATED.STATUS.COMPLETED");
 
-		mockMvc.perform(post(ENDPOINT).contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(notification))).andExpect(status().isOk());
+		mockMvc
+			.perform(post(ENDPOINT).contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(notification)))
+			.andExpect(status().isOk());
 
 		verify(notificationProcessingQueueService).enqueue(any(HyperwalletWebhookNotification.class));
 		verifyNoMoreInteractions(notificationProcessingQueueService);
@@ -87,7 +91,7 @@ class IncomingHyperwalletNotificationWebhookControllerITTest extends AbstractInt
 				""".formatted(WEBHOOK_TOKEN);
 
 		mockMvc.perform(post(ENDPOINT).contentType(MediaType.APPLICATION_JSON).content(minimalJson))
-				.andExpect(status().isOk());
+			.andExpect(status().isOk());
 
 		verify(notificationProcessingQueueService).enqueue(any(HyperwalletWebhookNotification.class));
 	}
@@ -95,7 +99,7 @@ class IncomingHyperwalletNotificationWebhookControllerITTest extends AbstractInt
 	@Test
 	void receiveIncomingNotification_withEmptyBody_shouldReturn400() throws Exception {
 		mockMvc.perform(post(ENDPOINT).contentType(MediaType.APPLICATION_JSON).content(""))
-				.andExpect(status().isBadRequest());
+			.andExpect(status().isBadRequest());
 	}
 
 	// -------------------------------------------------------------------------
@@ -105,7 +109,7 @@ class IncomingHyperwalletNotificationWebhookControllerITTest extends AbstractInt
 	@Test
 	void receiveIncomingNotification_whenQueueServiceThrows_shouldPropagateException() throws Exception {
 		willThrow(new RuntimeException("DB unavailable")).given(notificationProcessingQueueService)
-				.enqueue(any(HyperwalletWebhookNotification.class));
+			.enqueue(any(HyperwalletWebhookNotification.class));
 
 		final HyperwalletWebhookNotification notification = buildNotification(WEBHOOK_TOKEN,
 				"USERS.UPDATED.VERIFICATION_STATUS.REQUIRED");
@@ -113,7 +117,8 @@ class IncomingHyperwalletNotificationWebhookControllerITTest extends AbstractInt
 
 		assertThatThrownBy(
 				() -> mockMvc.perform(post(ENDPOINT).contentType(MediaType.APPLICATION_JSON).content(content)))
-						.hasCauseInstanceOf(RuntimeException.class).hasMessageContaining("DB unavailable");
+			.hasCauseInstanceOf(RuntimeException.class)
+			.hasMessageContaining("DB unavailable");
 	}
 
 	// -------------------------------------------------------------------------

@@ -2,9 +2,8 @@ package com.paypal.jobsystem.quartzadapter.job;
 
 import com.paypal.jobsystem.batchjob.model.BatchJob;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
-import com.paypal.jobsystem.batchjob.services.BatchJobExecutor;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
-import com.paypal.jobsystem.quartzadapter.job.QuartzBatchJobAdapter;
+import com.paypal.jobsystem.batchjob.services.BatchJobExecutor;
 import com.paypal.jobsystem.quartzadapter.jobcontext.QuartzBatchJobContextFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,7 +42,7 @@ class QuartzBatchJobAdapterTest {
 	@Test
 	void execute_ShouldExecuteAdaptedJob() throws JobExecutionException {
 		when(quartzBatchJobContextFactoryMock.getBatchJobContext(batchJobMock, jobExecutionContextMock))
-				.thenReturn(batchJobContextMock);
+			.thenReturn(batchJobContextMock);
 		testObj.execute(jobExecutionContextMock);
 
 		verify(batchJobExecutorMock).execute(eq(batchJobMock), any(BatchJobContext.class));

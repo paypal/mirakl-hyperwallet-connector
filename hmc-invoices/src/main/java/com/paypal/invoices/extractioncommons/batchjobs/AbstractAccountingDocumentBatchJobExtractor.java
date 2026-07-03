@@ -25,8 +25,10 @@ public abstract class AbstractAccountingDocumentBatchJobExtractor<C extends Batc
 	}
 
 	private boolean getIncludePaidParam(final C ctx) {
-		final Boolean includePaid = (Boolean) ctx.getJobExecutionContext().getJobDetail().getJobDataMap()
-				.get(INCLUDE_PAID);
+		final Boolean includePaid = (Boolean) ctx.getJobExecutionContext()
+			.getJobDetail()
+			.getJobDataMap()
+			.get(INCLUDE_PAID);
 
 		return includePaid != null && includePaid;
 	}

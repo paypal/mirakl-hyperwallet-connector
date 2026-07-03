@@ -1,6 +1,5 @@
 package com.paypal.sellers.professionalsellersextraction.batchjobs;
 
-import com.paypal.sellers.professionalsellersextraction.batchjobs.ProfessionalSellerExtractJobItem;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

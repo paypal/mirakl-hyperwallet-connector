@@ -1,11 +1,11 @@
 package com.paypal.jobsystem.batchjob.services;
 
-import com.paypal.jobsystem.batchjob.model.listeners.BatchJobProcessingListener;
-import jakarta.annotation.Resource;
 import com.paypal.jobsystem.batchjob.model.BatchJob;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.jobsystem.batchjob.model.BatchJobItemValidationResult;
+import com.paypal.jobsystem.batchjob.model.listeners.BatchJobProcessingListener;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -78,19 +78,19 @@ public class BatchJobExecutor {
 			final T enrichedItem = job.enrichItem(context, item);
 			final BatchJobItemValidationResult validationResult = job.validateItem(context, enrichedItem);
 			switch (validationResult.getStatus()) {
-			case INVALID:
-				reportItemProcessingValidationFailure(context, item, validationResult);
-				reportItemProcessingFailure(context, item, null);
-				break;
-			case WARNING:
-				reportItemProcessingValidationFailure(context, item, validationResult);
-				job.processItem(context, enrichedItem);
-				reportItemProcessingFinished(context, item);
-				break;
-			case VALID:
-				job.processItem(context, enrichedItem);
-				reportItemProcessingFinished(context, item);
-				break;
+				case INVALID:
+					reportItemProcessingValidationFailure(context, item, validationResult);
+					reportItemProcessingFailure(context, item, null);
+					break;
+				case WARNING:
+					reportItemProcessingValidationFailure(context, item, validationResult);
+					job.processItem(context, enrichedItem);
+					reportItemProcessingFinished(context, item);
+					break;
+				case VALID:
+					job.processItem(context, enrichedItem);
+					reportItemProcessingFinished(context, item);
+					break;
 			}
 		}
 		catch (final RuntimeException e) {

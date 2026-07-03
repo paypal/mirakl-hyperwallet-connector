@@ -95,9 +95,10 @@ class KYCUserStatusResyncBatchJobITTest extends AbstractMockEnabledIntegrationTe
 
 	private void verifyMiraklKYCStatusRequest(final String shopId, final String status) {
 		mockServerClient.verify(
-				request().withPath("/api/shops").withMethod("PUT")
-						.withBody(JsonPathBody.jsonPath(
-								"$.shops[?(@.shop_id==\"%s\" && @.kyc.status == \"%s\")]".formatted(shopId, status))),
+				request().withPath("/api/shops")
+					.withMethod("PUT")
+					.withBody(JsonPathBody
+						.jsonPath("$.shops[?(@.shop_id==\"%s\" && @.kyc.status == \"%s\")]".formatted(shopId, status))),
 				VerificationTimes.exactly(1));
 	}
 

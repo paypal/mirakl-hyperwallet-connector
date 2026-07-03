@@ -2,10 +2,9 @@ package com.paypal.kyc.sellersdocumentextraction.services.converters;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
+import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
 import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.sellersdocumentextraction.model.KYCProofOfAddressEnum;
-import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
-import com.paypal.kyc.sellersdocumentextraction.services.converters.MiraklShopToKYCDocumentSellerInfoModelConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

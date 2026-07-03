@@ -9,8 +9,6 @@ import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.support.logging.HyperwalletLoggingErrorsUtil;
 import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.incomingnotifications.model.KYCBusinessStakeholderStatusNotificationBodyModel;
-import com.paypal.kyc.incomingnotifications.services.KYCBusinessStakeholderNotificationServiceImpl;
-import com.paypal.kyc.incomingnotifications.services.KYCBusinessStakeholderStatusExecutor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,8 +34,8 @@ class KYCBusinessStakeholderNotificationServiceImplTest {
 	private static final String MSG_ERROR = "Notification [%s] could not be processed - the KYC Letter of authorization for a business stakeholder could not be updated.%n%s";
 
 	private static final LogTrackerStub LOG_TRACKER_STUB = LogTrackerStub.create()
-			.recordForLevel(LogTracker.LogLevel.ERROR)
-			.recordForType(KYCBusinessStakeholderNotificationServiceImpl.class);
+		.recordForLevel(LogTracker.LogLevel.ERROR)
+		.recordForType(KYCBusinessStakeholderNotificationServiceImpl.class);
 
 	@InjectMocks
 	private KYCBusinessStakeholderNotificationServiceImpl testObj;
@@ -57,7 +55,7 @@ class KYCBusinessStakeholderNotificationServiceImplTest {
 	@BeforeEach
 	void setUp() {
 		when(hyperWalletObjectToKYCBusinessStakeholderStatusNotificationBodyModelConverterMock
-				.convert(hyperwalletWebhookNotificationMock)).thenReturn(kycBusinessStakeholderNotificationMock);
+			.convert(hyperwalletWebhookNotificationMock)).thenReturn(kycBusinessStakeholderNotificationMock);
 	}
 
 	@Test
@@ -65,7 +63,7 @@ class KYCBusinessStakeholderNotificationServiceImplTest {
 		testObj.updateBusinessStakeholderKYCStatus(hyperwalletWebhookNotificationMock);
 
 		verify(hyperWalletObjectToKYCBusinessStakeholderStatusNotificationBodyModelConverterMock)
-				.convert(hyperwalletWebhookNotificationMock);
+			.convert(hyperwalletWebhookNotificationMock);
 		verify(kycBusinessStakeholderStatusExecutorMock).execute(kycBusinessStakeholderNotificationMock);
 	}
 
@@ -74,17 +72,16 @@ class KYCBusinessStakeholderNotificationServiceImplTest {
 	void updateBusinessStakeholderKYCStatus_whenMiraklExceptionIsThrown_shouldLogAndRethrowException(
 			final RuntimeException exception, final String expectedMessage) {
 		when(kycBusinessStakeholderStatusExecutorMock.execute(kycBusinessStakeholderNotificationMock))
-				.thenThrow(exception);
+			.thenThrow(exception);
 
 		final Throwable throwable = catchThrowable(
 				() -> testObj.updateBusinessStakeholderKYCStatus(hyperwalletWebhookNotificationMock));
 
 		assertThat(throwable).isEqualTo(exception);
 		assertThat(LOG_TRACKER_STUB
-				.contains(MSG_ERROR.formatted(hyperwalletWebhookNotificationMock.getToken(), expectedMessage)))
-						.isTrue();
+			.contains(MSG_ERROR.formatted(hyperwalletWebhookNotificationMock.getToken(), expectedMessage))).isTrue();
 		verify(hyperWalletObjectToKYCBusinessStakeholderStatusNotificationBodyModelConverterMock)
-				.convert(hyperwalletWebhookNotificationMock);
+			.convert(hyperwalletWebhookNotificationMock);
 		verify(kycBusinessStakeholderStatusExecutorMock).execute(kycBusinessStakeholderNotificationMock);
 	}
 

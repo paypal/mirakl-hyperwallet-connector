@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "github>e2y/devtools//renovate/renovate-preset.json"
+  ],
+  "baseBranches": ["develop"],
+  "schedule": ["every weekend"],
+  "minimumReleaseAge": "7 days",
+  "includePaths": ["e2y/testing/**", "docs/**"],
+  "rangeStrategy": "pin",
+  "packageRules": [
+    {
+      "groupName": "eslint",
+      "matchPackagePatterns": ["^eslint", "^@eslint/", "^@typescript-eslint/"]
+    },
+    {
+      "groupName": "mockserver",
+      "matchPackagePatterns": ["^mockserver", "^@testcontainers/mockserver", "mock-server"]
+    }
+  ]
+}

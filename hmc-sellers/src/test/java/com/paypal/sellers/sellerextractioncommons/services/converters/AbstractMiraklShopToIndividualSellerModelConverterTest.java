@@ -41,7 +41,7 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 	private StrategyExecutor<MiraklShop, BankAccountModel> miraklShopBankAccountModelStrategyExecutor;
 
 	@Mock
-	private IBANBankAccountModel IBANBankAccountModelMock;
+	private IBANBankAccountModel ibanBankAccountModelMock;
 
 	@Mock
 	private MiraklDefaultBillingInformation miraklDefaultBillingInformationMock;
@@ -72,7 +72,7 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 		// mirakl custom fields
 		when(miraklShopMock.getAdditionalFieldValues()).thenReturn(Collections.emptyList());
 
-		when(miraklShopBankAccountModelStrategyExecutor.execute(miraklShopMock)).thenReturn(IBANBankAccountModelMock);
+		when(miraklShopBankAccountModelStrategyExecutor.execute(miraklShopMock)).thenReturn(ibanBankAccountModelMock);
 		when(languageConversionMock.convert(Locale.US)).thenReturn("en");
 
 		final SellerModelBuilder result = testObj.getCommonFieldsBuilder(miraklShopMock);
@@ -91,7 +91,7 @@ class AbstractMiraklShopToIndividualSellerModelConverterTest {
 				.hasFieldOrPropertyWithValue("postalCode", "zipcode")
 				.hasFieldOrPropertyWithValue("stateProvince", "state")
 				.hasFieldOrPropertyWithValue("country", "US")
-				.hasFieldOrPropertyWithValue("bankAccountDetails", IBANBankAccountModelMock)
+				.hasFieldOrPropertyWithValue("bankAccountDetails", ibanBankAccountModelMock)
 				.hasFieldOrPropertyWithValue("language", "en");
 		//@formatter:on
 	}

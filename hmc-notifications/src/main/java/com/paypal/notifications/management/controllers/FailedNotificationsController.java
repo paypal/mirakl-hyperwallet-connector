@@ -72,8 +72,10 @@ public class FailedNotificationsController {
 	 */
 	@GetMapping("/{notificationToken}")
 	public ResponseEntity<FailedNotificationInfo> get(@PathVariable final String notificationToken) {
-		return notificationStorageService.getNotificationByWebHookToken(notificationToken).map(converter::from)
-				.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+		return notificationStorageService.getNotificationByWebHookToken(notificationToken)
+			.map(converter::from)
+			.map(ResponseEntity::ok)
+			.orElse(ResponseEntity.notFound().build());
 	}
 
 	/**
@@ -116,8 +118,9 @@ public class FailedNotificationsController {
 	@PutMapping("/")
 	@ResponseStatus(OK)
 	public void replace(@RequestBody final List<FailedNotificationInfo> infos) {
-		notificationStorageService.getFailedNotifications(null, null, Pageable.unpaged()).getContent()
-				.forEach(e -> notificationStorageService.deleteNotificationByWebHookToken(e.getWebHookToken()));
+		notificationStorageService.getFailedNotifications(null, null, Pageable.unpaged())
+			.getContent()
+			.forEach(e -> notificationStorageService.deleteNotificationByWebHookToken(e.getWebHookToken()));
 
 		infos.forEach(info -> {
 			final NotificationEntity entity = toEntity(info);

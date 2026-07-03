@@ -2,7 +2,8 @@ package com.paypal.infrastructure.hyperwallet.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.hyperwallet.clientsdk.Hyperwallet;
-import com.hyperwallet.clientsdk.model.*;
+import com.hyperwallet.clientsdk.model.HyperwalletLink;
+import com.hyperwallet.clientsdk.model.HyperwalletList;
 import com.hyperwallet.clientsdk.util.HyperwalletApiClient;
 import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;

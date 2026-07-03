@@ -76,16 +76,18 @@ class InvoicesConfigurationManagementITTest extends AbstractIntegrationTest {
 		final CommissionsConfigurationDto requestBody = new CommissionsConfigurationDto(true);
 
 		this.mockMvc
-				.perform(put("/configuration/invoices/commissions").contentType(MediaType.APPLICATION_JSON)
-						.content(serializeCommissionsConfigurationDto(requestBody)))
-				.andDo(print()).andExpect(status().isOk());
+			.perform(put("/configuration/invoices/commissions").contentType(MediaType.APPLICATION_JSON)
+				.content(serializeCommissionsConfigurationDto(requestBody)))
+			.andDo(print())
+			.andExpect(status().isOk());
 
 		assertThat(invoicesOperatorCommissionsConfig.isEnabled()).isTrue();
 	}
 
 	private CommissionsConfigurationDto doGetOperatorCommissionsEnabled() throws Exception {
 		final ResultActions resultActions = this.mockMvc.perform(get("/configuration/invoices/commissions"))
-				.andDo(print()).andExpect(status().isOk());
+			.andDo(print())
+			.andExpect(status().isOk());
 
 		final CommissionsConfigurationDto response = getCommissionsConfigurationDto(resultActions);
 		return response;

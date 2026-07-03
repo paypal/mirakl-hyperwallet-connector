@@ -49,9 +49,9 @@ WARNING: Changing the value of this variable can impact on the KYC of already ve
 
 The connector no longer uses Spring profiles (environment variable: `PAYPAL_SPRING_PROFILE_ACTIVE`) to enable or disable features, like financial reports or encryption. Now the connector uses feature toggle environment variables. For more details, please review xref:configuration:togglefeatures/togglefeatures.adoc[the feature toggles configuration instructions].
 
-CAUTION: Since Spring profiles has been removed, to enable encryption now you need to set the environment variable `PAYPAL_HYPERWALLET_ENCRYPTION_ENABLED` to true.
+CAUTION: Since Spring profiles have been removed, to enable encryption, now you need to set the environment variable `PAYPAL_HYPERWALLET_ENCRYPTION_ENABLED` to true.
 
-Also, Spring profiles like `dev`, `qa`, `prod` no longer exists, so selecting this profiles using the old environment variable or JVM parameters will have no effect.
+Also, Spring profiles like `dev`, `qa`, `prod` no longer exists, so selecting these profiles using the old environment variable or JVM parameters will have no effect.
 
 == Major installation changes
 

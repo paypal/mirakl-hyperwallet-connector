@@ -43,15 +43,16 @@ class MiraklClientItemLinksUpdateTest extends AbstractMockEnabledIntegrationTest
 		final Set<HyperwalletItemTypes> types = Set.of(HyperwalletItemTypes.BANK_ACCOUNT, HyperwalletItemTypes.PROGRAM);
 		MiraklItemLinkLocator miraklItemLinkLocator = new MiraklItemLinkLocator("10001", MiraklItemTypes.SHOP);
 		Collection<HyperwalletItemLinkLocator> links = itemLinksService.findLinks(miraklItemLinkLocator, types);
-		assertThat(links).hasSize(2).containsExactlyInAnyOrder(
-				new HyperwalletItemLinkLocator("trm-00000000-0000-0000-0000-0000000000",
-						HyperwalletItemTypes.BANK_ACCOUNT),
-				new HyperwalletItemLinkLocator("PROGRAM-1", HyperwalletItemTypes.PROGRAM));
+		assertThat(links).hasSize(2)
+			.containsExactlyInAnyOrder(
+					new HyperwalletItemLinkLocator("trm-00000000-0000-0000-0000-0000000000",
+							HyperwalletItemTypes.BANK_ACCOUNT),
+					new HyperwalletItemLinkLocator("PROGRAM-1", HyperwalletItemTypes.PROGRAM));
 
 		miraklItemLinkLocator = new MiraklItemLinkLocator("10002", MiraklItemTypes.SHOP);
 		links = itemLinksService.findLinks(miraklItemLinkLocator, types);
 		assertThat(links).hasSize(1)
-				.containsExactlyInAnyOrder(new HyperwalletItemLinkLocator("PROGRAM-2", HyperwalletItemTypes.PROGRAM));
+			.containsExactlyInAnyOrder(new HyperwalletItemLinkLocator("PROGRAM-2", HyperwalletItemTypes.PROGRAM));
 	}
 
 	@Test
@@ -70,17 +71,19 @@ class MiraklClientItemLinksUpdateTest extends AbstractMockEnabledIntegrationTest
 		final Set<HyperwalletItemTypes> types = Set.of(HyperwalletItemTypes.BANK_ACCOUNT, HyperwalletItemTypes.PROGRAM);
 		MiraklItemLinkLocator miraklItemLinkLocator = new MiraklItemLinkLocator("10001", MiraklItemTypes.SHOP);
 		Collection<HyperwalletItemLinkLocator> links = itemLinksService.findLinks(miraklItemLinkLocator, types);
-		assertThat(links).hasSize(2).containsExactlyInAnyOrder(
-				new HyperwalletItemLinkLocator("trm-00000000-0000-0000-0000-0000000001",
-						HyperwalletItemTypes.BANK_ACCOUNT),
-				new HyperwalletItemLinkLocator("PROGRAM-2", HyperwalletItemTypes.PROGRAM));
+		assertThat(links).hasSize(2)
+			.containsExactlyInAnyOrder(
+					new HyperwalletItemLinkLocator("trm-00000000-0000-0000-0000-0000000001",
+							HyperwalletItemTypes.BANK_ACCOUNT),
+					new HyperwalletItemLinkLocator("PROGRAM-2", HyperwalletItemTypes.PROGRAM));
 
 		miraklItemLinkLocator = new MiraklItemLinkLocator("10002", MiraklItemTypes.SHOP);
 		links = itemLinksService.findLinks(miraklItemLinkLocator, types);
-		assertThat(links).hasSize(2).containsExactlyInAnyOrder(
-				new HyperwalletItemLinkLocator("trm-00000000-0000-0000-0000-0000000002",
-						HyperwalletItemTypes.BANK_ACCOUNT),
-				new HyperwalletItemLinkLocator("PROGRAM-1", HyperwalletItemTypes.PROGRAM));
+		assertThat(links).hasSize(2)
+			.containsExactlyInAnyOrder(
+					new HyperwalletItemLinkLocator("trm-00000000-0000-0000-0000-0000000002",
+							HyperwalletItemTypes.BANK_ACCOUNT),
+					new HyperwalletItemLinkLocator("PROGRAM-1", HyperwalletItemTypes.PROGRAM));
 	}
 
 }

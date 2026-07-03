@@ -3,8 +3,8 @@ package com.paypal.kyc.incomingnotifications.services.converters;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
-import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
+import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.kyc.incomingnotifications.model.KYCUserDocumentFlagsNotificationBodyModel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
@@ -72,7 +72,7 @@ public class HyperWalletObjectToKYCUserDocumentFlagsNotificationBodyModelConvert
 		for (final String program : getHyperwalletPrograms().split(",")) {
 			try {
 				final Hyperwallet instance = userHyperwalletSDKService
-						.getHyperwalletInstanceByHyperwalletProgram(program);
+					.getHyperwalletInstanceByHyperwalletProgram(program);
 				instance.getProgram(programToken);
 				return program;
 			}

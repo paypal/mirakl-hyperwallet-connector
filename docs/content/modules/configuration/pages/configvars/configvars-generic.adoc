@@ -21,7 +21,7 @@
 
 |`PAYPAL_HYPERWALLET_DATA_DIR`
 |NO (default value: `./data`)
-|Directory where the application stores its runtime data.
-|`/workspace/data`
+|Directory where the application stores its runtime data. When running via Paketo Buildpack (the default Docker image build), set this to `/home/cnb/data` — the process user `cnb` does not have write access to `/workspace`.
+|`/home/cnb/data`
 
 |===

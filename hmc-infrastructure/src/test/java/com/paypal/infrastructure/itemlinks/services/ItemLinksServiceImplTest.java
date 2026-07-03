@@ -45,9 +45,9 @@ class ItemLinksServiceImplTest {
 	@Test
 	void createLinks() {
 		when(itemLinksModelEntityConverterMock.from(miraklItemLinkLocator1Mock, hyperwalletItemLinkLocator1Mock))
-				.thenReturn(itemLinkEntity1Mock);
+			.thenReturn(itemLinkEntity1Mock);
 		when(itemLinksModelEntityConverterMock.from(miraklItemLinkLocator1Mock, hyperwalletItemLinkLocator2Mock))
-				.thenReturn(itemLinkEntity2Mock);
+			.thenReturn(itemLinkEntity2Mock);
 
 		testObj.createLinks(miraklItemLinkLocator1Mock,
 				List.of(hyperwalletItemLinkLocator1Mock, hyperwalletItemLinkLocator2Mock));
@@ -69,17 +69,17 @@ class ItemLinksServiceImplTest {
 		// formatter:off
 		when(itemLinkRepositoryMock.findBySourceSystemAndSourceIdAndSourceTypeAndTargetSystemAndTargetTypeIn(
 				eq("MIRAKL"), eq("H1"), eq("SHOP"), eq("HYPERWALLET"), argThat(x -> x.containsAll(targetItemTypes))))
-						.thenReturn(List.of(itemLinkEntity1Mock, itemLinkEntity2Mock));
+			.thenReturn(List.of(itemLinkEntity1Mock, itemLinkEntity2Mock));
 
 		when(itemLinkRepositoryMock.findBySourceSystemAndSourceIdAndSourceTypeAndTargetSystemAndTargetTypeIn(
 				eq("MIRAKL"), eq("H2"), eq("SHOP"), eq("HYPERWALLET"), argThat(x -> x.containsAll(targetItemTypes))))
-						.thenReturn(List.of());
+			.thenReturn(List.of());
 		// formatter:on
 
 		when(itemLinksModelEntityConverterMock.hyperwalletLocatorFromLinkTarget(itemLinkEntity1Mock))
-				.thenReturn(hyperwalletItemLinkLocator1Mock);
+			.thenReturn(hyperwalletItemLinkLocator1Mock);
 		when(itemLinksModelEntityConverterMock.hyperwalletLocatorFromLinkTarget(itemLinkEntity2Mock))
-				.thenReturn(hyperwalletItemLinkLocator2Mock);
+			.thenReturn(hyperwalletItemLinkLocator2Mock);
 
 		final Map<MiraklItemLinkLocator, Collection<HyperwalletItemLinkLocator>> result = testObj.findLinks(
 				Set.of(miraklItemLinkLocator1Mock, miraklItemLinkLocator2Mock),

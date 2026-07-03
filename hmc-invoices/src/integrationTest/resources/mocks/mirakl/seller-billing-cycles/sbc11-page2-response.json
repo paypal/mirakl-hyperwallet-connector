@@ -1,0 +1,27 @@
+{
+  "data": [
+    {
+      "amount_transferred_to_operator": 955.69,
+      "amount_transferred_to_seller": 4545.2,
+      "currency_iso_code": "NGN",
+      "date_created": "2014-01-01T00:00:00Z",
+      "id": "98665be1-ce69-4ab6-8d93-b8dfd3e67404",
+      "pay_out": {
+        "state": "TO_PAY"
+      },
+      "pay_out_psp_code": "NOT_SPECIFIED",
+      "shop": {
+        "shop_corporate_name": "Ben Store SA",
+        "shop_id": 3432,
+        "shop_name": "Ben Store",
+        "shop_operator_internal_id": "DFJKDSFSD"
+      },
+      "summary": {
+        "total_commissions_excl_tax": -474.1,
+        "total_commissions_incl_tax": -889.24,
+        "total_subscription_excl_tax": -55.85,
+        "total_subscription_incl_tax": -67.37
+      }
+    }
+  ]
+}

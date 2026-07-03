@@ -29,7 +29,7 @@ class MiraklClientSettingsHolderTest {
 	@Test
 	void getMiraklClientSettings_shouldReturnTheSettings_whenExecuted() {
 		assertThat(MiraklClientSettingsHolder.getMiraklClientSettings())
-				.isEqualTo(MiraklClientSettingsHolder.DEFAULT_SETTINGS);
+			.isEqualTo(MiraklClientSettingsHolder.DEFAULT_SETTINGS);
 	}
 
 	@Test
@@ -37,7 +37,7 @@ class MiraklClientSettingsHolderTest {
 		MiraklClientSettingsHolder.setMiraklClientSettings(miraklClientSettings);
 		MiraklClientSettingsHolder.clear();
 		assertThat(MiraklClientSettingsHolder.getMiraklClientSettings())
-				.isEqualTo(MiraklClientSettingsHolder.DEFAULT_SETTINGS);
+			.isEqualTo(MiraklClientSettingsHolder.DEFAULT_SETTINGS);
 	}
 
 }

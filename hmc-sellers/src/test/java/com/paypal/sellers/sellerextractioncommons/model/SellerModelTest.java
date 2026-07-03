@@ -1,10 +1,6 @@
 package com.paypal.sellers.sellerextractioncommons.model;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
-import com.paypal.sellers.sellerextractioncommons.model.SellerBusinessType;
-import com.paypal.sellers.sellerextractioncommons.model.SellerGovernmentIdType;
-import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
-import com.paypal.sellers.sellerextractioncommons.model.SellerProfileType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -156,11 +152,12 @@ class SellerModelTest {
 	@MethodSource("termsAndConditionsTokenValues")
 	void hasAcceptedTermsAndConditions_shouldReturnTrueWhenTermsAndConditionsOrUserTokenIsSet(
 			final boolean termsAndConditions, final String userToken, final boolean expectedResult) {
-		final SellerModel sellerModel = SellerModel.builder().profileType(SellerProfileType.INDIVIDUAL)
-				.token(List.of(populateTextAreaCustomFieldValue(HYPERWALLET_USER_TOKEN, userToken)))
-				.hwTermsConsent(List.of(populateBooleanAdditionalFieldValues(HYPERWALLET_TERMS_CONSENT,
-						String.valueOf(expectedResult))))
-				.build();
+		final SellerModel sellerModel = SellerModel.builder()
+			.profileType(SellerProfileType.INDIVIDUAL)
+			.token(List.of(populateTextAreaCustomFieldValue(HYPERWALLET_USER_TOKEN, userToken)))
+			.hwTermsConsent(List
+				.of(populateBooleanAdditionalFieldValues(HYPERWALLET_TERMS_CONSENT, String.valueOf(expectedResult))))
+			.build();
 
 		assertThat(sellerModel.hasAcceptedTermsAndConditions()).isEqualTo(expectedResult);
 	}
@@ -321,85 +318,98 @@ class SellerModelTest {
 	}
 
 	private static Stream<Arguments> provideValuesForSingleValueCustomFieldValues() {
-		return Stream.of(
-				Arguments.of(
-						SellerModel.builder().governmentIdType(
-								List.of(populateSingleValueListCustomFieldValue("hw-government-id-type", "PASSPORT"))),
-						"governmentIdType", SellerGovernmentIdType.PASSPORT),
-				Arguments.of(
-						SellerModel.builder()
-								.governmentIdType(List.of(populateSingleValueListCustomFieldValue(
-										"hw-government-id-type", "NATIONAL_ID_CARD"))),
-						"governmentIdType", SellerGovernmentIdType.NATIONAL_ID_CARD),
-				Arguments.of(
-						SellerModel.builder().governmentIdType(
-								List.of(populateSingleValueListCustomFieldValue("hw-government-id-type", "INVALID"))),
-						"governmentIdType", null),
-				Arguments.of(
-						SellerModel
-								.builder().businessType(List
-										.of(populateSingleValueListCustomFieldValue("hw-business-type",
-												"CORPORATION"))),
-						"businessType", SellerBusinessType.CORPORATION),
-				Arguments.of(SellerModel.builder().businessType(
-						List.of(populateSingleValueListCustomFieldValue("hw-business-type", "GOVERNMENT_ENTITY"))),
-						"businessType", SellerBusinessType.GOVERNMENT_ENTITY),
-				Arguments.of(
-						SellerModel.builder()
+		return Stream
+			.of(Arguments.of(SellerModel.builder()
+				.governmentIdType(List.of(
+						populateSingleValueListCustomFieldValue("hw-government-id-type", "PASSPORT"))),
+					"governmentIdType", SellerGovernmentIdType.PASSPORT),
+					Arguments.of(
+							SellerModel
+								.builder()
+								.governmentIdType(
+										List.of(populateSingleValueListCustomFieldValue("hw-government-id-type",
+												"NATIONAL_ID_CARD"))),
+							"governmentIdType", SellerGovernmentIdType.NATIONAL_ID_CARD),
+					Arguments.of(
+							SellerModel.builder()
+								.governmentIdType(List
+									.of(populateSingleValueListCustomFieldValue("hw-government-id-type", "INVALID"))),
+							"governmentIdType", null),
+					Arguments.of(
+							SellerModel
+								.builder()
+								.businessType(List
+									.of(populateSingleValueListCustomFieldValue("hw-business-type", "CORPORATION"))),
+							"businessType", SellerBusinessType.CORPORATION),
+					Arguments.of(SellerModel.builder()
+						.businessType(List
+							.of(populateSingleValueListCustomFieldValue("hw-business-type", "GOVERNMENT_ENTITY"))),
+							"businessType", SellerBusinessType.GOVERNMENT_ENTITY),
+					Arguments.of(
+							SellerModel.builder()
 								.businessType(List.of(populateSingleValueListCustomFieldValue("hw-business-type",
 										"NOT_FOR_PROFIT_ORGANIZATION"))),
-						"businessType", SellerBusinessType.NOT_FOR_PROFIT_ORGANIZATION),
-				Arguments.of(
-						SellerModel.builder().businessType(
-								List.of(populateSingleValueListCustomFieldValue("hw-business-type", "PARTNERSHIP"))),
-						"businessType", SellerBusinessType.PARTNERSHIP),
-				Arguments.of(SellerModel.builder().businessType(
-						List.of(populateSingleValueListCustomFieldValue("hw-business-type", "PRIVATE_COMPANY"))),
-						"businessType", SellerBusinessType.PRIVATE_COMPANY),
-				Arguments.of(
-						SellerModel.builder().businessType(
-								List.of(populateSingleValueListCustomFieldValue("hw-business-type", "PUBLIC_COMPANY"))),
-						"businessType", SellerBusinessType.PUBLIC_COMPANY),
-				Arguments.of(
-						SellerModel.builder().businessType(
-								List.of(populateSingleValueListCustomFieldValue("hw-business-type", "INVALID"))),
-						"businessType", null)
+							"businessType", SellerBusinessType.NOT_FOR_PROFIT_ORGANIZATION),
+					Arguments.of(
+							SellerModel.builder()
+								.businessType(List
+									.of(populateSingleValueListCustomFieldValue("hw-business-type", "PARTNERSHIP"))),
+							"businessType", SellerBusinessType.PARTNERSHIP),
+					Arguments.of(SellerModel.builder()
+						.businessType(List.of(
+								populateSingleValueListCustomFieldValue("hw-business-type", "PRIVATE_COMPANY"))),
+							"businessType", SellerBusinessType.PRIVATE_COMPANY),
+					Arguments.of(
+							SellerModel.builder()
+								.businessType(List
+									.of(populateSingleValueListCustomFieldValue("hw-business-type", "PUBLIC_COMPANY"))),
+							"businessType", SellerBusinessType.PUBLIC_COMPANY),
+					Arguments.of(
+							SellerModel.builder()
+								.businessType(List
+									.of(populateSingleValueListCustomFieldValue("hw-business-type", "INVALID"))),
+							"businessType", null)
 
-		);
+			);
 	}
 
 	private static Stream<Arguments> provideValuesForTextAreaCustomFieldValues() {
-		return Stream.of(
-				Arguments.of(
-						SellerModel.builder().countryOfBirth(
-								List.of(populateTextAreaCustomFieldValue("hw-country-of-birth", "Spain"))),
-						"countryOfBirth", "Spain"),
-				Arguments.of(SellerModel.builder().countryOfBirth(Collections.emptyList()), "countryOfBirth", null),
-				Arguments.of(
-						SellerModel.builder().countryOfNationality(
-								List.of(populateTextAreaCustomFieldValue("hw-country-of-nationality", "France"))),
-						"countryOfNationality", "France"),
-				Arguments.of(SellerModel.builder().countryOfNationality(Collections.emptyList()),
-						"countryOfNationality", null),
-				Arguments.of(
-						SellerModel.builder()
+		return Stream
+			.of(Arguments.of(
+					SellerModel.builder()
+						.countryOfBirth(List.of(populateTextAreaCustomFieldValue("hw-country-of-birth", "Spain"))),
+					"countryOfBirth", "Spain"),
+					Arguments.of(SellerModel.builder().countryOfBirth(Collections.emptyList()), "countryOfBirth", null),
+					Arguments.of(
+							SellerModel.builder()
+								.countryOfNationality(List
+									.of(populateTextAreaCustomFieldValue("hw-country-of-nationality", "France"))),
+							"countryOfNationality", "France"),
+					Arguments.of(SellerModel.builder().countryOfNationality(Collections.emptyList()),
+							"countryOfNationality", null),
+					Arguments.of(
+							SellerModel.builder()
 								.governmentId(List.of(populateTextAreaCustomFieldValue("hw-government-id", "12345"))),
-						"governmentId", "12345"),
-				Arguments.of(SellerModel.builder().governmentId(Collections.emptyList()), "governmentId", null),
-				Arguments.of(
-						SellerModel.builder()
+							"governmentId", "12345"),
+					Arguments.of(SellerModel.builder().governmentId(Collections.emptyList()), "governmentId", null),
+					Arguments.of(
+							SellerModel
+								.builder()
 								.passportId(List.of(populateTextAreaCustomFieldValue("hw-passport-id", "123456"))),
-						"passportId", "123456"),
-				Arguments.of(SellerModel.builder().passportId(Collections.emptyList()), "driversLicenseId", null),
-				Arguments.of(
-						SellerModel.builder().driversLicenseId(
-								List.of(populateTextAreaCustomFieldValue("hw-drivers-license-id", "1234567"))),
-						"driversLicenseId", "1234567"),
-				Arguments.of(SellerModel.builder().driversLicenseId(Collections.emptyList()), "driversLicenseId", null),
-				Arguments.of(
-						SellerModel.builder().hyperwalletProgram(
-								List.of(populateSingleValueListCustomFieldValue("hw-program", HYPERWALLET_PROGRAM))),
-						"hyperwalletProgram", HYPERWALLET_PROGRAM));
+							"passportId", "123456"),
+					Arguments.of(SellerModel.builder().passportId(Collections.emptyList()), "driversLicenseId", null),
+					Arguments.of(
+							SellerModel.builder()
+								.driversLicenseId(
+										List.of(populateTextAreaCustomFieldValue("hw-drivers-license-id", "1234567"))),
+							"driversLicenseId", "1234567"),
+					Arguments.of(SellerModel.builder().driversLicenseId(Collections.emptyList()), "driversLicenseId",
+							null),
+					Arguments.of(
+							SellerModel.builder()
+								.hyperwalletProgram(List
+									.of(populateSingleValueListCustomFieldValue("hw-program", HYPERWALLET_PROGRAM))),
+							"hyperwalletProgram", HYPERWALLET_PROGRAM));
 	}
 
 	private static MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue populateTextAreaCustomFieldValue(

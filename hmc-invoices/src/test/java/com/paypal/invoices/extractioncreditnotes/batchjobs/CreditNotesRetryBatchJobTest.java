@@ -1,8 +1,5 @@
 package com.paypal.invoices.extractioncreditnotes.batchjobs;
 
-import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNotesExtractBatchJobItemProcessor;
-import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNotesRetryBatchJob;
-import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNotesRetryBatchJobItemsExtractor;
 import com.paypal.jobsystem.batchjob.model.BatchJobType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

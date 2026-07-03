@@ -1,6 +1,6 @@
 package com.paypal.invoices.extractioninvoices.services;
 
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoice;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklSellerBillingCycle;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
@@ -17,12 +17,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class MiraklInvoicesExtractServiceImpl extends AbstractAccountingDocumentsExtractServiceImpl<InvoiceModel> {
 
-	private final Converter<MiraklInvoice, InvoiceModel> miraklInvoiceToInvoiceModelConverter;
+	private final Converter<MiraklSellerBillingCycle, InvoiceModel> miraklInvoiceToInvoiceModelConverter;
 
 	public MiraklInvoicesExtractServiceImpl(final MiraklClient miraklMarketplacePlatformOperatorApiClient,
 			final Converter<MiraklShop, AccountingDocumentModel> miraklShopAccountingDocumentModelConverter,
 			final MailNotificationUtil invoicesMailNotificationUtil,
-			final Converter<MiraklInvoice, InvoiceModel> miraklInvoiceToInvoiceModelConverter,
+			final Converter<MiraklSellerBillingCycle, InvoiceModel> miraklInvoiceToInvoiceModelConverter,
 			final AccountingDocumentsLinksService accountingDocumentsLinksService) {
 		super(miraklShopAccountingDocumentModelConverter, miraklMarketplacePlatformOperatorApiClient,
 				accountingDocumentsLinksService, invoicesMailNotificationUtil);
@@ -35,7 +35,7 @@ public class MiraklInvoicesExtractServiceImpl extends AbstractAccountingDocument
 	}
 
 	@Override
-	protected Converter<MiraklInvoice, InvoiceModel> getMiraklInvoiceToAccountingModelConverter() {
+	protected Converter<MiraklSellerBillingCycle, InvoiceModel> getMiraklInvoiceToAccountingModelConverter() {
 		return miraklInvoiceToInvoiceModelConverter;
 	}
 

@@ -5,12 +5,11 @@ import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
 import com.hyperwallet.clientsdk.model.HyperwalletList;
 import com.mirakl.client.core.exception.MiraklApiException;
+import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
 import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
-import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
 import com.paypal.sellers.bankaccountextraction.model.BankAccountModel;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -64,9 +63,11 @@ class BankAccountTokenSynchronizationServiceImplTest {
 
 	@Test
 	void synchronizeToken_ShouldReturnCurrentSellerModel_WhenSellerBankAccountNumberIsBlank() {
-		final SellerModel originalSellerModel = SellerModel.builder().token(SELLER_TOKEN_VALUE)
-				.programToken(PROGRAM_TOKEN)
-				.bankAccountDetails(BankAccountModel.builder().bankAccountNumber("").build()).build();
+		final SellerModel originalSellerModel = SellerModel.builder()
+			.token(SELLER_TOKEN_VALUE)
+			.programToken(PROGRAM_TOKEN)
+			.bankAccountDetails(BankAccountModel.builder().bankAccountNumber("").build())
+			.build();
 
 		final SellerModel result = testObj.synchronizeToken(originalSellerModel);
 
@@ -75,9 +76,11 @@ class BankAccountTokenSynchronizationServiceImplTest {
 
 	@Test
 	void synchronizeToken_ShouldUpdateMiraklToken_WhenBankAccountMatchIsFound_AndMiraklBankAccountTokenIsNull() {
-		final SellerModel originalSellerModel = SellerModel.builder().token(SELLER_TOKEN_VALUE)
-				.programToken(PROGRAM_TOKEN)
-				.bankAccountDetails(BankAccountModel.builder().bankAccountNumber(BANK_ACCOUNT_NUMBER).build()).build();
+		final SellerModel originalSellerModel = SellerModel.builder()
+			.token(SELLER_TOKEN_VALUE)
+			.programToken(PROGRAM_TOKEN)
+			.bankAccountDetails(BankAccountModel.builder().bankAccountNumber(BANK_ACCOUNT_NUMBER).build())
+			.build();
 
 		final HyperwalletBankAccount hyperwalletBankAccount1 = new HyperwalletBankAccount();
 		hyperwalletBankAccount1.setToken(BANK_ACCOUNT_TOKEN_VALUE);
@@ -88,10 +91,11 @@ class BankAccountTokenSynchronizationServiceImplTest {
 		hyperwalletBankAccountList.setData(List.of(hyperwalletBankAccount1, hyperwalletBankAccount2));
 
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
-				.thenReturn(hyperwalletSDKMock);
+			.thenReturn(hyperwalletSDKMock);
 		when(hyperwalletSDKMock.listBankAccounts(SELLER_TOKEN_VALUE)).thenReturn(hyperwalletBankAccountList);
 		when(miraklBankAccountMatcherMock.findExactOrCompatibleMatch(hyperwalletBankAccountList.getData(),
-				originalSellerModel.getBankAccountDetails())).thenReturn(Optional.of(hyperwalletBankAccount2));
+				originalSellerModel.getBankAccountDetails()))
+			.thenReturn(Optional.of(hyperwalletBankAccount2));
 
 		final SellerModel result = testObj.synchronizeToken(originalSellerModel);
 
@@ -102,10 +106,14 @@ class BankAccountTokenSynchronizationServiceImplTest {
 
 	@Test
 	void synchronizeToken_ShouldUpdateMiraklToken_WhenBankAccountMatchIsFound_AndMiraklBankAccountTokenIsNotNull() {
-		final SellerModel originalSellerModel = SellerModel
-				.builder().token(SELLER_TOKEN_VALUE).programToken(PROGRAM_TOKEN).bankAccountDetails(BankAccountModel
-						.builder().token(BANK_ACCOUNT_TOKEN_VALUE).bankAccountNumber(BANK_ACCOUNT_NUMBER).build())
-				.build();
+		final SellerModel originalSellerModel = SellerModel.builder()
+			.token(SELLER_TOKEN_VALUE)
+			.programToken(PROGRAM_TOKEN)
+			.bankAccountDetails(BankAccountModel.builder()
+				.token(BANK_ACCOUNT_TOKEN_VALUE)
+				.bankAccountNumber(BANK_ACCOUNT_NUMBER)
+				.build())
+			.build();
 
 		final HyperwalletBankAccount hyperwalletBankAccount1 = new HyperwalletBankAccount();
 		hyperwalletBankAccount1.setToken(BANK_ACCOUNT_TOKEN_VALUE);
@@ -116,10 +124,11 @@ class BankAccountTokenSynchronizationServiceImplTest {
 		hyperwalletBankAccountList.setData(List.of(hyperwalletBankAccount1, hyperwalletBankAccount2));
 
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
-				.thenReturn(hyperwalletSDKMock);
+			.thenReturn(hyperwalletSDKMock);
 		when(hyperwalletSDKMock.listBankAccounts(SELLER_TOKEN_VALUE)).thenReturn(hyperwalletBankAccountList);
 		when(miraklBankAccountMatcherMock.findExactOrCompatibleMatch(hyperwalletBankAccountList.getData(),
-				originalSellerModel.getBankAccountDetails())).thenReturn(Optional.of(hyperwalletBankAccount2));
+				originalSellerModel.getBankAccountDetails()))
+			.thenReturn(Optional.of(hyperwalletBankAccount2));
 
 		final SellerModel result = testObj.synchronizeToken(originalSellerModel);
 
@@ -130,10 +139,14 @@ class BankAccountTokenSynchronizationServiceImplTest {
 
 	@Test
 	void synchronizeToken_ShouldSetMiraklTokenToNull_WhenHyperwalletBankAccountsIsEmpty_AndMiraklBankAccountTokenIsNotNull() {
-		final SellerModel originalSellerModel = SellerModel
-				.builder().token(SELLER_TOKEN_VALUE).programToken(PROGRAM_TOKEN).bankAccountDetails(BankAccountModel
-						.builder().token(BANK_ACCOUNT_TOKEN_VALUE).bankAccountNumber(BANK_ACCOUNT_NUMBER).build())
-				.build();
+		final SellerModel originalSellerModel = SellerModel.builder()
+			.token(SELLER_TOKEN_VALUE)
+			.programToken(PROGRAM_TOKEN)
+			.bankAccountDetails(BankAccountModel.builder()
+				.token(BANK_ACCOUNT_TOKEN_VALUE)
+				.bankAccountNumber(BANK_ACCOUNT_NUMBER)
+				.build())
+			.build();
 
 		final HyperwalletBankAccount hyperwalletBankAccount1 = new HyperwalletBankAccount();
 		hyperwalletBankAccount1.setToken(BANK_ACCOUNT_TOKEN_VALUE);
@@ -144,10 +157,11 @@ class BankAccountTokenSynchronizationServiceImplTest {
 		hyperwalletBankAccountList.setData(null);
 
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
-				.thenReturn(hyperwalletSDKMock);
+			.thenReturn(hyperwalletSDKMock);
 		when(hyperwalletSDKMock.listBankAccounts(SELLER_TOKEN_VALUE)).thenReturn(hyperwalletBankAccountList);
 		when(miraklBankAccountMatcherMock.findExactOrCompatibleMatch(List.of(),
-				originalSellerModel.getBankAccountDetails())).thenReturn(Optional.empty());
+				originalSellerModel.getBankAccountDetails()))
+			.thenReturn(Optional.empty());
 
 		final SellerModel result = testObj.synchronizeToken(originalSellerModel);
 
@@ -158,10 +172,14 @@ class BankAccountTokenSynchronizationServiceImplTest {
 
 	@Test
 	void synchronizeToken_ShouldSetMiraklTokenToNull_WhenBankAccountMatchIsNotFound_AndMiraklBankAccountTokenIsNotNull() {
-		final SellerModel originalSellerModel = SellerModel
-				.builder().token(SELLER_TOKEN_VALUE).programToken(PROGRAM_TOKEN).bankAccountDetails(BankAccountModel
-						.builder().token(BANK_ACCOUNT_TOKEN_VALUE).bankAccountNumber(BANK_ACCOUNT_NUMBER).build())
-				.build();
+		final SellerModel originalSellerModel = SellerModel.builder()
+			.token(SELLER_TOKEN_VALUE)
+			.programToken(PROGRAM_TOKEN)
+			.bankAccountDetails(BankAccountModel.builder()
+				.token(BANK_ACCOUNT_TOKEN_VALUE)
+				.bankAccountNumber(BANK_ACCOUNT_NUMBER)
+				.build())
+			.build();
 
 		final HyperwalletBankAccount hyperwalletBankAccount1 = new HyperwalletBankAccount();
 		hyperwalletBankAccount1.setToken(BANK_ACCOUNT_TOKEN_VALUE);
@@ -172,10 +190,11 @@ class BankAccountTokenSynchronizationServiceImplTest {
 		hyperwalletBankAccountList.setData(List.of(hyperwalletBankAccount1, hyperwalletBankAccount2));
 
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
-				.thenReturn(hyperwalletSDKMock);
+			.thenReturn(hyperwalletSDKMock);
 		when(hyperwalletSDKMock.listBankAccounts(SELLER_TOKEN_VALUE)).thenReturn(hyperwalletBankAccountList);
 		when(miraklBankAccountMatcherMock.findExactOrCompatibleMatch(hyperwalletBankAccountList.getData(),
-				originalSellerModel.getBankAccountDetails())).thenReturn(Optional.empty());
+				originalSellerModel.getBankAccountDetails()))
+			.thenReturn(Optional.empty());
 
 		final SellerModel result = testObj.synchronizeToken(originalSellerModel);
 
@@ -186,9 +205,11 @@ class BankAccountTokenSynchronizationServiceImplTest {
 
 	@Test
 	void synchronizeToken_ShouldNotUpdateAnything_WhenBankAccountMatchIsNotFound_AndMiraklBankAccountTokenIsNull() {
-		final SellerModel originalSellerModel = SellerModel.builder().token(SELLER_TOKEN_VALUE)
-				.programToken(PROGRAM_TOKEN)
-				.bankAccountDetails(BankAccountModel.builder().bankAccountNumber(BANK_ACCOUNT_NUMBER).build()).build();
+		final SellerModel originalSellerModel = SellerModel.builder()
+			.token(SELLER_TOKEN_VALUE)
+			.programToken(PROGRAM_TOKEN)
+			.bankAccountDetails(BankAccountModel.builder().bankAccountNumber(BANK_ACCOUNT_NUMBER).build())
+			.build();
 
 		final HyperwalletBankAccount hyperwalletBankAccount1 = new HyperwalletBankAccount();
 		hyperwalletBankAccount1.setToken(BANK_ACCOUNT_TOKEN_VALUE);
@@ -199,10 +220,11 @@ class BankAccountTokenSynchronizationServiceImplTest {
 		hyperwalletBankAccountList.setData(List.of(hyperwalletBankAccount1, hyperwalletBankAccount2));
 
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
-				.thenReturn(hyperwalletSDKMock);
+			.thenReturn(hyperwalletSDKMock);
 		when(hyperwalletSDKMock.listBankAccounts(SELLER_TOKEN_VALUE)).thenReturn(hyperwalletBankAccountList);
 		when(miraklBankAccountMatcherMock.findExactOrCompatibleMatch(hyperwalletBankAccountList.getData(),
-				originalSellerModel.getBankAccountDetails())).thenReturn(Optional.empty());
+				originalSellerModel.getBankAccountDetails()))
+			.thenReturn(Optional.empty());
 
 		final SellerModel result = testObj.synchronizeToken(originalSellerModel);
 
@@ -213,25 +235,29 @@ class BankAccountTokenSynchronizationServiceImplTest {
 
 	@Test
 	void synchronizeToken_ShouldThrowHMCHyperwalletAPIException_WhenHWRequestThrowAHyperwalletException() {
-		final SellerModel originalSellerModel = SellerModel.builder().token(SELLER_TOKEN_VALUE)
-				.programToken(PROGRAM_TOKEN)
-				.bankAccountDetails(BankAccountModel.builder().bankAccountNumber(BANK_ACCOUNT_NUMBER).build()).build();
+		final SellerModel originalSellerModel = SellerModel.builder()
+			.token(SELLER_TOKEN_VALUE)
+			.programToken(PROGRAM_TOKEN)
+			.bankAccountDetails(BankAccountModel.builder().bankAccountNumber(BANK_ACCOUNT_NUMBER).build())
+			.build();
 
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
-				.thenReturn(hyperwalletSDKMock);
+			.thenReturn(hyperwalletSDKMock);
 		when(hyperwalletSDKMock.listBankAccounts(SELLER_TOKEN_VALUE))
-				.thenThrow(new HyperwalletException("Something went wrong"));
+			.thenThrow(new HyperwalletException("Something went wrong"));
 
 		assertThatThrownBy(() -> testObj.synchronizeToken(originalSellerModel))
-				.isInstanceOf(HMCHyperwalletAPIException.class)
-				.hasMessageContaining("An error has occurred while invoking Hyperwallet API");
+			.isInstanceOf(HMCHyperwalletAPIException.class)
+			.hasMessageContaining("An error has occurred while invoking Hyperwallet API");
 	}
 
 	@Test
 	void synchronizeToken_ShouldThrowHMCMiraklAPIException_WhenMiraklRequestThrowAMiraklApiException() {
-		final SellerModel originalSellerModel = SellerModel.builder().token(SELLER_TOKEN_VALUE)
-				.programToken(PROGRAM_TOKEN)
-				.bankAccountDetails(BankAccountModel.builder().bankAccountNumber(BANK_ACCOUNT_NUMBER).build()).build();
+		final SellerModel originalSellerModel = SellerModel.builder()
+			.token(SELLER_TOKEN_VALUE)
+			.programToken(PROGRAM_TOKEN)
+			.bankAccountDetails(BankAccountModel.builder().bankAccountNumber(BANK_ACCOUNT_NUMBER).build())
+			.build();
 
 		final HyperwalletBankAccount hyperwalletBankAccount = new HyperwalletBankAccount();
 		hyperwalletBankAccount.setToken(BANK_ACCOUNT_TOKEN_VALUE);
@@ -239,17 +265,18 @@ class BankAccountTokenSynchronizationServiceImplTest {
 		hyperwalletBankAccountList.setData(List.of(hyperwalletBankAccount));
 
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
-				.thenReturn(hyperwalletSDKMock);
+			.thenReturn(hyperwalletSDKMock);
 		when(hyperwalletSDKMock.listBankAccounts(SELLER_TOKEN_VALUE)).thenReturn(hyperwalletBankAccountList);
 		when(miraklBankAccountMatcherMock.findExactOrCompatibleMatch(hyperwalletBankAccountList.getData(),
-				originalSellerModel.getBankAccountDetails())).thenReturn(Optional.of(hyperwalletBankAccount));
+				originalSellerModel.getBankAccountDetails()))
+			.thenReturn(Optional.of(hyperwalletBankAccount));
 
 		doThrow(MiraklApiException.class).when(miraklBankAccountExtractServiceMock)
-				.updateBankAccountToken(originalSellerModel, hyperwalletBankAccount);
+			.updateBankAccountToken(originalSellerModel, hyperwalletBankAccount);
 
 		assertThatThrownBy(() -> testObj.synchronizeToken(originalSellerModel))
-				.isInstanceOf(HMCMiraklAPIException.class)
-				.hasMessageContaining("An error has occurred while invoking Mirakl API");
+			.isInstanceOf(HMCMiraklAPIException.class)
+			.hasMessageContaining("An error has occurred while invoking Mirakl API");
 	}
 
 }

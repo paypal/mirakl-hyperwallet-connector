@@ -48,7 +48,7 @@ class LanguageConverterTest {
 	}
 
 	@Test
-	void convert_shouldReturnzh_CNLanguageWhenLocaleIsChinaSimplified() {
+	void convert_shouldReturnZh_CNLanguageWhenLocaleIsChinaSimplified() {
 
 		final String result = testObj.convert(Locale.CHINA);
 
@@ -57,7 +57,7 @@ class LanguageConverterTest {
 
 	@Test
 	void convert_shouldReturnENLanguageWhenLocaleIsNotSupported() {
-		final Locale locale = new Locale("fi", "FI");
+		final Locale locale = Locale.of("fi", "FI");
 
 		final String result = testObj.convert(locale);
 

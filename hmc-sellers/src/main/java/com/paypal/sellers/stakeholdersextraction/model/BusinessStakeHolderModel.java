@@ -22,9 +22,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderConstants.*;
 import static com.paypal.sellers.sellerextractioncommons.model.SellerModelConstants.HYPERWALLET_PROGRAM;
 import static com.paypal.sellers.sellerextractioncommons.model.SellerModelConstants.HYPERWALLET_USER_TOKEN;
+import static com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderConstants.*;
 
 /**
  * Creates an object of type {@link BusinessStakeHolderModel}
@@ -173,7 +173,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				token = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(TOKEN, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(TOKEN, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -185,8 +186,7 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				getMiraklBooleanCustomFieldValue(fields, getCustomFieldCode(BUSINESS, businessStakeHolderNumber))
-						.ifPresent(retrievedBusinessContact -> businessContact = Boolean
-								.valueOf(retrievedBusinessContact));
+					.ifPresent(retrievedBusinessContact -> businessContact = Boolean.valueOf(retrievedBusinessContact));
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -196,7 +196,7 @@ public class BusinessStakeHolderModel {
 
 		public BusinessStakeHolderModelBuilder userToken(final List<MiraklAdditionalFieldValue> fields) {
 			getMiraklStringCustomFieldValue(fields, HYPERWALLET_USER_TOKEN)
-					.ifPresent(retrievedToken -> userToken = retrievedToken);
+				.ifPresent(retrievedToken -> userToken = retrievedToken);
 			return this;
 		}
 
@@ -209,7 +209,7 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				getMiraklBooleanCustomFieldValue(fields, getCustomFieldCode(DIRECTOR, businessStakeHolderNumber))
-						.ifPresent(retrievedDirector -> director = Boolean.valueOf(retrievedDirector));
+					.ifPresent(retrievedDirector -> director = Boolean.valueOf(retrievedDirector));
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -227,7 +227,7 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				getMiraklBooleanCustomFieldValue(fields, getCustomFieldCode(UBO, businessStakeHolderNumber))
-						.ifPresent(retrievedUbo -> ubo = Boolean.valueOf(retrievedUbo));
+					.ifPresent(retrievedUbo -> ubo = Boolean.valueOf(retrievedUbo));
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -239,7 +239,7 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				getMiraklBooleanCustomFieldValue(fields, getCustomFieldCode(SMO, businessStakeHolderNumber))
-						.ifPresent(retrievedSmo -> smo = Boolean.valueOf(retrievedSmo));
+					.ifPresent(retrievedSmo -> smo = Boolean.valueOf(retrievedSmo));
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -251,7 +251,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				firstName = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(FIRST_NAME, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(FIRST_NAME, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -263,7 +264,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				middleName = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(MIDDLE_NAME, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(MIDDLE_NAME, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -275,7 +277,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				lastName = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(LAST_NAME, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(LAST_NAME, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -287,7 +290,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				dateOfBirth = getMiraklDateCustomFieldValue(fieldValues,
-						getCustomFieldCode(DOB, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(DOB, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -299,7 +303,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				countryOfBirth = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(COUNTRY_OF_BIRTH, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(COUNTRY_OF_BIRTH, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -311,7 +316,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				countryOfNationality = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(NATIONALITY, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(NATIONALITY, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -324,8 +330,8 @@ public class BusinessStakeHolderModel {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				getMiraklSingleValueListCustomFieldValue(fieldValues,
 						getCustomFieldCode(GENDER, businessStakeHolderNumber))
-								.ifPresent(retrievedGovernmentIdType -> gender = EnumUtils.getEnum(SellerGender.class,
-										retrievedGovernmentIdType));
+					.ifPresent(retrievedGovernmentIdType -> gender = EnumUtils.getEnum(SellerGender.class,
+							retrievedGovernmentIdType));
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -337,7 +343,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				phoneNumber = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(PHONE_NUMBER, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(PHONE_NUMBER, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -349,7 +356,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				mobileNumber = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(MOBILE_NUMBER, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(MOBILE_NUMBER, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -361,7 +369,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				email = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(EMAIL, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(EMAIL, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -373,7 +382,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				governmentId = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(GOVERNMENT_ID_NUM, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(GOVERNMENT_ID_NUM, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -386,8 +396,8 @@ public class BusinessStakeHolderModel {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				getMiraklSingleValueListCustomFieldValue(fieldValues,
 						getCustomFieldCode(GOVERNMENT_ID_TYPE, businessStakeHolderNumber))
-								.ifPresent(retrievedGovernmentIdType -> governmentIdType = EnumUtils
-										.getEnum(SellerGovernmentIdType.class, retrievedGovernmentIdType));
+					.ifPresent(retrievedGovernmentIdType -> governmentIdType = EnumUtils
+						.getEnum(SellerGovernmentIdType.class, retrievedGovernmentIdType));
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -399,7 +409,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				driversLicenseId = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(DRIVERS_LICENSE_NUM, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(DRIVERS_LICENSE_NUM, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -411,7 +422,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				addressLine1 = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(ADDRESS_LINE_1, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(ADDRESS_LINE_1, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -423,7 +435,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				addressLine2 = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(ADDRESS_LINE_2, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(ADDRESS_LINE_2, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -435,7 +448,7 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				city = getMiraklStringCustomFieldValue(fieldValues, getCustomFieldCode(CITY, businessStakeHolderNumber))
-						.orElse(null);
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -447,7 +460,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				country = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(COUNTRY, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(COUNTRY, businessStakeHolderNumber))
+					.orElse(null);
 				return this;
 			}
 			else {
@@ -460,7 +474,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				stateProvince = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(STATE, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(STATE, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -472,7 +487,8 @@ public class BusinessStakeHolderModel {
 				final Integer businessStakeHolderNumber) {
 			if (validateBusinessStakeHolderNumber(businessStakeHolderNumber)) {
 				postalCode = getMiraklStringCustomFieldValue(fieldValues,
-						getCustomFieldCode(POST_CODE, businessStakeHolderNumber)).orElse(null);
+						getCustomFieldCode(POST_CODE, businessStakeHolderNumber))
+					.orElse(null);
 			}
 			else {
 				log.warn(BUSINESS_STAKE_HOLDER_OUT_OF_INBOUND_MESSAGE, businessStakeHolderNumber);
@@ -482,7 +498,7 @@ public class BusinessStakeHolderModel {
 
 		public BusinessStakeHolderModelBuilder hyperwalletProgram(final List<MiraklAdditionalFieldValue> fieldValues) {
 			getMiraklSingleValueListCustomFieldValue(fieldValues, HYPERWALLET_PROGRAM)
-					.ifPresent(hyperwalletProgramValue -> hyperwalletProgram = hyperwalletProgramValue);
+				.ifPresent(hyperwalletProgramValue -> hyperwalletProgram = hyperwalletProgramValue);
 
 			return this;
 		}
@@ -511,32 +527,36 @@ public class BusinessStakeHolderModel {
 
 		private Optional<String> getMiraklBooleanCustomFieldValue(final List<MiraklAdditionalFieldValue> fields,
 				final String customFieldCode) {
-			return fields.stream().filter(field -> field.getCode().equals(customFieldCode))
-					.filter(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::isInstance)
-					.map(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::cast).findAny()
-					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
+			return fields.stream()
+				.filter(field -> field.getCode().equals(customFieldCode))
+				.filter(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::isInstance)
+				.map(MiraklAdditionalFieldValue.MiraklBooleanAdditionalFieldValue.class::cast)
+				.findAny()
+				.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue);
 		}
 
 		private Optional<Date> getMiraklDateCustomFieldValue(final List<MiraklAdditionalFieldValue> fieldValues,
 				final String customFieldCode) {
-			return fieldValues.stream().filter(field -> field.getCode().equals(customFieldCode))
-					.filter(MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue.class::isInstance)
-					.map(MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue.class::cast).findAny()
-					.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue)
-					.map((dateAsStringISO8601 -> {
-						try {
-							final ZonedDateTime zonedDateTime = Instant.parse(dateAsStringISO8601)
-									.atZone(ZoneId.of(timeZone));
-							final long offsetMillis = TimeUnit.SECONDS
-									.toMillis(ZoneOffset.from(zonedDateTime).getTotalSeconds());
-							final long isoMillis = zonedDateTime.toInstant().toEpochMilli();
-							return new Date(isoMillis + offsetMillis);
-						}
-						catch (final DateTimeParseException dtpex) {
-							log.error("Date value with [{}] is not in the correct ISO8601 format", dateAsStringISO8601);
-							return null;
-						}
-					}));
+			return fieldValues.stream()
+				.filter(field -> field.getCode().equals(customFieldCode))
+				.filter(MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue.class::isInstance)
+				.map(MiraklAdditionalFieldValue.MiraklDateAdditionalFieldValue.class::cast)
+				.findAny()
+				.map(MiraklAdditionalFieldValue.MiraklAbstractAdditionalFieldWithSingleValue::getValue)
+				.map((dateAsStringISO8601 -> {
+					try {
+						final ZonedDateTime zonedDateTime = Instant.parse(dateAsStringISO8601)
+							.atZone(ZoneId.of(timeZone));
+						final long offsetMillis = TimeUnit.SECONDS
+							.toMillis(ZoneOffset.from(zonedDateTime).getTotalSeconds());
+						final long isoMillis = zonedDateTime.toInstant().toEpochMilli();
+						return new Date(isoMillis + offsetMillis);
+					}
+					catch (final DateTimeParseException dtpex) {
+						log.error("Date value with [{}] is not in the correct ISO8601 format", dateAsStringISO8601);
+						return null;
+					}
+				}));
 		}
 
 		@NotNull

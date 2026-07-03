@@ -1,7 +1,5 @@
 package com.paypal.kyc.documentextractioncommons.model;
 
-import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
-import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -14,9 +12,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 class KYCBusinessStakeholderProofOfIdentityEnumTest {
 
-	private final static int BUSINESS_STAKEHOLDER_NUMBER = 1;
+	private static final int BUSINESS_STAKEHOLDER_NUMBER = 1;
 
-	private final static String PREFIX_FIELD_NAME = KYCConstants.HYPERWALLET_PREFIX + BUSINESS_STAKEHOLDER_PREFIX
+	private static final String PREFIX_FIELD_NAME = KYCConstants.HYPERWALLET_PREFIX + BUSINESS_STAKEHOLDER_PREFIX
 			+ BUSINESS_STAKEHOLDER_NUMBER + "-" + KYCConstants.PROOF_IDENTITY_PREFIX;
 
 	@Test

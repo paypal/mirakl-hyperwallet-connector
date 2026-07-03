@@ -9,7 +9,7 @@ public final class MiraklClientSettingsHolder {
 	public static final MiraklClientSettings DEFAULT_SETTINGS = new MiraklClientSettings();
 
 	private static final ThreadLocal<MiraklClientSettings> miraklClientSettingsThreadLocal = ThreadLocal
-			.withInitial(() -> DEFAULT_SETTINGS);
+		.withInitial(() -> DEFAULT_SETTINGS);
 
 	public static void setMiraklClientSettings(final MiraklClientSettings settings) {
 		miraklClientSettingsThreadLocal.set(settings);

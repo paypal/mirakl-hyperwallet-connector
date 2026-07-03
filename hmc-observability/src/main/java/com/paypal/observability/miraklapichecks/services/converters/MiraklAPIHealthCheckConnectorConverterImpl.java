@@ -1,11 +1,10 @@
 package com.paypal.observability.miraklapichecks.services.converters;
 
-import org.springframework.stereotype.Component;
-
 import com.mirakl.client.mmp.domain.version.MiraklVersion;
 import com.paypal.infrastructure.mirakl.configuration.MiraklApiClientConfig;
 import com.paypal.observability.miraklapichecks.model.MiraklAPICheck;
 import com.paypal.observability.miraklapichecks.model.MiraklAPICheckStatus;
+import org.springframework.stereotype.Component;
 
 @Component
 public class MiraklAPIHealthCheckConnectorConverterImpl implements MiraklAPIHealthCheckConnectorConverter {

@@ -1,14 +1,13 @@
 package com.paypal.kyc.incomingnotifications.services.flags;
 
 import com.mirakl.client.core.exception.MiraklException;
-
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
-import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
+import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
 import com.paypal.kyc.incomingnotifications.model.KYCUserDocumentFlagsNotificationBodyModel;
 import lombok.extern.slf4j.Slf4j;

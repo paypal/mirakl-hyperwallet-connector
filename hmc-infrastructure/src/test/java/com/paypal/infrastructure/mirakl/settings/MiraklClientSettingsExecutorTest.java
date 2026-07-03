@@ -17,7 +17,7 @@ class MiraklClientSettingsExecutorTest {
 		miraklClientSettings = new MiraklClientSettings(true);
 		executorTestRunnable = () -> {
 			final MiraklClientSettings miraklClientSettingsIntoRunnable = MiraklClientSettingsHolder
-					.getMiraklClientSettings();
+				.getMiraklClientSettings();
 			assertThat(miraklClientSettingsIntoRunnable).isEqualTo(miraklClientSettings);
 		};
 
@@ -26,7 +26,7 @@ class MiraklClientSettingsExecutorTest {
 
 		// then
 		assertThat(MiraklClientSettingsHolder.getMiraklClientSettings())
-				.isEqualTo(MiraklClientSettingsHolder.DEFAULT_SETTINGS);
+			.isEqualTo(MiraklClientSettingsHolder.DEFAULT_SETTINGS);
 	}
 
 	@Test
@@ -40,11 +40,11 @@ class MiraklClientSettingsExecutorTest {
 		// when
 		assertThatThrownBy(
 				() -> MiraklClientSettingsExecutor.runWithSettings(miraklClientSettings, executorTestRunnable))
-						.isInstanceOf(IllegalArgumentException.class);
+			.isInstanceOf(IllegalArgumentException.class);
 
 		// then
 		assertThat(MiraklClientSettingsHolder.getMiraklClientSettings())
-				.isEqualTo(MiraklClientSettingsHolder.DEFAULT_SETTINGS);
+			.isEqualTo(MiraklClientSettingsHolder.DEFAULT_SETTINGS);
 	}
 
 }

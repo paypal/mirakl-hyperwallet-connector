@@ -8,8 +8,8 @@ import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFiel
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
 import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
-import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
+import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -90,14 +90,14 @@ class BusinessStakeholderTokenUpdateServiceImplTest {
 		final MiraklApiException miraklApiException = new MiraklApiException(
 				new MiraklErrorResponseBean(1, "Something went wrong", "correlation-id"));
 		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
-				.updateShops(any(MiraklUpdateShopsRequest.class));
+			.updateShops(any(MiraklUpdateShopsRequest.class));
 
 		testObj.updateBusinessStakeholderToken(sellerModelMock.getClientUserId(),
 				sellerModelMock.getBusinessStakeHolderDetails());
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail("Issue detected getting shop information in Mirakl",
 				(ERROR_MESSAGE_PREFIX + "Something went wrong getting information of shop [12345]%n%s")
-						.formatted(MiraklLoggingErrorsUtil.stringify(miraklApiException)));
+					.formatted(MiraklLoggingErrorsUtil.stringify(miraklApiException)));
 	}
 
 	@Test

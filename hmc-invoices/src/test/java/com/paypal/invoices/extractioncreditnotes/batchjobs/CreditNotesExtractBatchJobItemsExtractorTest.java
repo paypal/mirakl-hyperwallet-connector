@@ -37,12 +37,12 @@ class CreditNotesExtractBatchJobItemsExtractorTest {
 	void getItems_ShouldReturnACollectionOfCreditNoteExtractJobItemForTheGivenDelta() {
 
 		when(miraklAccountingDocumentCreditNotesExtractServiceMock.extractAccountingDocuments(DELTA, false))
-				.thenReturn(List.of(creditNoteModelMock1, creditNoteModelMock2));
+			.thenReturn(List.of(creditNoteModelMock1, creditNoteModelMock2));
 
 		final Collection<CreditNoteExtractJobItem> result = testObj.getItems(batchJobContextMock, DELTA, false);
 
 		assertThat(result.stream().map(CreditNoteExtractJobItem::getItem))
-				.containsExactlyInAnyOrder(creditNoteModelMock1, creditNoteModelMock2);
+			.containsExactlyInAnyOrder(creditNoteModelMock1, creditNoteModelMock2);
 	}
 
 }

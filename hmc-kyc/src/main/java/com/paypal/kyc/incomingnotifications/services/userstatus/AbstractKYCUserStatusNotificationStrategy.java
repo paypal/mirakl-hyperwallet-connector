@@ -6,7 +6,6 @@ import com.mirakl.client.domain.common.error.ErrorBean;
 import com.mirakl.client.mmp.domain.shop.MiraklShopKyc;
 import com.mirakl.client.mmp.domain.shop.MiraklShopKycStatus;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShopWithErrors;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShopReturn;
@@ -14,13 +13,13 @@ import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue;
+import com.paypal.infrastructure.mail.services.MailNotificationUtil;
+import com.paypal.infrastructure.mirakl.client.MiraklClient;
 import com.paypal.infrastructure.mirakl.settings.MiraklClientSettingsHolder;
 import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.support.exceptions.HMCException;
-import com.paypal.infrastructure.mail.services.MailNotificationUtil;
-import com.paypal.infrastructure.mirakl.client.MiraklClient;
-import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
+import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentInfoModel;
 import com.paypal.kyc.incomingnotifications.model.KYCDocumentNotificationModel;
 import com.paypal.kyc.incomingnotifications.model.KYCDocumentStatusEnum;
@@ -127,27 +126,30 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 		final String clientUserId = kycUserNotification.getClientUserId();
 
 		final KYCDocumentInfoModel kycDocumentInfoModel = miraklSellerDocumentsExtractService
-				.extractKYCSellerDocuments(clientUserId);
+			.extractKYCSellerDocuments(clientUserId);
 
-		final Map<String, LocalDateTime> documentsToBeDeleted = kycUserNotification.getDocuments().stream()
-				.filter(kycDocumentNotificationModel -> KYCDocumentStatusEnum.INVALID
-						.equals(kycDocumentNotificationModel.getDocumentStatus()))
-				.map(kycDocumentNotificationModel -> Pair.of(
-						kycDocumentNotificationModelListConverter.convert(kycDocumentNotificationModel),
-						kycDocumentNotificationModel.getCreatedOn()))
-				.map(this::getMapDocumentUploadTime).flatMap(map -> map.entrySet().stream())
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		final Map<String, LocalDateTime> documentsToBeDeleted = kycUserNotification.getDocuments()
+			.stream()
+			.filter(kycDocumentNotificationModel -> KYCDocumentStatusEnum.INVALID
+				.equals(kycDocumentNotificationModel.getDocumentStatus()))
+			.map(kycDocumentNotificationModel -> Pair.of(
+					kycDocumentNotificationModelListConverter.convert(kycDocumentNotificationModel),
+					kycDocumentNotificationModel.getCreatedOn()))
+			.map(this::getMapDocumentUploadTime)
+			.flatMap(map -> map.entrySet().stream())
+			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 		if (MapUtils.isNotEmpty(documentsToBeDeleted)) {
 			final List<MiraklShopDocument> miraklDocumentsToBeDeleted = kycDocumentInfoModel.getMiraklShopDocuments()
-					.stream()
-					.filter(miraklShopDocument -> documentsToBeDeleted.containsKey(miraklShopDocument.getTypeCode()))
-					.filter(Predicate
-							.not(miraklShopDocument -> isANewMiraklDocument(documentsToBeDeleted, miraklShopDocument)))
-					.collect(Collectors.toList());
+				.stream()
+				.filter(miraklShopDocument -> documentsToBeDeleted.containsKey(miraklShopDocument.getTypeCode()))
+				.filter(Predicate
+					.not(miraklShopDocument -> isANewMiraklDocument(documentsToBeDeleted, miraklShopDocument)))
+				.toList();
 
 			final String documentTypeCodesToBeDeleted = miraklDocumentsToBeDeleted.stream()
-					.map(MiraklShopDocument::getTypeCode).collect(Collectors.joining(COMMA));
+				.map(MiraklShopDocument::getTypeCode)
+				.collect(Collectors.joining(COMMA));
 
 			if (!StringUtils.isEmpty(documentTypeCodesToBeDeleted)) {
 				log.info("Deleting documents [{}] for shop [{}]", documentTypeCodesToBeDeleted, clientUserId);
@@ -182,17 +184,17 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 		if (isKycAutomated()) {
 			final List<MiraklRequestAdditionalFieldValue> additionalFieldValues = new ArrayList<>();
 			if (HyperwalletUser.VerificationStatus.REQUIRED
-					.equals(kycUserStatusNotificationBodyModel.getVerificationStatus())) {
+				.equals(kycUserStatusNotificationBodyModel.getVerificationStatus())) {
 				final MiraklSimpleRequestAdditionalFieldValue kycVerificationStatusCustomField = new MiraklSimpleRequestAdditionalFieldValue();
 				kycVerificationStatusCustomField.setCode(HYPERWALLET_KYC_REQUIRED_PROOF_IDENTITY_BUSINESS_FIELD);
 				kycVerificationStatusCustomField.setValue(Boolean.TRUE.toString());
 				additionalFieldValues.add(kycVerificationStatusCustomField);
 			}
 			if (HyperwalletUser.LetterOfAuthorizationStatus.REQUIRED
-					.equals(kycUserStatusNotificationBodyModel.getLetterOfAuthorizationStatus())) {
+				.equals(kycUserStatusNotificationBodyModel.getLetterOfAuthorizationStatus())) {
 				final MiraklSimpleRequestAdditionalFieldValue kycLetterOfAuthorizationStatusCustomField = new MiraklSimpleRequestAdditionalFieldValue();
 				kycLetterOfAuthorizationStatusCustomField
-						.setCode(HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD);
+					.setCode(HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD);
 				kycLetterOfAuthorizationStatusCustomField.setValue(Boolean.TRUE.toString());
 				additionalFieldValues.add(kycLetterOfAuthorizationStatusCustomField);
 			}
@@ -204,8 +206,10 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 	}
 
 	private Map<String, LocalDateTime> getMapDocumentUploadTime(final Pair<List<String>, LocalDateTime> documents) {
-		return documents.getLeft().stream().map(documentType -> Pair.of(documentType, documents.getRight()))
-				.collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
+		return documents.getLeft()
+			.stream()
+			.map(documentType -> Pair.of(documentType, documents.getRight()))
+			.collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
 	}
 
 	private LocalDateTime getLocalDateTimeFromDate(final Date date) {
@@ -213,8 +217,9 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 	}
 
 	private void logShopUpdates(final MiraklUpdatedShopReturn updatedShopReturn) {
-		Optional.ofNullable(updatedShopReturn.getShopUpdated()).ifPresent(
-				shop -> log.info("KYC status updated to [{}] for shop [{}]", shop.getKyc().getStatus(), shop.getId()));
+		Optional.ofNullable(updatedShopReturn.getShopUpdated())
+			.ifPresent(shop -> log.info("KYC status updated to [{}] for shop [{}]", shop.getKyc().getStatus(),
+					shop.getId()));
 
 		Optional.ofNullable(updatedShopReturn.getShopError()).ifPresent(this::logErrorMessage);
 	}

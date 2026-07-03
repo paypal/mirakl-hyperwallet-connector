@@ -35,8 +35,10 @@ public class DownloadReportController {
 		try {
 			final ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
 
-			return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
-					.contentType(MediaType.parseMediaType("application/csv")).body(resource);
+			return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+				.contentType(MediaType.parseMediaType("application/csv"))
+				.body(resource);
 		}
 		catch (final NoSuchFileException ex) {
 			log.error("Financial report file: [{}] not found in path [{}]", fileName, path.toAbsolutePath(), ex);

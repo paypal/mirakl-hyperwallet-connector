@@ -27,7 +27,7 @@ public class PaymentNotificationServiceImpl implements PaymentNotificationServic
 	@Override
 	public void processPaymentNotification(final HyperwalletWebhookNotification incomingNotificationDTO) {
 		final PaymentNotificationBodyModel paymentNotificationBodyModel = hyperWalletObjectToPaymentNotificationBodyModelConverter
-				.convert(incomingNotificationDTO.getObject());
+			.convert(incomingNotificationDTO.getObject());
 		paymentNotificationExecutor.execute(paymentNotificationBodyModel);
 	}
 

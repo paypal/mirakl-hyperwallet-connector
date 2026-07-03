@@ -10,7 +10,7 @@ import com.paypal.testsupport.AbstractMockEnabledIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -41,7 +41,7 @@ class HyperWalletPaymentExtractServiceImplTest extends AbstractMockEnabledIntegr
 	@Autowired
 	private HyperWalletPaymentExtractServiceImpl testObj;
 
-	@SpyBean
+	@MockitoSpyBean
 	private MailNotificationUtil mailNotificationUtil;
 
 	@Test
@@ -122,7 +122,7 @@ class HyperWalletPaymentExtractServiceImplTest extends AbstractMockEnabledIntegr
 	@Test
 	void payInvoiceOperator_shouldCreateAPayment_WhenNotExistAnotherCorrectPayment() {
 		final HyperwalletPayment expected = defaultHyperwalletPayment().clientPaymentId("invoiceNumber-operatorFee")
-				.destinationToken(OPERATOR_DESTINATION_TOKEN);
+			.destinationToken(OPERATOR_DESTINATION_TOKEN);
 		final InvoiceModel invoice = defaultInvoiceOperator();
 
 		mockToCreatePayment(expected);
@@ -132,28 +132,42 @@ class HyperWalletPaymentExtractServiceImplTest extends AbstractMockEnabledIntegr
 	}
 
 	private HyperwalletPayment defaultHyperwalletPayment() {
-		return new HyperwalletPayment().programToken(DEFAULT_PAYMENT_TOKEN).clientPaymentId(DEFAULT_INVOICE_NUMBER)
-				.destinationToken(CUSTOMER_DESTINATION_TOKEN)
-				.amount(BigDecimal.valueOf(DEFAULT_TRANSFER_AMOUNT).toPlainString()).currency(GB_ISOCODE)
-				.purpose("OTHER");
+		return new HyperwalletPayment().programToken(DEFAULT_PAYMENT_TOKEN)
+			.clientPaymentId(DEFAULT_INVOICE_NUMBER)
+			.destinationToken(CUSTOMER_DESTINATION_TOKEN)
+			.amount(BigDecimal.valueOf(DEFAULT_TRANSFER_AMOUNT).toPlainString())
+			.currency(GB_ISOCODE)
+			.purpose("OTHER");
 	}
 
 	private InvoiceModel defaultInvoice() {
-		return InvoiceModel.builder().hyperwalletProgram(DEFAULT_HYPERWALLET_PROGRAM)
-				.destinationToken(CUSTOMER_DESTINATION_TOKEN).invoiceNumber(DEFAULT_INVOICE_NUMBER)
-				.transferAmount(DEFAULT_TRANSFER_AMOUNT).currencyIsoCode(GB_ISOCODE).build();
+		return InvoiceModel.builder()
+			.hyperwalletProgram(DEFAULT_HYPERWALLET_PROGRAM)
+			.destinationToken(CUSTOMER_DESTINATION_TOKEN)
+			.invoiceNumber(DEFAULT_INVOICE_NUMBER)
+			.transferAmount(DEFAULT_TRANSFER_AMOUNT)
+			.currencyIsoCode(GB_ISOCODE)
+			.build();
 	}
 
 	private InvoiceModel defaultInvoiceOperator() {
-		return InvoiceModel.builder().hyperwalletProgram(DEFAULT_HYPERWALLET_PROGRAM)
-				.destinationToken(OPERATOR_DESTINATION_TOKEN).invoiceNumber(DEFAULT_INVOICE_NUMBER)
-				.transferAmountToOperator(DEFAULT_TRANSFER_AMOUNT).currencyIsoCode(GB_ISOCODE).build();
+		return InvoiceModel.builder()
+			.hyperwalletProgram(DEFAULT_HYPERWALLET_PROGRAM)
+			.destinationToken(OPERATOR_DESTINATION_TOKEN)
+			.invoiceNumber(DEFAULT_INVOICE_NUMBER)
+			.transferAmountToOperator(DEFAULT_TRANSFER_AMOUNT)
+			.currencyIsoCode(GB_ISOCODE)
+			.build();
 	}
 
 	private CreditNoteModel defaultCreditModel() {
-		return CreditNoteModel.builder().hyperwalletProgram(DEFAULT_HYPERWALLET_PROGRAM)
-				.destinationToken(CUSTOMER_DESTINATION_TOKEN).invoiceNumber(DEFAULT_INVOICE_NUMBER)
-				.creditAmount(DEFAULT_TRANSFER_AMOUNT).currencyIsoCode(GB_ISOCODE).build();
+		return CreditNoteModel.builder()
+			.hyperwalletProgram(DEFAULT_HYPERWALLET_PROGRAM)
+			.destinationToken(CUSTOMER_DESTINATION_TOKEN)
+			.invoiceNumber(DEFAULT_INVOICE_NUMBER)
+			.creditAmount(DEFAULT_TRANSFER_AMOUNT)
+			.currencyIsoCode(GB_ISOCODE)
+			.build();
 	}
 
 	private void mockToCreatePayment(final HyperwalletPayment payment) {

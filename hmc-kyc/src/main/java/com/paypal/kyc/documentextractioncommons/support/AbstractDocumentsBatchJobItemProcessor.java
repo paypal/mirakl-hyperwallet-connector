@@ -3,11 +3,11 @@ package com.paypal.kyc.documentextractioncommons.support;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.jobsystem.batchjobsupport.model.BatchJobItemProcessor;
-import com.paypal.kyc.stakeholdersdocumentextraction.batchjobs.BusinessStakeholdersDocumentsExtractBatchJobItemProcessor;
-import com.paypal.kyc.sellersdocumentextraction.batchjobs.SellersDocumentsExtractBatchJobItemProcessor;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
 import com.paypal.kyc.documentextractioncommons.services.KYCReadyForReviewService;
+import com.paypal.kyc.sellersdocumentextraction.batchjobs.SellersDocumentsExtractBatchJobItemProcessor;
+import com.paypal.kyc.stakeholdersdocumentextraction.batchjobs.BusinessStakeholdersDocumentsExtractBatchJobItemProcessor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;

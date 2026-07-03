@@ -22,8 +22,9 @@ import static org.mockito.Mockito.*;
 class MailNotificationUtilImplTest {
 
 	@RegisterExtension
-	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.ERROR)
-			.recordForType(MailNotificationUtilImpl.class);
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create()
+		.recordForLevel(LogTracker.LogLevel.ERROR)
+		.recordForType(MailNotificationUtilImpl.class);
 
 	private static final String SUBJECT = "Subject";
 
@@ -65,7 +66,7 @@ class MailNotificationUtilImplTest {
 	void sendPlainTextEmailWithMessagePrefix_shouldNotRethrowAnExceptionWhenSendingEmailFails() {
 		logTrackerStub.recordForLevel(LogTracker.LogLevel.ERROR);
 		doThrow(new RuntimeException("Something went wrong")).when(javaMailSenderMock)
-				.send(any(SimpleMailMessage.class));
+			.send(any(SimpleMailMessage.class));
 
 		testObj.sendPlainTextEmail(SUBJECT, BODY);
 

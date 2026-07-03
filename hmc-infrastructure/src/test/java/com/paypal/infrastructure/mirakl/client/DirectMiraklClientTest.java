@@ -4,19 +4,19 @@ import com.mirakl.client.core.security.MiraklBearerToken;
 import com.mirakl.client.core.security.MiraklCredential;
 import com.mirakl.client.mmp.domain.additionalfield.MiraklFrontOperatorAdditionalField;
 import com.mirakl.client.mmp.domain.common.FileWrapper;
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoices;
-import com.mirakl.client.mmp.domain.payment.MiraklTransactionLogs;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklSellerBillingCycles;
 import com.mirakl.client.mmp.domain.shop.MiraklShops;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
 import com.mirakl.client.mmp.domain.version.MiraklVersion;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.documents.MiraklDocumentsConfigurations;
+import com.mirakl.client.mmp.operator.domain.payment.MiraklTransactionsLines;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.additionalfield.MiraklGetAdditionalFieldRequest;
 import com.mirakl.client.mmp.operator.request.documents.MiraklGetDocumentsConfigurationRequest;
-import com.mirakl.client.mmp.operator.request.payment.invoice.MiraklGetInvoicesRequest;
+import com.mirakl.client.mmp.operator.request.payment.sellerbillingcycle.MiraklGetSellerBillingCyclesRequest;
+import com.mirakl.client.mmp.operator.request.payment.transaction.MiraklTransactionLineRequest;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
-import com.mirakl.client.mmp.request.payment.MiraklGetTransactionLogsRequest;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.mirakl.client.mmp.request.shop.document.MiraklDeleteShopDocumentRequest;
 import com.mirakl.client.mmp.request.shop.document.MiraklDownloadShopsDocumentsRequest;
@@ -57,7 +57,7 @@ class DirectMiraklClientTest {
 		config.setOperatorApiKey("OPERATOR-KEY");
 		config.setEnvironment("environment");
 		testObj = Mockito
-				.spy(new DirectMiraklClient(config, List.of(ignoredShopsFilterMock, terminatedShopsFilterMock)));
+			.spy(new DirectMiraklClient(config, List.of(ignoredShopsFilterMock, terminatedShopsFilterMock)));
 		ReflectionTestUtils.setField(testObj, "miraklMarketplacePlatformOperatorApiClient",
 				miraklMarketplacePlatformOperatorApiClientMock);
 	}
@@ -99,7 +99,7 @@ class DirectMiraklClientTest {
 		final MiraklUpdateShopsRequest miraklUpdateShopsRequest = mock(MiraklUpdateShopsRequest.class);
 		final MiraklUpdatedShops miraklUpdatedShops = mock(MiraklUpdatedShops.class);
 		when(miraklMarketplacePlatformOperatorApiClientMock.updateShops(miraklUpdateShopsRequest))
-				.thenReturn(miraklUpdatedShops);
+			.thenReturn(miraklUpdatedShops);
 
 		// when
 		final MiraklUpdatedShops result = testObj.updateShops(miraklUpdateShopsRequest);
@@ -115,13 +115,13 @@ class DirectMiraklClientTest {
 		final MiraklGetAdditionalFieldRequest miraklGetAdditionalFieldRequest = mock(
 				MiraklGetAdditionalFieldRequest.class);
 		final List<MiraklFrontOperatorAdditionalField> additionalFields = List
-				.of(mock(MiraklFrontOperatorAdditionalField.class));
+			.of(mock(MiraklFrontOperatorAdditionalField.class));
 		when(miraklMarketplacePlatformOperatorApiClientMock.getAdditionalFields(miraklGetAdditionalFieldRequest))
-				.thenReturn(additionalFields);
+			.thenReturn(additionalFields);
 
 		// when
 		final List<MiraklFrontOperatorAdditionalField> result = testObj
-				.getAdditionalFields(miraklGetAdditionalFieldRequest);
+			.getAdditionalFields(miraklGetAdditionalFieldRequest);
 
 		// then
 		assertThat(result).isEqualTo(additionalFields);
@@ -129,37 +129,35 @@ class DirectMiraklClientTest {
 	}
 
 	@Test
-	void getInvoices_shouldDelegateOnMiraklSdkClient() {
+	void getSellerBillingCycles_shouldDelegateOnMiraklSdkClient() {
 		// given
-		final MiraklGetInvoicesRequest miraklGetInvoicesRequest = mock(MiraklGetInvoicesRequest.class);
-		final MiraklInvoices miraklInvoices = mock(MiraklInvoices.class);
-		when(miraklMarketplacePlatformOperatorApiClientMock.getInvoices(miraklGetInvoicesRequest))
-				.thenReturn(miraklInvoices);
+		final MiraklGetSellerBillingCyclesRequest request = mock(MiraklGetSellerBillingCyclesRequest.class);
+		final MiraklSellerBillingCycles response = mock(MiraklSellerBillingCycles.class);
+		when(miraklMarketplacePlatformOperatorApiClientMock.getSellerBillingCycles(request)).thenReturn(response);
 
 		// when
-		final MiraklInvoices result = testObj.getInvoices(miraklGetInvoicesRequest);
+		final MiraklSellerBillingCycles result = testObj.getSellerBillingCycles(request);
 
 		// then
-		assertThat(result).isEqualTo(miraklInvoices);
-		verify(miraklMarketplacePlatformOperatorApiClientMock).getInvoices(miraklGetInvoicesRequest);
+		assertThat(result).isEqualTo(response);
+		verify(miraklMarketplacePlatformOperatorApiClientMock).getSellerBillingCycles(request);
 	}
 
 	@SuppressWarnings("java:S1874")
 	@Test
-	void getTransactionLogs_shouldDelegateOnMiraklSdkClient() {
+	void getTransactionLines_shouldDelegateOnMiraklSdkClient() {
 		// given
-		final MiraklGetTransactionLogsRequest miraklGetTransactionLogsRequest = mock(
-				MiraklGetTransactionLogsRequest.class);
-		final MiraklTransactionLogs miraklTransactionLogs = mock(MiraklTransactionLogs.class);
-		when(miraklMarketplacePlatformOperatorApiClientMock.getTransactionLogs(miraklGetTransactionLogsRequest))
-				.thenReturn(miraklTransactionLogs);
+		final MiraklTransactionLineRequest miraklGetTransactionLinesRequest = mock(MiraklTransactionLineRequest.class);
+		final MiraklTransactionsLines miraklTransactionLines = mock(MiraklTransactionsLines.class);
+		when(miraklMarketplacePlatformOperatorApiClientMock.getTransactionLines(miraklGetTransactionLinesRequest))
+			.thenReturn(miraklTransactionLines);
 
 		// when
-		final MiraklTransactionLogs result = testObj.getTransactionLogs(miraklGetTransactionLogsRequest);
+		final MiraklTransactionsLines result = testObj.getTransactionLines(miraklGetTransactionLinesRequest);
 
 		// then
-		assertThat(result).isEqualTo(miraklTransactionLogs);
-		verify(miraklMarketplacePlatformOperatorApiClientMock).getTransactionLogs(miraklGetTransactionLogsRequest);
+		assertThat(result).isEqualTo(miraklTransactionLines);
+		verify(miraklMarketplacePlatformOperatorApiClientMock).getTransactionLines(miraklGetTransactionLinesRequest);
 	}
 
 	@Test
@@ -169,17 +167,17 @@ class DirectMiraklClientTest {
 				MiraklGetDocumentsConfigurationRequest.class);
 		final MiraklDocumentsConfigurations miraklDocumentsConfiguration = mock(MiraklDocumentsConfigurations.class);
 		when(miraklMarketplacePlatformOperatorApiClientMock
-				.getDocumentsConfiguration(miraklGetDocumentsConfigurationRequest))
-						.thenReturn(miraklDocumentsConfiguration);
+			.getDocumentsConfiguration(miraklGetDocumentsConfigurationRequest))
+			.thenReturn(miraklDocumentsConfiguration);
 
 		// when
 		final MiraklDocumentsConfigurations result = testObj
-				.getDocumentsConfiguration(miraklGetDocumentsConfigurationRequest);
+			.getDocumentsConfiguration(miraklGetDocumentsConfigurationRequest);
 
 		// then
 		assertThat(result).isEqualTo(miraklDocumentsConfiguration);
 		verify(miraklMarketplacePlatformOperatorApiClientMock)
-				.getDocumentsConfiguration(miraklGetDocumentsConfigurationRequest);
+			.getDocumentsConfiguration(miraklGetDocumentsConfigurationRequest);
 	}
 
 	@Test
@@ -188,7 +186,7 @@ class DirectMiraklClientTest {
 		final MiraklGetShopDocumentsRequest miraklGetShopDocumentsRequest = mock(MiraklGetShopDocumentsRequest.class);
 		final List<MiraklShopDocument> miraklShopDocuments = List.of(mock(MiraklShopDocument.class));
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShopDocuments(miraklGetShopDocumentsRequest))
-				.thenReturn(miraklShopDocuments);
+			.thenReturn(miraklShopDocuments);
 
 		// when
 		final List<MiraklShopDocument> result = testObj.getShopDocuments(miraklGetShopDocumentsRequest);
@@ -205,7 +203,7 @@ class DirectMiraklClientTest {
 				MiraklDownloadShopsDocumentsRequest.class);
 		final FileWrapper fileWrapper = mock(FileWrapper.class);
 		when(miraklMarketplacePlatformOperatorApiClientMock.downloadShopsDocuments(miraklDownloadShopsDocumentsRequest))
-				.thenReturn(fileWrapper);
+			.thenReturn(fileWrapper);
 
 		// when
 		final FileWrapper result = testObj.downloadShopsDocuments(miraklDownloadShopsDocumentsRequest);
@@ -213,7 +211,7 @@ class DirectMiraklClientTest {
 		// then
 		assertThat(result).isEqualTo(fileWrapper);
 		verify(miraklMarketplacePlatformOperatorApiClientMock)
-				.downloadShopsDocuments(miraklDownloadShopsDocumentsRequest);
+			.downloadShopsDocuments(miraklDownloadShopsDocumentsRequest);
 	}
 
 	@Test
@@ -243,7 +241,7 @@ class DirectMiraklClientTest {
 
 		// then
 		final MiraklMarketplacePlatformOperatorApiClient sdkClient = (MiraklMarketplacePlatformOperatorApiClient) ReflectionTestUtils
-				.getField(client, "miraklMarketplacePlatformOperatorApiClient");
+			.getField(client, "miraklMarketplacePlatformOperatorApiClient");
 		assertThat(sdkClient).isNotNull();
 		final Object credential = ReflectionTestUtils.getField(sdkClient, "defaultCredential");
 		assertThat(credential).isInstanceOf(MiraklBearerToken.class);
@@ -263,7 +261,7 @@ class DirectMiraklClientTest {
 
 		// then
 		final MiraklMarketplacePlatformOperatorApiClient sdkClient = (MiraklMarketplacePlatformOperatorApiClient) ReflectionTestUtils
-				.getField(client, "miraklMarketplacePlatformOperatorApiClient");
+			.getField(client, "miraklMarketplacePlatformOperatorApiClient");
 		assertThat(sdkClient).isNotNull();
 		final Object credential = ReflectionTestUtils.getField(sdkClient, "defaultCredential");
 		assertThat(credential).isInstanceOf(MiraklCredential.class);

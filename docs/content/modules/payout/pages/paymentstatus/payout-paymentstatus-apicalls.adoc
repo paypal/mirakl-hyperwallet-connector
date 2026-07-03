@@ -5,12 +5,12 @@ The connector does the following API calls during the sellers extraction jobs ex
 |===
 | Call | Target System | Endpoint | Parameters
 
-| Confirms the payment of an invoice setting its status to `PAID`.
+| Confirms the payment of a seller billing cycle setting its status to `PAID`.
 | Mirakl
-| https://help.mirakl.net/help/api-doc/operator/mmp.html#IV07[PUT IV07 - Confirm the payment of accounting documents]
-a| * `invoice_id`: invoice identifier
+| https://developer.mirakl.com/content/product/mms/rest/front/openapi3/invoicing-and-accounting/sbc07[PUT SBC07 - Confirm the payment of seller billing cycle]
+a| * `id`: seller billing cycle identifier
 * `currency_iso_code`: ISO code for the currency used in the payment.
-* `amount`: Amount of the invoice.
+* `amount_transferred_to_seller`: Amount of the invoice.
 * `transaction_date`: Invoice transaction date.
-* `confirm_all_linked_manual_documents`: Confirm the payment of each manual accounting document present in the billing cycle.
+* `state`: Payment state of the invoice.
 |===

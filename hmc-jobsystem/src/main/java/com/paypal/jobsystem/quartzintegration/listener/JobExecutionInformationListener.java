@@ -64,7 +64,7 @@ public class JobExecutionInformationListener extends JobListenerSupport {
 		jobExecutionInformationEntity.setStatus(JobStatus.RUNNING);
 
 		final JobExecutionInformationEntity savedInformation = jobExecutionInformationRepository
-				.save(jobExecutionInformationEntity);
+			.save(jobExecutionInformationEntity);
 
 		final JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
 		jobDataMap.put(RUNNING_JOB_ENTITY, savedInformation);
@@ -90,7 +90,8 @@ public class JobExecutionInformationListener extends JobListenerSupport {
 
 	protected void saveExecutedJobExecutionInformation(final JobExecutionContext context) {
 		final JobExecutionInformationEntity savedInformation = (JobExecutionInformationEntity) context.getJobDetail()
-				.getJobDataMap().get(RUNNING_JOB_ENTITY);
+			.getJobDataMap()
+			.get(RUNNING_JOB_ENTITY);
 		savedInformation.setEndTime(DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault()));
 		savedInformation.setStatus(JobStatus.COMPLETED);
 		jobExecutionInformationRepository.save(savedInformation);

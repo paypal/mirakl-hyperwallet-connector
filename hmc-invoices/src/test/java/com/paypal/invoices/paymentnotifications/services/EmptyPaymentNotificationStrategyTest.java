@@ -14,8 +14,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 class EmptyPaymentNotificationStrategyTest {
 
-	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.WARN)
-			.recordForType(EmptyPaymentNotificationStrategy.class);
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create()
+		.recordForLevel(LogTracker.LogLevel.WARN)
+		.recordForType(EmptyPaymentNotificationStrategy.class);
 
 	@InjectMocks
 	private EmptyPaymentNotificationStrategy testObj;

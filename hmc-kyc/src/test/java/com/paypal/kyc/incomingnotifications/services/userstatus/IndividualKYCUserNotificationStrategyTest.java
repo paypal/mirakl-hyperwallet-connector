@@ -2,7 +2,6 @@ package com.paypal.kyc.incomingnotifications.services.userstatus;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.mmp.domain.shop.MiraklShopKycStatus;
-import com.paypal.kyc.incomingnotifications.services.userstatus.IndividualKYCUserStatusNotificationStrategy;
 import com.paypal.kyc.incomingnotifications.model.KYCUserStatusNotificationBodyModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +29,7 @@ class IndividualKYCUserNotificationStrategyTest {
 			final HyperwalletUser.VerificationStatus hyperwalletVerificationStatus,
 			final MiraklShopKycStatus miraklKycStatus) {
 		//@formatter:off
-		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+		final KYCUserStatusNotificationBodyModel kycUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
 				.clientUserId(String
 						.valueOf(CLIENT_USER_ID))
 				.verificationStatus(hyperwalletVerificationStatus)
@@ -38,7 +37,7 @@ class IndividualKYCUserNotificationStrategyTest {
 				.build();
 		//@formatter:on
 
-		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
+		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(kycUserStatusNotificationBodyModelStub);
 
 		assertThat(result).isEqualTo(miraklKycStatus);
 	}
@@ -46,12 +45,12 @@ class IndividualKYCUserNotificationStrategyTest {
 	@Test
 	void isApplicable_shouldReturnTrueWhenProfileTypeIsIndividual() {
 		//@formatter:off
-		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+		final KYCUserStatusNotificationBodyModel kycUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
 				.profileType(HyperwalletUser.ProfileType.INDIVIDUAL)
 				.build();
 		//@formatter:on
 
-		final boolean result = testObj.isApplicable(KYCUserStatusNotificationBodyModelStub);
+		final boolean result = testObj.isApplicable(kycUserStatusNotificationBodyModelStub);
 
 		assertThat(result).isTrue();
 	}
@@ -61,12 +60,12 @@ class IndividualKYCUserNotificationStrategyTest {
 	void isApplicable_shouldReturnFalseWhenProfileTypeIsNotIndividual(final HyperwalletUser.ProfileType profileType) {
 
 		//@formatter:off
-		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+		final KYCUserStatusNotificationBodyModel kycUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
 				.profileType(profileType)
 				.build();
 		//@formatter:on
 
-		final boolean result = testObj.isApplicable(KYCUserStatusNotificationBodyModelStub);
+		final boolean result = testObj.isApplicable(kycUserStatusNotificationBodyModelStub);
 
 		assertThat(result).isFalse();
 	}

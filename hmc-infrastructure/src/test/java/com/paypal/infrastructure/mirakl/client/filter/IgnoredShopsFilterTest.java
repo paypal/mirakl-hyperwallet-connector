@@ -8,16 +8,15 @@ import com.paypal.infrastructure.mirakl.configuration.MiraklApiClientConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.InjectMocks;
 
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class IgnoredShopsFilterTest {
@@ -55,12 +54,12 @@ class IgnoredShopsFilterTest {
 
 		verify(miraklShopsMock, times(1)).setShops(argThat(x -> x.size() == 2));
 		verify(miraklShopsMock, times(1))
-				.setShops(argThat(x -> x.containsAll(List.of(miraklShop1Mock, miraklShop3Mock))));
+			.setShops(argThat(x -> x.containsAll(List.of(miraklShop1Mock, miraklShop3Mock))));
 	}
 
 	private void mockShop(final MiraklShop miraklShopMock, final int id) {
 		final MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue miraklAdditionalFieldValueMock = Mockito
-				.mock(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class);
+			.mock(MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue.class);
 		lenient().when(miraklShopMock.getId()).thenReturn(String.valueOf(id));
 		when(miraklShopMock.getAdditionalFieldValues()).thenReturn(List.of(miraklAdditionalFieldValueMock));
 		when(miraklAdditionalFieldValueMock.getCode()).thenReturn("hw-program");
@@ -69,9 +68,9 @@ class IgnoredShopsFilterTest {
 
 	private void mockIgnoreProgram(final int id, final boolean ignored) {
 		final HyperwalletProgramsConfiguration.HyperwalletProgramConfiguration programConfiguration = Mockito
-				.mock(HyperwalletProgramsConfiguration.HyperwalletProgramConfiguration.class);
+			.mock(HyperwalletProgramsConfiguration.HyperwalletProgramConfiguration.class);
 		lenient().when(hyperwalletProgramsConfigurationMock.getProgramConfiguration("PROGRAM-" + id))
-				.thenReturn(programConfiguration);
+			.thenReturn(programConfiguration);
 		lenient().when(programConfiguration.isIgnored()).thenReturn(ignored);
 	}
 

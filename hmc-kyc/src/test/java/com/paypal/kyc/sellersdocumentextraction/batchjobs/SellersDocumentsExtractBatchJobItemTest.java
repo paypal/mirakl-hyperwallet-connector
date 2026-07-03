@@ -1,7 +1,6 @@
 package com.paypal.kyc.sellersdocumentextraction.batchjobs;
 
 import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
-import com.paypal.kyc.sellersdocumentextraction.batchjobs.SellersDocumentsExtractBatchJobItem;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,7 +15,8 @@ class SellersDocumentsExtractBatchJobItemTest {
 	void getItemId_ShouldReturnItemId() {
 
 		final KYCDocumentSellerInfoModel kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
-				.clientUserId(CLIENT_USER_ID).build();
+			.clientUserId(CLIENT_USER_ID)
+			.build();
 
 		final SellersDocumentsExtractBatchJobItem testObj = new SellersDocumentsExtractBatchJobItem(
 				kycDocumentSellerInfoModel);
@@ -28,7 +28,8 @@ class SellersDocumentsExtractBatchJobItemTest {
 	void getItemType_ShouldReturnItemType() {
 
 		final KYCDocumentSellerInfoModel kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
-				.clientUserId(CLIENT_USER_ID).build();
+			.clientUserId(CLIENT_USER_ID)
+			.build();
 
 		final SellersDocumentsExtractBatchJobItem testObj = new SellersDocumentsExtractBatchJobItem(
 				kycDocumentSellerInfoModel);

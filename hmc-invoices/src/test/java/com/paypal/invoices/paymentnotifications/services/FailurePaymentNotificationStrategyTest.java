@@ -54,7 +54,7 @@ class FailurePaymentNotificationStrategyTest {
 		when(paymentNotificationBodyModelMock.getProgramToken()).thenReturn("programToken");
 		when(paymentNotificationBodyModelMock.getDestinationToken()).thenReturn("destinationToken");
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken("programToken"))
-				.thenReturn(hyperwalletMock);
+			.thenReturn(hyperwalletMock);
 		when(hyperwalletMock.getUser("destinationToken")).thenReturn(hyperwalletUserMock);
 		when(hyperwalletUserMock.getBusinessName()).thenReturn("BUSINESS_SHOP");
 		when(hyperwalletUserMock.getClientUserId()).thenReturn("ClientUserId");
@@ -63,9 +63,10 @@ class FailurePaymentNotificationStrategyTest {
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail(
 				"Problem while processing payment [ClientPaymentID] of shop BUSINESS_SHOP with id [ClientUserId]",
-				"A problem has been detected while processing the payment corresponding to the invoice [ClientPaymentID] of the shop BUSINESS_SHOP with id [ClientUserId].\n"
-						+ "The status received for the payment is [FAILED].\n"
-						+ "For more information please consult your Hyperwallet dashboard.");
+				"""
+						A problem has been detected while processing the payment corresponding to the invoice [ClientPaymentID] of the shop BUSINESS_SHOP with id [ClientUserId].
+						The status received for the payment is [FAILED].
+						For more information please consult your Hyperwallet dashboard.""");
 	}
 
 	@Test
@@ -75,7 +76,7 @@ class FailurePaymentNotificationStrategyTest {
 		when(paymentNotificationBodyModelMock.getProgramToken()).thenReturn("programToken");
 		when(paymentNotificationBodyModelMock.getDestinationToken()).thenReturn("destinationToken");
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken("programToken"))
-				.thenReturn(hyperwalletMock);
+			.thenReturn(hyperwalletMock);
 		when(hyperwalletMock.getUser("destinationToken")).thenReturn(hyperwalletUserMock);
 		when(hyperwalletUserMock.getFirstName()).thenReturn("First");
 		when(hyperwalletUserMock.getLastName()).thenReturn("Last");
@@ -85,9 +86,10 @@ class FailurePaymentNotificationStrategyTest {
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail(
 				"Problem while processing payment [ClientPaymentID] of shop First Last with id [ClientUserId]",
-				"A problem has been detected while processing the payment corresponding to the invoice [ClientPaymentID] of the shop First Last with id [ClientUserId].\n"
-						+ "The status received for the payment is [FAILED].\n"
-						+ "For more information please consult your Hyperwallet dashboard.");
+				"""
+						A problem has been detected while processing the payment corresponding to the invoice [ClientPaymentID] of the shop First Last with id [ClientUserId].
+						The status received for the payment is [FAILED].
+						For more information please consult your Hyperwallet dashboard.""");
 	}
 
 	@Test
@@ -97,15 +99,15 @@ class FailurePaymentNotificationStrategyTest {
 		when(paymentNotificationBodyModelMock.getProgramToken()).thenReturn("programToken");
 		when(paymentNotificationBodyModelMock.getDestinationToken()).thenReturn("destinationToken");
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken("programToken"))
-				.thenReturn(hyperwalletMock);
+			.thenReturn(hyperwalletMock);
 		when(hyperwalletMock.getUser("destinationToken")).thenThrow(HyperwalletException.class);
 
 		testObj.execute(paymentNotificationBodyModelMock);
 
-		verify(mailNotificationUtilMock).sendPlainTextEmail("Problem while processing payment [ClientPaymentID]",
-				"A problem has been detected while processing the payment corresponding to the invoice [ClientPaymentID].\n"
-						+ "The status received for the payment is [FAILED].\n"
-						+ "For more information please consult your Hyperwallet dashboard.");
+		verify(mailNotificationUtilMock).sendPlainTextEmail("Problem while processing payment [ClientPaymentID]", """
+				A problem has been detected while processing the payment corresponding to the invoice [ClientPaymentID].
+				The status received for the payment is [FAILED].
+				For more information please consult your Hyperwallet dashboard.""");
 	}
 
 	@Test

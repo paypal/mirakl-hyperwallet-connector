@@ -46,7 +46,7 @@ class AbstractNotificationLoggingContextAspectTest {
 
 		verify(loggingContextServiceMock).executeInLoggingContext(any(), argumentCaptorLoggingNotification.capture());
 		final NotificationLoggingTransaction notificationLoggingTransaction = argumentCaptorLoggingNotification
-				.getValue();
+			.getValue();
 		assertThat(notificationLoggingTransaction.getId()).isEqualTo("token");
 		assertThat(notificationLoggingTransaction.getType()).isEqualTo("Notification");
 		assertThat(notificationLoggingTransaction.getSubtype()).isEqualTo("USER.PAYMENT.MOCKED");

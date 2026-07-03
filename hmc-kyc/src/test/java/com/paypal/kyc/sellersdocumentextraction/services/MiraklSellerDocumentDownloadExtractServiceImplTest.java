@@ -9,9 +9,9 @@ import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
+import com.paypal.kyc.documentextractioncommons.services.MiraklDocumentsSelector;
 import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.sellersdocumentextraction.model.KYCProofOfAddressEnum;
-import com.paypal.kyc.documentextractioncommons.services.MiraklDocumentsSelector;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -44,8 +44,10 @@ class MiraklSellerDocumentDownloadExtractServiceImplTest {
 	void getDocumentsSelectedBySeller_shouldReturnAnEmptyListWhenNoProofOfAddressNeitherProofOfIdentityHasBeenSelectedBySeller() {
 		// formatter:off
 		final KYCDocumentSellerInfoModel kycNonSelectedDocuments = KYCDocumentSellerInfoModel.builder()
-				.clientUserId(MIRAKL_SHOP_ID).proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
-				.proofOfAddress(KYCProofOfAddressEnum.BANK_STATEMENT).build();
+			.clientUserId(MIRAKL_SHOP_ID)
+			.proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
+			.proofOfAddress(KYCProofOfAddressEnum.BANK_STATEMENT)
+			.build();
 		// formatter:on
 
 		final KYCDocumentSellerInfoModel result = testObj.getDocumentsSelectedBySeller(kycNonSelectedDocuments);
@@ -56,13 +58,17 @@ class MiraklSellerDocumentDownloadExtractServiceImplTest {
 	@Test
 	void getDocumentsSelectedBySeller_shouldPopulateKYCInfoModelWithDocumentInformationAndReturnDocumentsReturnedByStrategies() {
 		final KYCDocumentSellerInfoModel kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
-				.clientUserId(MIRAKL_SHOP_ID).proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
-				.proofOfAddress(KYCProofOfAddressEnum.BANK_STATEMENT).build();
+			.clientUserId(MIRAKL_SHOP_ID)
+			.proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
+			.proofOfAddress(KYCProofOfAddressEnum.BANK_STATEMENT)
+			.build();
 
 		final KYCDocumentModel kycDocumentModelFront = KYCDocumentModel.builder()
-				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_FRONT).build();
+			.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_FRONT)
+			.build();
 		final KYCDocumentModel kycDocumentModelBack = KYCDocumentModel.builder()
-				.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_BACK).build();
+			.documentFieldName(KYCConstants.HwDocuments.PROOF_OF_IDENTITY_BACK)
+			.build();
 
 		final MiraklShopDocument miraklShopProofOfIdentityDocumentFront = new MiraklShopDocument();
 		miraklShopProofOfIdentityDocumentFront.setTypeCode("hw-ind-proof-identity-front");
@@ -74,19 +80,21 @@ class MiraklSellerDocumentDownloadExtractServiceImplTest {
 		final List<MiraklShopDocument> miraklShopDocumentsList = List.of(miraklShopProofOfIdentityDocumentFront,
 				miraklShopProofOfIdentityDocumentBack, miraklShopProofOfAddressFront);
 		when(miraklMarketplacePlatformOperatorApiClientMock
-				.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID))))
-						.thenReturn(miraklShopDocumentsList);
+			.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID))))
+			.thenReturn(miraklShopDocumentsList);
 
 		final KYCDocumentSellerInfoModel kycDocumentSellerInfoModelWithMiraklDocumentsShopInformation = kycDocumentSellerInfoModel
-				.toBuilder().miraklShopDocuments(miraklShopDocumentsList).build();
+			.toBuilder()
+			.miraklShopDocuments(miraklShopDocumentsList)
+			.build();
 
 		when(proofOfIdentityStrategyExecutorMock.execute(kycDocumentSellerInfoModelWithMiraklDocumentsShopInformation))
-				.thenReturn(List.of(List.of(kycDocumentModelFront, kycDocumentModelBack)));
+			.thenReturn(List.of(List.of(kycDocumentModelFront, kycDocumentModelBack)));
 
 		final KYCDocumentSellerInfoModel result = testObj.getDocumentsSelectedBySeller(kycDocumentSellerInfoModel);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock)
-				.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID)));
+			.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID)));
 		verifyNoMoreInteractions(miraklMarketplacePlatformOperatorApiClientMock);
 
 		assertThat(result.getDocuments()).containsExactlyInAnyOrder(kycDocumentModelFront, kycDocumentModelBack);
@@ -96,13 +104,15 @@ class MiraklSellerDocumentDownloadExtractServiceImplTest {
 	void getDocumentsSelectedBySeller_shouldSendMailNotificationWhenMiraklExceptionIsThrown() {
 		// formatter:off
 		final KYCDocumentSellerInfoModel kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
-				.clientUserId(MIRAKL_SHOP_ID).proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
-				.proofOfAddress(KYCProofOfAddressEnum.BANK_STATEMENT).build();
+			.clientUserId(MIRAKL_SHOP_ID)
+			.proofOfIdentity(KYCProofOfIdentityEnum.GOVERNMENT_ID)
+			.proofOfAddress(KYCProofOfAddressEnum.BANK_STATEMENT)
+			.build();
 		// formatter:on
 
 		final MiraklException miraklException = new MiraklException("Something wrong happened");
 		doThrow(miraklException).when(miraklMarketplacePlatformOperatorApiClientMock)
-				.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID)));
+			.getShopDocuments(new MiraklGetShopDocumentsRequest(List.of(MIRAKL_SHOP_ID)));
 
 		testObj.getDocumentsSelectedBySeller(kycDocumentSellerInfoModel);
 

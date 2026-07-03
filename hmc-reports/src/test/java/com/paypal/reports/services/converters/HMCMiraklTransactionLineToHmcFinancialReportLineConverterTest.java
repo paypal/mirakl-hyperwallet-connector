@@ -3,7 +3,6 @@ package com.paypal.reports.services.converters;
 import com.paypal.infrastructure.support.date.TimeMachine;
 import com.paypal.reports.model.HmcFinancialReportLine;
 import com.paypal.reports.model.HmcMiraklTransactionLine;
-import com.paypal.reports.services.converters.MiraklTransactionLineToFinancialReportLineConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,7 +34,7 @@ class HMCMiraklTransactionLineToHmcFinancialReportLineConverterTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 45));
 		final LocalDateTime now = TimeMachine.now();
 		//@formatter:off
-		final HmcMiraklTransactionLine HmcMiraklTransactionLineStub = HmcMiraklTransactionLine.builder()
+		final HmcMiraklTransactionLine hmcMiraklTransactionLineStub = HmcMiraklTransactionLine.builder()
 				.orderId(ORDER_ID)
 				.sellerId(SELLER_ID)
 				.transactionLineId(MIRAKL_TRANSACTION_LINE_ID)
@@ -48,7 +47,7 @@ class HMCMiraklTransactionLineToHmcFinancialReportLineConverterTest {
 				.build();
 		//@formatter:on
 
-		final HmcFinancialReportLine result = testObj.convert(HmcMiraklTransactionLineStub);
+		final HmcFinancialReportLine result = testObj.convert(hmcMiraklTransactionLineStub);
 		assertThat(result.getMiraklOrderId()).isEqualTo(ORDER_ID);
 		assertThat(result.getMiraklSellerId()).isEqualTo(SELLER_ID);
 		assertThat(result.getMiraklTransactionLineId()).isEqualTo(MIRAKL_TRANSACTION_LINE_ID);

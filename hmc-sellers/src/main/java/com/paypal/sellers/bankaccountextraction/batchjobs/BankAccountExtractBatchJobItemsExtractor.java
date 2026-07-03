@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -35,12 +34,17 @@ public class BankAccountExtractBatchJobItemsExtractor
 	@Override
 	protected Collection<BankAccountExtractJobItem> getItems(final BatchJobContext ctx, final Date delta) {
 		final Collection<BankAccountExtractJobItem> individualBankAccounts = miraklSellersExtractService
-				.extractIndividuals(delta).stream().map(BankAccountExtractJobItem::new).collect(Collectors.toList());
+			.extractIndividuals(delta)
+			.stream()
+			.map(BankAccountExtractJobItem::new)
+			.toList();
 		final Collection<BankAccountExtractJobItem> professionalBankAccounts = miraklSellersExtractService
-				.extractProfessionals(delta).stream().map(BankAccountExtractJobItem::new).collect(Collectors.toList());
+			.extractProfessionals(delta)
+			.stream()
+			.map(BankAccountExtractJobItem::new)
+			.toList();
 
-		return Stream.concat(individualBankAccounts.stream(), professionalBankAccounts.stream())
-				.collect(Collectors.toList());
+		return Stream.concat(individualBankAccounts.stream(), professionalBankAccounts.stream()).toList();
 	}
 
 }

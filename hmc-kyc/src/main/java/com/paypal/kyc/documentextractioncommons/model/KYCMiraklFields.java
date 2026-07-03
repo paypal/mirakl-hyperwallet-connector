@@ -19,10 +19,10 @@ public interface KYCMiraklFields {
 
 	static List<String> populateMiraklFields(final String prefixFieldName, final String proofIdentityType) {
 		return switch (proofIdentityType) {
-		case "GOVERNMENT_ID", "DRIVERS_LICENSE" -> List.of(prefixFieldName + KYCConstants.PROOF_IDENTITY_SIDE_FRONT,
-				prefixFieldName + KYCConstants.PROOF_IDENTITY_SIDE_BACK);
-		case "PASSPORT" -> List.of(prefixFieldName + KYCConstants.PROOF_IDENTITY_SIDE_FRONT);
-		default -> List.of();
+			case "GOVERNMENT_ID", "DRIVERS_LICENSE" -> List.of(prefixFieldName + KYCConstants.PROOF_IDENTITY_SIDE_FRONT,
+					prefixFieldName + KYCConstants.PROOF_IDENTITY_SIDE_BACK);
+			case "PASSPORT" -> List.of(prefixFieldName + KYCConstants.PROOF_IDENTITY_SIDE_FRONT);
+			default -> List.of();
 		};
 	}
 

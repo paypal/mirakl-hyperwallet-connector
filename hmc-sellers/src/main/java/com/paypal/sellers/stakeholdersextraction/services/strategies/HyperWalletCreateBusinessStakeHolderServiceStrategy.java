@@ -3,11 +3,11 @@ package com.paypal.sellers.stakeholdersextraction.services.strategies;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletBusinessStakeholder;
-import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
-import com.paypal.infrastructure.support.strategy.Strategy;
+import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.support.logging.HyperwalletLoggingErrorsUtil;
+import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import com.paypal.sellers.stakeholdersextraction.services.BusinessStakeholderTokenUpdateService;
 import lombok.extern.slf4j.Slf4j;
@@ -54,18 +54,20 @@ public class HyperWalletCreateBusinessStakeHolderServiceStrategy
 	public BusinessStakeHolderModel execute(final BusinessStakeHolderModel businessStakeHolderModel) {
 
 		final HyperwalletBusinessStakeholder hyperWalletBusinessStakeHolder = businessStakeHolderModelHyperwalletBusinessStakeholderConverter
-				.convert(businessStakeHolderModel);
+			.convert(businessStakeHolderModel);
 
 		try {
 
 			final Hyperwallet hyperwallet = userHyperwalletSDKService
-					.getHyperwalletInstanceByHyperwalletProgram(businessStakeHolderModel.getHyperwalletProgram());
+				.getHyperwalletInstanceByHyperwalletProgram(businessStakeHolderModel.getHyperwalletProgram());
 
 			final HyperwalletBusinessStakeholder hyperWalletBusinessStakeHolderResponse = hyperwallet
-					.createBusinessStakeholder(businessStakeHolderModel.getUserToken(), hyperWalletBusinessStakeHolder);
+				.createBusinessStakeholder(businessStakeHolderModel.getUserToken(), hyperWalletBusinessStakeHolder);
 
 			final BusinessStakeHolderModel createdBusinessStakeHolderModel = businessStakeHolderModel.toBuilder()
-					.token(hyperWalletBusinessStakeHolderResponse.getToken()).justCreated(true).build();
+				.token(hyperWalletBusinessStakeHolderResponse.getToken())
+				.justCreated(true)
+				.build();
 
 			businessStakeholderTokenUpdateService.updateBusinessStakeholderToken(
 					createdBusinessStakeHolderModel.getClientUserId(), List.of(createdBusinessStakeHolderModel));

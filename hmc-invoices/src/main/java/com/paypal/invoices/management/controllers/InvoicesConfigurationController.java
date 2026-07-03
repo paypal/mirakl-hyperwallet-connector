@@ -20,7 +20,7 @@ public class InvoicesConfigurationController {
 	public ResponseEntity<String> setCommissions(
 			@RequestBody final CommissionsConfigurationDto commissionsConfiguration) {
 		invoicesConfigurationService
-				.setOperatorCommissionsEnabled(commissionsConfiguration.isOperatorCommissionsEnabled());
+			.setOperatorCommissionsEnabled(commissionsConfiguration.isOperatorCommissionsEnabled());
 		return ResponseEntity.ok().build();
 	}
 

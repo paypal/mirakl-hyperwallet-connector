@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Rest controller for job entities
@@ -22,8 +21,8 @@ import java.util.stream.Collectors;
 public class JobController extends AbstractJobController {
 
 	/**
-	 * Returns a {@link List< JobExecutionInformationEntity >} of current jobs scheduled
-	 * in the system
+	 * Returns a {@link List<JobExecutionInformationEntity>} of current jobs scheduled in
+	 * the system
 	 * @return the {@link List<JobExecutionInformationEntity>}
 	 * @throws SchedulerException when quartz {@link org.quartz.Scheduler} fails
 	 */
@@ -33,7 +32,7 @@ public class JobController extends AbstractJobController {
 		final List<JobExecutionInformationEntity> jobs = jobService.getJobs().stream()
 				.map(jobDetail -> (JobExecutionInformationEntity) jobDetail.getJobDataMap().get(JobExecutionInformationListener.RUNNING_JOB_ENTITY))
 				.filter(Objects::nonNull)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 
 		return ResponseEntity.accepted().body(jobs);

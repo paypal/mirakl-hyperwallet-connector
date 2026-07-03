@@ -1,7 +1,7 @@
 package com.paypal.jobsystem.batchjobfailures.services.cache;
 
-import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
+import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 
 import java.util.Collection;
 import java.util.List;

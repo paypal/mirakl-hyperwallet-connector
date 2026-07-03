@@ -1,7 +1,7 @@
 package com.paypal.sellers.bankaccountextraction.batchjobs;
 
-import com.paypal.jobsystem.batchjobsupport.support.AbstractBatchJobItem;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
+import com.paypal.jobsystem.batchjobsupport.support.AbstractBatchJobItem;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 
 /**

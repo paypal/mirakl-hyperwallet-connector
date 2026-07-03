@@ -36,15 +36,18 @@ public class SellerModelToHyperWalletUserConverter implements Converter<SellerMo
 
 		hyperwalletUser.setClientUserId(sellerModel.getClientUserId());
 		hyperwalletUser.setProfileType(profileType);
-		Optional.ofNullable(sellerModel.getBusinessType()).map(Enum::name).map(HyperwalletUser.BusinessType::valueOf)
-				.ifPresent(hyperwalletUser::setBusinessType);
+		Optional.ofNullable(sellerModel.getBusinessType())
+			.map(Enum::name)
+			.map(HyperwalletUser.BusinessType::valueOf)
+			.ifPresent(hyperwalletUser::setBusinessType);
 		hyperwalletUser.setAddressLine1(sellerModel.getAddressLine1());
 		hyperwalletUser.setCity(sellerModel.getCity());
 		hyperwalletUser.setStateProvince(sellerModel.getStateProvince());
 		hyperwalletUser.setPostalCode(sellerModel.getPostalCode());
 		hyperwalletUser.setCountry(sellerModel.getCountry());
-		hyperwalletUser.setProgramToken(hyperwalletProgramsConfiguration
-				.getProgramConfiguration(sellerModel.getHyperwalletProgram()).getUsersProgramToken());
+		hyperwalletUser.setProgramToken(
+				hyperwalletProgramsConfiguration.getProgramConfiguration(sellerModel.getHyperwalletProgram())
+					.getUsersProgramToken());
 		hyperwalletUser.setToken(sellerModel.getToken());
 		hyperwalletUser.setEmail(sellerModel.getEmail());
 		hyperwalletUser.setLanguage(sellerModel.getLanguage());
@@ -78,8 +81,10 @@ public class SellerModelToHyperWalletUserConverter implements Converter<SellerMo
 			hyperwalletUser.setPassportId(sellerModel.getPassportId());
 			hyperwalletUser.setDriversLicenseId(sellerModel.getDriversLicenseId());
 
-			Optional.ofNullable(sellerModel.getGovernmentIdType()).map(Enum::name)
-					.map(HyperwalletUser.GovernmentIdType::valueOf).ifPresent(hyperwalletUser::setGovernmentIdType);
+			Optional.ofNullable(sellerModel.getGovernmentIdType())
+				.map(Enum::name)
+				.map(HyperwalletUser.GovernmentIdType::valueOf)
+				.ifPresent(hyperwalletUser::setGovernmentIdType);
 		}
 
 		return hyperwalletUser;

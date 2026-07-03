@@ -1,9 +1,5 @@
 package com.paypal.notifications.storage.services;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-
 import com.paypal.notifications.storage.repositories.NotificationEntityRepository;
 import com.paypal.notifications.storage.repositories.entities.NotificationStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +13,11 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Date;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class NotificationCleanupServiceImplTest {
@@ -39,13 +40,10 @@ class NotificationCleanupServiceImplTest {
 	void deleteExpiredNotifications_shouldDeleteOnlyTerminalStatuses() {
 		testObj.deleteExpiredNotifications();
 
-		@SuppressWarnings("unchecked")
-		final ArgumentCaptor<Collection<NotificationStatus>> statusCaptor = ArgumentCaptor.forClass(Collection.class);
 		verify(notificationEntityRepositoryMock).deleteByReceptionDateBeforeAndStatusIn(any(Date.class),
-				statusCaptor.capture());
-
-		assertThat(statusCaptor.getValue()).containsExactlyInAnyOrder(NotificationStatus.FAILED,
-				NotificationStatus.SUCCESS, NotificationStatus.OUTDATED);
+				argThat((Collection<NotificationStatus> statuses) -> statuses.contains(NotificationStatus.FAILED)
+						&& statuses.contains(NotificationStatus.SUCCESS)
+						&& statuses.contains(NotificationStatus.OUTDATED) && statuses.size() == 3));
 	}
 
 	@Test
@@ -55,8 +53,7 @@ class NotificationCleanupServiceImplTest {
 		testObj.deleteExpiredNotifications();
 
 		final ArgumentCaptor<Date> dateCaptor = ArgumentCaptor.forClass(Date.class);
-		verify(notificationEntityRepositoryMock).deleteByReceptionDateBeforeAndStatusIn(dateCaptor.capture(),
-				any(Collection.class));
+		verify(notificationEntityRepositoryMock).deleteByReceptionDateBeforeAndStatusIn(dateCaptor.capture(), any());
 
 		final Instant afterCall = Instant.now().minus(RETENTION_DAYS, ChronoUnit.DAYS);
 		assertThat(dateCaptor.getValue().toInstant()).isBetween(beforeCall.minusSeconds(1), afterCall.plusSeconds(1));
@@ -66,8 +63,7 @@ class NotificationCleanupServiceImplTest {
 	void deleteExpiredNotifications_shouldDelegateToRepository() {
 		testObj.deleteExpiredNotifications();
 
-		verify(notificationEntityRepositoryMock).deleteByReceptionDateBeforeAndStatusIn(any(Date.class),
-				any(Collection.class));
+		verify(notificationEntityRepositoryMock).deleteByReceptionDateBeforeAndStatusIn(any(Date.class), any());
 	}
 
 }

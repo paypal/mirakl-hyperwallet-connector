@@ -34,17 +34,20 @@ public class AccountingDocumentBatchJobItemValidator
 			return BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.VALID).build();
 		}
 		else if (belongsToIgnoredProgram(jobItem)) {
-			return BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.INVALID)
-					.reason(Optional.of(
-							"Invoice documents with id [%s] should be skipped because it belongs to an ignored program"
-									.formatted(jobItem.getItemId())))
-					.build();
+			return BatchJobItemValidationResult.builder()
+				.status(BatchJobItemValidationStatus.INVALID)
+				.reason(Optional
+					.of("Invoice documents with id [%s] should be skipped because it belongs to an ignored program"
+						.formatted(jobItem.getItemId())))
+				.build();
 		}
 		else {
-			return BatchJobItemValidationResult.builder().status(BatchJobItemValidationStatus.INVALID).reason(Optional
+			return BatchJobItemValidationResult.builder()
+				.status(BatchJobItemValidationStatus.INVALID)
+				.reason(Optional
 					.of("Invoice documents with id [%s] should be skipped because are lacking hw-program or bank account token"
-							.formatted(jobItem.getItemId())))
-					.build();
+						.formatted(jobItem.getItemId())))
+				.build();
 		}
 		// formatter:on
 	}

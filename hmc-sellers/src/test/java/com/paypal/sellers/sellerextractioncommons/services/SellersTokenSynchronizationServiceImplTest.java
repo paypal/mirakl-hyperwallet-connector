@@ -6,9 +6,9 @@ import com.hyperwallet.clientsdk.model.HyperwalletList;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.hyperwallet.clientsdk.model.HyperwalletUsersListPaginationOptions;
 import com.mirakl.client.core.exception.MiraklException;
+import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
 import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
-import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -93,8 +93,8 @@ class SellersTokenSynchronizationServiceImplTest {
 		hyperwalletSDKThrowsAnException();
 
 		assertThatThrownBy(() -> testObj.synchronizeToken(sellerModelStub))
-				.isInstanceOf(HMCHyperwalletAPIException.class)
-				.hasMessageContaining("An error has occurred while invoking Hyperwallet API");
+			.isInstanceOf(HMCHyperwalletAPIException.class)
+			.hasMessageContaining("An error has occurred while invoking Hyperwallet API");
 	}
 
 	@Test
@@ -116,21 +116,24 @@ class SellersTokenSynchronizationServiceImplTest {
 		miraklSDKThrowsAnException();
 
 		assertThatThrownBy(() -> testObj.synchronizeToken(sellerModelStub)).isInstanceOf(HMCMiraklAPIException.class)
-				.hasMessageContaining("An error has occurred while invoking Mirakl API");
+			.hasMessageContaining("An error has occurred while invoking Mirakl API");
 	}
 
 	@NotNull
 	private void createSellerWithTokenAndClientUserId(final String programToken, final String userToken,
 			final String clientUserId) {
-		sellerModelStub = SellerModel.builder().programToken(programToken).token(userToken).clientUserId(clientUserId)
-				.build();
+		sellerModelStub = SellerModel.builder()
+			.programToken(programToken)
+			.token(userToken)
+			.clientUserId(clientUserId)
+			.build();
 	}
 
 	private void hyperwalletAPIReturnsAnEmptyListForClientUserId(final String clientUserId) {
 		final HyperwalletUsersListPaginationOptions options = new HyperwalletUsersListPaginationOptions();
 		options.setClientUserId(clientUserId);
 		when(hyperwalletMock.listUsers(argThat(new HyperwalletUsersListPaginationOptionsMatcher(options))))
-				.thenReturn(new HyperwalletList<>());
+			.thenReturn(new HyperwalletList<>());
 	}
 
 	private void hyperwalletAPIReturnsAListWithOneUserForClientUserId(final String clientUserId) {
@@ -140,24 +143,24 @@ class SellersTokenSynchronizationServiceImplTest {
 		final HyperwalletList<HyperwalletUser> userHyperwalletList = new HyperwalletList<>();
 		userHyperwalletList.setData(List.of(hyperwalletUser));
 		when(hyperwalletMock.listUsers(argThat(new HyperwalletUsersListPaginationOptionsMatcher(options))))
-				.thenReturn(userHyperwalletList);
+			.thenReturn(userHyperwalletList);
 	}
 
 	private void hyperwalletSDKThrowsAnException() {
 		doThrow(new HyperwalletException("Something went wrong")).when(hyperwalletMock)
-				.listUsers(any(HyperwalletUsersListPaginationOptions.class));
+			.listUsers(any(HyperwalletUsersListPaginationOptions.class));
 
 	}
 
 	private void miraklSDKThrowsAnException() {
 		doThrow(new MiraklException("Something went wrong")).when(miraklSellersExtractServiceMock)
-				.updateUserToken(any(HyperwalletUser.class));
+			.updateUserToken(any(HyperwalletUser.class));
 
 	}
 
 	private void prepareHyperwalletSDKInstance(final SellerModel sellerModel) {
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(sellerModel.getProgramToken()))
-				.thenReturn(hyperwalletMock);
+			.thenReturn(hyperwalletMock);
 	}
 
 	public class HyperwalletUsersListPaginationOptionsMatcher

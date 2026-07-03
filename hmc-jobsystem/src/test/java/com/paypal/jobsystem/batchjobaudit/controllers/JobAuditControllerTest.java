@@ -1,14 +1,12 @@
 package com.paypal.jobsystem.batchjobaudit.controllers;
 
-import com.paypal.jobsystem.batchjobaudit.services.BatchJobTrackingService;
 import com.paypal.jobsystem.batchjobaudit.controllers.converters.BatchJobItemTrackInfoEntityConverter;
 import com.paypal.jobsystem.batchjobaudit.controllers.converters.BatchJobTrackInfoEntityConverter;
 import com.paypal.jobsystem.batchjobaudit.controllers.dto.BatchJobItemTrackInfoResponse;
 import com.paypal.jobsystem.batchjobaudit.controllers.dto.BatchJobTrackInfoResponse;
 import com.paypal.jobsystem.batchjobaudit.repositories.entities.BatchJobItemTrackInfoEntity;
 import com.paypal.jobsystem.batchjobaudit.repositories.entities.BatchJobTrackInfoEntity;
-import com.paypal.jobsystem.batchjobaudit.controllers.JobAuditController;
-import org.assertj.core.api.Assertions;
+import com.paypal.jobsystem.batchjobaudit.services.BatchJobTrackingService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -59,9 +57,9 @@ class JobAuditControllerTest {
 				batchJobTrackInfoResponse2Mock);
 
 		when(batchJobTrackingServiceMock.getJobTrackingEntries(localDateTime1Mock, localDateTime2Mock))
-				.thenReturn(batchJobTrackInfoEntities);
+			.thenReturn(batchJobTrackInfoEntities);
 		when(batchJobTrackInfoEntityConverterMock.toResponse(batchJobTrackInfoEntities))
-				.thenReturn(batchJobTrackInfoResponses);
+			.thenReturn(batchJobTrackInfoResponses);
 
 		final List<BatchJobTrackInfoResponse> result = testObj.getAllJobs(localDateTime1Mock, localDateTime2Mock);
 
@@ -71,13 +69,13 @@ class JobAuditControllerTest {
 	@Test
 	void getJobItems_ShouldReturnAllTrackingItemsOfAJob() {
 		final List<BatchJobItemTrackInfoEntity> batchJobItemTrackInfoEntities = List
-				.of(batchJobItemTrackInfoEntity1Mock, batchJobItemTrackInfoEntity2Mock);
+			.of(batchJobItemTrackInfoEntity1Mock, batchJobItemTrackInfoEntity2Mock);
 		final List<BatchJobItemTrackInfoResponse> batchJobItemTrackInfoResponses = List
-				.of(batchJobItemTrackInfoResponse1Mock, batchJobItemTrackInfoResponse2Mock);
+			.of(batchJobItemTrackInfoResponse1Mock, batchJobItemTrackInfoResponse2Mock);
 
 		when(batchJobTrackingServiceMock.getJobItemTrackingEntries("job1")).thenReturn(batchJobItemTrackInfoEntities);
 		when(batchJobItemTrackInfoEntityConverterMock.toResponse(batchJobItemTrackInfoEntities))
-				.thenReturn(batchJobItemTrackInfoResponses);
+			.thenReturn(batchJobItemTrackInfoResponses);
 
 		final List<BatchJobItemTrackInfoResponse> result = testObj.getJobItems("job1");
 

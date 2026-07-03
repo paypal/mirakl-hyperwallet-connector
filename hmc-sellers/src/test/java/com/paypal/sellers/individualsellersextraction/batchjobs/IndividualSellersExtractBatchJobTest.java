@@ -1,8 +1,5 @@
 package com.paypal.sellers.individualsellersextraction.batchjobs;
 
-import com.paypal.sellers.individualsellersextraction.batchjobs.IndividualSellersExtractBatchJob;
-import com.paypal.sellers.individualsellersextraction.batchjobs.IndividualSellersExtractBatchJobItemProcessor;
-import com.paypal.sellers.individualsellersextraction.batchjobs.IndividualSellersExtractBatchJobItemsExtractor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

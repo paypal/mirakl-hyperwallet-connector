@@ -36,11 +36,11 @@ public class BusinessStakeholdersDocumentsExtractBatchJobItemProcessor
 	@Override
 	protected boolean pushAndFlagDocuments(final BusinessStakeholdersDocumentsExtractBatchJobItem jobItem) {
 		final boolean areDocumentsPushedToHW = hyperwalletBusinessStakeholderExtractService
-				.pushDocuments(jobItem.getItem());
+			.pushDocuments(jobItem.getItem());
 
 		if (areDocumentsPushedToHW) {
 			miraklBusinessStakeholderDocumentsExtractService
-					.setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(jobItem.getItem());
+				.setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(jobItem.getItem());
 		}
 
 		return areDocumentsPushedToHW;

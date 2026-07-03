@@ -58,7 +58,7 @@ public class FinancialReportConverterServiceImpl implements FinancialReportConve
 			final HmcBraintreeTransactionLine hmcBraintreeTransactionLine,
 			final HmcMiraklTransactionLine hmcMiraklTransactionLine) {
 		return braintreeAndMiraklTransactionLineFinancialReportLineConverter
-				.convert(Pair.of(hmcBraintreeTransactionLine, hmcMiraklTransactionLine));
+			.convert(Pair.of(hmcBraintreeTransactionLine, hmcMiraklTransactionLine));
 	}
 
 }

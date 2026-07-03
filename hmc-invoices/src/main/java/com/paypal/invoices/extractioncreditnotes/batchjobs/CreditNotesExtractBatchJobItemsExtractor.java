@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 /**
  * The extractor class for retrieving all the credit notes within a delta time from
@@ -38,8 +37,10 @@ public class CreditNotesExtractBatchJobItemsExtractor
 	@Override
 	protected Collection<CreditNoteExtractJobItem> getItems(final BatchJobContext ctx, final Date delta,
 			final boolean includePaid) {
-		return miraklAccountingDocumentCreditNotesExtractService.extractAccountingDocuments(delta, includePaid).stream()
-				.map(CreditNoteExtractJobItem::new).collect(Collectors.toList());
+		return miraklAccountingDocumentCreditNotesExtractService.extractAccountingDocuments(delta, includePaid)
+			.stream()
+			.map(CreditNoteExtractJobItem::new)
+			.toList();
 	}
 
 }

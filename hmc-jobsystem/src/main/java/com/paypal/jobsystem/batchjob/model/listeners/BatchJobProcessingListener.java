@@ -1,8 +1,8 @@
 package com.paypal.jobsystem.batchjob.model.listeners;
 
-import com.paypal.jobsystem.batchjob.model.BatchJobItemValidationResult;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
+import com.paypal.jobsystem.batchjob.model.BatchJobItemValidationResult;
 
 import java.util.Collection;
 

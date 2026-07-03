@@ -1,7 +1,5 @@
 package com.paypal.notifications.incoming.services.converters;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
 import com.paypal.notifications.storage.repositories.entities.NotificationEntity;
 import com.paypal.notifications.storage.repositories.entities.NotificationType;
@@ -9,8 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.Date;
 import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class NotificationConverterTest {

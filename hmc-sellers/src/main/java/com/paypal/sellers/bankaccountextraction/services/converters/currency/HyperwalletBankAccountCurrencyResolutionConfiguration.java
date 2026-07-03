@@ -39,22 +39,26 @@ public class HyperwalletBankAccountCurrencyResolutionConfiguration {
 			final String perCountryCurrencySelectionPriority) {
 		// Country and currency list separated by semicolons. Expected format:
 		// "US:USD,GBP;CA:CAD,USD"
-		return Stream.of(perCountryCurrencySelectionPriority.split(";")).map(it -> it.split(":"))
-				.filter(it -> it.length == 2)
-				.collect(Collectors.toMap(it -> it[0], it -> parseGlobalCurrencyPriority(it[1])));
+		return Stream.of(perCountryCurrencySelectionPriority.split(";"))
+			.map(it -> it.split(":"))
+			.filter(it -> it.length == 2)
+			.collect(Collectors.toMap(it -> it[0], it -> parseGlobalCurrencyPriority(it[1])));
 	}
 
 	protected List<String> buildGlobalCurrencySelectionPriority(final String perCountryCurrencySelectionPriority) {
 		// Country and currency list separated by semicolons. Expected format:
 		// "US:USD,GBP;CA:CAD,USD"
-		return Stream.of(perCountryCurrencySelectionPriority.split(";")).map(it -> it.split(":"))
-				.filter(it -> it.length == 1).findFirst().map(it -> parseGlobalCurrencyPriority(it[0]))
-				.orElse(List.of());
+		return Stream.of(perCountryCurrencySelectionPriority.split(";"))
+			.map(it -> it.split(":"))
+			.filter(it -> it.length == 1)
+			.findFirst()
+			.map(it -> parseGlobalCurrencyPriority(it[0]))
+			.orElse(List.of());
 	}
 
 	protected List<String> parseGlobalCurrencyPriority(final String currencySelectionPriority) {
 		// Currency list separated by comma. Expected format example: "USD,GBP"
-		return Stream.of(currencySelectionPriority.split(",")).map(String::trim).collect(Collectors.toList());
+		return Stream.of(currencySelectionPriority.split(",")).map(String::trim).toList();
 	}
 
 }

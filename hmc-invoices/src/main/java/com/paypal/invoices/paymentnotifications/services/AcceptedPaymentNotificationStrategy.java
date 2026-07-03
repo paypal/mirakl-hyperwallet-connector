@@ -1,8 +1,11 @@
 package com.paypal.invoices.paymentnotifications.services;
 
+import static com.paypal.infrastructure.hyperwallet.constants.HyperWalletConstants.PAYMENT_OPERATOR_SUFFIX;
+
 import com.mirakl.client.mmp.domain.common.currency.MiraklIsoCurrencyCode;
-import com.mirakl.client.mmp.domain.invoice.MiraklAccountingDocumentPaymentConfirmation;
-import com.mirakl.client.mmp.request.invoice.MiraklConfirmAccountingDocumentPaymentRequest;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklPayOutState;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklSellerBillingCyclePaymentConfirmation;
+import com.mirakl.client.mmp.operator.request.payment.sellerbillingcycle.MiraklConfirmSellerBillingCyclePaymentRequest;
 import com.paypal.infrastructure.hyperwallet.constants.HyperWalletConstants;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
 import com.paypal.infrastructure.support.date.DateUtil;
@@ -13,12 +16,11 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
-import static com.paypal.infrastructure.hyperwallet.constants.HyperWalletConstants.PAYMENT_OPERATOR_SUFFIX;
+import java.util.UUID;
 
 /**
  * Strategy to update the status of an accepted payment in Mirakl
@@ -43,33 +45,33 @@ public class AcceptedPaymentNotificationStrategy implements Strategy<PaymentNoti
 	 */
 	@Override
 	public Void execute(final PaymentNotificationBodyModel paymentNotificationBodyModel) {
-		final MiraklConfirmAccountingDocumentPaymentRequest paymentConfirmationRequest = createPaymentConfirmationRequest(
+		final MiraklConfirmSellerBillingCyclePaymentRequest paymentConfirmationRequest = createPaymentConfirmationRequest(
 				paymentNotificationBodyModel);
 
-		miraklClient.confirmAccountingDocumentPayment(paymentConfirmationRequest);
+		miraklClient.confirmSellerBillingCyclePayment(paymentConfirmationRequest);
 
 		return null;
 	}
 
-	protected MiraklConfirmAccountingDocumentPaymentRequest createPaymentConfirmationRequest(
+	protected MiraklConfirmSellerBillingCyclePaymentRequest createPaymentConfirmationRequest(
 			final PaymentNotificationBodyModel paymentNotificationBodyModel) {
-		final MiraklAccountingDocumentPaymentConfirmation miraklAccountingDocumentPaymentConfirmation = new MiraklAccountingDocumentPaymentConfirmation();
-		miraklAccountingDocumentPaymentConfirmation.setAmount(new BigDecimal(paymentNotificationBodyModel.getAmount()));
-		miraklAccountingDocumentPaymentConfirmation.setCurrencyIsoCode(
+		final MiraklSellerBillingCyclePaymentConfirmation miraklSellerBillingCyclePaymentConfirmation = new MiraklSellerBillingCyclePaymentConfirmation();
+		miraklSellerBillingCyclePaymentConfirmation
+			.setAmountTransferredToSeller(new BigDecimal(paymentNotificationBodyModel.getAmount()));
+		miraklSellerBillingCyclePaymentConfirmation.setCurrencyIsoCode(
 				EnumUtils.getEnum(MiraklIsoCurrencyCode.class, paymentNotificationBodyModel.getCurrency(), null));
-		miraklAccountingDocumentPaymentConfirmation
-				.setInvoiceId(Long.valueOf(paymentNotificationBodyModel.getClientPaymentId()));
-		miraklAccountingDocumentPaymentConfirmation
-				.setTransactionDate(DateUtil.convertToDate(paymentNotificationBodyModel.getCreatedOn(),
-						HyperWalletConstants.HYPERWALLET_DATE_FORMAT, DateUtil.TIME_UTC));
-		miraklAccountingDocumentPaymentConfirmation
-				.setConfirmLinkedManualDocuments(paymentNotificationConfig.isConfirmLinkedManualDocuments());
+		miraklSellerBillingCyclePaymentConfirmation
+			.setId(UUID.fromString(paymentNotificationBodyModel.getClientPaymentId()));
+		final Date date = DateUtil.convertToDate(paymentNotificationBodyModel.getCreatedOn(),
+				HyperWalletConstants.HYPERWALLET_DATE_FORMAT, DateUtil.TIME_UTC);
+		miraklSellerBillingCyclePaymentConfirmation.setTransactionDate(date != null ? date.toInstant() : null);
+		miraklSellerBillingCyclePaymentConfirmation.setState(MiraklPayOutState.PAID);
 
-		log.info("Creating payment confirmation request for invoice ID {} and amount {}",
-				miraklAccountingDocumentPaymentConfirmation.getInvoiceId(),
-				miraklAccountingDocumentPaymentConfirmation.getAmount());
+		log.info("Creating payment confirmation request for seller billing cycle ID {} and amount {}",
+				miraklSellerBillingCyclePaymentConfirmation.getId(),
+				miraklSellerBillingCyclePaymentConfirmation.getAmountTransferredToSeller());
 
-		return new MiraklConfirmAccountingDocumentPaymentRequest(List.of(miraklAccountingDocumentPaymentConfirmation));
+		return new MiraklConfirmSellerBillingCyclePaymentRequest(List.of(miraklSellerBillingCyclePaymentConfirmation));
 	}
 
 	/**

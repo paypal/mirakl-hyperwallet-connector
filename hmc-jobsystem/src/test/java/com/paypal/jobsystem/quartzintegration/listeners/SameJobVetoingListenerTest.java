@@ -57,7 +57,7 @@ class SameJobVetoingListenerTest {
 		final FooJobClass jobToBeTriggered = new FooJobClass();
 		when(jobToBeTriggeredContextMock.getJobInstance()).thenReturn(jobToBeTriggered);
 		when(jobToBeTriggeredContextMock.getJobDetail())
-				.thenReturn(JobBuilder.newJob(FooJobClass.class).withIdentity("jobName").build());
+			.thenReturn(JobBuilder.newJob(FooJobClass.class).withIdentity("jobName").build());
 		final FooJobClass jobBeingExecuted = new FooJobClass();
 		when(jobAlreadyExecutingContextMock.getJobInstance()).thenReturn(jobBeingExecuted);
 

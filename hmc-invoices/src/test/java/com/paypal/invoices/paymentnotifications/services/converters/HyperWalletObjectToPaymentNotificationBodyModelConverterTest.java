@@ -3,7 +3,6 @@ package com.paypal.invoices.paymentnotifications.services.converters;
 import com.paypal.infrastructure.support.date.DateUtil;
 import com.paypal.infrastructure.support.date.TimeMachine;
 import com.paypal.invoices.paymentnotifications.model.PaymentNotificationBodyModel;
-import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -45,8 +44,7 @@ class HyperWalletObjectToPaymentNotificationBodyModelConverterTest {
 	private static final String DESTINATION_TOKEN = "DestinationToken";
 
 	@Test
-	void convert_shouldTransformHyperWalletWebhookNotificationToInvoiceNotificationModel_whenDetailsIsJSonObject()
-			throws JSONException {
+	void convert_shouldTransformHyperWalletWebhookNotificationToInvoiceNotificationModel_whenDetailsIsJSonObject() {
 		TimeMachine.useFixedClockAt(LocalDateTime.now());
 		final LocalDateTime now = TimeMachine.now();
 		final Date nowAsDate = DateUtil.convertToDate(now, ZoneId.systemDefault());
@@ -73,8 +71,7 @@ class HyperWalletObjectToPaymentNotificationBodyModelConverterTest {
 	}
 
 	@Test
-	void convert_shouldTransformHyperWalletWebhookNotificationToInvoiceNotificationModel_whenDetailsIsAnIncompleteJSonObject()
-			throws JSONException {
+	void convert_shouldTransformHyperWalletWebhookNotificationToInvoiceNotificationModel_whenDetailsIsAnIncompleteJSonObject() {
 		TimeMachine.useFixedClockAt(LocalDateTime.now());
 		final LocalDateTime now = TimeMachine.now();
 		final Date nowAsDate = DateUtil.convertToDate(now, ZoneId.systemDefault());
@@ -97,8 +94,7 @@ class HyperWalletObjectToPaymentNotificationBodyModelConverterTest {
 	}
 
 	@Test
-	void convert_shouldTransformHyperWalletWebhookNotificationToInvoiceNotificationModel_whenObjectIsNotJSonObject()
-			throws JSONException {
+	void convert_shouldTransformHyperWalletWebhookNotificationToInvoiceNotificationModel_whenObjectIsNotJSonObject() {
 		final PaymentNotificationBodyModel result = testObj.convert(new Object());
 		assertThat(result).isNull();
 	}

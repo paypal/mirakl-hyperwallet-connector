@@ -1,9 +1,9 @@
 package com.paypal.sellers.sellerextractioncommons.services.strategies;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
-import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
+import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -3,11 +3,11 @@ package com.paypal.sellers.stakeholdersextraction.services.strategies;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletBusinessStakeholder;
-import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
-import com.paypal.infrastructure.support.strategy.Strategy;
+import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.support.logging.HyperwalletLoggingErrorsUtil;
+import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -48,14 +48,14 @@ public class HyperWalletUpdateBusinessStakeHolderServiceStrategy
 	@Override
 	public BusinessStakeHolderModel execute(final BusinessStakeHolderModel businessStakeHolderModel) {
 		final HyperwalletBusinessStakeholder hyperWalletBusinessStakeHolder = businessStakeHolderModelHyperwalletBusinessStakeholderConverter
-				.convert(businessStakeHolderModel);
+			.convert(businessStakeHolderModel);
 		try {
 
 			log.info("Updating stakeholder [{}] for user [{}]", hyperWalletBusinessStakeHolder.getToken(),
 					businessStakeHolderModel.getUserToken());
 
 			final Hyperwallet hyperwallet = userHyperwalletSDKService
-					.getHyperwalletInstanceByHyperwalletProgram(businessStakeHolderModel.getHyperwalletProgram());
+				.getHyperwalletInstanceByHyperwalletProgram(businessStakeHolderModel.getHyperwalletProgram());
 
 			hyperwallet.updateBusinessStakeholder(businessStakeHolderModel.getUserToken(),
 					hyperWalletBusinessStakeHolder);

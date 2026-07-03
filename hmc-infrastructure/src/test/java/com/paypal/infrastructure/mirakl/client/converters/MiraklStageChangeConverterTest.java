@@ -45,7 +45,7 @@ class MiraklStageChangeConverterTest {
 
 		// then
 		IntStream.range(0, sourceUpdateShopList.size())
-				.forEach(index -> assertIndividualChange(sourceUpdateShopList.get(index), targetChanges.get(index)));
+			.forEach(index -> assertIndividualChange(sourceUpdateShopList.get(index), targetChanges.get(index)));
 	}
 
 	private static void assertIndividualChange(final MiraklUpdateShop sourceUpdateShop, final Change targetChange) {

@@ -96,8 +96,10 @@ public class WebhookTrafficAuditorAdapter extends AbstractTrafficAuditorAdapter<
 
 	private Map<String, String> getQueryParameters(final HttpServletRequest request) {
 		final String queryString = request.getQueryString() != null ? request.getQueryString() : "";
-		return Arrays.stream(queryString.split("&")).filter(s -> s.contains("=")).map(s -> s.split("="))
-				.collect(Collectors.toMap(s -> s[0], s -> s[1]));
+		return Arrays.stream(queryString.split("&"))
+			.filter(s -> s.contains("="))
+			.map(s -> s.split("="))
+			.collect(Collectors.toMap(s -> s[0], s -> s[1]));
 	}
 
 	@SuppressWarnings("java:S2696")

@@ -4,7 +4,6 @@ import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 import com.paypal.jobsystem.batchjobfailures.services.BatchJobFailedItemService;
-import com.paypal.jobsystem.batchjobfailures.support.AbstractFailedItemsBatchJobItemsExtractor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

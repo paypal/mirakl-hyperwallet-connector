@@ -15,7 +15,7 @@ public class StagedChangesOperationRegistry {
 
 	public StagedChangesOperationRegistry(final List<StagedChangesExecutor> stagedChangesExecutors) {
 		this.stringStagedChangesOperationsMap = stagedChangesExecutors.stream()
-				.collect(Collectors.toMap(StagedChangesExecutor::getExecutorInfo, Function.identity()));
+			.collect(Collectors.toMap(StagedChangesExecutor::getExecutorInfo, Function.identity()));
 	}
 
 	public StagedChangesExecutor getStagedChangesExecutor(final StagedChangesExecutorInfo stagedChangesExecutorInfo) {

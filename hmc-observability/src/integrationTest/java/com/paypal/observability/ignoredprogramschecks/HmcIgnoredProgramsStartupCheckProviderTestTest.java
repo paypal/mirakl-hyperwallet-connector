@@ -103,15 +103,15 @@ class HmcIgnoredProgramsStartupCheckProviderTestTest extends AbstractObservabili
 	@SuppressWarnings("unchecked")
 	void saveProgramsConfiguration() {
 		hyperwalletPrograms = new ArrayList<>((List<String>) ReflectionTestUtils
-				.getField(hyperwalletProgramsConfiguration, "hyperwalletProgramsNames"));
+			.getField(hyperwalletProgramsConfiguration, "hyperwalletProgramsNames"));
 		ignoredHyperwalletPrograms = new ArrayList<>((List<String>) ReflectionTestUtils
-				.getField(hyperwalletProgramsConfiguration, "ignoredHyperwalletPrograms"));
+			.getField(hyperwalletProgramsConfiguration, "ignoredHyperwalletPrograms"));
 		hyperwalletUserProgramTokens = new ArrayList<>((List<String>) ReflectionTestUtils
-				.getField(hyperwalletProgramsConfiguration, "hyperwalletUserProgramTokens"));
+			.getField(hyperwalletProgramsConfiguration, "hyperwalletUserProgramTokens"));
 		hyperwalletPaymentProgramTokens = new ArrayList<>((List<String>) ReflectionTestUtils
-				.getField(hyperwalletProgramsConfiguration, "hyperwalletPaymentProgramTokens"));
+			.getField(hyperwalletProgramsConfiguration, "hyperwalletPaymentProgramTokens"));
 		hyperwalletBankAccountTokens = new ArrayList<>((List<String>) ReflectionTestUtils
-				.getField(hyperwalletProgramsConfiguration, "hyperwalletBankAccountTokens"));
+			.getField(hyperwalletProgramsConfiguration, "hyperwalletBankAccountTokens"));
 	}
 
 	void reloadSavedProgramsConfiguration() {

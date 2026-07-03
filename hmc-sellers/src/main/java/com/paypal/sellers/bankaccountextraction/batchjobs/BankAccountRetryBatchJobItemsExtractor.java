@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Extract bank accounts for retry from the failed items cache.
@@ -35,7 +34,7 @@ public class BankAccountRetryBatchJobItemsExtractor
 		return miraklSellersExtractService.extractSellers(ids)
 				.stream()
 				.map(BankAccountExtractJobItem::new)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 

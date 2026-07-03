@@ -15,10 +15,12 @@ public class StartupCheckPrinterRegistry {
 	public StartupCheckPrinterRegistry(final List<StartupCheckPrinter> startupCheckPrinters,
 			final List<StartupCheckProvider> startupCheckProviders) {
 		final Map<Class<? extends StartupCheckProvider>, StartupCheckProvider> startupCheckProviderClassMap = startupCheckProviders
-				.stream().collect(Collectors.toMap(StartupCheckProvider::getClass, Function.identity()));
+			.stream()
+			.collect(Collectors.toMap(StartupCheckProvider::getClass, Function.identity()));
 
-		registry = startupCheckPrinters.stream().collect(Collectors.toMap(
-				x -> startupCheckProviderClassMap.get(x.getAssociatedStartupCheck()).getName(), Function.identity()));
+		registry = startupCheckPrinters.stream()
+			.collect(Collectors.toMap(x -> startupCheckProviderClassMap.get(x.getAssociatedStartupCheck()).getName(),
+					Function.identity()));
 	}
 
 	public StartupCheckPrinter getStartupCheckPrinter(final String name) {

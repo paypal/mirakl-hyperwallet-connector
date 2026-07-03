@@ -3,9 +3,9 @@ package com.paypal.sellers.stakeholdersextraction.services.strategies;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletBusinessStakeholder;
-import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
+import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.support.logging.HyperwalletLoggingErrorsUtil;
 import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import com.paypal.sellers.stakeholdersextraction.services.BusinessStakeholderTokenUpdateService;
@@ -65,21 +65,21 @@ class HyperWalletCreateBusinessStakeHolderServiceStrategyTest {
 	@Test
 	void execute_shouldReturnCreatedHyperWalletBusinessStakeHolder() {
 		when(businessStakeHolderModelHyperwalletBusinessStakeholderConverterMock.convert(businessStakeHolderMock))
-				.thenReturn(hyperwalletBusinessStakeholderMock);
+			.thenReturn(hyperwalletBusinessStakeholderMock);
 		when(hyperwalletClientMock.createBusinessStakeholder(TOKEN, hyperwalletBusinessStakeholderMock))
-				.thenReturn(hyperwalletBusinessStakeholderResponseMock);
+			.thenReturn(hyperwalletBusinessStakeholderResponseMock);
 		when(hyperwalletBusinessStakeholderResponseMock.getToken()).thenReturn(BUSINESS_STAKE_HOLDER_TOKEN);
 		when(businessStakeHolderMock.getUserToken()).thenReturn(TOKEN);
 		when(businessStakeHolderMock.toBuilder()).thenReturn(businessStakeHolderBuilderMock);
 		when(businessStakeHolderBuilderMock.token(BUSINESS_STAKE_HOLDER_TOKEN))
-				.thenReturn(businessStakeHolderBuilderMock);
+			.thenReturn(businessStakeHolderBuilderMock);
 		when(businessStakeHolderBuilderMock.justCreated(true)).thenReturn(businessStakeHolderBuilderMock);
 		when(businessStakeHolderBuilderMock.build()).thenReturn(businessStakeHolderResponseMock);
 		when(businessStakeHolderResponseMock.getClientUserId()).thenReturn(CLIENT_ID);
 		when(businessStakeHolderMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
-				.thenReturn(hyperwalletClientMock);
+			.thenReturn(hyperwalletClientMock);
 
 		final BusinessStakeHolderModel result = testObj.execute(businessStakeHolderMock);
 
@@ -92,17 +92,17 @@ class HyperWalletCreateBusinessStakeHolderServiceStrategyTest {
 	@Test
 	void execute_shouldSendEmailNotificationHyperwalletExceptionIsThrown() {
 		when(businessStakeHolderModelHyperwalletBusinessStakeholderConverterMock.convert(businessStakeHolderMock))
-				.thenReturn(hyperwalletBusinessStakeholderMock);
+			.thenReturn(hyperwalletBusinessStakeholderMock);
 		when(businessStakeHolderMock.getClientUserId()).thenReturn(CLIENT_ID);
 		when(businessStakeHolderMock.getUserToken()).thenReturn(TOKEN);
 		when(businessStakeHolderMock.getHyperwalletProgram()).thenReturn(HYPERWALLET_PROGRAM);
 
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
-				.thenReturn(hyperwalletClientMock);
+			.thenReturn(hyperwalletClientMock);
 
 		final HyperwalletException hyperwalletException = new HyperwalletException("Something went wrong");
-		doThrow(hyperwalletException).when(hyperwalletClientMock).createBusinessStakeholder(TOKEN,
-				hyperwalletBusinessStakeholderMock);
+		doThrow(hyperwalletException).when(hyperwalletClientMock)
+			.createBusinessStakeholder(TOKEN, hyperwalletBusinessStakeholderMock);
 
 		testObj.execute(businessStakeHolderMock);
 

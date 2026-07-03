@@ -1,8 +1,7 @@
 package com.paypal.invoices.extractioncreditnotes;
 
-import com.paypal.invoices.extractioncreditnotes.CreditNotesExtractJobConfig;
-import com.paypal.jobsystem.quartzadapter.job.QuartzBatchJobBean;
 import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNotesRetryBatchJob;
+import com.paypal.jobsystem.quartzadapter.job.QuartzBatchJobBean;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

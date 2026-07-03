@@ -26,9 +26,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -75,9 +73,10 @@ class NotificationProcessingQueueServiceImplTest {
 		when(notificationConverterMock.convert(notification)).thenReturn(entity);
 		when(notificationStorageServiceMock.getNotificationByWebHookToken(WEBHOOK_TOKEN)).thenReturn(Optional.empty());
 		when(notificationStorageServiceMock.existsNewerNotificationByObjectToken(eq(OBJECT_TOKEN), any()))
-				.thenReturn(false);
+			.thenReturn(false);
 		when(notificationEntityRepositoryMock.findActiveNotificationsSupersededBy(eq(OBJECT_TOKEN),
-				eq(NotificationType.USR), any())).thenReturn(List.of());
+				eq(NotificationType.USR), any()))
+			.thenReturn(List.of());
 
 		testObj.enqueue(notification);
 
@@ -96,9 +95,10 @@ class NotificationProcessingQueueServiceImplTest {
 		when(notificationConverterMock.convert(notification)).thenReturn(entity);
 		when(notificationStorageServiceMock.getNotificationByWebHookToken(WEBHOOK_TOKEN)).thenReturn(Optional.empty());
 		when(notificationStorageServiceMock.existsNewerNotificationByObjectToken(eq(OBJECT_TOKEN), any()))
-				.thenReturn(false);
+			.thenReturn(false);
 		when(notificationEntityRepositoryMock.findActiveNotificationsSupersededBy(eq(OBJECT_TOKEN),
-				eq(NotificationType.USR), any())).thenReturn(List.of());
+				eq(NotificationType.USR), any()))
+			.thenReturn(List.of());
 
 		testObj.enqueue(notification);
 
@@ -113,7 +113,7 @@ class NotificationProcessingQueueServiceImplTest {
 
 		when(notificationConverterMock.convert(notification)).thenReturn(entity);
 		when(notificationStorageServiceMock.getNotificationByWebHookToken(WEBHOOK_TOKEN))
-				.thenReturn(Optional.of(new NotificationEntity()));
+			.thenReturn(Optional.of(new NotificationEntity()));
 
 		testObj.enqueue(notification);
 
@@ -130,7 +130,7 @@ class NotificationProcessingQueueServiceImplTest {
 		when(notificationConverterMock.convert(notification)).thenReturn(entity);
 		when(notificationStorageServiceMock.getNotificationByWebHookToken(WEBHOOK_TOKEN)).thenReturn(Optional.empty());
 		when(notificationStorageServiceMock.existsNewerNotificationByObjectToken(eq(OBJECT_TOKEN), any()))
-				.thenReturn(true);
+			.thenReturn(true);
 
 		testObj.enqueue(notification);
 
@@ -147,9 +147,10 @@ class NotificationProcessingQueueServiceImplTest {
 		when(notificationConverterMock.convert(notification)).thenReturn(entity);
 		when(notificationStorageServiceMock.getNotificationByWebHookToken(WEBHOOK_TOKEN)).thenReturn(Optional.empty());
 		when(notificationStorageServiceMock.existsNewerNotificationByObjectToken(eq(OBJECT_TOKEN), any()))
-				.thenReturn(false);
+			.thenReturn(false);
 		when(notificationEntityRepositoryMock.findActiveNotificationsSupersededBy(eq(OBJECT_TOKEN),
-				eq(NotificationType.USR), any())).thenReturn(List.of());
+				eq(NotificationType.USR), any()))
+			.thenReturn(List.of());
 
 		testObj.enqueue(notification);
 
@@ -173,9 +174,10 @@ class NotificationProcessingQueueServiceImplTest {
 		when(notificationConverterMock.convert(notification)).thenReturn(incomingEntity);
 		when(notificationStorageServiceMock.getNotificationByWebHookToken(WEBHOOK_TOKEN)).thenReturn(Optional.empty());
 		when(notificationStorageServiceMock.existsNewerNotificationByObjectToken(eq(OBJECT_TOKEN), any()))
-				.thenReturn(false);
+			.thenReturn(false);
 		when(notificationEntityRepositoryMock.findActiveNotificationsSupersededBy(eq(OBJECT_TOKEN),
-				eq(NotificationType.USR), any())).thenReturn(List.of(olderPending));
+				eq(NotificationType.USR), any()))
+			.thenReturn(List.of(olderPending));
 
 		testObj.enqueue(notification);
 
@@ -197,9 +199,10 @@ class NotificationProcessingQueueServiceImplTest {
 		when(notificationConverterMock.convert(notification)).thenReturn(incomingEntity);
 		when(notificationStorageServiceMock.getNotificationByWebHookToken(WEBHOOK_TOKEN)).thenReturn(Optional.empty());
 		when(notificationStorageServiceMock.existsNewerNotificationByObjectToken(eq(OBJECT_TOKEN), any()))
-				.thenReturn(false);
+			.thenReturn(false);
 		when(notificationEntityRepositoryMock.findActiveNotificationsSupersededBy(eq(OBJECT_TOKEN),
-				eq(NotificationType.USR), any())).thenReturn(List.of(olderRetrying));
+				eq(NotificationType.USR), any()))
+			.thenReturn(List.of(olderRetrying));
 
 		testObj.enqueue(notification);
 
@@ -225,9 +228,10 @@ class NotificationProcessingQueueServiceImplTest {
 		when(notificationConverterMock.convert(notification)).thenReturn(incomingEntity);
 		when(notificationStorageServiceMock.getNotificationByWebHookToken(WEBHOOK_TOKEN)).thenReturn(Optional.empty());
 		when(notificationStorageServiceMock.existsNewerNotificationByObjectToken(eq(OBJECT_TOKEN), any()))
-				.thenReturn(false);
+			.thenReturn(false);
 		when(notificationEntityRepositoryMock.findActiveNotificationsSupersededBy(eq(OBJECT_TOKEN),
-				eq(NotificationType.USR), any())).thenReturn(List.of(older1, older2));
+				eq(NotificationType.USR), any()))
+			.thenReturn(List.of(older1, older2));
 
 		testObj.enqueue(notification);
 
@@ -245,9 +249,10 @@ class NotificationProcessingQueueServiceImplTest {
 		when(notificationConverterMock.convert(notification)).thenReturn(entity);
 		when(notificationStorageServiceMock.getNotificationByWebHookToken(WEBHOOK_TOKEN)).thenReturn(Optional.empty());
 		when(notificationStorageServiceMock.existsNewerNotificationByObjectToken(eq(OBJECT_TOKEN), any()))
-				.thenReturn(false);
+			.thenReturn(false);
 		when(notificationEntityRepositoryMock.findActiveNotificationsSupersededBy(eq(OBJECT_TOKEN),
-				eq(NotificationType.USR), any())).thenReturn(List.of());
+				eq(NotificationType.USR), any()))
+			.thenReturn(List.of());
 
 		testObj.enqueue(notification);
 
@@ -267,7 +272,7 @@ class NotificationProcessingQueueServiceImplTest {
 		when(notificationConverterMock.convert(notification)).thenReturn(entity);
 		when(notificationStorageServiceMock.getNotificationByWebHookToken(WEBHOOK_TOKEN)).thenReturn(Optional.empty());
 		when(notificationStorageServiceMock.existsNewerNotificationByObjectToken(eq(OBJECT_TOKEN), any()))
-				.thenReturn(true);
+			.thenReturn(true);
 
 		testObj.enqueue(notification);
 
@@ -281,7 +286,7 @@ class NotificationProcessingQueueServiceImplTest {
 	void fetchNextBatch_shouldDelegateToRepositoryWithCurrentTimeAndPageRequest() {
 		final List<NotificationEntity> expected = List.of(new NotificationEntity());
 		when(notificationEntityRepositoryMock.findNextBatchForProcessing(any(Date.class), eq(PageRequest.of(0, 10))))
-				.thenReturn(expected);
+			.thenReturn(expected);
 
 		final List<NotificationEntity> result = testObj.fetchNextBatch(10);
 
@@ -335,7 +340,7 @@ class NotificationProcessingQueueServiceImplTest {
 		final NotificationEntity entityAttempt1 = buildEntity(WEBHOOK_TOKEN, OBJECT_TOKEN, NotificationType.USR,
 				new Date(), 0);
 		when(notificationEntityRepositoryMock.findByWebHookToken(WEBHOOK_TOKEN))
-				.thenReturn(Optional.of(entityAttempt1));
+			.thenReturn(Optional.of(entityAttempt1));
 
 		final long before1 = System.currentTimeMillis();
 		testObj.updateStatus(Map.of(WEBHOOK_TOKEN, NotificationProcessingService.NotificationProcessingStatus.ERROR));
@@ -355,7 +360,7 @@ class NotificationProcessingQueueServiceImplTest {
 		final NotificationEntity entityAttempt2 = buildEntity(WEBHOOK_TOKEN, OBJECT_TOKEN, NotificationType.USR,
 				new Date(), 1);
 		when(notificationEntityRepositoryMock.findByWebHookToken(WEBHOOK_TOKEN))
-				.thenReturn(Optional.of(entityAttempt2));
+			.thenReturn(Optional.of(entityAttempt2));
 
 		final long before2 = System.currentTimeMillis();
 		testObj.updateStatus(Map.of(WEBHOOK_TOKEN, NotificationProcessingService.NotificationProcessingStatus.ERROR));

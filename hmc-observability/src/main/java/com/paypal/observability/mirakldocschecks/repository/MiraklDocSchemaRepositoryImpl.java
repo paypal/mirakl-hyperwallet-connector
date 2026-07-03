@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -14,7 +15,6 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -34,12 +34,12 @@ public class MiraklDocSchemaRepositoryImpl implements MiraklDocSchemaRepository 
 				.map(this::loadYaml)
 				.map(MiraklDocSchemaYaml::getDocuments)
 				.flatMap(Collection::stream)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 
 	private MiraklDocSchemaYaml loadYaml(final Resource resource) {
-		final Yaml yaml = new Yaml(new Constructor(MiraklDocSchemaYaml.class));
+		final Yaml yaml = new Yaml(new Constructor(MiraklDocSchemaYaml.class, new LoaderOptions()));
 		try (final InputStream is = resource.getInputStream()) {
 			return yaml.load(is);
 		}

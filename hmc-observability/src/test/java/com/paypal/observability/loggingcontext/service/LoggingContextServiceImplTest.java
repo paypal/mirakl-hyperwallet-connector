@@ -53,7 +53,7 @@ class LoggingContextServiceImplTest {
 	void updateLoggingTransaction_shouldCallRefreshBusinessTransactionAndPutTheTransactionIntoTheMDCAsString() {
 		final String serializedBusinessTransaction = "{id:102230, subtype:jobName}";
 		when(loggingTransactionSerializerMock.serialize(businessTransactionMock))
-				.thenReturn(serializedBusinessTransaction);
+			.thenReturn(serializedBusinessTransaction);
 
 		testObj.updateLoggingTransaction(businessTransactionMock);
 

@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class HyperwalletBankAccountCurrencyRestrictions {
 
@@ -21,19 +20,20 @@ public class HyperwalletBankAccountCurrencyRestrictions {
 	public List<HyperwalletBankAccountCurrencyInfo> getCurrenciesFor(final String bankAccountType,
 			final String bankAccountCountry) {
 		final CountryCurrencyEntry countryCurrencyEntry = countryCurrencies
-				.get(getKey(bankAccountType, bankAccountCountry));
+			.get(getKey(bankAccountType, bankAccountCountry));
 		return countryCurrencyEntry != null ? countryCurrencyEntry.getSupportedCurrencies() : List.of();
 	}
 
 	public List<CountryCurrencyEntry> getEntriesFor(final String country, final String currency,
 			final TransferType transferType) {
-		return countryCurrencies.values().stream()
-				.filter(countryCurrencyEntry -> countryCurrencyEntry.getCountry().equals(country))
-				.filter(countryCurrencyEntry -> countryCurrencyEntry.getSupportedCurrencies().stream()
-						.anyMatch(hyperwalletBankAccountCurrencyInfo -> hyperwalletBankAccountCurrencyInfo.getCurrency()
-								.equals(currency)
-								&& hyperwalletBankAccountCurrencyInfo.getTransferType().equals(transferType)))
-				.collect(Collectors.toList());
+		return countryCurrencies.values()
+			.stream()
+			.filter(countryCurrencyEntry -> countryCurrencyEntry.getCountry().equals(country))
+			.filter(countryCurrencyEntry -> countryCurrencyEntry.getSupportedCurrencies()
+				.stream()
+				.anyMatch(hyperwalletBankAccountCurrencyInfo -> hyperwalletBankAccountCurrencyInfo.getCurrency()
+					.equals(currency) && hyperwalletBankAccountCurrencyInfo.getTransferType().equals(transferType)))
+			.toList();
 	}
 
 	public int numEntries() {

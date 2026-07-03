@@ -1,9 +1,6 @@
 package com.paypal.sellers.bankaccountextraction.model;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
-import com.paypal.sellers.bankaccountextraction.model.ABABankAccountModel;
-import com.paypal.sellers.bankaccountextraction.model.BankAccountType;
-import com.paypal.sellers.bankaccountextraction.model.TransferType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -32,7 +29,8 @@ class ABABankAccountModelTest {
 	@Test
 	void setCountry_shouldThrowAnExceptionWhenCountry3IsocodeDoesNotExists() {
 		assertThatThrownBy(() -> ABABankAccountModel.builder().country("PAY").build())
-				.isInstanceOf(IllegalStateException.class).hasMessage("Country with isocode: [PAY] not valid");
+			.isInstanceOf(IllegalStateException.class)
+			.hasMessage("Country with isocode: [PAY] not valid");
 	}
 
 	@Test
@@ -46,7 +44,8 @@ class ABABankAccountModelTest {
 	@Test
 	void setTransferMethodCountry_shouldThrowAnExceptionWhenCountry3IsocodeDoesNotExists() {
 		assertThatThrownBy(() -> ABABankAccountModel.builder().transferMethodCountry("PAY").build())
-				.isInstanceOf(IllegalStateException.class).hasMessage("Country with isocode: [PAY] not valid");
+			.isInstanceOf(IllegalStateException.class)
+			.hasMessage("Country with isocode: [PAY] not valid");
 	}
 
 	@Test
@@ -60,8 +59,8 @@ class ABABankAccountModelTest {
 	@Test
 	void setTransferMethodCurrency_shouldThrowAnExceptionWhenCurrencyIsInvalid() {
 		assertThatThrownBy(() -> ABABankAccountModel.builder().transferMethodCurrency("INVALID_CURRENCY").build())
-				.isInstanceOf(IllegalStateException.class)
-				.hasMessage("Transfer method currency with code: [INVALID_CURRENCY] not valid");
+			.isInstanceOf(IllegalStateException.class)
+			.hasMessage("Transfer method currency with code: [INVALID_CURRENCY] not valid");
 	}
 
 	@Test

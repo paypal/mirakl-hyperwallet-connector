@@ -1,8 +1,8 @@
 package com.paypal.jobsystem.batchjobfailures.repositories;
 
-import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItemStatus;
 import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItemId;
+import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItemStatus;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

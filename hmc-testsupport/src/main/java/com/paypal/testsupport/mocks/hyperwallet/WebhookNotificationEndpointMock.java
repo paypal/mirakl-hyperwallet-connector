@@ -36,10 +36,10 @@ public class WebhookNotificationEndpointMock {
 	 */
 	public void getWebhookNotificationRequest(final HyperwalletWebhookNotification notification) {
 		mockServerClient
-				.when(request().withMethod(HttpMethod.GET.name())
-						.withPath(URL_PATTERN.formatted(notification.getToken())))
-				.respond(response().withStatusCode(HttpStatus.OK.value()).withContentType(MediaType.APPLICATION_JSON)
-						.withBody(toJson(notification)));
+			.when(request().withMethod(HttpMethod.GET.name()).withPath(URL_PATTERN.formatted(notification.getToken())))
+			.respond(response().withStatusCode(HttpStatus.OK.value())
+				.withContentType(MediaType.APPLICATION_JSON)
+				.withBody(toJson(notification)));
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class WebhookNotificationEndpointMock {
 	 */
 	public void getWebhookNotificationNotFoundRequest(final String webhookToken) {
 		mockServerClient.when(request().withMethod(HttpMethod.GET.name()).withPath(URL_PATTERN.formatted(webhookToken)))
-				.respond(response().withStatusCode(HttpStatus.NOT_FOUND.value()));
+			.respond(response().withStatusCode(HttpStatus.NOT_FOUND.value()));
 	}
 
 	private String toJson(final HyperwalletWebhookNotification notification) {

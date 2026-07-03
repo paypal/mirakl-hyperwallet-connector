@@ -82,24 +82,27 @@ class BusinessKYCUserLOAStatusNotificationStrategyTest {
 	void execute_shouldCallUpdateMiraklLOAStatus() {
 		mockProgramsConfiguration();
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(anyString()))
-				.thenReturn(hyperwalletMock);
+			.thenReturn(hyperwalletMock);
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getUserToken()).thenReturn(USER_TOKEN);
 		when(hyperwalletMock.getUser(USER_TOKEN)).thenReturn(hyperwalletUserMock);
 		when(hyperwalletUserMock.getClientUserId()).thenReturn(MIRAKL_SHOP_ID);
 		when(hyperwalletUserMock.getLetterOfAuthorizationStatus())
-				.thenReturn(HyperwalletUser.LetterOfAuthorizationStatus.REQUIRED);
+			.thenReturn(HyperwalletUser.LetterOfAuthorizationStatus.REQUIRED);
 		when(miraklMarketplacePlatformOperatorApiClientMock
-				.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenReturn(miraklUpdatedShopsMock);
+			.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenReturn(miraklUpdatedShopsMock);
 
 		testObj.execute(kycBusinessStakeholderStatusNotificationBodyModelMock);
 
 		final MiraklUpdateShopsRequest miraklUpdateShopsRequestArgumentCaptorValue = miraklUpdateShopsRequestArgumentCaptor
-				.getValue();
+			.getValue();
 		final MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue result = (MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue) miraklUpdateShopsRequestArgumentCaptorValue
-				.getShops().get(0).getAdditionalFieldValues().get(0);
+			.getShops()
+			.get(0)
+			.getAdditionalFieldValues()
+			.get(0);
 
 		assertThat(result.getCode())
-				.isEqualTo(KYCConstants.HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD);
+			.isEqualTo(KYCConstants.HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD);
 		assertThat(result.getValue()).isEqualTo(Boolean.TRUE.toString());
 	}
 
@@ -122,17 +125,20 @@ class BusinessKYCUserLOAStatusNotificationStrategyTest {
 			final HyperwalletUser.LetterOfAuthorizationStatus letterOfAuthorizationStatus,
 			final Boolean isLOARequired) {
 		when(miraklMarketplacePlatformOperatorApiClientMock
-				.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenReturn(miraklUpdatedShopsMock);
+			.updateShops(miraklUpdateShopsRequestArgumentCaptor.capture())).thenReturn(miraklUpdatedShopsMock);
 
 		testObj.updateMiraklLOAStatus(MIRAKL_SHOP_ID, letterOfAuthorizationStatus);
 
 		final MiraklUpdateShopsRequest miraklUpdateShopsRequestArgumentCaptorValue = miraklUpdateShopsRequestArgumentCaptor
-				.getValue();
+			.getValue();
 		final MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue result = (MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue) miraklUpdateShopsRequestArgumentCaptorValue
-				.getShops().get(0).getAdditionalFieldValues().get(0);
+			.getShops()
+			.get(0)
+			.getAdditionalFieldValues()
+			.get(0);
 
 		assertThat(result.getCode())
-				.isEqualTo(KYCConstants.HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD);
+			.isEqualTo(KYCConstants.HYPERWALLET_KYC_REQUIRED_PROOF_AUTHORIZATION_BUSINESS_FIELD);
 		assertThat(result.getValue()).isEqualTo(isLOARequired.toString());
 	}
 
@@ -141,10 +147,10 @@ class BusinessKYCUserLOAStatusNotificationStrategyTest {
 	void isApplicable_shouldReturnTrue_whenBusinessStakeholderIsDirectorAndBusinessContact(final Boolean isDirector,
 			final Boolean isBusinessContact, final Boolean resultExpected) {
 		when(kycBusinessStakeholderStatusNotificationBodyModelMock.getIsBusinessContact())
-				.thenReturn(isBusinessContact);
+			.thenReturn(isBusinessContact);
 		lenient().when(kycBusinessStakeholderStatusNotificationBodyModelMock.getIsDirector()).thenReturn(isDirector);
 		lenient().when(kycBusinessStakeholderStatusNotificationBodyModelMock.getHyperwalletWebhookNotificationType())
-				.thenReturn(KYCConstants.HwWebhookNotificationType.USERS_BUSINESS_STAKEHOLDERS_CREATED);
+			.thenReturn(KYCConstants.HwWebhookNotificationType.USERS_BUSINESS_STAKEHOLDERS_CREATED);
 
 		final boolean result = testObj.isApplicable(kycBusinessStakeholderStatusNotificationBodyModelMock);
 
@@ -169,7 +175,7 @@ class BusinessKYCUserLOAStatusNotificationStrategyTest {
 
 	private void mockProgramsConfiguration() {
 		lenient().when(hyperwalletProgramsConfigurationMock.getAllProgramConfigurations())
-				.thenReturn(List.of(hyperwalletProgramConfiguration1Mock, hyperwalletProgramConfiguration2Mock));
+			.thenReturn(List.of(hyperwalletProgramConfiguration1Mock, hyperwalletProgramConfiguration2Mock));
 		lenient().when(hyperwalletProgramConfiguration1Mock.getProgramName()).thenReturn(DEFAULT_PROGRAM);
 		lenient().when(hyperwalletProgramConfiguration1Mock.getUsersProgramToken()).thenReturn(DEFAULT_TOKEN);
 		lenient().when(hyperwalletProgramConfiguration2Mock.getProgramName()).thenReturn(UK_PROGRAM);

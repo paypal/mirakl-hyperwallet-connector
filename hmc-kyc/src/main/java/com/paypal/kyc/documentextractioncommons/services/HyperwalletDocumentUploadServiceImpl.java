@@ -43,7 +43,7 @@ public class HyperwalletDocumentUploadServiceImpl implements HyperwalletDocument
 			final List<HyperwalletVerificationDocument> hyperwalletVerificationDocuments) {
 		try {
 			final Hyperwallet hyperwallet = userHyperwalletSDKService
-					.getHyperwalletInstanceByHyperwalletProgram(kycDocumentInfoModel.getHyperwalletProgram());
+				.getHyperwalletInstanceByHyperwalletProgram(kycDocumentInfoModel.getHyperwalletProgram());
 
 			invokeHyperwalletAPI(kycDocumentInfoModel, hyperwalletVerificationDocuments, hyperwallet);
 
@@ -86,8 +86,9 @@ public class HyperwalletDocumentUploadServiceImpl implements HyperwalletDocument
 			final List<HyperwalletVerificationDocument> hyperwalletVerificationDocuments) {
 
 		final String documentsToUpload = hyperwalletVerificationDocuments.stream()
-				.map(hyperwalletVerificationDocument -> hyperwalletVerificationDocument.getUploadFiles().keySet())
-				.flatMap(Collection::stream).collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR));
+			.map(hyperwalletVerificationDocument -> hyperwalletVerificationDocument.getUploadFiles().keySet())
+			.flatMap(Collection::stream)
+			.collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR));
 
 		log.info("Documents [{}] uploaded for {}", documentsToUpload,
 				kycDocumentInfoModel.getDocumentTracingIdentifier());

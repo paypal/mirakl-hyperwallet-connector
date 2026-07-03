@@ -35,7 +35,8 @@ public abstract class AbstractDynamicWindowDeltaBatchJobItemsExtractor<C extends
 	protected Date getCalculatedDelta(final BatchJobContext context) {
 		final LocalDateTime searchJobsFrom = TimeMachine.now().minusDays(extractionMaxDays);
 		final BatchJobTrackInfoEntity batchJobTrackInfoEntity = batchJobTrackingService
-				.findLastJobExecutionWithNonEmptyExtraction(context.getJobName(), searchJobsFrom).orElse(null);
+			.findLastJobExecutionWithNonEmptyExtraction(context.getJobName(), searchJobsFrom)
+			.orElse(null);
 
 		return batchJobTrackInfoEntity != null ? DateUtil.convertToDate(batchJobTrackInfoEntity.getStartTime(), UTC)
 				: DateUtil.convertToDate(searchJobsFrom, UTC);

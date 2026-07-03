@@ -45,7 +45,9 @@ public class NotificationProcessingServiceImpl implements NotificationProcessing
 	protected NotificationProcessingStatus processHyperwalletWebhookNotification(
 			final HyperwalletWebhookNotification notification, final NotificationEntity entity) {
 		final NotificationHandler handler = notificationHandlers.stream()
-				.filter(h -> h.supports(entity.getNotificationType())).findFirst().orElse(null);
+			.filter(h -> h.supports(entity.getNotificationType()))
+			.findFirst()
+			.orElse(null);
 
 		if (handler == null) {
 			log.warn("No handler found for notification type [{}] — skipping notification [{}]",

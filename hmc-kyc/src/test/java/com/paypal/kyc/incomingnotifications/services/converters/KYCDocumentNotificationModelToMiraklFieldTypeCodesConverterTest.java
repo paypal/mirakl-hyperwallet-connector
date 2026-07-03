@@ -2,7 +2,6 @@ package com.paypal.kyc.incomingnotifications.services.converters;
 
 import com.paypal.kyc.incomingnotifications.model.KYCDocumentNotificationModel;
 import com.paypal.kyc.incomingnotifications.model.KYCDocumentTypeEnum;
-import com.paypal.kyc.incomingnotifications.services.converters.KYCDocumentNotificationModelToMiraklFieldTypeCodesConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

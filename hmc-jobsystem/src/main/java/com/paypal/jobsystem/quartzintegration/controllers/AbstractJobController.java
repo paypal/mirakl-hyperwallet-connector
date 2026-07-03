@@ -1,8 +1,8 @@
 package com.paypal.jobsystem.quartzintegration.controllers;
 
+import com.paypal.jobsystem.quartzintegration.services.JobService;
 import com.paypal.jobsystem.quartzintegration.support.AbstractDeltaInfoJob;
 import jakarta.annotation.Resource;
-import com.paypal.jobsystem.quartzintegration.services.JobService;
 import org.quartz.Job;
 import org.quartz.SchedulerException;
 

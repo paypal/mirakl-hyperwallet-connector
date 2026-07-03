@@ -9,7 +9,7 @@ import com.paypal.testsupport.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
@@ -32,15 +32,17 @@ class ChangeStagingManagementTest extends AbstractIntegrationTest {
 	@Autowired
 	private StagedChangesRepository stagedChangesRepository;
 
-	@SpyBean
+	@MockitoSpyBean
 	private StagedChangesPoller stagedChangesPoller;
 
 	@Test
 	void shouldGetStagedChanges() throws Exception {
 		stagedChangesRepository.saveAll(entities(10));
 
-		this.mockMvc.perform(get("/management/staged-changes/")).andDo(print()).andExpect(status().isOk())
-				.andExpect(jsonPath("$.page.totalElements").value(10));
+		this.mockMvc.perform(get("/management/staged-changes/"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.page.totalElements").value(10));
 	}
 
 	@Test

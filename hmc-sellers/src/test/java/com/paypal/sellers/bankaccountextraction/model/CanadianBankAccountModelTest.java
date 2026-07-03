@@ -1,9 +1,6 @@
 package com.paypal.sellers.bankaccountextraction.model;
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
-import com.paypal.sellers.bankaccountextraction.model.BankAccountType;
-import com.paypal.sellers.bankaccountextraction.model.CanadianBankAccountModel;
-import com.paypal.sellers.bankaccountextraction.model.TransferType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -32,13 +29,15 @@ class CanadianBankAccountModelTest {
 	@Test
 	void setCountry_shouldThrowAnExceptionWhenCountry3IsocodeDoesNotExists() {
 		assertThatThrownBy(() -> CanadianBankAccountModel.builder().country("PAY").build())
-				.isInstanceOf(IllegalStateException.class).hasMessage("Country with isocode: [PAY] not valid");
+			.isInstanceOf(IllegalStateException.class)
+			.hasMessage("Country with isocode: [PAY] not valid");
 	}
 
 	@Test
 	void setTransferMethodCountry_shouldConvertTo2LettersWhenCountry3IsocodeExists() {
-		final CanadianBankAccountModel testObj = CanadianBankAccountModel.builder().transferMethodCountry("USA")
-				.build();
+		final CanadianBankAccountModel testObj = CanadianBankAccountModel.builder()
+			.transferMethodCountry("USA")
+			.build();
 
 		assertThat(testObj.getTransferMethodCountry()).isEqualTo("US");
 	}
@@ -47,13 +46,15 @@ class CanadianBankAccountModelTest {
 	@Test
 	void setTransferMethodCountry_shouldThrowAnExceptionWhenCountry3IsocodeDoesNotExists() {
 		assertThatThrownBy(() -> CanadianBankAccountModel.builder().transferMethodCountry("PAY").build())
-				.isInstanceOf(IllegalStateException.class).hasMessage("Country with isocode: [PAY] not valid");
+			.isInstanceOf(IllegalStateException.class)
+			.hasMessage("Country with isocode: [PAY] not valid");
 	}
 
 	@Test
 	void setTransferMethodCurrency_shouldSetCurrencyIsoCodeWhenCurrencyIsoCodeIsValid() {
-		final CanadianBankAccountModel testObj = CanadianBankAccountModel.builder().transferMethodCurrency("EUR")
-				.build();
+		final CanadianBankAccountModel testObj = CanadianBankAccountModel.builder()
+			.transferMethodCurrency("EUR")
+			.build();
 
 		assertThat(testObj.getTransferMethodCurrency()).isEqualTo("EUR");
 	}
@@ -62,8 +63,8 @@ class CanadianBankAccountModelTest {
 	@Test
 	void setTransferMethodCurrency_shouldThrowAnExceptionWhenCurrencyIsInvalid() {
 		assertThatThrownBy(() -> CanadianBankAccountModel.builder().transferMethodCurrency("INVALID_CURRENCY").build())
-				.isInstanceOf(IllegalStateException.class)
-				.hasMessage("Transfer method currency with code: [INVALID_CURRENCY] not valid");
+			.isInstanceOf(IllegalStateException.class)
+			.hasMessage("Transfer method currency with code: [INVALID_CURRENCY] not valid");
 	}
 
 	@Test
@@ -80,8 +81,9 @@ class CanadianBankAccountModelTest {
 
 		final CanadianBankAccountModel bankAccountModel1 = createCanadianBankAccountModelObject(TOKEN_VALUE_1);
 		final CanadianBankAccountModel bankAccountModel2 = createCanadianBankAccountModelObject(TOKEN_VALUE_2);
-		final CanadianBankAccountModel copyBankAccountModel = bankAccountModel1.toBuilder().token(TOKEN_VALUE_2)
-				.build();
+		final CanadianBankAccountModel copyBankAccountModel = bankAccountModel1.toBuilder()
+			.token(TOKEN_VALUE_2)
+			.build();
 
 		assertThat(bankAccountModel2).isEqualTo(copyBankAccountModel);
 	}

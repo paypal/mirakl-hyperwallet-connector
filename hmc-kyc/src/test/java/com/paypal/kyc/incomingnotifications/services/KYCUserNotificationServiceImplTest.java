@@ -1,13 +1,10 @@
 package com.paypal.kyc.incomingnotifications.services;
 
 import com.hyperwallet.clientsdk.model.HyperwalletWebhookNotification;
-import com.paypal.kyc.incomingnotifications.services.converters.HyperWalletObjectToKYCUserDocumentFlagsNotificationBodyModelConverter;
-import com.paypal.kyc.incomingnotifications.services.converters.HyperWalletObjectToKYCUserStatusNotificationBodyModelConverter;
 import com.paypal.kyc.incomingnotifications.model.KYCUserDocumentFlagsNotificationBodyModel;
 import com.paypal.kyc.incomingnotifications.model.KYCUserStatusNotificationBodyModel;
-import com.paypal.kyc.incomingnotifications.services.KYCUserNotificationServiceImpl;
-import com.paypal.kyc.incomingnotifications.services.KYCUserDocumentFlagsExecutor;
-import com.paypal.kyc.incomingnotifications.services.KYCUserStatusExecutor;
+import com.paypal.kyc.incomingnotifications.services.converters.HyperWalletObjectToKYCUserDocumentFlagsNotificationBodyModelConverter;
+import com.paypal.kyc.incomingnotifications.services.converters.HyperWalletObjectToKYCUserStatusNotificationBodyModelConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -57,7 +54,7 @@ class KYCUserNotificationServiceImplTest {
 	@Test
 	void processKycUserNotification_shouldExecuteStrategy() {
 		when(kycUserStatusNotificationBodyModelConverterMock.convert(nonTransformedNotificationBodyObjectMock))
-				.thenReturn(kycUserStatusNotificationBodyModelMock);
+			.thenReturn(kycUserStatusNotificationBodyModelMock);
 
 		testObj.updateUserKYCStatus(hyperwalletWebhookNotificationMock);
 
@@ -67,7 +64,7 @@ class KYCUserNotificationServiceImplTest {
 	@Test
 	void updateUserDocumentsFlags_shouldExecuteDocumentStrategy() {
 		when(kycUserDocumentFlagsNotificationBodyModelConverterMock.convert(nonTransformedNotificationBodyObjectMock))
-				.thenReturn(kycUserDocumentFlagsNotificationBodyModelMock);
+			.thenReturn(kycUserDocumentFlagsNotificationBodyModelMock);
 
 		testObj.updateUserDocumentsFlags(hyperwalletWebhookNotificationMock);
 

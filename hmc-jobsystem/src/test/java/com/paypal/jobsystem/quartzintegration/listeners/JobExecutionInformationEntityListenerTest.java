@@ -1,11 +1,11 @@
 package com.paypal.jobsystem.quartzintegration.listeners;
 
-import com.paypal.jobsystem.quartzintegration.repositories.entities.JobExecutionInformationEntity;
-import com.paypal.jobsystem.quartzintegration.repositories.entities.JobStatus;
-import com.paypal.jobsystem.quartzintegration.listener.JobExecutionInformationListener;
-import com.paypal.jobsystem.quartzintegration.repositories.JobExecutionInformationRepository;
 import com.paypal.infrastructure.support.date.DateUtil;
 import com.paypal.infrastructure.support.date.TimeMachine;
+import com.paypal.jobsystem.quartzintegration.listener.JobExecutionInformationListener;
+import com.paypal.jobsystem.quartzintegration.repositories.JobExecutionInformationRepository;
+import com.paypal.jobsystem.quartzintegration.repositories.entities.JobExecutionInformationEntity;
+import com.paypal.jobsystem.quartzintegration.repositories.entities.JobStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -56,7 +56,7 @@ class JobExecutionInformationEntityListenerTest {
 		final JobDetail jobDetail = JobBuilder.newJob(MyJob.class).withIdentity(MY_JOB_NAME_EXECUTION).build();
 		when(contextMock.getJobDetail()).thenReturn(jobDetail);
 		when(jobExecutionInformationRepositoryMock.save(any(JobExecutionInformationEntity.class)))
-				.thenReturn(savedJobExecutionInformationEntityMock);
+			.thenReturn(savedJobExecutionInformationEntityMock);
 
 		testObj.jobToBeExecuted(contextMock);
 

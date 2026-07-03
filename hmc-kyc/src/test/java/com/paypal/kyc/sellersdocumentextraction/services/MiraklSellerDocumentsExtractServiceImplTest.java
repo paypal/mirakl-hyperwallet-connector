@@ -8,14 +8,14 @@ import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
-import com.paypal.infrastructure.support.converter.Converter;
-import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
+import com.paypal.infrastructure.support.converter.Converter;
+import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentInfoModel;
-import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentsExtractionResult;
+import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -99,88 +98,95 @@ class MiraklSellerDocumentsExtractServiceImplTest {
 	void extractProofOfIdentityAndBusinessSellerDocuments_shouldReturnAllKycDocumentInfoForShopsFlaggedAsKYCRequiredAndExistingOnHyperwallet() {
 		when(miraklGetShopsRequestConverterMock.convert(deltaMock)).thenReturn(miraklGetShopsRequestMock);
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestMock))
-				.thenReturn(miraklShopsResponseMock);
+			.thenReturn(miraklShopsResponseMock);
 
 		when(kycDocumentInfoModelRequiringKYCSellerMock.isRequiresKYC()).thenReturn(true);
 		when(kycDocumentInfoModelRequiringKYCSellerMock.getUserToken()).thenReturn(USER_TOKEN);
 		when(kycDocumentInfoModelRequiringKYCSellerMock.hasSelectedDocumentControlFields()).thenReturn(true);
 		when(kycDocumentInfoModelRequiringKYCWithoutTokenSellerMock.isRequiresKYC()).thenReturn(true);
 		when(kycDocumentInfoModelRequiringKYCWithoutTokenSellerMock.hasSelectedDocumentControlFields())
-				.thenReturn(true);
+			.thenReturn(true);
 		when(kycDocumentInfoModelRequiringKYCWithoutValidationSellerMock.isRequiresKYC()).thenReturn(true);
 
 		when(miraklShopsResponseMock.getShops())
-				.thenReturn(List.of(miraklShopRequiringKYCMock, miraklShopRequiringKYCWithoutTokenMock,
-						miraklShopRequiringKYCWithoutValidationMock, miraklShopNonRequiringKYCMock));
+			.thenReturn(List.of(miraklShopRequiringKYCMock, miraklShopRequiringKYCWithoutTokenMock,
+					miraklShopRequiringKYCWithoutValidationMock, miraklShopNonRequiringKYCMock));
 		when(miraklShopKyCDocumentInfoModelConverterMock.convert(miraklShopRequiringKYCMock))
-				.thenReturn(kycDocumentInfoModelRequiringKYCSellerMock);
+			.thenReturn(kycDocumentInfoModelRequiringKYCSellerMock);
 		when(miraklShopKyCDocumentInfoModelConverterMock.convert(miraklShopRequiringKYCWithoutTokenMock))
-				.thenReturn(kycDocumentInfoModelRequiringKYCWithoutTokenSellerMock);
+			.thenReturn(kycDocumentInfoModelRequiringKYCWithoutTokenSellerMock);
 		when(miraklShopKyCDocumentInfoModelConverterMock.convert(miraklShopRequiringKYCWithoutValidationMock))
-				.thenReturn(kycDocumentInfoModelRequiringKYCWithoutValidationSellerMock);
+			.thenReturn(kycDocumentInfoModelRequiringKYCWithoutValidationSellerMock);
 		when(miraklShopKyCDocumentInfoModelConverterMock.convert(miraklShopNonRequiringKYCMock))
-				.thenReturn(kycDocumentInfoModelNonRequiringKYCSellerMock);
+			.thenReturn(kycDocumentInfoModelNonRequiringKYCSellerMock);
 		when(miraklSellerDocumentDownloadExtractServiceMock
-				.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCSellerMock))
-						.thenReturn(kycDocumentInfoModelRequiringKYCPopulatedSellerMock);
+			.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCSellerMock))
+			.thenReturn(kycDocumentInfoModelRequiringKYCPopulatedSellerMock);
 
 		final KYCDocumentsExtractionResult<KYCDocumentSellerInfoModel> result = testObj
-				.extractProofOfIdentityAndBusinessSellerDocuments(deltaMock);
+			.extractProofOfIdentityAndBusinessSellerDocuments(deltaMock);
 
 		verify(miraklSellerDocumentDownloadExtractServiceMock)
-				.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCSellerMock);
+			.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCSellerMock);
 		verify(miraklSellerDocumentDownloadExtractServiceMock, never())
-				.getDocumentsSelectedBySeller(kycDocumentInfoModelNonRequiringKYCSellerMock);
+			.getDocumentsSelectedBySeller(kycDocumentInfoModelNonRequiringKYCSellerMock);
 		verify(miraklSellerDocumentDownloadExtractServiceMock, never())
-				.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCWithoutTokenSellerMock);
+			.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCWithoutTokenSellerMock);
 		verify(miraklSellerDocumentDownloadExtractServiceMock, never())
-				.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCWithoutValidationSellerMock);
+			.getDocumentsSelectedBySeller(kycDocumentInfoModelRequiringKYCWithoutValidationSellerMock);
 		assertThat(result.getExtractedDocuments())
-				.containsExactlyInAnyOrder(kycDocumentInfoModelRequiringKYCPopulatedSellerMock);
+			.containsExactlyInAnyOrder(kycDocumentInfoModelRequiringKYCPopulatedSellerMock);
 	}
 
 	@Test
 	void extractProofOfIdentityAndBusinessSellerDocuments_shouldReturnAnEmptyListWhenNoShopsHasBeenUpdatedSinceDelta() {
 		when(miraklGetShopsRequestConverterMock.convert(deltaMock)).thenReturn(miraklGetShopsRequestMock);
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestMock))
-				.thenReturn(miraklShopsResponseMock);
+			.thenReturn(miraklShopsResponseMock);
 		when(miraklShopsResponseMock.getShops()).thenReturn(null);
 
 		final KYCDocumentsExtractionResult<KYCDocumentSellerInfoModel> result = testObj
-				.extractProofOfIdentityAndBusinessSellerDocuments(deltaMock);
+			.extractProofOfIdentityAndBusinessSellerDocuments(deltaMock);
 
 		assertThat(result.getExtractedDocuments()).isEmpty();
 	}
 
 	@Test
 	void setFlagToPushSellerDocumentsToFalse_shouldCallMiraklWithTheClientUsersIdPassedAsParam() {
-		final KYCDocumentSellerInfoModel kycDocumentOne = KYCDocumentSellerInfoModel.builder().clientUserId("2000")
-				.build();
+		final KYCDocumentSellerInfoModel kycDocumentOne = KYCDocumentSellerInfoModel.builder()
+			.clientUserId("2000")
+			.build();
 
 		when(miraklMarketplacePlatformOperatorApiClientMock.updateShops(any(MiraklUpdateShopsRequest.class)))
-				.thenReturn(miraklUpdateShopsMock);
+			.thenReturn(miraklUpdateShopsMock);
 
 		testObj.setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(kycDocumentOne);
 
 		verify(miraklMarketplacePlatformOperatorApiClientMock).updateShops(miraklUpdateShopArgumentCaptor.capture());
 
 		final MiraklUpdateShopsRequest miraklUpdateShopRequest = miraklUpdateShopArgumentCaptor.getValue();
-		final List<Long> updatedSellerIdList = miraklUpdateShopRequest.getShops().stream()
-				.map(MiraklUpdateShop::getShopId).collect(Collectors.toList());
+		final List<Long> updatedSellerIdList = miraklUpdateShopRequest.getShops()
+			.stream()
+			.map(MiraklUpdateShop::getShopId)
+			.toList();
 
-		final List<String> updatedFlagValueList = miraklUpdateShopRequest.getShops().stream()
-				.map(MiraklUpdateShop::getAdditionalFieldValues).flatMap(Collection::stream)
-				.filter(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class::isInstance)
-				.map(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class::cast)
-				.map(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue::getValue)
-				.collect(Collectors.toList());
+		final List<String> updatedFlagValueList = miraklUpdateShopRequest.getShops()
+			.stream()
+			.map(MiraklUpdateShop::getAdditionalFieldValues)
+			.flatMap(Collection::stream)
+			.filter(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class::isInstance)
+			.map(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class::cast)
+			.map(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue::getValue)
+			.toList();
 
-		final List<String> updatedFlagCodeList = miraklUpdateShopRequest.getShops().stream()
-				.map(MiraklUpdateShop::getAdditionalFieldValues).flatMap(Collection::stream)
-				.filter(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class::isInstance)
-				.map(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class::cast)
-				.map(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue::getCode)
-				.collect(Collectors.toList());
+		final List<String> updatedFlagCodeList = miraklUpdateShopRequest.getShops()
+			.stream()
+			.map(MiraklUpdateShop::getAdditionalFieldValues)
+			.flatMap(Collection::stream)
+			.filter(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class::isInstance)
+			.map(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class::cast)
+			.map(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue::getCode)
+			.toList();
 
 		assertThat(updatedSellerIdList).containsOnly(2000L);
 		assertThat(updatedFlagValueList).containsExactly("false");
@@ -189,26 +195,27 @@ class MiraklSellerDocumentsExtractServiceImplTest {
 
 	@Test
 	void setFlagToPushSellerDocumentsToFalse_shouldSendEmailNotificationWhenMiraklExceptionIsThrown() {
-		final KYCDocumentSellerInfoModel kycDocumentOne = KYCDocumentSellerInfoModel.builder().clientUserId("2000")
-				.build();
+		final KYCDocumentSellerInfoModel kycDocumentOne = KYCDocumentSellerInfoModel.builder()
+			.clientUserId("2000")
+			.build();
 
 		final MiraklException miraklException = new MiraklException("Something went wrong");
 
 		doThrow(miraklException).when(miraklMarketplacePlatformOperatorApiClientMock)
-				.updateShops(any(MiraklUpdateShopsRequest.class));
+			.updateShops(any(MiraklUpdateShopsRequest.class));
 
 		assertThatThrownBy(() -> testObj.setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(kycDocumentOne))
-				.isInstanceOf(HMCMiraklAPIException.class);
+			.isInstanceOf(HMCMiraklAPIException.class);
 
 		verify(kycMailNotificationUtilMock).sendPlainTextEmail("Issue setting push document flags to false in Mirakl",
 				"Something went wrong setting push document flag to false in Mirakl for Shop Id 2000%n%s"
-						.formatted(MiraklLoggingErrorsUtil.stringify(miraklException)));
+					.formatted(MiraklLoggingErrorsUtil.stringify(miraklException)));
 	}
 
 	@Test
 	void extractMiraklShop_shouldMiraklShopWhenItExistsInMirakl() {
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(Mockito.any(MiraklGetShopsRequest.class)))
-				.thenReturn(miraklShopsMock);
+			.thenReturn(miraklShopsMock);
 		when(miraklShopsMock.getShops()).thenReturn(List.of(miraklShopMock));
 		when(miraklShopMock.getId()).thenReturn(SHOP_ID);
 
@@ -220,23 +227,23 @@ class MiraklSellerDocumentsExtractServiceImplTest {
 	@Test
 	void extractKYCSellerDocuments_shouldCallPopulateMiraklShopDocuments() {
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(Mockito.any(MiraklGetShopsRequest.class)))
-				.thenReturn(miraklShopsMock);
+			.thenReturn(miraklShopsMock);
 		when(miraklShopsMock.getShops()).thenReturn(List.of(miraklShopMock));
 		when(miraklShopMock.getId()).thenReturn(SHOP_ID);
 		when(miraklShopKyCDocumentInfoModelConverterMock.convert(miraklShopMock))
-				.thenReturn(kycDocumentInfoModelNonRequiringKYCSellerMock);
+			.thenReturn(kycDocumentInfoModelNonRequiringKYCSellerMock);
 
 		testObj.extractKYCSellerDocuments(SHOP_ID);
 
 		verify(miraklShopKyCDocumentInfoModelConverterMock).convert(miraklShopMock);
 		verify(miraklSellerDocumentDownloadExtractServiceMock)
-				.populateMiraklShopDocuments(kycDocumentInfoModelNonRequiringKYCSellerMock);
+			.populateMiraklShopDocuments(kycDocumentInfoModelNonRequiringKYCSellerMock);
 	}
 
 	@Test
 	void extractKYCSellerDocuments_shouldNotCallPopulateMiraklShopDocuments_whenShopIdDoesNotExist() {
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(Mockito.any(MiraklGetShopsRequest.class)))
-				.thenReturn(miraklShopsMock);
+			.thenReturn(miraklShopsMock);
 		when(miraklShopsMock.getShops()).thenReturn(List.of());
 
 		final KYCDocumentInfoModel result = testObj.extractKYCSellerDocuments(SHOP_ID);
@@ -244,7 +251,7 @@ class MiraklSellerDocumentsExtractServiceImplTest {
 		assertThat(result).isNull();
 		verify(miraklShopKyCDocumentInfoModelConverterMock, never()).convert(miraklShopMock);
 		verify(miraklSellerDocumentDownloadExtractServiceMock, never())
-				.populateMiraklShopDocuments(isA(KYCDocumentSellerInfoModel.class));
+			.populateMiraklShopDocuments(isA(KYCDocumentSellerInfoModel.class));
 	}
 
 }

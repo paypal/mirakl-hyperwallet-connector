@@ -2,10 +2,9 @@ package com.paypal.kyc.incomingnotifications.services.userstatus;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.mmp.domain.shop.MiraklShopKycStatus;
-
-import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
+import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.kyc.incomingnotifications.model.KYCDocumentNotificationModel;
 import com.paypal.kyc.incomingnotifications.model.KYCUserStatusNotificationBodyModel;
 import com.paypal.kyc.incomingnotifications.services.KYCRejectionReasonService;

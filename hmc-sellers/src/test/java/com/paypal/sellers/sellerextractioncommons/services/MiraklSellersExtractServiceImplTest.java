@@ -7,8 +7,8 @@ import com.mirakl.client.mmp.domain.shop.MiraklShops;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
-import com.paypal.infrastructure.support.strategy.StrategyExecutor;
 import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
+import com.paypal.infrastructure.support.strategy.StrategyExecutor;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,10 +71,10 @@ class MiraklSellersExtractServiceImplTest {
 	void extractSellers_ShouldReturnIndividualAndProfessionalShopsSellerModels() {
 		when(miraklShops.getShops()).thenReturn(List.of(individualShopMock, professionalShopMock));
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestArgumentCaptor.capture()))
-				.thenReturn(miraklShops);
+			.thenReturn(miraklShops);
 		when(miraklShopSellerModelStrategyExecutor.execute(individualShopMock)).thenReturn(individualSellerModelMock);
 		when(miraklShopSellerModelStrategyExecutor.execute(professionalShopMock))
-				.thenReturn(professionalSellerModelMock);
+			.thenReturn(professionalSellerModelMock);
 		when(individualShopMock.getId()).thenReturn(INDIVIDUAL_SHOP);
 		when(professionalShopMock.getId()).thenReturn(PROFESSIONAL_SHOP_ID);
 		when(individualSellerModelMock.hasAcceptedTermsAndConditions()).thenReturn(Boolean.TRUE);
@@ -89,10 +89,10 @@ class MiraklSellersExtractServiceImplTest {
 	void extractSellers_ShouldReturnIndividualAndProfessionalShopsSellerModels_whenShopIdsAreReceived() {
 		when(miraklShops.getShops()).thenReturn(List.of(individualShopMock, professionalShopMock));
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestArgumentCaptor.capture()))
-				.thenReturn(miraklShops);
+			.thenReturn(miraklShops);
 		when(miraklShopSellerModelStrategyExecutor.execute(individualShopMock)).thenReturn(individualSellerModelMock);
 		when(miraklShopSellerModelStrategyExecutor.execute(professionalShopMock))
-				.thenReturn(professionalSellerModelMock);
+			.thenReturn(professionalSellerModelMock);
 
 		final List<SellerModel> result = testObj.extractSellers(List.of(INDIVIDUAL_SHOP, PROFESSIONAL_SHOP_ID));
 
@@ -104,13 +104,13 @@ class MiraklSellersExtractServiceImplTest {
 		final MiraklApiException miraklApiException = new MiraklApiException(
 				new MiraklErrorResponseBean(1, "Something went wrong", "correlation-id"));
 		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
-				.getShops(any(MiraklGetShopsRequest.class));
+			.getShops(any(MiraklGetShopsRequest.class));
 
 		testObj.extractSellers(dateMock);
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail("Issue detected getting shop information in Mirakl",
 				(ERROR_MESSAGE_PREFIX + "Something went wrong getting shop information since [dateMock]%n%s")
-						.formatted(MiraklLoggingErrorsUtil.stringify(miraklApiException)));
+					.formatted(MiraklLoggingErrorsUtil.stringify(miraklApiException)));
 	}
 
 	@Test
@@ -118,14 +118,14 @@ class MiraklSellersExtractServiceImplTest {
 		final MiraklApiException miraklApiException = new MiraklApiException(
 				new MiraklErrorResponseBean(1, "Something went wrong", "correlation-id"));
 		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
-				.getShops(any(MiraklGetShopsRequest.class));
+			.getShops(any(MiraklGetShopsRequest.class));
 
 		testObj.extractSellers(List.of(INDIVIDUAL_SHOP, PROFESSIONAL_SHOP_ID));
 
-		verify(mailNotificationUtilMock).sendPlainTextEmail("Issue detected getting shop information in Mirakl",
-				(ERROR_MESSAGE_PREFIX
-						+ "Something went wrong getting shop information with ids [[individualShop, professionalShop]]%n%s")
-								.formatted(MiraklLoggingErrorsUtil.stringify(miraklApiException)));
+		verify(mailNotificationUtilMock)
+			.sendPlainTextEmail("Issue detected getting shop information in Mirakl", (ERROR_MESSAGE_PREFIX
+					+ "Something went wrong getting shop information with ids [[individualShop, professionalShop]]%n%s")
+				.formatted(MiraklLoggingErrorsUtil.stringify(miraklApiException)));
 	}
 
 	@Test
@@ -134,7 +134,7 @@ class MiraklSellersExtractServiceImplTest {
 		when(individualShopMock.isProfessional()).thenReturn(false);
 		when(individualSellerModelMock.hasAcceptedTermsAndConditions()).thenReturn(Boolean.TRUE);
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestArgumentCaptor.capture()))
-				.thenReturn(miraklShops);
+			.thenReturn(miraklShops);
 		when(miraklShopSellerModelStrategyExecutor.execute(individualShopMock)).thenReturn(individualSellerModelMock);
 		when(individualShopMock.getId()).thenReturn(INDIVIDUAL_SHOP);
 
@@ -149,7 +149,7 @@ class MiraklSellersExtractServiceImplTest {
 		when(individualShopMock.isProfessional()).thenReturn(false);
 		when(individualSellerModelMock.hasAcceptedTermsAndConditions()).thenReturn(Boolean.TRUE);
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestArgumentCaptor.capture()))
-				.thenReturn(miraklShops);
+			.thenReturn(miraklShops);
 		when(miraklShopSellerModelStrategyExecutor.execute(individualShopMock)).thenReturn(individualSellerModelMock);
 		when(individualShopMock.getId()).thenReturn(INDIVIDUAL_SHOP);
 
@@ -163,9 +163,9 @@ class MiraklSellersExtractServiceImplTest {
 		when(miraklShops.getShops()).thenReturn(List.of(professionalShopMock));
 		when(professionalShopMock.isProfessional()).thenReturn(true);
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestArgumentCaptor.capture()))
-				.thenReturn(miraklShops);
+			.thenReturn(miraklShops);
 		when(miraklShopSellerModelStrategyExecutor.execute(professionalShopMock))
-				.thenReturn(professionalSellerModelMock);
+			.thenReturn(professionalSellerModelMock);
 		when(professionalSellerModelMock.hasAcceptedTermsAndConditions()).thenReturn(Boolean.TRUE);
 
 		final List<SellerModel> result = testObj.extractProfessionals(dateMock);
@@ -179,9 +179,9 @@ class MiraklSellersExtractServiceImplTest {
 		when(professionalShopMock.isProfessional()).thenReturn(true);
 		when(professionalSellerModelMock.hasAcceptedTermsAndConditions()).thenReturn(Boolean.TRUE);
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestArgumentCaptor.capture()))
-				.thenReturn(miraklShops);
+			.thenReturn(miraklShops);
 		when(miraklShopSellerModelStrategyExecutor.execute(professionalShopMock))
-				.thenReturn(professionalSellerModelMock);
+			.thenReturn(professionalSellerModelMock);
 
 		final List<SellerModel> result = testObj.extractProfessionals(List.of(PROFESSIONAL_SHOP_ID));
 

@@ -19,7 +19,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Integration test for {@link FailedNotificationsController}.
@@ -92,9 +93,10 @@ class FailedNotificationsControllerITTest extends AbstractIntegrationTest {
 		saveFailedEntity(WEBHOOK_TOKEN_1, NotificationType.USR, OBJECT_TOKEN);
 		saveFailedEntity(WEBHOOK_TOKEN_2, NotificationType.PMT, "pmt-it-obj-002");
 
-		mockMvc.perform(get(BASE_URL).param("type", "USR")).andExpect(status().isOk())
-				.andExpect(jsonPath("$.page.totalElements").value(1))
-				.andExpect(jsonPath("$._embedded['failed-notifications'][0].notificationToken").value(WEBHOOK_TOKEN_1));
+		mockMvc.perform(get(BASE_URL).param("type", "USR"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.page.totalElements").value(1))
+			.andExpect(jsonPath("$._embedded['failed-notifications'][0].notificationToken").value(WEBHOOK_TOKEN_1));
 	}
 
 	@Test
@@ -102,9 +104,10 @@ class FailedNotificationsControllerITTest extends AbstractIntegrationTest {
 		saveFailedEntity(WEBHOOK_TOKEN_1, NotificationType.USR, OBJECT_TOKEN);
 		saveFailedEntity(WEBHOOK_TOKEN_2, NotificationType.USR, "usr-it-obj-999");
 
-		mockMvc.perform(get(BASE_URL).param("target", OBJECT_TOKEN)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.page.totalElements").value(1))
-				.andExpect(jsonPath("$._embedded['failed-notifications'][0].notificationToken").value(WEBHOOK_TOKEN_1));
+		mockMvc.perform(get(BASE_URL).param("target", OBJECT_TOKEN))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.page.totalElements").value(1))
+			.andExpect(jsonPath("$._embedded['failed-notifications'][0].notificationToken").value(WEBHOOK_TOKEN_1));
 	}
 
 	// ── GET /management/failed-notifications/{token} ─────────────────────────────
@@ -113,9 +116,11 @@ class FailedNotificationsControllerITTest extends AbstractIntegrationTest {
 	void get_whenTokenExists_shouldReturnNotificationDto() throws Exception {
 		saveFailedEntity(WEBHOOK_TOKEN_1, NotificationType.USR, OBJECT_TOKEN);
 
-		mockMvc.perform(get(BASE_URL + WEBHOOK_TOKEN_1)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.notificationToken").value(WEBHOOK_TOKEN_1))
-				.andExpect(jsonPath("$.type").value("USR")).andExpect(jsonPath("$.target").value(OBJECT_TOKEN));
+		mockMvc.perform(get(BASE_URL + WEBHOOK_TOKEN_1))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.notificationToken").value(WEBHOOK_TOKEN_1))
+			.andExpect(jsonPath("$.type").value("USR"))
+			.andExpect(jsonPath("$.target").value(OBJECT_TOKEN));
 	}
 
 	@Test
@@ -129,12 +134,15 @@ class FailedNotificationsControllerITTest extends AbstractIntegrationTest {
 	void add_shouldPersistNewFailedNotificationAndReturn201() throws Exception {
 		final FailedNotificationInfo info = buildDto(WEBHOOK_TOKEN_1, "USR", OBJECT_TOKEN);
 
-		mockMvc.perform(
-				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(info)))
-				.andExpect(status().isCreated());
+		mockMvc
+			.perform(post(BASE_URL).contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(info)))
+			.andExpect(status().isCreated());
 
-		assertThat(notificationEntityRepository.findByWebHookToken(WEBHOOK_TOKEN_1)).isPresent().get()
-				.extracting(NotificationEntity::getStatus).isEqualTo(NotificationStatus.FAILED);
+		assertThat(notificationEntityRepository.findByWebHookToken(WEBHOOK_TOKEN_1)).isPresent()
+			.get()
+			.extracting(NotificationEntity::getStatus)
+			.isEqualTo(NotificationStatus.FAILED);
 	}
 
 	// ── PUT /management/failed-notifications/{token} ─────────────────────────────
@@ -147,10 +155,12 @@ class FailedNotificationsControllerITTest extends AbstractIntegrationTest {
 		update.setProgram("prg-updated");
 		update.setRetryCounter(3);
 
-		mockMvc.perform(put(BASE_URL + WEBHOOK_TOKEN_1).contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(update))).andExpect(status().isOk())
-				.andExpect(jsonPath("$.notificationToken").value(WEBHOOK_TOKEN_1))
-				.andExpect(jsonPath("$.retryCounter").value(3));
+		mockMvc
+			.perform(put(BASE_URL + WEBHOOK_TOKEN_1).contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(update)))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.notificationToken").value(WEBHOOK_TOKEN_1))
+			.andExpect(jsonPath("$.retryCounter").value(3));
 
 		final NotificationEntity saved = notificationEntityRepository.findByWebHookToken(WEBHOOK_TOKEN_1).orElseThrow();
 		assertThat(saved.getProgram()).isEqualTo("prg-updated");
@@ -161,8 +171,10 @@ class FailedNotificationsControllerITTest extends AbstractIntegrationTest {
 	void update_whenTokenNotFound_shouldReturn404() throws Exception {
 		final FailedNotificationInfo update = buildDto("wbh-nonexistent", "USR", OBJECT_TOKEN);
 
-		mockMvc.perform(put(BASE_URL + "wbh-nonexistent").contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(update))).andExpect(status().isNotFound());
+		mockMvc
+			.perform(put(BASE_URL + "wbh-nonexistent").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(update)))
+			.andExpect(status().isNotFound());
 	}
 
 	// ── PUT /management/failed-notifications/ (replace) ──────────────────────────
@@ -174,8 +186,10 @@ class FailedNotificationsControllerITTest extends AbstractIntegrationTest {
 
 		final FailedNotificationInfo newEntry = buildDto("wbh-it-replaced-001", "USR", "usr-replaced-obj");
 
-		mockMvc.perform(put(BASE_URL).contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(List.of(newEntry)))).andExpect(status().isOk());
+		mockMvc
+			.perform(put(BASE_URL).contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(List.of(newEntry))))
+			.andExpect(status().isOk());
 
 		assertThat(notificationEntityRepository.findByWebHookToken(WEBHOOK_TOKEN_1)).isEmpty();
 		assertThat(notificationEntityRepository.findByWebHookToken(WEBHOOK_TOKEN_2)).isEmpty();
@@ -189,8 +203,10 @@ class FailedNotificationsControllerITTest extends AbstractIntegrationTest {
 
 		final FailedNotificationInfo newEntry = buildDto("wbh-it-replaced-002", "USR", "usr-replaced-obj");
 
-		mockMvc.perform(put(BASE_URL).contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(List.of(newEntry)))).andExpect(status().isOk());
+		mockMvc
+			.perform(put(BASE_URL).contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(List.of(newEntry))))
+			.andExpect(status().isOk());
 
 		assertThat(notificationEntityRepository.findByWebHookToken(WEBHOOK_TOKEN_1)).isEmpty();
 		assertThat(notificationEntityRepository.findByWebHookToken(WEBHOOK_TOKEN_2)).isEmpty();

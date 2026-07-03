@@ -6,9 +6,9 @@ import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
-import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
+import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.support.logging.HyperwalletLoggingErrorsUtil;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
 import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
@@ -53,8 +53,9 @@ class KYCReadyForReviewServiceImplTest {
 	private ArgumentCaptor<HyperwalletUser> hyperwalletUserCaptor;
 
 	@RegisterExtension
-	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.ERROR)
-			.recordForType(KYCReadyForReviewServiceImpl.class);
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create()
+		.recordForLevel(LogTracker.LogLevel.ERROR)
+		.recordForType(KYCReadyForReviewServiceImpl.class);
 
 	@Test
 	void notifyReadyForReview_shouldRunNotifyBusinessStakeholderToHW() {
@@ -69,7 +70,7 @@ class KYCReadyForReviewServiceImplTest {
 		when(hyperwalletApiClientMock.updateUser(Mockito.any(HyperwalletUser.class))).thenReturn(hyperwalletUserMock);
 		when(hyperwalletUserMock.getClientUserId()).thenReturn(SHOP_ID);
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
-				.thenReturn(hyperwalletApiClientMock);
+			.thenReturn(hyperwalletApiClientMock);
 
 		testObj.notifyReadyForReview(kycDocumentOne);
 
@@ -79,7 +80,7 @@ class KYCReadyForReviewServiceImplTest {
 
 		assertThat(hyperwalletUser.getToken()).isEqualTo(USER_TOKEN_1);
 		assertThat(hyperwalletUser.getBusinessStakeholderVerificationStatus())
-				.isEqualTo(HyperwalletUser.BusinessStakeholderVerificationStatus.READY_FOR_REVIEW);
+			.isEqualTo(HyperwalletUser.BusinessStakeholderVerificationStatus.READY_FOR_REVIEW);
 	}
 
 	@Test
@@ -94,19 +95,19 @@ class KYCReadyForReviewServiceImplTest {
 		//@formatter:on
 
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
-				.thenReturn(hyperwalletApiClientMock);
+			.thenReturn(hyperwalletApiClientMock);
 		final HyperwalletException hwException = new HyperwalletException("Something bad happened");
 		doThrow(hwException).when(hyperwalletApiClientMock).updateUser(Mockito.any(HyperwalletUser.class));
 
 		assertThatThrownBy(() -> testObj.notifyReadyForReview(kycDocumentSent))
-				.isInstanceOf(HMCHyperwalletAPIException.class);
+			.isInstanceOf(HMCHyperwalletAPIException.class);
 
 		verify(userHyperwalletSDKServiceMock).getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
 		verify(hyperwalletApiClientMock).updateUser(hyperwalletUserCaptor.capture());
 		verify(testObj).notifyReadyForReview(kycDocumentSent);
 		verify(kycMailNotificationUtilMock).sendPlainTextEmail("Issue in Hyperwallet status notification",
 				"There was an error notifying Hyperwallet all documents were sent for shop Id [2000], so Hyperwallet will not be notified about this new situation%n%s"
-						.formatted(HyperwalletLoggingErrorsUtil.stringify(hwException)));
+					.formatted(HyperwalletLoggingErrorsUtil.stringify(hwException)));
 
 		assertThat(logTrackerStub.contains("Error notifying to Hyperwallet that all documents were sent")).isTrue();
 	}

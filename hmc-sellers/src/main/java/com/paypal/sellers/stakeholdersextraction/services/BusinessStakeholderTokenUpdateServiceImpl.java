@@ -16,7 +16,6 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.paypal.sellers.stakeholdersextraction.services.BusinessStakeholderExtractServiceImpl.ERROR_MESSAGE_PREFIX;
 
@@ -59,7 +58,7 @@ public class BusinessStakeholderTokenUpdateServiceImpl implements BusinessStakeh
 			log.error("Something went wrong getting information of shop [{}]", clientUserId);
 			sellerMailNotificationUtil.sendPlainTextEmail(EMAIL_SUBJECT_MESSAGE,
 					(ERROR_MESSAGE_PREFIX + "Something went wrong getting information of shop [%s]%n%s")
-							.formatted(clientUserId, MiraklLoggingErrorsUtil.stringify(ex)));
+						.formatted(clientUserId, MiraklLoggingErrorsUtil.stringify(ex)));
 		}
 	}
 
@@ -70,12 +69,14 @@ public class BusinessStakeholderTokenUpdateServiceImpl implements BusinessStakeh
 
 		final List<String> stakeholderTokens = new ArrayList<>();
 		final List<MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue> stakeholdersTokenFields = businessStakeHolderModels
-				.stream().map(businessStakeHolderModel -> {
-					stakeholderTokens.add(businessStakeHolderModel.getToken());
-					return new MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue(
-							BusinessStakeHolderConstants.TOKEN + HYPHEN + businessStakeHolderModel.getStkId(),
-							businessStakeHolderModel.getToken());
-				}).collect(Collectors.toList());
+			.stream()
+			.map(businessStakeHolderModel -> {
+				stakeholderTokens.add(businessStakeHolderModel.getToken());
+				return new MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue(
+						BusinessStakeHolderConstants.TOKEN + HYPHEN + businessStakeHolderModel.getStkId(),
+						businessStakeHolderModel.getToken());
+			})
+			.toList();
 
 		log.info("Storing business stakeholder tokens [{}] for shop [{}]", String.join(",", stakeholderTokens),
 				clientUserId);

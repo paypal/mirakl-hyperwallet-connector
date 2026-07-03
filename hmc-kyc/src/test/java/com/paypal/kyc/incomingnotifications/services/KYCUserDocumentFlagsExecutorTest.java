@@ -1,7 +1,6 @@
 package com.paypal.kyc.incomingnotifications.services;
 
 import com.paypal.infrastructure.support.strategy.Strategy;
-import com.paypal.kyc.incomingnotifications.services.KYCUserDocumentFlagsExecutor;
 import com.paypal.kyc.incomingnotifications.model.KYCUserDocumentFlagsNotificationBodyModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

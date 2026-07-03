@@ -2,8 +2,8 @@ package com.paypal.kyc.stakeholdersdocumentextraction.services.documentselectors
 
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
-import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
+import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class MiraklProofOfIdentityBusinessStakeholderStrategyTest {
 
 	private KYCDocumentBusinessStakeHolderInfoModel kycDocumentBusinessStakeHolderInfoModel;
 
-	private final static int BUSINESS_STAKEHOLDER_NUMBER = 1;
+	private static final int BUSINESS_STAKEHOLDER_NUMBER = 1;
 
 	private static final String HYPERWALLET_BUSINESS_STAKEHOLDER_PROOF_IDENTITY_TYPE_FIELD = "hw-stakeholder-proof-identity-type-1";
 
@@ -56,7 +56,7 @@ class MiraklProofOfIdentityBusinessStakeholderStrategyTest {
 	@Test
 	void isApplicable_shouldReturnTrueWhenIsProofOfIdentity() {
 		final boolean result = testObj
-				.isApplicable(kycDocumentBusinessStakeHolderInfoModel.toBuilder().requiresKYC(true).build());
+			.isApplicable(kycDocumentBusinessStakeHolderInfoModel.toBuilder().requiresKYC(true).build());
 
 		assertThat(result).isTrue();
 	}

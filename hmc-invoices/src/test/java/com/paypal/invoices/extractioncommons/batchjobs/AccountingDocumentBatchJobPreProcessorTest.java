@@ -1,8 +1,8 @@
 package com.paypal.invoices.extractioncommons.batchjobs;
 
-import com.paypal.jobsystem.batchjob.model.BatchJobContext;
-import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
 import com.paypal.invoices.extractioncommons.services.AccountingDocumentsLinksService;
+import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
+import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,7 +43,7 @@ class AccountingDocumentBatchJobPreProcessorTest extends AccountingDocumentBatch
 				List.of(testAccountingDocumentBatchJobItem1Mock, testAccountingDocumentBatchJobItem2Mock));
 
 		verify(accountingDocumentsLinksServiceMock)
-				.storeRequiredLinks(argThat(x -> x.containsAll(List.of(invoiceModel1Mock, invoiceModel2Mock))));
+			.storeRequiredLinks(argThat(x -> x.containsAll(List.of(invoiceModel1Mock, invoiceModel2Mock))));
 	}
 
 }

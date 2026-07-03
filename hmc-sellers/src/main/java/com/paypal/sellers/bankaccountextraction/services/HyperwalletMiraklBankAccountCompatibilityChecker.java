@@ -26,7 +26,7 @@ public class HyperwalletMiraklBankAccountCompatibilityChecker {
 	private boolean hasSameBankAccountType(final HyperwalletBankAccount hyperwalletBankAccount,
 			final BankAccountModel miraklBankAccount) {
 		return hyperwalletBankAccountTypeResolver.getBankAccountType(hyperwalletBankAccount) == miraklBankAccount
-				.getType();
+			.getType();
 	}
 
 	private boolean hasSameBankAccountCountry(final HyperwalletBankAccount hyperwalletBankAccount,

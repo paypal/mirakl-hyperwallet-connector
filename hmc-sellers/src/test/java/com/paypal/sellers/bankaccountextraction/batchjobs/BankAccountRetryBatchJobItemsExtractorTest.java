@@ -1,8 +1,6 @@
 package com.paypal.sellers.bankaccountextraction.batchjobs;
 
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
-import com.paypal.sellers.bankaccountextraction.batchjobs.BankAccountExtractJobItem;
-import com.paypal.sellers.bankaccountextraction.batchjobs.BankAccountRetryBatchJobItemsExtractor;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import com.paypal.sellers.sellerextractioncommons.services.MiraklSellersExtractService;
 import org.junit.jupiter.api.Test;
@@ -44,12 +42,12 @@ class BankAccountRetryBatchJobItemsExtractorTest {
 	void getItems_ShouldReturnAllSellersByTheGivenIds() {
 
 		when(miraklSellersExtractServiceMock.extractSellers(List.of(SELLER_ID_1, SELLER_ID_2)))
-				.thenReturn(List.of(sellerModelMock1, sellerModelMock2));
+			.thenReturn(List.of(sellerModelMock1, sellerModelMock2));
 
 		final Collection<BankAccountExtractJobItem> result = testObj.getItems(List.of(SELLER_ID_1, SELLER_ID_2));
 
 		assertThat(result.stream().map(BatchJobItem::getItem).map(SellerModel.class::cast))
-				.containsExactlyInAnyOrder(sellerModelMock1, sellerModelMock2);
+			.containsExactlyInAnyOrder(sellerModelMock1, sellerModelMock2);
 	}
 
 }

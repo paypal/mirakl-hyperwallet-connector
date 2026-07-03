@@ -2,8 +2,8 @@ package com.paypal.sellers.stakeholdersextraction;
 
 import com.paypal.jobsystem.quartzadapter.job.QuartzBatchJobBuilder;
 import com.paypal.sellers.professionalsellersextraction.ProfessionalSellersExtractionJobsConfig;
-import com.paypal.sellers.stakeholdersextraction.batchjobs.BusinessStakeholdersRetryBatchJob;
 import com.paypal.sellers.professionalsellersextraction.jobs.ProfessionalSellersExtractJob;
+import com.paypal.sellers.stakeholdersextraction.batchjobs.BusinessStakeholdersRetryBatchJob;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Trigger;

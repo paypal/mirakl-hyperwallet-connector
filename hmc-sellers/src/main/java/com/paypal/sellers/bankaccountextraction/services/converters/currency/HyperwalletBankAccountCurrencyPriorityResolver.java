@@ -33,17 +33,17 @@ public class HyperwalletBankAccountCurrencyPriorityResolver {
 		if (hyperwalletBankAccountCurrencyResolutionConfiguration.isOverrideCurrencySelectionPriority()) {
 			Collections.sort(sortedCurrencyCandidates,
 					Comparator.comparing(HyperwalletBankAccountCurrencyInfo::getCountry)
-							.thenComparing(this::compareCurrencyInfoPriority));
+						.thenComparing(this::compareCurrencyInfoPriority));
 		}
 		else if (hyperwalletBankAccountCurrencyResolutionConfiguration.isPrioritizeBankAccountTypeOverCurrency()) {
 			Collections.sort(sortedCurrencyCandidates,
 					Comparator.comparing(HyperwalletBankAccountCurrencyInfo::getCountry)
-							.thenComparing(this::compareTransferTypePriority));
+						.thenComparing(this::compareTransferTypePriority));
 		}
 		else {
 			Collections.sort(sortedCurrencyCandidates,
 					Comparator.comparing(HyperwalletBankAccountCurrencyInfo::getCountry)
-							.thenComparing(this::compareTransferTypeOnlyForSameCurrencies));
+						.thenComparing(this::compareTransferTypeOnlyForSameCurrencies));
 		}
 
 		return sortedCurrencyCandidates;
@@ -102,9 +102,10 @@ public class HyperwalletBankAccountCurrencyPriorityResolver {
 		// Per country priority has a higher priority than the global priority.
 		// If the currency is not found in the list, then the priority is -1
 		final List<String> currencyPriorityPerCountry = hyperwalletBankAccountCurrencyResolutionConfiguration
-				.getPerCountryCurrencyPriority().get(currencyInfo.getCountry());
+			.getPerCountryCurrencyPriority()
+			.get(currencyInfo.getCountry());
 		final List<String> globalCurrencyPriority = hyperwalletBankAccountCurrencyResolutionConfiguration
-				.getGlobalCurrencyPriority();
+			.getGlobalCurrencyPriority();
 		final String currency = currencyInfo.getCurrency();
 		if (CollectionUtils.isNotEmpty(currencyPriorityPerCountry) && currencyPriorityPerCountry.contains(currency)) {
 			return currencyPriorityPerCountry.indexOf(currency);

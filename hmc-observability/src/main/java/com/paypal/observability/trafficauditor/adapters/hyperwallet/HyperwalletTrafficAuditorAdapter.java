@@ -101,8 +101,8 @@ public class HyperwalletTrafficAuditorAdapter extends AbstractTrafficAuditorAdap
 		final Map<String, String> parsedQueryParams = QueryParamExtractor.getQueryParametersFromUri(url);
 
 		final Map<String, String> queryParams = Stream.of(requestQueryParams.entrySet(), parsedQueryParams.entrySet())
-				.flatMap(Set::stream)
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, "%s,%s"::formatted));
+			.flatMap(Set::stream)
+			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, "%s,%s"::formatted));
 		return TrafficAuditorAdapterUtils.cleanMap(queryParams);
 	}
 

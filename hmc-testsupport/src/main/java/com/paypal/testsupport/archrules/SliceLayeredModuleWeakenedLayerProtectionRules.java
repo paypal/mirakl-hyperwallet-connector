@@ -13,8 +13,16 @@ public final class SliceLayeredModuleWeakenedLayerProtectionRules {
 
 	@ArchTest
 	public static final ArchRule layerAccessProtections = layeredArchitecture().consideringAllDependencies()
-			.layer("Controller").definedBy("..controllers..").layer("Persistence").definedBy("..repositories")
-			.layer("Connector").definedBy("..connectors..").layer("Service").definedBy("..services..")
-			.withOptionalLayers(true).whereLayer("Controller").mayNotBeAccessedByAnyLayer();
+		.layer("Controller")
+		.definedBy("..controllers..")
+		.layer("Persistence")
+		.definedBy("..repositories")
+		.layer("Connector")
+		.definedBy("..connectors..")
+		.layer("Service")
+		.definedBy("..services..")
+		.withOptionalLayers(true)
+		.whereLayer("Controller")
+		.mayNotBeAccessedByAnyLayer();
 
 }

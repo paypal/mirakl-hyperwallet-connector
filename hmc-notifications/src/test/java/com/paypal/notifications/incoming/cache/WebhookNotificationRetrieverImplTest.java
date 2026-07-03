@@ -44,7 +44,7 @@ class WebhookNotificationRetrieverImplTest {
 	@BeforeEach
 	void setUp() {
 		lenient().when(cacheManagerMock.getCache(NotificationCacheConfiguration.WEBHOOK_NOTIFICATION_CACHE))
-				.thenReturn(cacheMock);
+			.thenReturn(cacheMock);
 	}
 
 	// ── get ───────────────────────────────────────────────────────────────────────
@@ -68,7 +68,7 @@ class WebhookNotificationRetrieverImplTest {
 
 		when(cacheMock.get(WEBHOOK_TOKEN)).thenReturn(null);
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
-				.thenReturn(hyperwalletMock);
+			.thenReturn(hyperwalletMock);
 		when(hyperwalletMock.getWebhookEvent(WEBHOOK_TOKEN)).thenReturn(sdkResult);
 
 		final HyperwalletWebhookNotification result = testObj.get(PROGRAM_TOKEN, WEBHOOK_TOKEN);
@@ -81,7 +81,7 @@ class WebhookNotificationRetrieverImplTest {
 	void get_whenCacheMissAndSdkThrows_shouldReturnNullAndNotCache() {
 		when(cacheMock.get(WEBHOOK_TOKEN)).thenReturn(null);
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN))
-				.thenReturn(hyperwalletMock);
+			.thenReturn(hyperwalletMock);
 		when(hyperwalletMock.getWebhookEvent(WEBHOOK_TOKEN)).thenThrow(new HyperwalletException("error"));
 
 		final HyperwalletWebhookNotification result = testObj.get(PROGRAM_TOKEN, WEBHOOK_TOKEN);

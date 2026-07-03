@@ -56,7 +56,7 @@ public class MiraklBankAccountExtractServiceImpl implements MiraklBankAccountExt
 			log.error("Something went wrong updating information of shop [{}]", shopId);
 			sellerMailNotificationUtil.sendPlainTextEmail("Issue detected updating bank token in Mirakl",
 					(ERROR_MESSAGE_PREFIX + "Something went wrong updating bank token of shop [%s]%n%s")
-							.formatted(shopId, MiraklLoggingErrorsUtil.stringify(ex)));
+						.formatted(shopId, MiraklLoggingErrorsUtil.stringify(ex)));
 		}
 	}
 

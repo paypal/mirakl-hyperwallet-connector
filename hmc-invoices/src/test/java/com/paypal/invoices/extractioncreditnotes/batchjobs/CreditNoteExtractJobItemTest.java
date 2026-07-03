@@ -1,6 +1,5 @@
 package com.paypal.invoices.extractioncreditnotes.batchjobs;
 
-import com.paypal.invoices.extractioncreditnotes.batchjobs.CreditNoteExtractJobItem;
 import com.paypal.invoices.extractioncreditnotes.model.CreditNoteModel;
 import org.junit.jupiter.api.Test;
 

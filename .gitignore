@@ -61,3 +61,4 @@ logs/
 !**/src/test/**/data/
 !**/src/main/**/logs/
 !**/src/test/**/logs/
+.envrc

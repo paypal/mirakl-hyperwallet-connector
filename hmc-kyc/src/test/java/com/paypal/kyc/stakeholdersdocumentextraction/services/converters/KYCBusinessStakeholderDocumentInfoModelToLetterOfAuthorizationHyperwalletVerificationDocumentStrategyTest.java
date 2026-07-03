@@ -1,9 +1,8 @@
 package com.paypal.kyc.stakeholdersdocumentextraction.services.converters;
 
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
-import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
-import com.paypal.kyc.stakeholdersdocumentextraction.services.converters.KYCBusinessStakeholderDocumentInfoModelToLetterOfAuthorizationHyperwalletVerificationDocumentStrategy;
+import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,12 +36,12 @@ class KYCBusinessStakeholderDocumentInfoModelToLetterOfAuthorizationHyperwalletV
 
 	private static final String LETTER_OF_AUTHORIZATION_TYPE = "LETTER_OF_AUTHORIZATION";
 
-	private final static String LETTER_OF_AUTHORIZATION_NAME = "letter_of_authorization_front";
+	private static final String LETTER_OF_AUTHORIZATION_NAME = "letter_of_authorization_front";
 
 	@Test
 	void execute_shouldReturnLetterOfAuthorizationHyperwalletDocument_whenSourceHasLetterOfAuthorizationDocument() {
 		when(kycDocumentBusinessStakeHolderInfoModelMock.getLetterOfAuthorizationDocument())
-				.thenReturn(List.of(kycDocumentModelMock));
+			.thenReturn(List.of(kycDocumentModelMock));
 		when(kycDocumentModelMock.getFile()).thenReturn(fileMock);
 		when(kycDocumentModelMock.getFile().getAbsolutePath()).thenReturn(FAKE_ABSOLUTE_PATH);
 
@@ -59,7 +58,7 @@ class KYCBusinessStakeholderDocumentInfoModelToLetterOfAuthorizationHyperwalletV
 		when(kycDocumentBusinessStakeHolderInfoModelMock.isRequiresLetterOfAuthorization()).thenReturn(Boolean.TRUE);
 		when(kycDocumentBusinessStakeHolderInfoModelMock.isContact()).thenReturn(Boolean.TRUE);
 		when(kycDocumentBusinessStakeHolderInfoModelMock.getLetterOfAuthorizationDocument())
-				.thenReturn(List.of(kycDocumentModelMock));
+			.thenReturn(List.of(kycDocumentModelMock));
 
 		final boolean result = testObj.isApplicable(kycDocumentBusinessStakeHolderInfoModelMock);
 

@@ -1,12 +1,11 @@
 package com.paypal.jobsystem.batchjobfailures.support;
 
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
-import com.paypal.jobsystem.batchjobfailures.services.resolvepolicies.BatchJobFailedItemCacheFailureResolvePolicy;
-import com.paypal.jobsystem.batchjobfailures.services.cache.BatchJobFailedItemCacheFailureResolver;
-import com.paypal.jobsystem.batchjobfailures.services.cache.BatchJobFailedItemCacheService;
 import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 import com.paypal.jobsystem.batchjobfailures.services.BatchJobFailedItemService;
-import com.paypal.jobsystem.batchjobfailures.support.AbstractCachingFailedItemsBatchJobItemsExtractor;
+import com.paypal.jobsystem.batchjobfailures.services.cache.BatchJobFailedItemCacheFailureResolver;
+import com.paypal.jobsystem.batchjobfailures.services.cache.BatchJobFailedItemCacheService;
+import com.paypal.jobsystem.batchjobfailures.services.resolvepolicies.BatchJobFailedItemCacheFailureResolvePolicy;
 import com.paypal.jobsystem.batchjobsupport.support.AbstractBatchJobItem;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +47,7 @@ class AbstractCachingFailedItemsBatchJobItemsExtractorTest {
 	void getBatchJobFailedItems_shouldRetrieveItemsFromCache() {
 		final HashMap<BatchJobFailedItem, Optional<MyItem>> cacheResponse = buildCacheResponse();
 		when(batchJobFailedItemCacheServiceMock.retrieveAllItems(eq(MyItem.class), any(), any()))
-				.thenReturn(cacheResponse);
+			.thenReturn(cacheResponse);
 
 		final Collection<MyItem> result = testObj.getBatchJobFailedItems(batchJobFailedItemsMock);
 		verify(testObj, times(0)).getItems((List<String>) any());
@@ -60,7 +59,7 @@ class AbstractCachingFailedItemsBatchJobItemsExtractorTest {
 	void getBatchJobFailedItems_shouldPassGetItemsMethodAsCacheResolver() {
 		final HashMap<BatchJobFailedItem, Optional<MyItem>> cacheResponse = buildCacheResponse();
 		when(batchJobFailedItemCacheServiceMock.retrieveAllItems(eq(MyItem.class), any(), any()))
-				.thenReturn(cacheResponse);
+			.thenReturn(cacheResponse);
 
 		testObj.getBatchJobFailedItems(batchJobFailedItemsMock);
 
@@ -70,14 +69,14 @@ class AbstractCachingFailedItemsBatchJobItemsExtractorTest {
 		// we use MyList custom type to check if is passing getItems as cache failure
 		// resolver
 		assertThat((cacheFailureResolverCaptor.getValue()).itemsToBeCached(Collections.emptyList()))
-				.isInstanceOf(MyList.class);
+			.isInstanceOf(MyList.class);
 	}
 
 	@Test
 	void getBatchJobFailedItems_shouldPassCustomCacheResolvePolicy() {
 		final HashMap<BatchJobFailedItem, Optional<MyItem>> cacheResponse = buildCacheResponse();
 		when(batchJobFailedItemCacheServiceMock.retrieveAllItems(eq(MyItem.class), any(), any(), any()))
-				.thenReturn(cacheResponse);
+			.thenReturn(cacheResponse);
 
 		testObj.policy = Optional.of(batchJobFailedItemCacheFailureResolvePolicyMock);
 		testObj.getBatchJobFailedItems(batchJobFailedItemsMock);

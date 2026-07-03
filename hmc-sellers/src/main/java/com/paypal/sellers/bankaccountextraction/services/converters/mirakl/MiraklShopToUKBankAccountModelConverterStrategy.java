@@ -41,8 +41,8 @@ public class MiraklShopToUKBankAccountModelConverterStrategy implements Strategy
 		final MiraklContactInformation contactInformation = source.getContactInformation();
 
 		final HyperwalletBankAccountCurrencyInfo hyperwalletBankAccountCurrencyInfo = hyperwalletBankAccountCurrencyResolver
-				.getCurrencyForCountry(BankAccountType.UK.name(), Locale.UK.getCountry(),
-						source.getCurrencyIsoCode().name());
+			.getCurrencyForCountry(BankAccountType.UK.name(), Locale.UK.getCountry(),
+					source.getCurrencyIsoCode().name());
 
 		//@formatter:off
 		return UKBankAccountModel.builder()

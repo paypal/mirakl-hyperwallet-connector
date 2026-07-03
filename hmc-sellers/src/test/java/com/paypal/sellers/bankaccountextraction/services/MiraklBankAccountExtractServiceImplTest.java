@@ -84,13 +84,13 @@ class MiraklBankAccountExtractServiceImplTest {
 		final MiraklApiException miraklApiException = new MiraklApiException(
 				new MiraklErrorResponseBean(1, "Something went wrong", "correlation-id"));
 		doThrow(miraklApiException).when(miraklMarketplacePlatformOperatorApiClientMock)
-				.updateShops(any(MiraklUpdateShopsRequest.class));
+			.updateShops(any(MiraklUpdateShopsRequest.class));
 
 		testObj.updateBankAccountToken(sellerModelMock, hyperwalletBankAccount);
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail("Issue detected updating bank token in Mirakl",
 				(ERROR_MESSAGE_PREFIX + "Something went wrong updating bank token of shop [12345]%n%s")
-						.formatted(MiraklLoggingErrorsUtil.stringify(miraklApiException)));
+					.formatted(MiraklLoggingErrorsUtil.stringify(miraklApiException)));
 	}
 
 }

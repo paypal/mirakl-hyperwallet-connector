@@ -2,7 +2,7 @@
 
 Installing and running the connector requires the following:
 
-- Java 17 JDK
+- Java 25 JDK
 - A Linux Environment
 - A mail server for sending alerts and notifications
 - A web server

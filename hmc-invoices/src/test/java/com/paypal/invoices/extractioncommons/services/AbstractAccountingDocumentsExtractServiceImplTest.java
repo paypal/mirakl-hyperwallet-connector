@@ -1,9 +1,10 @@
 package com.paypal.invoices.extractioncommons.services;
 
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoice;
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoices;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklPayOutState;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklSellerBillingCycle;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklSellerBillingCycles;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
-import com.mirakl.client.mmp.operator.request.payment.invoice.MiraklGetInvoicesRequest;
+import com.mirakl.client.mmp.operator.request.payment.sellerbillingcycle.MiraklGetSellerBillingCyclesRequest;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
 import com.paypal.infrastructure.support.converter.Converter;
@@ -13,7 +14,11 @@ import com.paypal.invoices.extractioncommons.model.AccountingDocumentModel;
 import com.paypal.invoices.extractioncommons.model.InvoiceTypeEnum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -24,27 +29,28 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentPaymentStatus.PENDING;
-import static com.mirakl.client.mmp.domain.accounting.document.MiraklAccountingDocumentType.MANUAL_CREDIT;
-import static com.mirakl.client.mmp.request.payment.invoice.MiraklAccountingDocumentState.COMPLETE;
 import static com.paypal.infrastructure.hyperwallet.constants.HyperWalletConstants.MIRAKL_MAX_RESULTS_PER_PAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractAccountingDocumentsExtractServiceImplTest {
 
-	private static final String ACCOUNTDOCUMENT_ID_1 = "ACCOUNTDOCUMENT_ID_1";
+	private static final String ACCOUNTING_DOCUMENT_ID_1 = UUID.randomUUID().toString();
 
-	private static final String ACCOUNTDOCUMENT_ID_2 = "ACCOUNTDOCUMENT_ID_2";
+	private static final String ACCOUNTING_DOCUMENT_ID_2 = UUID.randomUUID().toString();
 
-	private static final String ACCOUNTDOCUMENT_ID_3 = "ACCOUNTDOCUMENT_ID_3";
+	private static final String ACCOUNTING_DOCUMENT_ID_3 = UUID.randomUUID().toString();
+
+	private static final String NEXT_TOKEN = "next-token";
 
 	@Value("${hmc.jobs.settings.search-invoices-maxdays}")
 	protected int maxNumberOfDaysForInvoiceIdSearch;
@@ -57,42 +63,38 @@ class AbstractAccountingDocumentsExtractServiceImplTest {
 	protected MiraklClient miraklMarketplacePlatformOperatorApiClient;
 
 	@Mock
-	private Converter<MiraklInvoice, MyAccountingDocumentModel> invoiceConverterMock;
+	private Converter<MiraklSellerBillingCycle, MyAccountingDocumentModel> invoiceConverterMock;
 
 	@Mock
 	private MyAccountingDocumentModel myAccountingDocumentModel1Mock, myAccountingDocumentModel2Mock;
 
 	@Mock
-	private MiraklInvoice miraklInvoice1Mock, miraklInvoice2Mock, miraklInvoice3Mock;
+	private MiraklSellerBillingCycle billingCycle1Mock, billingCycle2Mock, billingCycle3Mock;
 
 	@Mock
-	private MiraklInvoices miraklInvoicesMock, miraklInvoices2Mock;
+	private MiraklSellerBillingCycles billingCyclesMock, billingCycles2Mock;
 
 	@Captor
-	private ArgumentCaptor<MiraklGetInvoicesRequest> miraklGetInvoicesRequestArgumentCaptor;
+	private ArgumentCaptor<MiraklGetSellerBillingCyclesRequest> requestArgumentCaptor;
 
 	@Test
 	void extractAccountingDocumentsById_shouldReturnDocuments_whenTheyAreInsideSearchWindow() {
 		TimeMachine.useFixedClockAt(LocalDateTime.now());
 
-		when(miraklMarketplacePlatformOperatorApiClient.getInvoices(any())).thenReturn(miraklInvoicesMock);
-		when(miraklInvoicesMock.getInvoices())
-				.thenReturn(List.of(miraklInvoice1Mock, miraklInvoice2Mock, miraklInvoice3Mock));
-		when(miraklInvoice1Mock.getId()).thenReturn(ACCOUNTDOCUMENT_ID_1);
-		when(miraklInvoice2Mock.getId()).thenReturn(ACCOUNTDOCUMENT_ID_2);
-		when(miraklInvoice3Mock.getId()).thenReturn(ACCOUNTDOCUMENT_ID_3);
-		when(invoiceConverterMock.convert(miraklInvoice1Mock)).thenReturn(myAccountingDocumentModel1Mock);
-		when(invoiceConverterMock.convert(miraklInvoice2Mock)).thenReturn(myAccountingDocumentModel2Mock);
+		when(miraklMarketplacePlatformOperatorApiClient.getSellerBillingCycles(any())).thenReturn(billingCyclesMock);
+		when(billingCyclesMock.getData()).thenReturn(List.of(billingCycle1Mock, billingCycle2Mock, billingCycle3Mock));
+		when(billingCycle1Mock.getId()).thenReturn(UUID.fromString(ACCOUNTING_DOCUMENT_ID_1));
+		when(billingCycle2Mock.getId()).thenReturn(UUID.fromString(ACCOUNTING_DOCUMENT_ID_2));
+		when(billingCycle3Mock.getId()).thenReturn(UUID.fromString(ACCOUNTING_DOCUMENT_ID_3));
+		when(invoiceConverterMock.convert(billingCycle1Mock)).thenReturn(myAccountingDocumentModel1Mock);
+		when(invoiceConverterMock.convert(billingCycle2Mock)).thenReturn(myAccountingDocumentModel2Mock);
 
 		final Collection<MyAccountingDocumentModel> result = testObj
-				.extractAccountingDocuments(List.of(ACCOUNTDOCUMENT_ID_1, ACCOUNTDOCUMENT_ID_2));
+			.extractAccountingDocuments(List.of(ACCOUNTING_DOCUMENT_ID_1, ACCOUNTING_DOCUMENT_ID_2));
 
 		assertThat(result).containsExactlyInAnyOrder(myAccountingDocumentModel1Mock, myAccountingDocumentModel2Mock);
-		verify(miraklMarketplacePlatformOperatorApiClient)
-				.getInvoices(miraklGetInvoicesRequestArgumentCaptor.capture());
-		assertThat(miraklGetInvoicesRequestArgumentCaptor.getValue().getStartDate()).isAfterOrEqualTo(searchWindow());
-		assertThat(miraklGetInvoicesRequestArgumentCaptor.getValue().getType())
-				.hasToString(testObj.getInvoiceType().toString());
+		verify(miraklMarketplacePlatformOperatorApiClient).getSellerBillingCycles(requestArgumentCaptor.capture());
+		assertThat(requestArgumentCaptor.getValue().getStartDate()).isAfterOrEqualTo(searchWindow().toInstant());
 	}
 
 	@Test
@@ -113,22 +115,20 @@ class AbstractAccountingDocumentsExtractServiceImplTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 0, 55));
 		final Date now = DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault());
 
-		when(miraklMarketplacePlatformOperatorApiClient.getInvoices(any())).thenReturn(miraklInvoicesMock);
-		when(miraklInvoicesMock.getInvoices()).thenReturn(List.of(miraklInvoice1Mock, miraklInvoice2Mock));
-		when(invoiceConverterMock.convert(miraklInvoice1Mock)).thenReturn(myAccountingDocumentModel1Mock);
-		when(invoiceConverterMock.convert(miraklInvoice2Mock)).thenReturn(myAccountingDocumentModel2Mock);
+		when(miraklMarketplacePlatformOperatorApiClient.getSellerBillingCycles(any())).thenReturn(billingCyclesMock);
+		when(billingCyclesMock.getData()).thenReturn(List.of(billingCycle1Mock, billingCycle2Mock));
+		when(invoiceConverterMock.convert(billingCycle1Mock)).thenReturn(myAccountingDocumentModel1Mock);
+		when(invoiceConverterMock.convert(billingCycle2Mock)).thenReturn(myAccountingDocumentModel2Mock);
 
 		final List<MyAccountingDocumentModel> creditNoteList = testObj.extractAccountingDocuments(now);
 
-		verify(miraklMarketplacePlatformOperatorApiClient)
-				.getInvoices(miraklGetInvoicesRequestArgumentCaptor.capture());
+		verify(miraklMarketplacePlatformOperatorApiClient).getSellerBillingCycles(requestArgumentCaptor.capture());
 		verify(testObj).extractAccountingDocuments(now, false);
 
-		final MiraklGetInvoicesRequest miraklGetInvoicesRequest = miraklGetInvoicesRequestArgumentCaptor.getValue();
+		final MiraklGetSellerBillingCyclesRequest request = requestArgumentCaptor.getValue();
 
-		assertThat(miraklGetInvoicesRequest.getStartDate()).isEqualTo(now);
-		assertThat(miraklGetInvoicesRequest.getStates()).isEqualTo(List.of(COMPLETE));
-		assertThat(miraklGetInvoicesRequest.getPaymentStatus()).isEqualTo(PENDING);
+		assertThat(request.getStartDate()).isEqualTo(now.toInstant());
+		assertThat(request.getPayOutStates()).containsExactly(MiraklPayOutState.TO_PAY);
 
 		assertThat(creditNoteList).containsExactlyInAnyOrder(myAccountingDocumentModel1Mock,
 				myAccountingDocumentModel2Mock);
@@ -139,21 +139,19 @@ class AbstractAccountingDocumentsExtractServiceImplTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 0, 55));
 		final Date now = DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault());
 
-		when(miraklMarketplacePlatformOperatorApiClient.getInvoices(any())).thenReturn(miraklInvoicesMock);
-		when(miraklInvoicesMock.getInvoices()).thenReturn(List.of(miraklInvoice1Mock, miraklInvoice2Mock));
-		when(invoiceConverterMock.convert(miraklInvoice1Mock)).thenReturn(myAccountingDocumentModel1Mock);
-		when(invoiceConverterMock.convert(miraklInvoice2Mock)).thenReturn(myAccountingDocumentModel2Mock);
+		when(miraklMarketplacePlatformOperatorApiClient.getSellerBillingCycles(any())).thenReturn(billingCyclesMock);
+		when(billingCyclesMock.getData()).thenReturn(List.of(billingCycle1Mock, billingCycle2Mock));
+		when(invoiceConverterMock.convert(billingCycle1Mock)).thenReturn(myAccountingDocumentModel1Mock);
+		when(invoiceConverterMock.convert(billingCycle2Mock)).thenReturn(myAccountingDocumentModel2Mock);
 
 		final List<MyAccountingDocumentModel> creditNoteList = testObj.extractAccountingDocuments(now, true);
 
-		verify(miraklMarketplacePlatformOperatorApiClient)
-				.getInvoices(miraklGetInvoicesRequestArgumentCaptor.capture());
+		verify(miraklMarketplacePlatformOperatorApiClient).getSellerBillingCycles(requestArgumentCaptor.capture());
 
-		final MiraklGetInvoicesRequest miraklGetInvoicesRequest = miraklGetInvoicesRequestArgumentCaptor.getValue();
+		final MiraklGetSellerBillingCyclesRequest request = requestArgumentCaptor.getValue();
 
-		assertThat(miraklGetInvoicesRequest.getStartDate()).isEqualTo(now);
-		assertThat(miraklGetInvoicesRequest.getStates()).isEqualTo(List.of(COMPLETE));
-		assertThat(miraklGetInvoicesRequest.getPaymentStatus()).isNull();
+		assertThat(request.getStartDate()).isEqualTo(now.toInstant());
+		assertThat(request.getPayOutStates()).isNull();
 
 		assertThat(creditNoteList).containsExactlyInAnyOrder(myAccountingDocumentModel1Mock,
 				myAccountingDocumentModel2Mock);
@@ -163,14 +161,11 @@ class AbstractAccountingDocumentsExtractServiceImplTest {
 	void createAccountingDocumentRequest_shouldReturnRequestWithTargetInvoiceType() {
 		final Date date = new Date();
 
-		final MiraklGetInvoicesRequest result = testObj.createAccountingDocumentRequest(date,
-				InvoiceTypeEnum.MANUAL_CREDIT);
+		final MiraklGetSellerBillingCyclesRequest result = testObj.createAccountingDocumentRequest(date);
 
-		assertThat(result.getMax()).isEqualTo(100);
-		assertThat(result.getStartDate()).isEqualTo(date);
-		assertThat(result.getType()).isEqualTo(MANUAL_CREDIT);
-		assertThat(result.getPaymentStatus()).isEqualTo(PENDING);
-		assertThat(result.getStates()).containsExactly(COMPLETE);
+		assertThat(result.getLimit()).isEqualTo(100);
+		assertThat(result.getStartDate()).isEqualTo(date.toInstant());
+		assertThat(result.getPayOutStates()).containsExactly(MiraklPayOutState.TO_PAY);
 	}
 
 	@Test
@@ -178,39 +173,35 @@ class AbstractAccountingDocumentsExtractServiceImplTest {
 		TimeMachine.useFixedClockAt(LocalDateTime.of(2020, 11, 10, 20, 0, 55));
 		final Date now = DateUtil.convertToDate(TimeMachine.now(), ZoneId.systemDefault());
 
-		final List<MiraklInvoice> firstPageResponseInvoices = getListOfmiraklInvoiceMocks(MIRAKL_MAX_RESULTS_PER_PAGE);
-		final List<MiraklInvoice> secondPageResponseInvoices = getListOfmiraklInvoiceMocks(
-				MIRAKL_MAX_RESULTS_PER_PAGE / 2);
-		final long totalResponseInvoices = firstPageResponseInvoices.size() + secondPageResponseInvoices.size();
+		final List<MiraklSellerBillingCycle> firstPageResponse = getListOfMocks(MIRAKL_MAX_RESULTS_PER_PAGE);
+		final List<MiraklSellerBillingCycle> secondPageResponse = getListOfMocks(MIRAKL_MAX_RESULTS_PER_PAGE / 2);
 
-		when(miraklMarketplacePlatformOperatorApiClient
-				.getInvoices(argThat(request -> request != null && request.getOffset() == 0)))
-						.thenReturn(miraklInvoicesMock);
-		when(miraklMarketplacePlatformOperatorApiClient
-				.getInvoices(argThat(request -> request != null && request.getOffset() == MIRAKL_MAX_RESULTS_PER_PAGE)))
-						.thenReturn(miraklInvoices2Mock);
-		when(miraklInvoicesMock.getTotalCount()).thenReturn(totalResponseInvoices);
-		when(miraklInvoicesMock.getInvoices()).thenReturn(firstPageResponseInvoices);
-		when(miraklInvoices2Mock.getTotalCount()).thenReturn(totalResponseInvoices);
-		when(miraklInvoices2Mock.getInvoices()).thenReturn(secondPageResponseInvoices);
+		when(billingCyclesMock.getData()).thenReturn(firstPageResponse);
+		when(billingCyclesMock.getNextPageToken()).thenReturn(NEXT_TOKEN);
+		when(billingCycles2Mock.getData()).thenReturn(secondPageResponse);
+		when(billingCycles2Mock.getNextPageToken()).thenReturn(null);
 
-		final List<MyAccountingDocumentModel> expectedAccountingDocuments = Stream
-				.concat(firstPageResponseInvoices.stream(), secondPageResponseInvoices.stream())
-				.map(invoice -> mockAndReturn(invoice)).collect(Collectors.toList());
+		when(miraklMarketplacePlatformOperatorApiClient.getSellerBillingCycles(any())).thenReturn(billingCyclesMock)
+			.thenReturn(billingCycles2Mock);
+
+		final List<MyAccountingDocumentModel> expected = Stream
+			.concat(firstPageResponse.stream(), secondPageResponse.stream())
+			.map(this::mockAndReturn)
+			.toList();
 
 		final List<MyAccountingDocumentModel> result = testObj.extractAccountingDocuments(now);
 
-		assertThat(result).containsExactlyElementsOf(expectedAccountingDocuments);
+		assertThat(result).containsExactlyElementsOf(expected);
 	}
 
-	private MyAccountingDocumentModel mockAndReturn(final MiraklInvoice invoice) {
+	private MyAccountingDocumentModel mockAndReturn(final MiraklSellerBillingCycle billingCycle) {
 		final MyAccountingDocumentModel myAccountingDocumentModel = mock(MyAccountingDocumentModel.class);
-		when(invoiceConverterMock.convert(invoice)).thenReturn(myAccountingDocumentModel);
+		when(invoiceConverterMock.convert(billingCycle)).thenReturn(myAccountingDocumentModel);
 		return myAccountingDocumentModel;
 	}
 
-	private List<MiraklInvoice> getListOfmiraklInvoiceMocks(final int numberOfMocks) {
-		return IntStream.range(0, numberOfMocks).mapToObj(i -> mock(MiraklInvoice.class)).collect(Collectors.toList());
+	private List<MiraklSellerBillingCycle> getListOfMocks(final int numberOfMocks) {
+		return IntStream.range(0, numberOfMocks).mapToObj(i -> mock(MiraklSellerBillingCycle.class)).toList();
 	}
 
 	private Date searchWindow() {
@@ -220,14 +211,14 @@ class AbstractAccountingDocumentsExtractServiceImplTest {
 	static class MyAccountingDocumentsExtractServiceImplTest
 			extends AbstractAccountingDocumentsExtractServiceImpl<MyAccountingDocumentModel> {
 
-		private final Converter<MiraklInvoice, MyAccountingDocumentModel> miraklInvoiceToInvoiceModelConverter;
+		private final Converter<MiraklSellerBillingCycle, MyAccountingDocumentModel> miraklInvoiceToInvoiceModelConverter;
 
 		protected MyAccountingDocumentsExtractServiceImplTest(
 				final Converter<MiraklShop, AccountingDocumentModel> miraklShopToAccountingModelConverter,
 				final MiraklClient miraklMarketplacePlatformOperatorApiClient,
 				final AccountingDocumentsLinksService accountingDocumentsLinksService,
 				final MailNotificationUtil invoicesMailNotificationUtil,
-				final Converter<MiraklInvoice, MyAccountingDocumentModel> miraklInvoiceToInvoiceModelConverter) {
+				final Converter<MiraklSellerBillingCycle, MyAccountingDocumentModel> miraklInvoiceToInvoiceModelConverter) {
 			super(miraklShopToAccountingModelConverter, miraklMarketplacePlatformOperatorApiClient,
 					accountingDocumentsLinksService, invoicesMailNotificationUtil);
 			this.miraklInvoiceToInvoiceModelConverter = miraklInvoiceToInvoiceModelConverter;
@@ -239,7 +230,7 @@ class AbstractAccountingDocumentsExtractServiceImplTest {
 		}
 
 		@Override
-		protected Converter<MiraklInvoice, MyAccountingDocumentModel> getMiraklInvoiceToAccountingModelConverter() {
+		protected Converter<MiraklSellerBillingCycle, MyAccountingDocumentModel> getMiraklInvoiceToAccountingModelConverter() {
 			return miraklInvoiceToInvoiceModelConverter;
 		}
 

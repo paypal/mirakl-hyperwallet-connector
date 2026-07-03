@@ -2,17 +2,17 @@ package com.paypal.invoices.extractioninvoices.services.converters;
 
 import com.hyperwallet.clientsdk.model.HyperwalletPayment;
 import com.paypal.infrastructure.hyperwallet.configuration.HyperwalletProgramsConfiguration;
+import com.paypal.infrastructure.hyperwallet.services.PaymentHyperwalletSDKService;
 import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.invoices.extractioninvoices.configuration.InvoicesOperatorCommissionsConfig;
 import com.paypal.invoices.extractioninvoices.model.InvoiceModel;
-import com.paypal.infrastructure.hyperwallet.services.PaymentHyperwalletSDKService;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import static com.paypal.infrastructure.hyperwallet.constants.HyperWalletConstants.PAYMENT_OPERATOR_SUFFIX;
-
 import java.math.BigDecimal;
+
+import static com.paypal.infrastructure.hyperwallet.constants.HyperWalletConstants.PAYMENT_OPERATOR_SUFFIX;
 
 /**
  * Class to convert operator invoices from {@link InvoiceModel} to
@@ -49,9 +49,10 @@ public class OperatorInvoiceModelToHyperwalletPaymentConverter implements Conver
 
 		final var target = new HyperwalletPayment();
 		target.setProgramToken(invoicesPaymentHyperwalletSDKService
-				.getProgramTokenByHyperwalletProgram(source.getHyperwalletProgram()));
-		target.setDestinationToken(hyperwalletProgramsConfiguration
-				.getProgramConfiguration(source.getHyperwalletProgram()).getBankAccountToken());
+			.getProgramTokenByHyperwalletProgram(source.getHyperwalletProgram()));
+		target.setDestinationToken(
+				hyperwalletProgramsConfiguration.getProgramConfiguration(source.getHyperwalletProgram())
+					.getBankAccountToken());
 		target.setClientPaymentId(source.getInvoiceNumber() + PAYMENT_OPERATOR_SUFFIX);
 		target.setAmount(BigDecimal.valueOf(source.getTransferAmountToOperator()).toPlainString());
 		target.setCurrency(source.getCurrencyIsoCode());

@@ -1,7 +1,7 @@
 package com.paypal.sellers.stakeholdersextraction.services;
 
-import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
+import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 
 import java.util.List;
 

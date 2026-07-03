@@ -1,6 +1,5 @@
 package com.paypal.sellers.stakeholdersextraction.batchjobs;
 
-import com.paypal.sellers.stakeholdersextraction.batchjobs.BusinessStakeholderExtractJobItem;
 import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +17,9 @@ class BusinessStakeholderExtractJobItemTest {
 	void getItemId_ShouldReturnClientUserIdAndStkId() {
 
 		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder()
-				.clientUserId(CLIENT_USER_ID).stkId(STK_ID).build();
+			.clientUserId(CLIENT_USER_ID)
+			.stkId(STK_ID)
+			.build();
 
 		final BusinessStakeholderExtractJobItem testObj = new BusinessStakeholderExtractJobItem(
 				businessStakeHolderModel);
@@ -30,7 +31,9 @@ class BusinessStakeholderExtractJobItemTest {
 	void getItemType_ShouldReturnBusinessStakeholder() {
 
 		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder()
-				.clientUserId(CLIENT_USER_ID).stkId(STK_ID).build();
+			.clientUserId(CLIENT_USER_ID)
+			.stkId(STK_ID)
+			.build();
 
 		final BusinessStakeholderExtractJobItem testObj = new BusinessStakeholderExtractJobItem(
 				businessStakeHolderModel);

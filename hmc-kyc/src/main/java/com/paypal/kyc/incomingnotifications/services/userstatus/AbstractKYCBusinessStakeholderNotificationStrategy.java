@@ -3,8 +3,8 @@ package com.paypal.kyc.incomingnotifications.services.userstatus;
 import com.hyperwallet.clientsdk.Hyperwallet;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.paypal.infrastructure.hyperwallet.configuration.HyperwalletProgramsConfiguration;
-import com.paypal.infrastructure.support.exceptions.HMCException;
 import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
+import com.paypal.infrastructure.support.exceptions.HMCException;
 import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.kyc.incomingnotifications.model.KYCBusinessStakeholderStatusNotificationBodyModel;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Slf4j
 public abstract class AbstractKYCBusinessStakeholderNotificationStrategy
@@ -37,7 +36,7 @@ public abstract class AbstractKYCBusinessStakeholderNotificationStrategy
 				.map(userHyperwalletSDKService::getHyperwalletInstanceByProgramToken)
 				.map(hyperwallet -> callHyperwalletSDKCatchingException(hyperwallet,
 						kycBusinessStakeholderStatusNotificationBodyModel.getUserToken()))
-				.filter(Objects::nonNull).collect(Collectors.toList());
+				.filter(Objects::nonNull).toList();
 		//@formatter:on
 		if (CollectionUtils.isEmpty(hyperWalletUser)) {
 			throw new HMCException(

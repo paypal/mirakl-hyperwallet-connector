@@ -1,6 +1,5 @@
 package com.paypal.infrastructure.support.exceptions;
 
-import com.paypal.infrastructure.support.exceptions.HMCErrorResponse;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

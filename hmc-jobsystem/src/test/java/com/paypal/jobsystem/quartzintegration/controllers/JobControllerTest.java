@@ -1,7 +1,6 @@
 package com.paypal.jobsystem.quartzintegration.controllers;
 
 import com.paypal.jobsystem.quartzintegration.repositories.entities.JobExecutionInformationEntity;
-import com.paypal.jobsystem.quartzintegration.controllers.JobController;
 import com.paypal.jobsystem.quartzintegration.services.JobService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

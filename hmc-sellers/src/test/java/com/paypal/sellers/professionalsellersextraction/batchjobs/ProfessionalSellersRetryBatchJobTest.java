@@ -1,13 +1,10 @@
 package com.paypal.sellers.professionalsellersextraction.batchjobs;
 
-import com.paypal.sellers.professionalsellersextraction.batchjobs.ProfessionalSellersExtractBatchJobItemProcessor;
-import com.paypal.sellers.professionalsellersextraction.batchjobs.ProfessionalSellersRetryBatchJob;
-import com.paypal.sellers.professionalsellersextraction.batchjobs.ProfessionalSellersRetryBatchJobItemsExtractor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.InjectMocks;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

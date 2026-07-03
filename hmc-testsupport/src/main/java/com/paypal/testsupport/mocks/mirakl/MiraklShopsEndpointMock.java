@@ -54,7 +54,7 @@ public class MiraklShopsEndpointMock extends AbstractResourceLoadingEndpointMock
 		final String jsonReturned = mapper.writeValueAsString(dtoReturned);
 		final String jsonRequested = mapper.writeValueAsString(new MiraklUpdateShops(dtoRequested.getShops()));
 		mockServerClient.when(request().withMethod(HttpMethod.PUT.name()).withPath(URL).withBody(jsonRequested))
-				.respond(response().withStatusCode(HttpStatus.OK.value()).withBody(jsonReturned));
+			.respond(response().withStatusCode(HttpStatus.OK.value()).withBody(jsonReturned));
 	}
 
 	public void verifyUpdateDocument(final Long shopId) throws JsonProcessingException {

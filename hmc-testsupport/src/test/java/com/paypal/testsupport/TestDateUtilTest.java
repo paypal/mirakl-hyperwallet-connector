@@ -1,14 +1,11 @@
 package com.paypal.testsupport;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.Date;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TestDateUtilTest {
+import org.junit.jupiter.api.Test;
+import java.util.Date;
 
-	private TestDateUtil testObj;
+class TestDateUtilTest {
 
 	@Test
 	void from() {

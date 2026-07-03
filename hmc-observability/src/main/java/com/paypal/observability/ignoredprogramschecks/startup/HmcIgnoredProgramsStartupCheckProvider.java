@@ -24,7 +24,7 @@ public class HmcIgnoredProgramsStartupCheckProvider implements StartupCheckProvi
 	@Override
 	public StartupCheck check() {
 		final HmcIgnoredProgramsCheck hmcIgnoredProgramsCheck = hmcIgnoredProgramsStartUpCheckService
-				.checkIgnoredPrograms();
+			.checkIgnoredPrograms();
 
 		return hmcIgnoredProgramsCheckConverter.from(hmcIgnoredProgramsCheck);
 	}

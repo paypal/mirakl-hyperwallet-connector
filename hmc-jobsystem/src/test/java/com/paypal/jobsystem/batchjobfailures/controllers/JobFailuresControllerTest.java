@@ -1,11 +1,9 @@
 package com.paypal.jobsystem.batchjobfailures.controllers;
 
-import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
-import com.paypal.jobsystem.batchjobfailures.services.BatchJobFailedItemService;
 import com.paypal.jobsystem.batchjobfailures.controllers.converters.BatchJobFailedItemResponseConverter;
 import com.paypal.jobsystem.batchjobfailures.controllers.dto.BatchJobFailedItemResponse;
-import com.paypal.jobsystem.batchjobfailures.controllers.JobFailuresController;
-import org.assertj.core.api.Assertions;
+import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
+import com.paypal.jobsystem.batchjobfailures.services.BatchJobFailedItemService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,7 +41,7 @@ class JobFailuresControllerTest {
 
 		when(batchJobFailedItemServiceMock.getFailedItems("type1")).thenReturn(batchJobFailedItems);
 		when(batchJobFailedItemResponseConverterMock.toResponse(batchJobFailedItems))
-				.thenReturn(batchJobFailedItemResponses);
+			.thenReturn(batchJobFailedItemResponses);
 
 		final List<BatchJobFailedItemResponse> result = testObj.getFailedItems("type1");
 

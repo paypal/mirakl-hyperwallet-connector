@@ -1,6 +1,5 @@
 package com.paypal.infrastructure.support.date;
 
-import com.paypal.infrastructure.support.date.TimeMachine;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

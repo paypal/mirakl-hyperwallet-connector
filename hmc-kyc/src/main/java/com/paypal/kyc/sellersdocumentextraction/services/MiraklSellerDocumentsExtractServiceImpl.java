@@ -9,16 +9,16 @@ import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
-import com.paypal.infrastructure.support.converter.Converter;
-import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
+import com.paypal.infrastructure.support.converter.Converter;
+import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.support.logging.LoggingConstantsUtil;
-import com.paypal.kyc.documentextractioncommons.support.AbstractMiraklDocumentExtractServiceImpl;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentInfoModel;
-import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentsExtractionResult;
+import com.paypal.kyc.documentextractioncommons.support.AbstractMiraklDocumentExtractServiceImpl;
+import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -79,7 +79,7 @@ public class MiraklSellerDocumentsExtractServiceImpl extends AbstractMiraklDocum
 		final List<KYCDocumentSellerInfoModel> kycDocumentInfoList = Stream.ofNullable(shops.getShops())
 				.flatMap(Collection::stream)
 				.map(miraklShopKYCDocumentInfoModelConverter::convert)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 
 		//@formatter:off
@@ -88,9 +88,9 @@ public class MiraklSellerDocumentsExtractServiceImpl extends AbstractMiraklDocum
 		//@formatter:on
 
 		final Collection<KYCDocumentSellerInfoModel> docsFromShopsWithVerificationRequired = CollectionUtils
-				.emptyIfNull(documentGroups.get(true));
+			.emptyIfNull(documentGroups.get(true));
 		final Collection<KYCDocumentSellerInfoModel> docsFromShopsWithoutVerificationRequired = CollectionUtils
-				.emptyIfNull(documentGroups.get(false));
+			.emptyIfNull(documentGroups.get(false));
 
 		if (!CollectionUtils.isEmpty(docsFromShopsWithVerificationRequired)) {
 			//@formatter:off
@@ -113,9 +113,10 @@ public class MiraklSellerDocumentsExtractServiceImpl extends AbstractMiraklDocum
 		skipShopsWithNonSelectedDocuments(docsFromShopsWithVerificationRequired);
 
 		//@formatter:off
-		final List<KYCDocumentSellerInfoModel> shopsWithSelectedVerificationDocuments = docsFromShopsWithVerificationRequired.stream()
+		final List<KYCDocumentSellerInfoModel> shopsWithSelectedVerificationDocuments = Optional.ofNullable(docsFromShopsWithVerificationRequired).stream()
+				.flatMap(Collection::stream)
 				.filter(KYCDocumentSellerInfoModel::hasSelectedDocumentControlFields)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 
 		final KYCDocumentsExtractionResult<KYCDocumentSellerInfoModel> kycDocumentsExtractionResult = new KYCDocumentsExtractionResult<>();
@@ -135,8 +136,12 @@ public class MiraklSellerDocumentsExtractServiceImpl extends AbstractMiraklDocum
 		log.info("Retrieving shopId [{}]", shopId);
 		final MiraklShops shops = miraklOperatorClient.getShops(miraklGetShopsRequest);
 
-		return Optional.ofNullable(shops).orElse(new MiraklShops()).getShops().stream()
-				.filter(shop -> shopId.equals(shop.getId())).findAny();
+		return Optional.ofNullable(shops)
+			.orElse(new MiraklShops())
+			.getShops()
+			.stream()
+			.filter(shop -> shopId.equals(shop.getId()))
+			.findAny();
 	}
 
 	/**
@@ -155,24 +160,26 @@ public class MiraklSellerDocumentsExtractServiceImpl extends AbstractMiraklDocum
 	@Override
 	public KYCDocumentInfoModel extractKYCSellerDocuments(final String shopId) {
 		return extractMiraklShop(shopId)
-				.map(miraklShop -> miraklSellerDocumentDownloadExtractService
-						.populateMiraklShopDocuments(miraklShopKYCDocumentInfoModelConverter.convert(miraklShop)))
-				.orElse(null);
+			.map(miraklShop -> miraklSellerDocumentDownloadExtractService
+				.populateMiraklShopDocuments(miraklShopKYCDocumentInfoModelConverter.convert(miraklShop)))
+			.orElse(null);
 	}
 
 	private void skipShopsWithNonSelectedDocuments(
 			final Collection<KYCDocumentSellerInfoModel> shopsWithVerificationRequired) {
 
 		//@formatter:off
-		final List<KYCDocumentSellerInfoModel> shopsWithNonSelectedVerificationDocuments = shopsWithVerificationRequired.stream()
-				.filter(Predicate.not(KYCDocumentSellerInfoModel::hasSelectedDocumentControlFields))
-				.collect(Collectors.toList());
+		final List<KYCDocumentSellerInfoModel> shopsWithNonSelectedVerificationDocuments = CollectionUtils
+			.emptyIfNull(shopsWithVerificationRequired).stream()
+			.filter(Predicate.not(KYCDocumentSellerInfoModel::hasSelectedDocumentControlFields))
+			.toList();
 		//@formatter:on
 
 		if (!CollectionUtils.isEmpty(shopsWithNonSelectedVerificationDocuments)) {
 			log.warn("Skipping shops for seller with non selected documents to push to hyperwallet: [{}]",
-					shopsWithNonSelectedVerificationDocuments.stream().map(KYCDocumentSellerInfoModel::getClientUserId)
-							.collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR)));
+					shopsWithNonSelectedVerificationDocuments.stream()
+						.map(KYCDocumentSellerInfoModel::getClientUserId)
+						.collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR)));
 		}
 	}
 
@@ -208,9 +215,11 @@ public class MiraklSellerDocumentsExtractServiceImpl extends AbstractMiraklDocum
 	private void logUpdatedShops(final MiraklUpdatedShops miraklUpdatedShops) {
 		//@formatter:on
 		log.info("Setting required KYC flag for shops with ids [{}] to false",
-				miraklUpdatedShops.getShopReturns().stream().map(MiraklUpdatedShopReturn::getShopUpdated)
-						.map(MiraklShop::getId)
-						.collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR)));
+				miraklUpdatedShops.getShopReturns()
+					.stream()
+					.map(MiraklUpdatedShopReturn::getShopUpdated)
+					.map(MiraklShop::getId)
+					.collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR)));
 		//@formatter:off
 	}
 

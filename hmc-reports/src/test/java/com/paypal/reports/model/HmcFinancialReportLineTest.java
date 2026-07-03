@@ -1,7 +1,6 @@
 package com.paypal.reports.model;
 
 import com.paypal.infrastructure.support.date.TimeMachine;
-import com.paypal.reports.model.HmcFinancialReportLine;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

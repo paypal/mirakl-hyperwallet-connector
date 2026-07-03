@@ -9,14 +9,14 @@ import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
-import com.paypal.infrastructure.support.converter.Converter;
-import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
+import com.paypal.infrastructure.support.converter.Converter;
+import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
-import com.paypal.kyc.stakeholdersdocumentextraction.services.converters.KYCBusinessStakeHolderConverter;
-import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentsExtractionResult;
+import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
+import com.paypal.kyc.stakeholdersdocumentextraction.services.converters.KYCBusinessStakeHolderConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -110,7 +110,7 @@ class MiraklBusinessStakeholderDocumentsExtractServiceImplTest {
 				BUSINESS_STAKEHOLDER_CODE, BUSINESS_STAKEHOLDER_TOKEN)));
 
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(Mockito.any(MiraklGetShopsRequest.class)))
-				.thenReturn(miraklShopsMock);
+			.thenReturn(miraklShopsMock);
 		when(miraklShopsMock.getShops()).thenReturn(List.of(miraklShopStub));
 
 		final List<String> businessStakeholderToken = List.of(BUSINESS_STAKEHOLDER_TOKEN);
@@ -146,8 +146,12 @@ class MiraklBusinessStakeholderDocumentsExtractServiceImplTest {
 
 	@Test
 	void getKYCCustomValuesRequiredVerificationBusinessStakeholders_whenNoShopIsRetrieved_shouldReturnEmptyList() {
+		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(Mockito.any(MiraklGetShopsRequest.class)))
+			.thenReturn(miraklShopsMock);
+		when(miraklShopsMock.getShops()).thenReturn(Collections.emptyList());
+
 		final List<String> result = testObj.getKYCCustomValuesRequiredVerificationBusinessStakeholders(SHOP_ID,
-				Collections.emptyList());
+				List.of(BUSINESS_STAKEHOLDER_TOKEN));
 
 		assertThat(result).isEmpty();
 	}
@@ -158,7 +162,7 @@ class MiraklBusinessStakeholderDocumentsExtractServiceImplTest {
 		miraklShopStub.setId(SHOP_ID);
 
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(Mockito.any(MiraklGetShopsRequest.class)))
-				.thenReturn(miraklShopsMock);
+			.thenReturn(miraklShopsMock);
 		when(miraklShopsMock.getShops()).thenReturn(List.of(miraklShopStub));
 
 		final List<String> businessStakeholderToken = List.of(BUSINESS_STAKEHOLDER_TOKEN);
@@ -173,7 +177,7 @@ class MiraklBusinessStakeholderDocumentsExtractServiceImplTest {
 	void extractBusinessStakeholderDocuments_shouldReturnAllKycDocumentBusinessStakeholderInfoForShopsFlaggedAsKYCRequiredAndExistingOnHyperwallet() {
 		when(miraklGetShopsRequestConverterMock.convert(deltaMock)).thenReturn(miraklGetShopsRequestMock);
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestMock))
-				.thenReturn(miraklShopsResponseMock);
+			.thenReturn(miraklShopsResponseMock);
 		when(miraklShopsResponseMock.getShops()).thenReturn(List.of(miraklShopRequiringKYCMock,
 				miraklShopRequiringKYCWithoutSelectedControlFieldsMock, miraklShopNonRequiringKYCMock,
 				miraklShopRequiringLOAMock, miraklShopRequiringKYCWithEmptyTokenMock));
@@ -181,72 +185,72 @@ class MiraklBusinessStakeholderDocumentsExtractServiceImplTest {
 		when(miraklShopRequiringKYCWithoutSelectedControlFieldsMock.getId()).thenReturn(CLIENT_ID_2);
 		when(miraklShopNonRequiringKYCMock.getId()).thenReturn(CLIENT_ID_3);
 		lenient()
-				.when(miraklShopKYCDocumentBusinessStakeHolderInfoModelConverterMock.convert(miraklShopRequiringKYCMock,
-						BUSINESS_STAKEHOLDER_NUMBER))
-				.thenReturn(kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerMock);
+			.when(miraklShopKYCDocumentBusinessStakeHolderInfoModelConverterMock.convert(miraklShopRequiringKYCMock,
+					BUSINESS_STAKEHOLDER_NUMBER))
+			.thenReturn(kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerMock);
 		lenient()
-				.when(miraklShopKYCDocumentBusinessStakeHolderInfoModelConverterMock
-						.convert(miraklShopRequiringKYCWithoutSelectedControlFieldsMock, BUSINESS_STAKEHOLDER_NUMBER))
-				.thenReturn(kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerWithoutSelectedControlFieldsMock);
+			.when(miraklShopKYCDocumentBusinessStakeHolderInfoModelConverterMock
+				.convert(miraklShopRequiringKYCWithoutSelectedControlFieldsMock, BUSINESS_STAKEHOLDER_NUMBER))
+			.thenReturn(kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerWithoutSelectedControlFieldsMock);
 		lenient()
-				.when(miraklShopKYCDocumentBusinessStakeHolderInfoModelConverterMock
-						.convert(miraklShopNonRequiringKYCMock, BUSINESS_STAKEHOLDER_NUMBER))
-				.thenReturn(kycDocumentBusinessStakeholderInfoModelNonRequiringKYCSellerMock);
+			.when(miraklShopKYCDocumentBusinessStakeHolderInfoModelConverterMock.convert(miraklShopNonRequiringKYCMock,
+					BUSINESS_STAKEHOLDER_NUMBER))
+			.thenReturn(kycDocumentBusinessStakeholderInfoModelNonRequiringKYCSellerMock);
 		lenient()
-				.when(miraklShopKYCDocumentBusinessStakeHolderInfoModelConverterMock.convert(miraklShopRequiringLOAMock,
-						BUSINESS_STAKEHOLDER_NUMBER))
-				.thenReturn(kycDocumentBusinessStakeholderInfoModelRequiringLOASellerMock);
+			.when(miraklShopKYCDocumentBusinessStakeHolderInfoModelConverterMock.convert(miraklShopRequiringLOAMock,
+					BUSINESS_STAKEHOLDER_NUMBER))
+			.thenReturn(kycDocumentBusinessStakeholderInfoModelRequiringLOASellerMock);
 		lenient()
-				.when(miraklShopKYCDocumentBusinessStakeHolderInfoModelConverterMock
-						.convert(miraklShopRequiringKYCWithEmptyTokenMock, BUSINESS_STAKEHOLDER_NUMBER))
-				.thenReturn(kycDocumentBusinessStakeholderInfoModelRequiringKYCWithEmptyTokenSellerMock);
+			.when(miraklShopKYCDocumentBusinessStakeHolderInfoModelConverterMock
+				.convert(miraklShopRequiringKYCWithEmptyTokenMock, BUSINESS_STAKEHOLDER_NUMBER))
+			.thenReturn(kycDocumentBusinessStakeholderInfoModelRequiringKYCWithEmptyTokenSellerMock);
 
 		when(kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerMock.isRequiresKYC()).thenReturn(true);
 		when(kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerMock.getClientUserId()).thenReturn(CLIENT_ID_1);
 		when(kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerMock.getUserToken()).thenReturn(USER_TOKEN);
 		when(kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerMock
-				.hasSelectedDocumentsControlFieldsInBusinessStakeholder()).thenReturn(true);
+			.hasSelectedDocumentsControlFieldsInBusinessStakeholder()).thenReturn(true);
 		when(kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerWithoutSelectedControlFieldsMock.isRequiresKYC())
-				.thenReturn(true);
+			.thenReturn(true);
 		when(kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerWithoutSelectedControlFieldsMock
-				.getClientUserId()).thenReturn(CLIENT_ID_2);
+			.getClientUserId()).thenReturn(CLIENT_ID_2);
 		when(kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerWithoutSelectedControlFieldsMock
-				.hasSelectedDocumentsControlFieldsInBusinessStakeholder()).thenReturn(false);
+			.hasSelectedDocumentsControlFieldsInBusinessStakeholder()).thenReturn(false);
 		when(kycDocumentBusinessStakeholderInfoModelRequiringLOASellerMock.isRequiresLetterOfAuthorization())
-				.thenReturn(true);
+			.thenReturn(true);
 		when(kycDocumentBusinessStakeholderInfoModelRequiringLOASellerMock.getClientUserId()).thenReturn(CLIENT_ID_1);
 		when(kycDocumentBusinessStakeholderInfoModelRequiringLOASellerMock.getUserToken()).thenReturn(USER_TOKEN);
 		when(kycDocumentBusinessStakeholderInfoModelRequiringLOASellerMock
-				.hasSelectedDocumentsControlFieldsInBusinessStakeholder()).thenReturn(true);
+			.hasSelectedDocumentsControlFieldsInBusinessStakeholder()).thenReturn(true);
 
 		when(kycDocumentBusinessStakeholderInfoModelRequiringKYCWithEmptyTokenSellerMock.isRequiresKYC())
-				.thenReturn(true);
+			.thenReturn(true);
 		when(kycDocumentBusinessStakeholderInfoModelRequiringKYCWithEmptyTokenSellerMock.getClientUserId())
-				.thenReturn(CLIENT_ID_1);
+			.thenReturn(CLIENT_ID_1);
 		when(kycDocumentBusinessStakeholderInfoModelRequiringKYCWithEmptyTokenSellerMock
-				.hasSelectedDocumentsControlFieldsInBusinessStakeholder()).thenReturn(true);
+			.hasSelectedDocumentsControlFieldsInBusinessStakeholder()).thenReturn(true);
 
 		when(miraklBusinessStakeholderDocumentDownloadExtractServiceMock
-				.getBusinessStakeholderDocumentsSelectedBySeller(
-						kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerMock))
-								.thenReturn(kycDocumentBusinessStakeholderInfoModelRequiringKYCPopulatedSellerMock);
+			.getBusinessStakeholderDocumentsSelectedBySeller(
+					kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerMock))
+			.thenReturn(kycDocumentBusinessStakeholderInfoModelRequiringKYCPopulatedSellerMock);
 		when(miraklBusinessStakeholderDocumentDownloadExtractServiceMock
-				.getBusinessStakeholderDocumentsSelectedBySeller(
-						kycDocumentBusinessStakeholderInfoModelRequiringLOASellerMock))
-								.thenReturn(kycDocumentBusinessStakeholderInfoModelRequiringLOAPopulatedSellerMock);
+			.getBusinessStakeholderDocumentsSelectedBySeller(
+					kycDocumentBusinessStakeholderInfoModelRequiringLOASellerMock))
+			.thenReturn(kycDocumentBusinessStakeholderInfoModelRequiringLOAPopulatedSellerMock);
 
 		final KYCDocumentsExtractionResult<KYCDocumentBusinessStakeHolderInfoModel> result = testObj
-				.extractBusinessStakeholderDocuments(deltaMock);
+			.extractBusinessStakeholderDocuments(deltaMock);
 
 		verify(miraklBusinessStakeholderDocumentDownloadExtractServiceMock)
-				.getBusinessStakeholderDocumentsSelectedBySeller(
-						kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerMock);
+			.getBusinessStakeholderDocumentsSelectedBySeller(
+					kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerMock);
 		verify(miraklBusinessStakeholderDocumentDownloadExtractServiceMock, never())
-				.getBusinessStakeholderDocumentsSelectedBySeller(
-						kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerWithoutSelectedControlFieldsMock);
+			.getBusinessStakeholderDocumentsSelectedBySeller(
+					kycDocumentBusinessStakeholderInfoModelRequiringKYCSellerWithoutSelectedControlFieldsMock);
 		verify(miraklBusinessStakeholderDocumentDownloadExtractServiceMock, never())
-				.getBusinessStakeholderDocumentsSelectedBySeller(
-						kycDocumentBusinessStakeholderInfoModelNonRequiringKYCSellerMock);
+			.getBusinessStakeholderDocumentsSelectedBySeller(
+					kycDocumentBusinessStakeholderInfoModelNonRequiringKYCSellerMock);
 		assertThat(result.getExtractedDocuments()).containsExactlyInAnyOrder(
 				kycDocumentBusinessStakeholderInfoModelRequiringKYCPopulatedSellerMock,
 				kycDocumentBusinessStakeholderInfoModelRequiringLOAPopulatedSellerMock);
@@ -256,11 +260,11 @@ class MiraklBusinessStakeholderDocumentsExtractServiceImplTest {
 	void extractBusinessStakeholderDocuments_whenNoShopsHasBeenUpdatedSinceDelta_shouldReturnAnEmptyList() {
 		when(miraklGetShopsRequestConverterMock.convert(deltaMock)).thenReturn(miraklGetShopsRequestMock);
 		when(miraklMarketplacePlatformOperatorApiClientMock.getShops(miraklGetShopsRequestMock))
-				.thenReturn(miraklShopsResponseMock);
+			.thenReturn(miraklShopsResponseMock);
 		when(miraklShopsResponseMock.getShops()).thenReturn(null);
 
 		final KYCDocumentsExtractionResult<KYCDocumentBusinessStakeHolderInfoModel> result = testObj
-				.extractBusinessStakeholderDocuments(deltaMock);
+			.extractBusinessStakeholderDocuments(deltaMock);
 
 		assertThat(result.getExtractedDocuments()).isEmpty();
 	}
@@ -278,7 +282,7 @@ class MiraklBusinessStakeholderDocumentsExtractServiceImplTest {
         //@formatter:on
 
 		when(miraklMarketplacePlatformOperatorApiClientMock.updateShops(any(MiraklUpdateShopsRequest.class)))
-				.thenReturn(miraklUpdateShopsMock);
+			.thenReturn(miraklUpdateShopsMock);
 
 		testObj.setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(
 				kycDocumentBusinessStakeHolderInfoModel);
@@ -286,12 +290,14 @@ class MiraklBusinessStakeholderDocumentsExtractServiceImplTest {
 		verify(miraklMarketplacePlatformOperatorApiClientMock).updateShops(miraklUpdateShopArgumentCaptor.capture());
 
 		final MiraklUpdateShopsRequest miraklUpdateShopRequest = miraklUpdateShopArgumentCaptor.getValue();
-		final List<Long> updatedSellerIdList = miraklUpdateShopRequest.getShops().stream()
-				.map(MiraklUpdateShop::getShopId).collect(Collectors.toList());
+		final List<Long> updatedSellerIdList = miraklUpdateShopRequest.getShops()
+			.stream()
+			.map(MiraklUpdateShop::getShopId)
+			.toList();
 
 		assertThat(updatedSellerIdList).containsOnly(2002L);
 		assertThat(getUpdatedFlagValuesForShop(miraklUpdateShopRequest, 2002L)).containsAllEntriesOf(Map
-				.of(BUSINESS_STAKEHOLDER_PROOF_IDENTITY_CODE, "false", BUSINESS_STAKEHOLDER_PROOF_AUTH_CODE, "false"));
+			.of(BUSINESS_STAKEHOLDER_PROOF_IDENTITY_CODE, "false", BUSINESS_STAKEHOLDER_PROOF_AUTH_CODE, "false"));
 	}
 
 	@Test
@@ -307,25 +313,28 @@ class MiraklBusinessStakeholderDocumentsExtractServiceImplTest {
 		final MiraklException miraklException = new MiraklException("Something went wrong");
 
 		doThrow(miraklException).when(miraklMarketplacePlatformOperatorApiClientMock)
-				.updateShops(any(MiraklUpdateShopsRequest.class));
+			.updateShops(any(MiraklUpdateShopsRequest.class));
 
 		assertThatThrownBy(
 				() -> testObj.setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(kycDocumentOne))
-						.isInstanceOf(HMCMiraklAPIException.class);
+			.isInstanceOf(HMCMiraklAPIException.class);
 
 		verify(kycMailNotificationUtilMock).sendPlainTextEmail("Issue setting push document flags to false in Mirakl",
 				"Something went wrong setting push document flag to false in Mirakl for Shop Id [2000] and Business Stakeholder number [1]%n%s"
-						.formatted(MiraklLoggingErrorsUtil.stringify(miraklException)));
+					.formatted(MiraklLoggingErrorsUtil.stringify(miraklException)));
 	}
 
 	private Map<String, String> getUpdatedFlagValuesForShop(final MiraklUpdateShopsRequest miraklUpdateShopRequest,
 			final long shopId) {
-		return miraklUpdateShopRequest.getShops().stream().filter(shop -> shop.getShopId().equals(shopId))
-				.map(MiraklUpdateShop::getAdditionalFieldValues).flatMap(Collection::stream)
-				.filter(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class::isInstance)
-				.map(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class::cast)
-				.collect(Collectors.toMap(MiraklRequestAdditionalFieldValue::getCode,
-						MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue::getValue));
+		return miraklUpdateShopRequest.getShops()
+			.stream()
+			.filter(shop -> shop.getShopId().equals(shopId))
+			.map(MiraklUpdateShop::getAdditionalFieldValues)
+			.flatMap(Collection::stream)
+			.filter(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class::isInstance)
+			.map(MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue.class::cast)
+			.collect(Collectors.toMap(MiraklRequestAdditionalFieldValue::getCode,
+					MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue::getValue));
 	}
 
 }

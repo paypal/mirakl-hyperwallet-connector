@@ -43,7 +43,7 @@ class LoggingContextHolderTest {
 	@Test
 	void getCurrentBusinessTransaction_shouldEnsureTheBusinessTransactionIsSetInTheThreadLocal() {
 		final ThreadLocal<LoggingTransaction> businessTransactionInfoHolder = testObj
-				.getBusinessTransactionInfoHolder();
+			.getBusinessTransactionInfoHolder();
 
 		testObj.refreshBusinessTransaction(new MyLoggingTransaction());
 
@@ -53,7 +53,7 @@ class LoggingContextHolderTest {
 	@Test
 	void closeBusinessTransaction_shouldRemoveFromThreadLocalTheLoggingTransactionAlreadyOpened() {
 		final ThreadLocal<LoggingTransaction> businessTransactionInfoHolder = testObj
-				.getBusinessTransactionInfoHolder();
+			.getBusinessTransactionInfoHolder();
 
 		testObj.refreshBusinessTransaction(new MyLoggingTransaction());
 		testObj.closeBusinessTransaction();
@@ -64,7 +64,7 @@ class LoggingContextHolderTest {
 	@Test
 	void closeBusinessTransaction_shouldNotFailWhenClosingANonExistingBusinessTransaction() {
 		final ThreadLocal<LoggingTransaction> businessTransactionInfoHolder = testObj
-				.getBusinessTransactionInfoHolder();
+			.getBusinessTransactionInfoHolder();
 
 		testObj.closeBusinessTransaction();
 
@@ -91,7 +91,7 @@ class LoggingContextHolderTest {
 		@Override
 		public ObjectNode toJson() {
 			final ObjectMapper objectMapper = new ObjectMapper();
-			objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+			objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
 
 			return objectMapper.valueToTree(this);
 		}

@@ -1,9 +1,9 @@
 package com.paypal.kyc.documentextractioncommons.jobs;
 
-import com.paypal.jobsystem.quartzadapter.support.AbstractBatchJobSupportQuartzJob;
 import com.paypal.jobsystem.quartzadapter.job.QuartzBatchJobAdapterFactory;
-import com.paypal.kyc.stakeholdersdocumentextraction.batchjobs.BusinessStakeholdersDocumentsExtractBatchJob;
+import com.paypal.jobsystem.quartzadapter.support.AbstractBatchJobSupportQuartzJob;
 import com.paypal.kyc.sellersdocumentextraction.batchjobs.SellersDocumentsExtractBatchJob;
+import com.paypal.kyc.stakeholdersdocumentextraction.batchjobs.BusinessStakeholdersDocumentsExtractBatchJob;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 

@@ -6,9 +6,9 @@ import com.paypal.infrastructure.hyperwallet.configuration.HyperwalletConnection
 import com.paypal.infrastructure.hyperwallet.configuration.HyperwalletProgramsConfiguration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.InjectMocks;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -41,7 +41,7 @@ class AbstractHyperwalletSDKServiceTest {
 	@Test
 	void getHyperwalletInstance_shouldReturnAnHyperwalletInstance() {
 		when(hyperwalletProgramsConfigurationMock.getProgramConfiguration(HYPERWALLET_PROGRAM))
-				.thenReturn(hyperwalletProgramConfigurationMock);
+			.thenReturn(hyperwalletProgramConfigurationMock);
 		when(hyperwalletProgramConfigurationMock.getUsersProgramToken()).thenReturn(PROGRAM_TOKEN);
 		when(hyperwalletConnectionConfigurationMock.getUsername()).thenReturn(USER_NAME);
 		when(hyperwalletConnectionConfigurationMock.getPassword()).thenReturn(PASSWORD);
@@ -50,8 +50,8 @@ class AbstractHyperwalletSDKServiceTest {
 		final Hyperwallet result = testObj.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM);
 
 		assertThat(result).hasFieldOrPropertyWithValue("programToken", PROGRAM_TOKEN)
-				.hasFieldOrPropertyWithValue("apiClient.username", USER_NAME)
-				.hasFieldOrPropertyWithValue("url", SERVER + "/rest/v4");
+			.hasFieldOrPropertyWithValue("apiClient.username", USER_NAME)
+			.hasFieldOrPropertyWithValue("url", SERVER + "/rest/v4");
 	}
 
 	@Test
@@ -74,8 +74,8 @@ class AbstractHyperwalletSDKServiceTest {
 		final Hyperwallet result = testObj.getHyperwalletInstanceByProgramToken(PROGRAM_TOKEN);
 
 		assertThat(result).hasFieldOrPropertyWithValue("programToken", PROGRAM_TOKEN)
-				.hasFieldOrPropertyWithValue("apiClient.username", USER_NAME)
-				.hasFieldOrPropertyWithValue("url", SERVER + "/rest/v4");
+			.hasFieldOrPropertyWithValue("apiClient.username", USER_NAME)
+			.hasFieldOrPropertyWithValue("url", SERVER + "/rest/v4");
 	}
 
 	@Test
@@ -87,8 +87,8 @@ class AbstractHyperwalletSDKServiceTest {
 		final Hyperwallet result = testObj.getHyperwalletInstance();
 
 		assertThat(result).hasFieldOrPropertyWithValue("programToken", null)
-				.hasFieldOrPropertyWithValue("apiClient.username", USER_NAME)
-				.hasFieldOrPropertyWithValue("url", SERVER + "/rest/v4");
+			.hasFieldOrPropertyWithValue("apiClient.username", USER_NAME)
+			.hasFieldOrPropertyWithValue("url", SERVER + "/rest/v4");
 	}
 
 	static class MyHyperwalletSDKService extends AbstractHyperwalletSDKService {

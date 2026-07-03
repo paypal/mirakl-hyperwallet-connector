@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 /**
  * The extractor class for retrieving all the invoices within a delta time from mirakl.
@@ -37,8 +36,10 @@ public class InvoicesExtractBatchJobItemsExtractor
 	@Override
 	protected Collection<InvoiceExtractJobItem> getItems(final BatchJobContext ctx, final Date delta,
 			final boolean includePaid) {
-		return miraklAccountingDocumentInvoicesExtractService.extractAccountingDocuments(delta, includePaid).stream()
-				.map(InvoiceExtractJobItem::new).collect(Collectors.toList());
+		return miraklAccountingDocumentInvoicesExtractService.extractAccountingDocuments(delta, includePaid)
+			.stream()
+			.map(InvoiceExtractJobItem::new)
+			.toList();
 	}
 
 }

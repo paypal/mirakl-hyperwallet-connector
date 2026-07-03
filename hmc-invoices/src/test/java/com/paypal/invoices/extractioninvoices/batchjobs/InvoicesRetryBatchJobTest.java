@@ -1,14 +1,11 @@
 package com.paypal.invoices.extractioninvoices.batchjobs;
 
-import com.paypal.invoices.extractioninvoices.batchjobs.InvoicesExtractBatchJobItemProcessor;
-import com.paypal.invoices.extractioninvoices.batchjobs.InvoicesRetryBatchJob;
-import com.paypal.invoices.extractioninvoices.batchjobs.InvoicesRetryBatchJobItemsExtractor;
 import com.paypal.jobsystem.batchjob.model.BatchJobType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.InjectMocks;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

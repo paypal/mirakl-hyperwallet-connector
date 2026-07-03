@@ -1,8 +1,8 @@
 package com.paypal.kyc.sellersdocumentextraction.services;
 
 import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
-import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.documentextractioncommons.services.HyperwalletDocumentUploadService;
+import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
 import com.paypal.kyc.sellersdocumentextraction.services.converters.KYCDocumentInfoToHWVerificationDocumentExecutor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

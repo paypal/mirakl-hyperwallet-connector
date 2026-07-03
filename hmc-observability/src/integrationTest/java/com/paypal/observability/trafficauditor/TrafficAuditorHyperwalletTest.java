@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 import java.util.Date;
 import java.util.List;
@@ -28,7 +28,7 @@ class TrafficAuditorHyperwalletTest extends AbstractObservabilityIntegrationTest
 	@Autowired
 	private UserHyperwalletSDKService hyperwalletSDKService;
 
-	@SpyBean
+	@MockitoSpyBean
 	private TrafficAuditorLogger trafficAuditorLogger;
 
 	@Captor
@@ -54,16 +54,16 @@ class TrafficAuditorHyperwalletTest extends AbstractObservabilityIntegrationTest
 		assertThat(capturedTrace.getTarget()).isEqualTo(TrafficAuditorTarget.HYPERWALLET);
 		assertThat(capturedTrace.getRequest().getUrl()).contains("/api/rest/v4/users");
 		assertThat(capturedTrace.getRequest().getQueryParameters()).containsKey("createdAfter")
-				.containsKey("createdBefore");
+			.containsKey("createdBefore");
 		assertThat(capturedTrace.getRequest().getHeaders()).containsEntry("Accept", List.of("application/json"));
 		assertThat(capturedTrace.getRequest().getBody()).isNullOrEmpty();
 		assertThat(capturedTrace.getRequest().getMethod()).contains("GET");
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getBody())
-				.contains("usr-31a60e4c-dc9d-4061-899b-46575d2508d7");
+			.contains("usr-31a60e4c-dc9d-4061-899b-46575d2508d7");
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getResponseCode())
-				.isEqualTo(200);
+			.isEqualTo(200);
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getHeaders())
-				.containsEntry("Content-Type", List.of("application/json"));
+			.containsEntry("Content-Type", List.of("application/json"));
 	}
 
 	@Test
@@ -90,11 +90,11 @@ class TrafficAuditorHyperwalletTest extends AbstractObservabilityIntegrationTest
 		assertThat(capturedTrace.getRequest().getHeaders()).containsKey("Content-Type");
 		assertThat(capturedTrace.getRequest().getMethod()).contains("POST");
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getBody())
-				.contains("mockedToken");
+			.contains("mockedToken");
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getResponseCode())
-				.isEqualTo(200);
+			.isEqualTo(200);
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getHeaders())
-				.containsEntry("Content-Type", List.of("application/json"));
+			.containsEntry("Content-Type", List.of("application/json"));
 	}
 
 	@Test
@@ -122,11 +122,11 @@ class TrafficAuditorHyperwalletTest extends AbstractObservabilityIntegrationTest
 		assertThat(capturedTrace.getRequest().getHeaders()).containsKey("Content-Type");
 		assertThat(capturedTrace.getRequest().getMethod()).contains("PUT");
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getBody())
-				.contains("mockedToken");
+			.contains("mockedToken");
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getResponseCode())
-				.isEqualTo(200);
+			.isEqualTo(200);
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getHeaders())
-				.containsEntry("Content-Type", List.of("application/json"));
+			.containsEntry("Content-Type", List.of("application/json"));
 	}
 
 }

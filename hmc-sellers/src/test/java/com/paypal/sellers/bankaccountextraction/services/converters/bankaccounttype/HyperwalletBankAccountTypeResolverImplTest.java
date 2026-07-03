@@ -31,8 +31,8 @@ class HyperwalletBankAccountTypeResolverImplTest {
 	@Test
 	void getBankAccountType_shouldReturnFirstBankAccountTypeCandidate() {
 		when(countryCurrencyConfigurationMock.getEntriesFor("US", "USD", TransferType.BANK_ACCOUNT))
-				.thenReturn(List.of(currencyEntry("ABA", "US", "USD", TransferType.BANK_ACCOUNT),
-						currencyEntry("CAD", "US", "USD", TransferType.BANK_ACCOUNT)));
+			.thenReturn(List.of(currencyEntry("ABA", "US", "USD", TransferType.BANK_ACCOUNT),
+					currencyEntry("CAD", "US", "USD", TransferType.BANK_ACCOUNT)));
 
 		final HyperwalletBankAccount hyperwalletBankAccount = new HyperwalletBankAccount();
 		hyperwalletBankAccount.setTransferMethodCountry("US");
@@ -47,7 +47,7 @@ class HyperwalletBankAccountTypeResolverImplTest {
 	@Test
 	void getBankAccountType_shouldThrowException_whenThereAreNotBankAccountTypeCandidates() {
 		when(countryCurrencyConfigurationMock.getEntriesFor("US", "USD", TransferType.BANK_ACCOUNT))
-				.thenReturn(List.of());
+			.thenReturn(List.of());
 
 		final HyperwalletBankAccount hyperwalletBankAccount = new HyperwalletBankAccount();
 		hyperwalletBankAccount.setTransferMethodCountry("US");
@@ -56,7 +56,7 @@ class HyperwalletBankAccountTypeResolverImplTest {
 
 		final Throwable throwable = catchThrowable(() -> testObj.getBankAccountType(hyperwalletBankAccount));
 		assertThat(throwable).isInstanceOf(HMCException.class)
-				.hasMessage("No bank account type found for country US, currency USD and transfer type BANK_ACCOUNT");
+			.hasMessage("No bank account type found for country US, currency USD and transfer type BANK_ACCOUNT");
 	}
 
 	@NotNull

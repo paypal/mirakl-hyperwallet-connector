@@ -1,7 +1,10 @@
 package com.paypal.kyc.documentextractioncommons.support;
 
-import java.util.List;
-
+import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
+import com.mirakl.client.mmp.request.shop.document.MiraklDeleteShopDocumentRequest;
+import com.paypal.infrastructure.mail.services.MailNotificationUtil;
+import com.paypal.infrastructure.mirakl.client.MiraklClient;
+import com.paypal.kyc.documentextractioncommons.model.KYCDocumentInfoModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,17 +12,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-import com.mirakl.client.mmp.request.shop.document.MiraklDeleteShopDocumentRequest;
-import com.paypal.infrastructure.mail.services.MailNotificationUtil;
-import com.paypal.infrastructure.mirakl.client.MiraklClient;
-import com.paypal.kyc.documentextractioncommons.model.KYCDocumentInfoModel;
+import java.util.List;
 
-import static org.mockito.Mockito.isA;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractMiraklDocumentExtractServiceImplTest {
@@ -43,14 +38,14 @@ class AbstractMiraklDocumentExtractServiceImplTest {
 	@Test
 	void deleteAllDocumentsFromSeller_shouldCallToMiraklDeleteDocuments() {
 		when(kycDocumentInfoModelOneMock.getMiraklShopDocuments())
-				.thenReturn(List.of(miraklShopDocumentOneMock, miraklShopDocumentTwoMock));
+			.thenReturn(List.of(miraklShopDocumentOneMock, miraklShopDocumentTwoMock));
 		when(miraklShopDocumentOneMock.getId()).thenReturn(MIRAKL_SHOP_DOCUMENT_ID1);
 		when(miraklShopDocumentTwoMock.getId()).thenReturn(MIRAKL_SHOP_DOCUMENT_ID2);
 
 		testObj.deleteAllDocumentsFromSeller(List.of(kycDocumentInfoModelOneMock, kycDocumentInfoModelTwoMock));
 
 		verify(miraklOperatorClientMock, times(2))
-				.deleteShopDocument(Mockito.any(MiraklDeleteShopDocumentRequest.class));
+			.deleteShopDocument(Mockito.any(MiraklDeleteShopDocumentRequest.class));
 	}
 
 	@Test

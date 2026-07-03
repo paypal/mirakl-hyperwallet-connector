@@ -2,7 +2,6 @@ package com.paypal.sellers.bankaccountextraction.services.converters;
 
 import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
 import com.paypal.infrastructure.support.strategy.Strategy;
-import com.paypal.sellers.bankaccountextraction.services.converters.SellerModelToHyperwalletBankAccountExecutor;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -4,20 +4,20 @@ import com.mirakl.client.core.security.MiraklBearerToken;
 import com.mirakl.client.core.security.MiraklCredential;
 import com.mirakl.client.mmp.domain.additionalfield.MiraklFrontOperatorAdditionalField;
 import com.mirakl.client.mmp.domain.common.FileWrapper;
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoices;
-import com.mirakl.client.mmp.domain.payment.MiraklTransactionLogs;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklSellerBillingCycles;
 import com.mirakl.client.mmp.domain.shop.MiraklShops;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
 import com.mirakl.client.mmp.domain.version.MiraklVersion;
 import com.mirakl.client.mmp.operator.core.MiraklMarketplacePlatformOperatorApiClient;
 import com.mirakl.client.mmp.operator.domain.documents.MiraklDocumentsConfigurations;
+import com.mirakl.client.mmp.operator.domain.payment.MiraklTransactionsLines;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.additionalfield.MiraklGetAdditionalFieldRequest;
 import com.mirakl.client.mmp.operator.request.documents.MiraklGetDocumentsConfigurationRequest;
-import com.mirakl.client.mmp.operator.request.payment.invoice.MiraklGetInvoicesRequest;
+import com.mirakl.client.mmp.operator.request.payment.sellerbillingcycle.MiraklConfirmSellerBillingCyclePaymentRequest;
+import com.mirakl.client.mmp.operator.request.payment.sellerbillingcycle.MiraklGetSellerBillingCyclesRequest;
+import com.mirakl.client.mmp.operator.request.payment.transaction.MiraklTransactionLineRequest;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
-import com.mirakl.client.mmp.request.invoice.MiraklConfirmAccountingDocumentPaymentRequest;
-import com.mirakl.client.mmp.request.payment.MiraklGetTransactionLogsRequest;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
 import com.mirakl.client.mmp.request.shop.document.MiraklDeleteShopDocumentRequest;
 import com.mirakl.client.mmp.request.shop.document.MiraklDownloadShopsDocumentsRequest;
@@ -70,22 +70,22 @@ public class DirectMiraklClient implements MiraklClient {
 	}
 
 	@Override
-	public MiraklInvoices getInvoices(final MiraklGetInvoicesRequest accountingDocumentRequest) {
-		return miraklMarketplacePlatformOperatorApiClient.getInvoices(accountingDocumentRequest);
+	public MiraklSellerBillingCycles getSellerBillingCycles(
+			final MiraklGetSellerBillingCyclesRequest sellerBillingCyclesRequest) {
+		return miraklMarketplacePlatformOperatorApiClient.getSellerBillingCycles(sellerBillingCyclesRequest);
 	}
 
-	@SuppressWarnings("java:S1874")
 	@Override
-	public MiraklTransactionLogs getTransactionLogs(
-			final MiraklGetTransactionLogsRequest miraklGetTransactionLogsRequest) {
-		return miraklMarketplacePlatformOperatorApiClient.getTransactionLogs(miraklGetTransactionLogsRequest);
+	public MiraklTransactionsLines getTransactionLines(
+			final MiraklTransactionLineRequest miraklTransactionLineRequest) {
+		return miraklMarketplacePlatformOperatorApiClient.getTransactionLines(miraklTransactionLineRequest);
 	}
 
 	@Override
 	public MiraklDocumentsConfigurations getDocumentsConfiguration(
 			final MiraklGetDocumentsConfigurationRequest miraklGetDocumentsConfigurationRequest) {
 		return miraklMarketplacePlatformOperatorApiClient
-				.getDocumentsConfiguration(miraklGetDocumentsConfigurationRequest);
+			.getDocumentsConfiguration(miraklGetDocumentsConfigurationRequest);
 	}
 
 	@Override
@@ -106,9 +106,9 @@ public class DirectMiraklClient implements MiraklClient {
 	}
 
 	@Override
-	public void confirmAccountingDocumentPayment(
-			final MiraklConfirmAccountingDocumentPaymentRequest paymentConfirmationRequest) {
-		miraklMarketplacePlatformOperatorApiClient.confirmAccountingDocumentPayment(paymentConfirmationRequest);
+	public void confirmSellerBillingCyclePayment(
+			final MiraklConfirmSellerBillingCyclePaymentRequest paymentConfirmationRequest) {
+		miraklMarketplacePlatformOperatorApiClient.confirmSellerBillingCyclePayment(paymentConfirmationRequest);
 	}
 
 	@Override

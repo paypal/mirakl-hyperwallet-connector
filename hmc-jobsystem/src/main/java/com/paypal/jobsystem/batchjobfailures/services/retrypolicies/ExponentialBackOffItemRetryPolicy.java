@@ -1,7 +1,7 @@
 package com.paypal.jobsystem.batchjobfailures.services.retrypolicies;
 
-import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 import com.paypal.infrastructure.support.date.TimeMachine;
+import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

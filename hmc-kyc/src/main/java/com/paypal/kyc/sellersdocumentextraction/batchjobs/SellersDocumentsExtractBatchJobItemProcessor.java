@@ -39,7 +39,7 @@ public class SellersDocumentsExtractBatchJobItemProcessor
 
 		if (areDocumentsPushedToHW) {
 			miraklSellerDocumentsExtractService
-					.setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(jobItem.getItem());
+				.setFlagToPushProofOfIdentityAndBusinessSellerDocumentsToFalse(jobItem.getItem());
 		}
 
 		return areDocumentsPushedToHW;

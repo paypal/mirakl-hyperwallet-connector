@@ -2,9 +2,9 @@ package com.paypal.sellers.bankaccountextraction.services.converters;
 
 import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
-import com.paypal.sellers.bankaccountextraction.services.converters.hyperwallet.AbstractSellerModelToHyperwalletBankAccount;
 import com.paypal.sellers.bankaccountextraction.model.IBANBankAccountModel;
 import com.paypal.sellers.bankaccountextraction.model.TransferType;
+import com.paypal.sellers.bankaccountextraction.services.converters.hyperwallet.AbstractSellerModelToHyperwalletBankAccount;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import com.paypal.sellers.sellerextractioncommons.model.SellerProfileType;
 import org.junit.jupiter.api.Test;
@@ -37,8 +37,6 @@ class AbstractSellerModelToHyperwalletBankAccountConverterTest {
 
 	private static final String USER_TOKEN = "124657895635121";
 
-	private static final String BIC_CODE = "BIC";
-
 	private static final String IBAN_ACCOUNT = "IBAN";
 
 	private static final String BANK_ACCOUNT_TOKEN = "BANK_ACCOUNT_TOKEN";
@@ -50,24 +48,24 @@ class AbstractSellerModelToHyperwalletBankAccountConverterTest {
 	private SellerModel sellerModelMock;
 
 	@Mock
-	private IBANBankAccountModel IBANBankAccountModelMock;
+	private IBANBankAccountModel ibanBankAccountModelMock;
 
 	@Test
 	void convert_shouldAddIndividualAttributes_whenIndividualModelIsReceived() {
-		when(sellerModelMock.getBankAccountDetails()).thenReturn(IBANBankAccountModelMock);
-		when(IBANBankAccountModelMock.getAddressLine1()).thenReturn(ADDRESS_LINE_ONE);
-		when(IBANBankAccountModelMock.getAddressLine2()).thenReturn(ADDRESS_LINE_TWO);
-		when(IBANBankAccountModelMock.getBankAccountNumber()).thenReturn(IBAN_ACCOUNT);
-		when(IBANBankAccountModelMock.getTransferMethodCountry()).thenReturn(COUNTRY);
-		when(IBANBankAccountModelMock.getTransferMethodCurrency()).thenReturn(CURRENCY);
-		when(IBANBankAccountModelMock.getTransferType()).thenReturn(TransferType.BANK_ACCOUNT);
-		when(IBANBankAccountModelMock.getCountry()).thenReturn(COUNTRY);
-		when(IBANBankAccountModelMock.getCity()).thenReturn(CITY);
+		when(sellerModelMock.getBankAccountDetails()).thenReturn(ibanBankAccountModelMock);
+		when(ibanBankAccountModelMock.getAddressLine1()).thenReturn(ADDRESS_LINE_ONE);
+		when(ibanBankAccountModelMock.getAddressLine2()).thenReturn(ADDRESS_LINE_TWO);
+		when(ibanBankAccountModelMock.getBankAccountNumber()).thenReturn(IBAN_ACCOUNT);
+		when(ibanBankAccountModelMock.getTransferMethodCountry()).thenReturn(COUNTRY);
+		when(ibanBankAccountModelMock.getTransferMethodCurrency()).thenReturn(CURRENCY);
+		when(ibanBankAccountModelMock.getTransferType()).thenReturn(TransferType.BANK_ACCOUNT);
+		when(ibanBankAccountModelMock.getCountry()).thenReturn(COUNTRY);
+		when(ibanBankAccountModelMock.getCity()).thenReturn(CITY);
 		when(sellerModelMock.getToken()).thenReturn(USER_TOKEN);
 		when(sellerModelMock.getProfileType()).thenReturn(SellerProfileType.INDIVIDUAL);
-		when(IBANBankAccountModelMock.getFirstName()).thenReturn(FIRST_NAME);
-		when(IBANBankAccountModelMock.getLastName()).thenReturn(SECOND_NAME);
-		when(IBANBankAccountModelMock.getToken()).thenReturn(BANK_ACCOUNT_TOKEN);
+		when(ibanBankAccountModelMock.getFirstName()).thenReturn(FIRST_NAME);
+		when(ibanBankAccountModelMock.getLastName()).thenReturn(SECOND_NAME);
+		when(ibanBankAccountModelMock.getToken()).thenReturn(BANK_ACCOUNT_TOKEN);
 
 		final HyperwalletBankAccount result = testObj.execute(sellerModelMock);
 
@@ -88,19 +86,19 @@ class AbstractSellerModelToHyperwalletBankAccountConverterTest {
 
 	@Test
 	void convert_shouldAddProfessionalAttributes_whenProfessionalModelIsReceived() {
-		when(sellerModelMock.getBankAccountDetails()).thenReturn(IBANBankAccountModelMock);
-		when(IBANBankAccountModelMock.getAddressLine1()).thenReturn(ADDRESS_LINE_ONE);
-		when(IBANBankAccountModelMock.getAddressLine2()).thenReturn(ADDRESS_LINE_TWO);
-		when(IBANBankAccountModelMock.getBankAccountNumber()).thenReturn(IBAN_ACCOUNT);
-		when(IBANBankAccountModelMock.getTransferMethodCountry()).thenReturn(COUNTRY);
-		when(IBANBankAccountModelMock.getTransferMethodCurrency()).thenReturn(CURRENCY);
-		when(IBANBankAccountModelMock.getTransferType()).thenReturn(TransferType.BANK_ACCOUNT);
-		when(IBANBankAccountModelMock.getCountry()).thenReturn(COUNTRY);
-		when(IBANBankAccountModelMock.getCity()).thenReturn(CITY);
+		when(sellerModelMock.getBankAccountDetails()).thenReturn(ibanBankAccountModelMock);
+		when(ibanBankAccountModelMock.getAddressLine1()).thenReturn(ADDRESS_LINE_ONE);
+		when(ibanBankAccountModelMock.getAddressLine2()).thenReturn(ADDRESS_LINE_TWO);
+		when(ibanBankAccountModelMock.getBankAccountNumber()).thenReturn(IBAN_ACCOUNT);
+		when(ibanBankAccountModelMock.getTransferMethodCountry()).thenReturn(COUNTRY);
+		when(ibanBankAccountModelMock.getTransferMethodCurrency()).thenReturn(CURRENCY);
+		when(ibanBankAccountModelMock.getTransferType()).thenReturn(TransferType.BANK_ACCOUNT);
+		when(ibanBankAccountModelMock.getCountry()).thenReturn(COUNTRY);
+		when(ibanBankAccountModelMock.getCity()).thenReturn(CITY);
 		when(sellerModelMock.getToken()).thenReturn(USER_TOKEN);
 		when(sellerModelMock.getProfileType()).thenReturn(SellerProfileType.BUSINESS);
 		when(sellerModelMock.getBusinessName()).thenReturn(BUSINESS_NAME);
-		when(IBANBankAccountModelMock.getToken()).thenReturn(BANK_ACCOUNT_TOKEN);
+		when(ibanBankAccountModelMock.getToken()).thenReturn(BANK_ACCOUNT_TOKEN);
 
 		final HyperwalletBankAccount result = testObj.execute(sellerModelMock);
 
@@ -120,15 +118,6 @@ class AbstractSellerModelToHyperwalletBankAccountConverterTest {
 
 	@Test
 	void convert_shouldReturnNull_whenSellerModelHasNoBankAccountAssociated() {
-		when(sellerModelMock.getBankAccountDetails()).thenReturn(null);
-
-		final HyperwalletBankAccount result = testObj.execute(sellerModelMock);
-
-		assertThat(result).isNull();
-	}
-
-	@Test
-	void execute_shouldReturnNull_whenNullPaymentInformationIsReceived() {
 		when(sellerModelMock.getBankAccountDetails()).thenReturn(null);
 
 		final HyperwalletBankAccount result = testObj.execute(sellerModelMock);

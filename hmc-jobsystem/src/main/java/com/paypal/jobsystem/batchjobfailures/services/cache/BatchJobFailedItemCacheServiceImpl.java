@@ -1,7 +1,7 @@
 package com.paypal.jobsystem.batchjobfailures.services.cache;
 
-import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
+import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 import com.paypal.jobsystem.batchjobfailures.services.resolvepolicies.BatchJobFailedItemCacheFailureResolvePolicy;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -36,7 +36,7 @@ public class BatchJobFailedItemCacheServiceImpl implements BatchJobFailedItemCac
 	public <T extends BatchJobItem<?>> Optional<T> retrieveItem(final Class<T> batchJobItemClass,
 			final BatchJobFailedItem batchJobFailedItem) {
 		return Optional
-				.ofNullable(getCache(batchJobFailedItem.getType()).get(batchJobFailedItem.getId(), batchJobItemClass));
+			.ofNullable(getCache(batchJobFailedItem.getType()).get(batchJobFailedItem.getId(), batchJobItemClass));
 	}
 
 	@Override
@@ -53,14 +53,15 @@ public class BatchJobFailedItemCacheServiceImpl implements BatchJobFailedItemCac
 	@Override
 	public <T extends BatchJobItem<?>> void refreshCachedItem(final T batchJobItem) {
 		retrieveItem((Class<T>) batchJobItem.getClass(), batchJobItem.getItemType(), batchJobItem.getItemId())
-				.ifPresent(oldItem -> storeItem(batchJobItem));
+			.ifPresent(oldItem -> storeItem(batchJobItem));
 	}
 
 	@Override
 	public <T extends BatchJobItem<?>> Map<BatchJobFailedItem, Optional<T>> retrieveAllItems(
 			final Class<T> batchJobItemClass, final List<BatchJobFailedItem> batchJobFailedItems) {
-		return batchJobFailedItems.stream().collect(Collectors.toMap(Function.identity(),
-				batchJobFailedItem -> retrieveItem(batchJobItemClass, batchJobFailedItem)));
+		return batchJobFailedItems.stream()
+			.collect(Collectors.toMap(Function.identity(),
+					batchJobFailedItem -> retrieveItem(batchJobItemClass, batchJobFailedItem)));
 	}
 
 	@Override
@@ -103,8 +104,7 @@ public class BatchJobFailedItemCacheServiceImpl implements BatchJobFailedItemCac
 
 	private <T extends BatchJobItem<?>> List<BatchJobFailedItem> getCacheFailures(
 			final Map<BatchJobFailedItem, Optional<T>> resolvedItems) {
-		return resolvedItems.entrySet().stream().filter(it -> it.getValue().isEmpty()).map(Map.Entry::getKey)
-				.collect(Collectors.toList());
+		return resolvedItems.entrySet().stream().filter(it -> it.getValue().isEmpty()).map(Map.Entry::getKey).toList();
 	}
 
 	private @NonNull Cache getCache(final String batchJobItemType) {

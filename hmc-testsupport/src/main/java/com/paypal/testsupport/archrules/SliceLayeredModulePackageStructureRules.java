@@ -16,19 +16,31 @@ public final class SliceLayeredModulePackageStructureRules {
 	}
 
 	@ArchTest
-	public static final ArchRule servicesOnCorrectPackage = classes().that().areAnnotatedWith(Service.class).should()
-			.resideInAnyPackage("..services..").allowEmptyShould(true);
+	public static final ArchRule servicesOnCorrectPackage = classes().that()
+		.areAnnotatedWith(Service.class)
+		.should()
+		.resideInAnyPackage("..services..")
+		.allowEmptyShould(true);
 
 	@ArchTest
-	public static final ArchRule repositoriesOnCorrectPackage = classes().that().areAnnotatedWith(Repository.class)
-			.should().resideInAnyPackage("..repositories..").allowEmptyShould(true);
+	public static final ArchRule repositoriesOnCorrectPackage = classes().that()
+		.areAnnotatedWith(Repository.class)
+		.should()
+		.resideInAnyPackage("..repositories..")
+		.allowEmptyShould(true);
 
 	@ArchTest
-	public static final ArchRule controllersOnCorrectPackage = classes().that().areAnnotatedWith(RestController.class)
-			.should().resideInAnyPackage("..controllers..").allowEmptyShould(true);
+	public static final ArchRule controllersOnCorrectPackage = classes().that()
+		.areAnnotatedWith(RestController.class)
+		.should()
+		.resideInAnyPackage("..controllers..")
+		.allowEmptyShould(true);
 
 	@ArchTest
-	public static final ArchRule convertersOnCorrectPackage = classes().that().implement(Converter.class).should()
-			.resideInAnyPackage("..converters..").allowEmptyShould(true);
+	public static final ArchRule convertersOnCorrectPackage = classes().that()
+		.implement(Converter.class)
+		.should()
+		.resideInAnyPackage("..converters..")
+		.allowEmptyShould(true);
 
 }

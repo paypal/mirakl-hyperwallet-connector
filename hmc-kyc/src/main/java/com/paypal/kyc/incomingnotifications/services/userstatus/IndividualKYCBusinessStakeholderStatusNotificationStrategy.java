@@ -1,7 +1,6 @@
 package com.paypal.kyc.incomingnotifications.services.userstatus;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
-import com.mchange.v2.lang.StringUtils;
 import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdateShop;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
@@ -48,10 +47,10 @@ public class IndividualKYCBusinessStakeholderStatusNotificationStrategy
 		final HyperwalletUser hyperWalletUser = getHyperWalletUser(kycBusinessStakeholderStatusNotificationBodyModel);
 		if (Objects.nonNull(hyperWalletUser)) {
 			final List<String> miraklProofOfIdentityCustomFieldNames = miraklBusinessStakeholderDocumentsExtractService
-					.getKYCCustomValuesRequiredVerificationBusinessStakeholders(hyperWalletUser.getClientUserId(),
-							List.of(kycBusinessStakeholderStatusNotificationBodyModel.getToken()));
+				.getKYCCustomValuesRequiredVerificationBusinessStakeholders(hyperWalletUser.getClientUserId(),
+						List.of(kycBusinessStakeholderStatusNotificationBodyModel.getToken()));
 			final HyperwalletUser.VerificationStatus verificationStatus = kycBusinessStakeholderStatusNotificationBodyModel
-					.getVerificationStatus();
+				.getVerificationStatus();
 
 			if (CollectionUtils.isNotEmpty(miraklProofOfIdentityCustomFieldNames)) {
 				updateMiraklProofIdentityFlagStatus(hyperWalletUser.getClientUserId(),
@@ -67,22 +66,24 @@ public class IndividualKYCBusinessStakeholderStatusNotificationStrategy
 	@Override
 	public boolean isApplicable(final KYCBusinessStakeholderStatusNotificationBodyModel source) {
 		return HyperwalletUser.ProfileType.INDIVIDUAL.equals(source.getProfileType())
-				&& source.getHyperwalletWebhookNotificationType().contains(
-						KYCConstants.HwWebhookNotificationType.USERS_BUSINESS_STAKEHOLDERS_VERIFICATION_STATUS);
+				&& source.getHyperwalletWebhookNotificationType()
+					.contains(KYCConstants.HwWebhookNotificationType.USERS_BUSINESS_STAKEHOLDERS_VERIFICATION_STATUS);
 	}
 
 	protected void updateMiraklProofIdentityFlagStatus(final String miraklShopId,
 			final String kycCustomValuesRequiredVerificationBusinessStakeholder,
 			final HyperwalletUser.VerificationStatus verificationStatus) {
-		if (StringUtils.nonEmptyString(kycCustomValuesRequiredVerificationBusinessStakeholder)) {
+		if (kycCustomValuesRequiredVerificationBusinessStakeholder != null
+				&& !kycCustomValuesRequiredVerificationBusinessStakeholder.isEmpty()) {
 			final MiraklUpdateShop updateShop = new MiraklUpdateShop();
 
 			final List<MiraklRequestAdditionalFieldValue> additionalFieldValues = Optional
-					.of(kycCustomValuesRequiredVerificationBusinessStakeholder).stream()
-					.map(kycCustomValueRequiredVerification -> new MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue(
-							kycCustomValueRequiredVerification,
-							Boolean.toString(HyperwalletUser.VerificationStatus.REQUIRED.equals(verificationStatus))))
-					.collect(Collectors.toList());
+				.of(kycCustomValuesRequiredVerificationBusinessStakeholder)
+				.stream()
+				.map(kycCustomValueRequiredVerification -> new MiraklRequestAdditionalFieldValue.MiraklSimpleRequestAdditionalFieldValue(
+						kycCustomValueRequiredVerification,
+						Boolean.toString(HyperwalletUser.VerificationStatus.REQUIRED.equals(verificationStatus))))
+				.collect(Collectors.toList());
 
 			updateShop.setShopId(Long.valueOf(miraklShopId));
 			updateShop.setAdditionalFieldValues(additionalFieldValues);

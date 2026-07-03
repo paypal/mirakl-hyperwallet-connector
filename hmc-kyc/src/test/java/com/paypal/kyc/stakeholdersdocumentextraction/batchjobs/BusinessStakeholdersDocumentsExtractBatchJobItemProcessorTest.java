@@ -3,10 +3,10 @@ package com.paypal.kyc.stakeholdersdocumentextraction.batchjobs;
 import com.callibrity.logging.test.LogTracker;
 import com.callibrity.logging.test.LogTrackerStub;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
-import com.paypal.kyc.documentextractioncommons.support.AbstractDocumentsBatchJobItemProcessor;
-import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
 import com.paypal.kyc.documentextractioncommons.services.KYCReadyForReviewService;
+import com.paypal.kyc.documentextractioncommons.support.AbstractDocumentsBatchJobItemProcessor;
+import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.stakeholdersdocumentextraction.services.HyperwalletBusinessStakeholderExtractService;
 import com.paypal.kyc.stakeholdersdocumentextraction.services.MiraklBusinessStakeholderDocumentsExtractService;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,13 +56,14 @@ class BusinessStakeholdersDocumentsExtractBatchJobItemProcessorTest {
 	private BatchJobContext batchJobContextMock;
 
 	@RegisterExtension
-	final LogTrackerStub logTrackerStub = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.INFO)
-			.recordForType(AbstractDocumentsBatchJobItemProcessor.class);
+	final LogTrackerStub logTrackerStub = LogTrackerStub.create()
+		.recordForLevel(LogTracker.LogLevel.INFO)
+		.recordForType(AbstractDocumentsBatchJobItemProcessor.class);
 
 	@BeforeEach
 	void setUp() {
 		when(businessStakeholdersDocumentsExtractBatchJobItemMock.getItem())
-				.thenReturn(kycDocumentBusinessStakeHolderInfoModelMock);
+			.thenReturn(kycDocumentBusinessStakeHolderInfoModelMock);
 		when(kycDocumentBusinessStakeHolderInfoModelMock.getDocuments()).thenReturn(List.of(kycDocumentModelMock));
 		when(kycDocumentModelMock.getFile()).thenReturn(fileMock);
 		when(fileMock.getAbsolutePath()).thenReturn(FILE_PATH);
@@ -72,15 +73,15 @@ class BusinessStakeholdersDocumentsExtractBatchJobItemProcessorTest {
 	void processItem_shouldPushFlagNotifyAndCleanDocuments_whenDocumentsCanBePushed() {
 
 		when(hyperwalletBusinessStakeholderExtractServiceMock
-				.pushDocuments(kycDocumentBusinessStakeHolderInfoModelMock)).thenReturn(true);
+			.pushDocuments(kycDocumentBusinessStakeHolderInfoModelMock)).thenReturn(true);
 
 		testObj.processItem(batchJobContextMock, businessStakeholdersDocumentsExtractBatchJobItemMock);
 
 		verify(hyperwalletBusinessStakeholderExtractServiceMock)
-				.pushDocuments(kycDocumentBusinessStakeHolderInfoModelMock);
+			.pushDocuments(kycDocumentBusinessStakeHolderInfoModelMock);
 		verify(miraklBusinessStakeholderDocumentsExtractServiceMock)
-				.setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(
-						kycDocumentBusinessStakeHolderInfoModelMock);
+			.setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(
+					kycDocumentBusinessStakeHolderInfoModelMock);
 		verify(kycReadyForReviewServiceMock).notifyReadyForReview(kycDocumentBusinessStakeHolderInfoModelMock);
 		verify(fileMock).delete();
 
@@ -91,17 +92,17 @@ class BusinessStakeholdersDocumentsExtractBatchJobItemProcessorTest {
 	void processItem_shouldNotNotifyAndCleanDocuments_whenDocumentsCanNotBePushed() {
 
 		when(hyperwalletBusinessStakeholderExtractServiceMock
-				.pushDocuments(kycDocumentBusinessStakeHolderInfoModelMock)).thenReturn(false);
+			.pushDocuments(kycDocumentBusinessStakeHolderInfoModelMock)).thenReturn(false);
 
 		testObj.processItem(batchJobContextMock, businessStakeholdersDocumentsExtractBatchJobItemMock);
 
 		verify(hyperwalletBusinessStakeholderExtractServiceMock)
-				.pushDocuments(kycDocumentBusinessStakeHolderInfoModelMock);
+			.pushDocuments(kycDocumentBusinessStakeHolderInfoModelMock);
 		verify(miraklBusinessStakeholderDocumentsExtractServiceMock, times(0))
-				.setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(
-						kycDocumentBusinessStakeHolderInfoModelMock);
+			.setBusinessStakeholderFlagKYCToPushBusinessStakeholderDocumentsToFalse(
+					kycDocumentBusinessStakeHolderInfoModelMock);
 		verify(kycReadyForReviewServiceMock, times(0))
-				.notifyReadyForReview(kycDocumentBusinessStakeHolderInfoModelMock);
+			.notifyReadyForReview(kycDocumentBusinessStakeHolderInfoModelMock);
 		verify(fileMock).delete();
 
 		assertThat(logTrackerStub.contains("File selected to be deleted [%s]".formatted(FILE_PATH))).isTrue();

@@ -1,7 +1,10 @@
 package com.paypal.kyc.incomingnotifications.services.converters;
 
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentCategoryEnum;
-import com.paypal.kyc.incomingnotifications.model.*;
+import com.paypal.kyc.incomingnotifications.model.KYCDocumentNotificationModel;
+import com.paypal.kyc.incomingnotifications.model.KYCDocumentRejectedReasonEnum;
+import com.paypal.kyc.incomingnotifications.model.KYCDocumentStatusEnum;
+import com.paypal.kyc.incomingnotifications.model.KYCDocumentTypeEnum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,7 +37,7 @@ class HyperWalletObjectToKYCDocumentNotificationModelsConverterTest {
 	@Test
 	void convert_shouldReturnAListOfDocuments_forAllTypesOfBusinessDocuments() {
 		final List<KYCDocumentNotificationModel> result = testObj
-				.convert(createNotificationWithProofBusinessInvalidDocuments());
+			.convert(createNotificationWithProofBusinessInvalidDocuments());
 
 		assertThat(result).hasSize(3);
 	}
@@ -69,10 +72,10 @@ class HyperWalletObjectToKYCDocumentNotificationModelsConverterTest {
 		assertThat(kycDocumentNotificationModel.getDocumentStatus()).isEqualTo(KYCDocumentStatusEnum.INVALID);
 
 		final List<KYCDocumentRejectedReasonEnum> documentRejectedReasons = kycDocumentNotificationModel
-				.getDocumentRejectedReasons();
-		assertThat(documentRejectedReasons).hasSize(2).contains(
-				KYCDocumentRejectedReasonEnum.DOCUMENT_CORRECTION_REQUIRED,
-				KYCDocumentRejectedReasonEnum.DOCUMENT_NOT_COMPLETE);
+			.getDocumentRejectedReasons();
+		assertThat(documentRejectedReasons).hasSize(2)
+			.contains(KYCDocumentRejectedReasonEnum.DOCUMENT_CORRECTION_REQUIRED,
+					KYCDocumentRejectedReasonEnum.DOCUMENT_NOT_COMPLETE);
 	}
 
 	private Map<String, Object> createNotificationWithValidDocuments() {

@@ -2,7 +2,6 @@ package com.paypal.kyc.incomingnotifications.services.userstatus;
 
 import com.hyperwallet.clientsdk.model.HyperwalletUser;
 import com.mirakl.client.mmp.domain.shop.MiraklShopKycStatus;
-import com.paypal.kyc.incomingnotifications.services.userstatus.BusinessKYCUserStatusNotificationStrategy;
 import com.paypal.kyc.incomingnotifications.model.KYCUserStatusNotificationBodyModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +31,7 @@ class BusinessKycUserNotificationStrategyTest {
 			final HyperwalletUser.LetterOfAuthorizationStatus letterOfAuthorizationStatus,
 			final MiraklShopKycStatus miraklShopKycStatus) {
 		//@formatter:off
-		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+		final KYCUserStatusNotificationBodyModel kycUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
 				.clientUserId(String
 						.valueOf(CLIENT_USER_ID))
 				.verificationStatus(verificationStatus)
@@ -42,7 +41,7 @@ class BusinessKycUserNotificationStrategyTest {
 				.build();
 		//@formatter:on
 
-		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
+		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(kycUserStatusNotificationBodyModelStub);
 
 		assertThat(result).isEqualTo(miraklShopKycStatus);
 	}
@@ -50,7 +49,7 @@ class BusinessKycUserNotificationStrategyTest {
 	@Test
 	void expectedKycMiraklStatus_shouldSetCorrectMiraklStatus_whenVerificationStatusIsNull() {
 		//@formatter:off
-		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+		final KYCUserStatusNotificationBodyModel kycUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
 				.clientUserId(String
 						.valueOf(CLIENT_USER_ID))
 				.verificationStatus(null)
@@ -60,7 +59,7 @@ class BusinessKycUserNotificationStrategyTest {
 				.build();
 		//@formatter:on
 
-		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
+		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(kycUserStatusNotificationBodyModelStub);
 
 		assertThat(result).isEqualTo(MiraklShopKycStatus.APPROVED);
 	}
@@ -68,7 +67,7 @@ class BusinessKycUserNotificationStrategyTest {
 	@Test
 	void expectedKycMiraklStatus_shouldSetCorrectMiraklStatus_whenBusinessStakeHolderVerificationStatusIsNull() {
 		//@formatter:off
-		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+		final KYCUserStatusNotificationBodyModel kycUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
 				.clientUserId(String
 						.valueOf(CLIENT_USER_ID))
 				.verificationStatus(HyperwalletUser.VerificationStatus.VERIFIED)
@@ -78,7 +77,7 @@ class BusinessKycUserNotificationStrategyTest {
 				.build();
 		//@formatter:on
 
-		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
+		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(kycUserStatusNotificationBodyModelStub);
 
 		assertThat(result).isEqualTo(MiraklShopKycStatus.APPROVED);
 	}
@@ -86,7 +85,7 @@ class BusinessKycUserNotificationStrategyTest {
 	@Test
 	void expectedKycMiraklStatus_shouldSetCorrectMiraklStatus_whenLetterOfAuthorizationStatusIsNull() {
 		//@formatter:off
-		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+		final KYCUserStatusNotificationBodyModel kycUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
 				.clientUserId(String
 						.valueOf(CLIENT_USER_ID))
 				.verificationStatus(HyperwalletUser.VerificationStatus.VERIFIED)
@@ -96,7 +95,7 @@ class BusinessKycUserNotificationStrategyTest {
 				.build();
 		//@formatter:on
 
-		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(KYCUserStatusNotificationBodyModelStub);
+		final MiraklShopKycStatus result = testObj.expectedKycMiraklStatus(kycUserStatusNotificationBodyModelStub);
 
 		assertThat(result).isEqualTo(MiraklShopKycStatus.APPROVED);
 	}
@@ -104,12 +103,12 @@ class BusinessKycUserNotificationStrategyTest {
 	@Test
 	void isApplicable_shouldReturnTrueWhenProfileTypeIsBusiness() {
 		//@formatter:off
-		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+		final KYCUserStatusNotificationBodyModel kycUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
 				.profileType(HyperwalletUser.ProfileType.BUSINESS)
 				.build();
 		//@formatter:on
 
-		final boolean result = testObj.isApplicable(KYCUserStatusNotificationBodyModelStub);
+		final boolean result = testObj.isApplicable(kycUserStatusNotificationBodyModelStub);
 
 		assertThat(result).isTrue();
 	}
@@ -119,12 +118,12 @@ class BusinessKycUserNotificationStrategyTest {
 	void isApplicable_shouldReturnFalseWhenProfileTypeIsNotIndividual(final HyperwalletUser.ProfileType profileType) {
 
 		//@formatter:off
-		final KYCUserStatusNotificationBodyModel KYCUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
+		final KYCUserStatusNotificationBodyModel kycUserStatusNotificationBodyModelStub = KYCUserStatusNotificationBodyModel.builder()
 				.profileType(profileType)
 				.build();
 		//@formatter:on
 
-		final boolean result = testObj.isApplicable(KYCUserStatusNotificationBodyModelStub);
+		final boolean result = testObj.isApplicable(kycUserStatusNotificationBodyModelStub);
 
 		assertThat(result).isFalse();
 	}

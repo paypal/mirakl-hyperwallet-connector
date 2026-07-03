@@ -11,16 +11,16 @@ import com.mirakl.client.mmp.operator.domain.shop.update.MiraklUpdatedShops;
 import com.mirakl.client.mmp.operator.request.shop.MiraklUpdateShopsRequest;
 import com.mirakl.client.mmp.request.additionalfield.MiraklRequestAdditionalFieldValue;
 import com.mirakl.client.mmp.request.shop.MiraklGetShopsRequest;
-import com.paypal.infrastructure.support.converter.Converter;
-import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
+import com.paypal.infrastructure.support.converter.Converter;
+import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.support.logging.LoggingConstantsUtil;
-import com.paypal.kyc.stakeholdersdocumentextraction.services.converters.KYCBusinessStakeHolderConverter;
-import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentsExtractionResult;
 import com.paypal.kyc.documentextractioncommons.support.AbstractMiraklDocumentExtractServiceImpl;
+import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
+import com.paypal.kyc.stakeholdersdocumentextraction.services.converters.KYCBusinessStakeHolderConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -85,7 +85,7 @@ public class MiraklBusinessStakeholderDocumentsExtractServiceImpl extends Abstra
 				.flatMap(Collection::stream)
 				.map(this::populateBusinessStakeholderForMiraklShop)
 				.flatMap(Collection::stream)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 
 		//@formatter:off
@@ -103,11 +103,15 @@ public class MiraklBusinessStakeholderDocumentsExtractServiceImpl extends Abstra
 
 		skipShopsWithNonBusinessStakeholderSelectedDocuments(shopsWithBusinessStakeholderVerificationRequired);
 
-		final List<KYCDocumentBusinessStakeHolderInfoModel> shopsWithBusinessSelectedVerificationDocuments = shopsWithBusinessStakeholderVerificationRequired
-				.values().stream()
-				.filter(bstkList -> bstkList.stream().allMatch(
+		final List<KYCDocumentBusinessStakeHolderInfoModel> shopsWithBusinessSelectedVerificationDocuments = Optional
+			.of(shopsWithBusinessStakeholderVerificationRequired)
+			.stream()
+			.flatMap(m -> m.values().stream())
+			.filter(bstkList -> bstkList.stream()
+				.allMatch(
 						KYCDocumentBusinessStakeHolderInfoModel::hasSelectedDocumentsControlFieldsInBusinessStakeholder))
-				.flatMap(Collection::stream).collect(Collectors.toList());
+			.flatMap(Collection::stream)
+			.toList();
 
 		final KYCDocumentsExtractionResult<KYCDocumentBusinessStakeHolderInfoModel> kycDocumentsExtractionResult = new KYCDocumentsExtractionResult<>();
 		//@formatter:off
@@ -146,8 +150,12 @@ public class MiraklBusinessStakeholderDocumentsExtractServiceImpl extends Abstra
 		log.info("Retrieving shopId [{}]", shopId);
 		final MiraklShops shops = miraklOperatorClient.getShops(miraklGetShopsRequest);
 
-		return Optional.ofNullable(shops).orElse(new MiraklShops()).getShops().stream()
-				.filter(shop -> shopId.equals(shop.getId())).findAny();
+		return Optional.ofNullable(shops)
+			.orElse(new MiraklShops())
+			.getShops()
+			.stream()
+			.filter(shop -> shopId.equals(shop.getId()))
+			.findAny();
 	}
 
 	/**
@@ -161,34 +169,44 @@ public class MiraklBusinessStakeholderDocumentsExtractServiceImpl extends Abstra
 			//@formatter:off
 			final List<String> requiredVerificationBusinessStakeHolderCodes = miraklShop
 					.map(AbstractMiraklShop::getAdditionalFieldValues).stream()
-					.filter(Objects::nonNull)
 					.flatMap(Collection::stream)
 					.filter(element -> element.getCode().contains(HYPERWALLET_PREFIX + STAKEHOLDER_PREFIX + STAKEHOLDER_TOKEN_PREFIX))
 					.filter(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::isInstance)
 					.map(MiraklAdditionalFieldValue.MiraklStringAdditionalFieldValue.class::cast)
 					.filter(element -> requiredVerificationBusinessStakeholderTokens.contains(element.getValue()))
 					.map(MiraklAdditionalFieldValue::getCode)
-					.collect(Collectors.toList());
+					.toList();
 			//@formatter:on
-			return Optional.of(requiredVerificationBusinessStakeHolderCodes).orElse(List.of()).stream()
-					.map(requiredVerificationBusinessStakeHolderCode -> HYPERWALLET_PREFIX + STAKEHOLDER_PREFIX
-							+ REQUIRED_PROOF_IDENTITY.concat(requiredVerificationBusinessStakeHolderCode
-									.substring(requiredVerificationBusinessStakeHolderCode.length() - 1)))
-					.collect(Collectors.toList());
+			return Optional.of(requiredVerificationBusinessStakeHolderCodes)
+				.orElse(List.of())
+				.stream()
+				.map(requiredVerificationBusinessStakeHolderCode -> HYPERWALLET_PREFIX + STAKEHOLDER_PREFIX
+						+ REQUIRED_PROOF_IDENTITY.concat(requiredVerificationBusinessStakeHolderCode
+							.substring(requiredVerificationBusinessStakeHolderCode.length() - 1)))
+				.toList();
 		}
 		return List.of();
 	}
 
 	private void skipShopsWithNonBusinessStakeholderSelectedDocuments(
 			final Map<String, List<KYCDocumentBusinessStakeHolderInfoModel>> shopsWithBusinessStakeholderVerificationRequired) {
+		if (CollectionUtils.isEmpty(shopsWithBusinessStakeholderVerificationRequired)) {
+			return;
+		}
 		final Map<String, String> shopsWithNotAllBstkDocumentsSelected = shopsWithBusinessStakeholderVerificationRequired
-				.entrySet().stream()
-				.filter(entry -> entry.getValue().stream().anyMatch(Predicate.not(
+			.entrySet()
+			.stream()
+			.filter(entry -> entry.getValue()
+				.stream()
+				.anyMatch(Predicate.not(
 						KYCDocumentBusinessStakeHolderInfoModel::hasSelectedDocumentsControlFieldsInBusinessStakeholder)))
-				.collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream().filter(Predicate.not(
+			.collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue()
+				.stream()
+				.filter(Predicate.not(
 						KYCDocumentBusinessStakeHolderInfoModel::hasSelectedDocumentsControlFieldsInBusinessStakeholder))
-						.map(KYCDocumentBusinessStakeHolderInfoModel::getBusinessStakeholderMiraklNumber)
-						.map(String::valueOf).collect(Collectors.joining(","))));
+				.map(KYCDocumentBusinessStakeHolderInfoModel::getBusinessStakeholderMiraklNumber)
+				.map(String::valueOf)
+				.collect(Collectors.joining(","))));
 
 		if (!CollectionUtils.isEmpty(shopsWithNotAllBstkDocumentsSelected)) {
 			//@formatter:off
@@ -225,9 +243,11 @@ public class MiraklBusinessStakeholderDocumentsExtractServiceImpl extends Abstra
 
 		//@formatter:on
 		log.info("Setting required KYC and letter of authorisation flag for shop with id [{}] to false",
-				miraklUpdatedShops.getShopReturns().stream().map(MiraklUpdatedShopReturn::getShopUpdated)
-						.map(MiraklShop::getId)
-						.collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR)));
+				miraklUpdatedShops.getShopReturns()
+					.stream()
+					.map(MiraklUpdatedShopReturn::getShopUpdated)
+					.map(MiraklShop::getId)
+					.collect(Collectors.joining(LoggingConstantsUtil.LIST_LOGGING_SEPARATOR)));
 		//@formatter:off
 
 	}

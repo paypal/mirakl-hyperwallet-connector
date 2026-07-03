@@ -1,17 +1,16 @@
 package com.paypal.jobsystem.batchjobfailures.services;
 
+import com.paypal.infrastructure.mail.services.MailNotificationUtil;
+import com.paypal.infrastructure.support.date.TimeMachine;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.jobsystem.batchjobaudit.repositories.entities.BatchJobItemTrackInfoEntity;
 import com.paypal.jobsystem.batchjobaudit.services.BatchJobTrackingService;
+import com.paypal.jobsystem.batchjobfailures.repositories.BatchJobFailedItemRepository;
 import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItemId;
 import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItemStatus;
-import com.paypal.jobsystem.batchjobfailures.repositories.BatchJobFailedItemRepository;
 import com.paypal.jobsystem.batchjobfailures.services.retrypolicies.BatchJobFailedItemRetryPolicy;
 import com.paypal.jobsystem.batchjobsupport.support.AbstractBatchJobItem;
-import com.paypal.infrastructure.mail.services.MailNotificationUtil;
-import com.paypal.infrastructure.support.date.TimeMachine;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -221,12 +220,12 @@ class BatchJobFailedItemServiceImplTest {
 
 		when(batchJobFailedItemRepositoryMock.findByTypeAndStatusOrderByLastRetryTimestampAsc(SELLER_TYPE,
 				BatchJobFailedItemStatus.RETRY_PENDING, Pageable.ofSize(5)))
-						.thenReturn(List.of(batchJobFailedItem1Mock, batchJobFailedItem2Mock));
+			.thenReturn(List.of(batchJobFailedItem1Mock, batchJobFailedItem2Mock));
 
 		when(batchJobItemTrackInfoEntity1Mock.getItemId()).thenReturn(ID_001);
 
 		when(batchJobTrackingServiceMock.getItemsBeingProcessedOrEnquedToProcess(SELLER_TYPE))
-				.thenReturn(List.of(batchJobItemTrackInfoEntity1Mock));
+			.thenReturn(List.of(batchJobItemTrackInfoEntity1Mock));
 
 		final List<BatchJobFailedItem> result = testObj.getFailedItemsForRetry(SELLER_TYPE);
 
@@ -253,11 +252,11 @@ class BatchJobFailedItemServiceImplTest {
 		when(batchJobItem3Mock.getItemType()).thenReturn("test");
 
 		when(batchJobFailedItemRepositoryMock.findById(new BatchJobFailedItemId("1", "test")))
-				.thenReturn(Optional.of(batchJobFailedItem1Mock));
+			.thenReturn(Optional.of(batchJobFailedItem1Mock));
 		when(batchJobFailedItemRepositoryMock.findById(new BatchJobFailedItemId("2", "test")))
-				.thenReturn(Optional.empty());
+			.thenReturn(Optional.empty());
 		when(batchJobFailedItemRepositoryMock.findById(new BatchJobFailedItemId("3", "test")))
-				.thenReturn(Optional.of(batchJobFailedItem3Mock));
+			.thenReturn(Optional.of(batchJobFailedItem3Mock));
 
 		testObj.checkUpdatedFailedItems(List.of(batchJobItem1Mock, batchJobItem2Mock, batchJobItem3Mock));
 

@@ -73,7 +73,7 @@ class JWEConverterTest {
 		when(inputMessageMock.getBody()).thenReturn(inputStreamMock);
 		doReturn(decryptedInputMock).when(testObj).decrypt(inputStreamMock);
 		when(objectMapper.readValue(decryptedInputMock, HyperwalletWebhookNotification.class))
-				.thenReturn(expectedResultMock);
+			.thenReturn(expectedResultMock);
 
 		final HyperwalletWebhookNotification result = testObj.readInternal(HyperwalletWebhookNotification.class,
 				inputMessageMock);
@@ -94,7 +94,7 @@ class JWEConverterTest {
 	}
 
 	@Test
-	void getBodyAsString_shouldReturnCorrespondentStringFromInputStream() throws IOException {
+	void getBodyAsString_shouldReturnCorrespondentStringFromInputStream() {
 		final InputStream inputStream = IOUtils.toInputStream("This is the input stream", UTF_8);
 
 		final String result = testObj.getBodyAsString(inputStream);

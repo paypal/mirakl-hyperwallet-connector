@@ -2,8 +2,8 @@ package com.paypal.jobsystem.quartzadapter.job;
 
 import com.paypal.jobsystem.batchjob.model.BatchJob;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
-import com.paypal.jobsystem.batchjob.services.BatchJobExecutor;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
+import com.paypal.jobsystem.batchjob.services.BatchJobExecutor;
 import com.paypal.jobsystem.quartzadapter.jobcontext.QuartzBatchJobContextFactory;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;

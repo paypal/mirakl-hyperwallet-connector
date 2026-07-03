@@ -1,9 +1,7 @@
 package com.paypal.jobsystem.batchjobfailures.services.cache;
 
-import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
-import com.paypal.jobsystem.batchjobfailures.services.cache.BatchJobFailedItemCacheServiceImpl;
-import org.assertj.core.api.Assertions;
+import com.paypal.jobsystem.batchjobfailures.repositories.entities.BatchJobFailedItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,10 +60,10 @@ class BatchJobFailedItemCacheServiceImplTest {
 	void retrieveItem1_ShouldReturnItemFromCache_WhenIsPresent() {
 
 		when(cacheMock.get(ITEM_ID_1, (Class<BatchJobItem<Object>>) batchJobItemMock1.getClass()))
-				.thenReturn(batchJobItemMock1);
+			.thenReturn(batchJobItemMock1);
 
 		final Optional<BatchJobItem<Object>> result = testObj
-				.retrieveItem((Class<BatchJobItem<Object>>) batchJobItemMock1.getClass(), ITEM_TYPE, ITEM_ID_1);
+			.retrieveItem((Class<BatchJobItem<Object>>) batchJobItemMock1.getClass(), ITEM_TYPE, ITEM_ID_1);
 
 		assertThat(result).contains(batchJobItemMock1);
 	}
@@ -76,7 +74,7 @@ class BatchJobFailedItemCacheServiceImplTest {
 		when(cacheMock.get(ITEM_ID_1, (Class<BatchJobItem<Object>>) batchJobItemMock1.getClass())).thenReturn(null);
 
 		final Optional<BatchJobItem<Object>> result = testObj
-				.retrieveItem((Class<BatchJobItem<Object>>) batchJobItemMock1.getClass(), ITEM_TYPE, ITEM_ID_1);
+			.retrieveItem((Class<BatchJobItem<Object>>) batchJobItemMock1.getClass(), ITEM_TYPE, ITEM_ID_1);
 
 		assertThat(result).isEmpty();
 	}
@@ -89,10 +87,10 @@ class BatchJobFailedItemCacheServiceImplTest {
 		batchJobFailedItem.setType(ITEM_TYPE);
 
 		when(cacheMock.get(ITEM_ID_1, (Class<BatchJobItem<Object>>) batchJobItemMock1.getClass()))
-				.thenReturn(batchJobItemMock1);
+			.thenReturn(batchJobItemMock1);
 
 		final Optional<BatchJobItem<Object>> result = testObj
-				.retrieveItem((Class<BatchJobItem<Object>>) batchJobItemMock1.getClass(), batchJobFailedItem);
+			.retrieveItem((Class<BatchJobItem<Object>>) batchJobItemMock1.getClass(), batchJobFailedItem);
 
 		assertThat(result).contains(batchJobItemMock1);
 	}
@@ -107,7 +105,7 @@ class BatchJobFailedItemCacheServiceImplTest {
 		when(cacheMock.get(ITEM_ID_1, (Class<BatchJobItem<Object>>) batchJobItemMock1.getClass())).thenReturn(null);
 
 		final Optional<BatchJobItem<Object>> result = testObj
-				.retrieveItem((Class<BatchJobItem<Object>>) batchJobItemMock1.getClass(), batchJobFailedItem);
+			.retrieveItem((Class<BatchJobItem<Object>>) batchJobItemMock1.getClass(), batchJobFailedItem);
 
 		assertThat(result).isEmpty();
 	}
@@ -130,7 +128,7 @@ class BatchJobFailedItemCacheServiceImplTest {
 		when(batchJobItemMock2.getItemId()).thenReturn(ITEM_ID_2);
 
 		when(cacheMock.get(ITEM_ID_1, (Class<BatchJobItem<Object>>) batchJobItemMock1.getClass()))
-				.thenReturn(batchJobItemMock1);
+			.thenReturn(batchJobItemMock1);
 		when(cacheMock.get(ITEM_ID_2, (Class<BatchJobItem<Object>>) batchJobItemMock1.getClass())).thenReturn(null);
 
 		testObj.refreshCachedItems(List.of(batchJobItemMock1, batchJobItemMock2));
@@ -146,7 +144,7 @@ class BatchJobFailedItemCacheServiceImplTest {
 		when(batchJobItemMock1.getItemId()).thenReturn(ITEM_ID_1);
 
 		when(cacheMock.get(ITEM_ID_1, (Class<BatchJobItem<Object>>) batchJobItemMock1.getClass()))
-				.thenReturn(batchJobItemMock1);
+			.thenReturn(batchJobItemMock1);
 
 		testObj.refreshCachedItem(batchJobItemMock1);
 
@@ -178,16 +176,16 @@ class BatchJobFailedItemCacheServiceImplTest {
 		batchJobFailedItem2.setId(ITEM_ID_2);
 
 		when(cacheMock.get(ITEM_ID_1, (Class<BatchJobItem<Object>>) batchJobItemMock1.getClass()))
-				.thenReturn(batchJobItemMock1);
+			.thenReturn(batchJobItemMock1);
 		when(cacheMock.get(ITEM_ID_2, (Class<BatchJobItem<Object>>) batchJobItemMock1.getClass()))
-				.thenReturn(batchJobItemMock2);
+			.thenReturn(batchJobItemMock2);
 
 		final Map<BatchJobFailedItem, Optional<BatchJobItem<Object>>> result = testObj.retrieveAllItems(
 				(Class<BatchJobItem<Object>>) batchJobItemMock1.getClass(),
 				List.of(batchJobFailedItem1, batchJobFailedItem2));
 
 		assertThat(result).containsEntry(batchJobFailedItem1, Optional.of(batchJobItemMock1))
-				.containsEntry(batchJobFailedItem2, Optional.of(batchJobItemMock2));
+			.containsEntry(batchJobFailedItem2, Optional.of(batchJobItemMock2));
 	}
 
 	@Test
@@ -202,9 +200,9 @@ class BatchJobFailedItemCacheServiceImplTest {
 		batchJobFailedItem2.setId(ITEM_ID_2);
 
 		when(cacheMock.get(ITEM_ID_1, (Class<BatchJobItem<Object>>) batchJobItemMock1.getClass()))
-				.thenReturn(batchJobItemMock1);
+			.thenReturn(batchJobItemMock1);
 		when(cacheMock.get(ITEM_ID_2, (Class<BatchJobItem<Object>>) batchJobItemMock1.getClass())).thenReturn(null)
-				.thenReturn(batchJobItemMock2);
+			.thenReturn(batchJobItemMock2);
 
 		when(batchJobItemMock2.getItemType()).thenReturn(ITEM_TYPE);
 		when(batchJobItemMock2.getItemId()).thenReturn(ITEM_ID_2);
@@ -217,7 +215,7 @@ class BatchJobFailedItemCacheServiceImplTest {
 		verify(cacheMock, never()).put(ITEM_ID_1, batchJobItemMock1);
 
 		assertThat(result).containsEntry(batchJobFailedItem1, Optional.of(batchJobItemMock1))
-				.containsEntry(batchJobFailedItem2, Optional.of(batchJobItemMock2));
+			.containsEntry(batchJobFailedItem2, Optional.of(batchJobItemMock2));
 	}
 
 	@Test
@@ -238,9 +236,9 @@ class BatchJobFailedItemCacheServiceImplTest {
 		batchJobFailedItem2.setId(ITEM_ID_2);
 
 		when(cacheMock.get(ITEM_ID_1, (Class<BatchJobItem<Object>>) batchJobItemMock1.getClass()))
-				.thenReturn(batchJobItemMock1);
+			.thenReturn(batchJobItemMock1);
 		when(cacheMock.get(ITEM_ID_2, (Class<BatchJobItem<Object>>) batchJobItemMock1.getClass())).thenReturn(null)
-				.thenReturn(batchJobItemMock2);
+			.thenReturn(batchJobItemMock2);
 
 		when(batchJobItemMock2.getItemType()).thenReturn(ITEM_TYPE);
 		when(batchJobItemMock2.getItemId()).thenReturn(ITEM_ID_2);
@@ -255,7 +253,7 @@ class BatchJobFailedItemCacheServiceImplTest {
 		verify(cacheMock).put(ITEM_ID_1, batchJobItemMock1);
 
 		assertThat(result).containsEntry(batchJobFailedItem1, Optional.of(batchJobItemMock1))
-				.containsEntry(batchJobFailedItem2, Optional.of(batchJobItemMock2));
+			.containsEntry(batchJobFailedItem2, Optional.of(batchJobItemMock2));
 	}
 
 }

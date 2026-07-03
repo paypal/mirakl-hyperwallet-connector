@@ -2,7 +2,7 @@
 
 ## Stack
 
-Java 17 + Spring Boot multi-module Gradle project. All convention plugins live in `buildSrc/`. A separate Cucumber-js/TypeScript BDD suite lives in `e2y/testing/bdd/` (not part of the Gradle build).
+Java 25 + Spring Boot multi-module Gradle project. All convention plugins live in `buildSrc/`. A separate Cucumber-js/TypeScript BDD suite lives in `e2y/testing/bdd/` (not part of the Gradle build).
 
 ## Mandatory environment variables
 
@@ -60,6 +60,8 @@ docker-compose up
 - **ArchUnit tests**: Architecture fitness tests are in the test suite and will fail the build if package dependency rules are violated.
 - **AspectJ weaving in `hmc-observability`**: Uses `inpath` to weave aspects into Hyperwallet and Mirakl SDK bytecode directly (unusual; powered by `io.freefair.aspectj`).
 - **Lombok + MapStruct**: Both annotation processors configured correctly in convention plugins; do not add them manually to individual modules.
+- **Paketo Buildpack file permissions**: The OCI image runs as user `cnb` (UID `1002:1001`) with workdir `/workspace`. The `cnb` user cannot create directories under `/workspace`. Set `PAYPAL_HYPERWALLET_DATA_DIR=/tmp/data` for test/CI environments (no volume needed — `/tmp` is world-writable inside the container). For production use a named volume with an `init-data-dir` service that chowns it to `1002:1001` before the app starts.
+- **Docker bind mounts and ownership**: Any bind mount (`./host/path:/container/path`) where the host directory does not exist will be created by Docker as `root:root`, making it unwritable by non-root container users. Either pre-create the host directory with the correct owner, or prefer named volumes with an init container for automatic ownership handling.
 
 ## Module map
 

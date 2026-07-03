@@ -7,11 +7,11 @@ import com.hyperwallet.clientsdk.model.HyperwalletBusinessStakeholder;
 import com.hyperwallet.clientsdk.model.HyperwalletList;
 import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
+import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
+import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.support.exceptions.HMCException;
 import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
 import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
-import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
-import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.sellers.stakeholdersextraction.model.BusinessStakeHolderModel;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -58,7 +58,7 @@ class BusinessStakeholderTokenSynchronizationServiceImplTest {
 
 	@RegisterExtension
 	final LogTrackerStub logTrackerStub = LogTrackerStub.create()
-			.recordForType(BusinessStakeholderTokenSynchronizationServiceImpl.class);
+		.recordForType(BusinessStakeholderTokenSynchronizationServiceImpl.class);
 
 	@Mock
 	private Hyperwallet hyperwalletMock;
@@ -70,13 +70,15 @@ class BusinessStakeholderTokenSynchronizationServiceImplTest {
 	void synchronizeToken_ShouldSendAnEmailAndThrowAnHMCException_WhenStkEmailIsMandatoryAndSTKEmailIsNullAndSTKTokenIsNull() {
 
 		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder()
-				.clientUserId(CLIENT_USER_ID).stkId(STK_ID).build();
+			.clientUserId(CLIENT_USER_ID)
+			.stkId(STK_ID)
+			.build();
 
 		doReturn(true).when(testObj).isStkEmailMandatory();
 
 		assertThatThrownBy(() -> testObj.synchronizeToken(businessStakeHolderModel)).isInstanceOf(HMCException.class)
-				.hasMessage("Business stakeholder without email and Hyperwallet token defined for shop ["
-						+ CLIENT_USER_ID + "]");
+			.hasMessage("Business stakeholder without email and Hyperwallet token defined for shop [" + CLIENT_USER_ID
+					+ "]");
 
 		verify(mailNotificationUtilMock).sendPlainTextEmail(
 				"Validation error occurred when processing a stakeholder for seller {" + CLIENT_USER_ID + "}",
@@ -89,29 +91,34 @@ class BusinessStakeholderTokenSynchronizationServiceImplTest {
 	void synchronizeToken_ShouldReturnTheCurrentSTK_WhenSTKTokenIsNotBlank() {
 
 		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder()
-				.clientUserId(CLIENT_USER_ID).token(STK_TOKEN).build();
+			.clientUserId(CLIENT_USER_ID)
+			.token(STK_TOKEN)
+			.build();
 
 		final BusinessStakeHolderModel result = testObj.synchronizeToken(businessStakeHolderModel);
 
 		assertThat(result).isEqualTo(businessStakeHolderModel);
 		assertThat(logTrackerStub.contains("Hyperwallet token already exists for business stakeholder [" + STK_TOKEN
-				+ "] for shop [" + CLIENT_USER_ID + "], synchronization not needed")).isTrue();
+				+ "] for shop [" + CLIENT_USER_ID + "], synchronization not needed"))
+			.isTrue();
 	}
 
 	@Test
 	void synchronizeToken_ShouldReturnTheCurrentSTK_WhenSTKTokenIsNullAndEmailIsNullAndStkEmailIsNotMandatory() {
 
 		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder()
-				.clientUserId(CLIENT_USER_ID).stkId(STK_ID).build();
+			.clientUserId(CLIENT_USER_ID)
+			.stkId(STK_ID)
+			.build();
 
 		doReturn(false).when(testObj).isStkEmailMandatory();
 
 		final BusinessStakeHolderModel result = testObj.synchronizeToken(businessStakeHolderModel);
 
 		assertThat(result).isEqualTo(businessStakeHolderModel);
-		assertThat(logTrackerStub.contains(
-				"Hyperwallet business stakeholder [" + STK_ID + "] for shop [" + CLIENT_USER_ID + "] not found"))
-						.isTrue();
+		assertThat(logTrackerStub
+			.contains("Hyperwallet business stakeholder [" + STK_ID + "] for shop [" + CLIENT_USER_ID + "] not found"))
+			.isTrue();
 	}
 
 	@Test
@@ -121,21 +128,25 @@ class BusinessStakeholderTokenSynchronizationServiceImplTest {
 		emailBusinessStakeHolderField.setCode(EMAIL);
 		emailBusinessStakeHolderField.setValue(STK_EMAIL);
 
-		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder().stkId(STK_ID)
-				.hyperwalletProgram(HYPERWALLET_PROGRAM).userToken(USER_TOKEN).clientUserId(CLIENT_USER_ID)
-				.email(List.of(emailBusinessStakeHolderField), STK_ID).build();
+		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder()
+			.stkId(STK_ID)
+			.hyperwalletProgram(HYPERWALLET_PROGRAM)
+			.userToken(USER_TOKEN)
+			.clientUserId(CLIENT_USER_ID)
+			.email(List.of(emailBusinessStakeHolderField), STK_ID)
+			.build();
 
 		doReturn(false).when(testObj).isStkEmailMandatory();
 
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
-				.thenReturn(hyperwalletMock);
+			.thenReturn(hyperwalletMock);
 		when(hyperwalletMock.listBusinessStakeholders(USER_TOKEN)).thenThrow(HyperwalletException.class);
 
 		assertThatThrownBy(() -> testObj.synchronizeToken(businessStakeHolderModel))
-				.isInstanceOf(HMCHyperwalletAPIException.class);
+			.isInstanceOf(HMCHyperwalletAPIException.class);
 		assertThat(logTrackerStub
-				.contains("Error while getting Hyperwallet business stakeholders for shop [" + CLIENT_USER_ID + "]"))
-						.isTrue();
+			.contains("Error while getting Hyperwallet business stakeholders for shop [" + CLIENT_USER_ID + "]"))
+			.isTrue();
 	}
 
 	@Test
@@ -145,14 +156,18 @@ class BusinessStakeholderTokenSynchronizationServiceImplTest {
 		emailBusinessStakeHolderField.setCode(EMAIL);
 		emailBusinessStakeHolderField.setValue(STK_EMAIL);
 
-		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder().stkId(STK_ID)
-				.hyperwalletProgram(HYPERWALLET_PROGRAM).userToken(USER_TOKEN).clientUserId(CLIENT_USER_ID)
-				.email(List.of(emailBusinessStakeHolderField), STK_ID).build();
+		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder()
+			.stkId(STK_ID)
+			.hyperwalletProgram(HYPERWALLET_PROGRAM)
+			.userToken(USER_TOKEN)
+			.clientUserId(CLIENT_USER_ID)
+			.email(List.of(emailBusinessStakeHolderField), STK_ID)
+			.build();
 
 		doReturn(false).when(testObj).isStkEmailMandatory();
 
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
-				.thenReturn(hyperwalletMock);
+			.thenReturn(hyperwalletMock);
 
 		final HyperwalletBusinessStakeholder hyperwalletBusinessStakeholder = new HyperwalletBusinessStakeholder();
 		hyperwalletBusinessStakeholder.setToken(STK_TOKEN);
@@ -162,12 +177,13 @@ class BusinessStakeholderTokenSynchronizationServiceImplTest {
 		when(hyperwalletMock.listBusinessStakeholders(USER_TOKEN)).thenReturn(hyperwalletBusinessStakeholders);
 
 		doThrow(MiraklException.class).when(businessStakeholderTokenUpdateServiceMock)
-				.updateBusinessStakeholderToken(eq(CLIENT_USER_ID), anyList());
+			.updateBusinessStakeholderToken(eq(CLIENT_USER_ID), anyList());
 
 		assertThatThrownBy(() -> testObj.synchronizeToken(businessStakeHolderModel))
-				.isInstanceOf(HMCMiraklAPIException.class);
+			.isInstanceOf(HMCMiraklAPIException.class);
 		assertThat(logTrackerStub.contains("Error while updating Mirakl business stakeholder [" + STK_TOKEN
-				+ "] for shop [" + CLIENT_USER_ID + "]")).isTrue();
+				+ "] for shop [" + CLIENT_USER_ID + "]"))
+			.isTrue();
 	}
 
 	@Test
@@ -177,14 +193,18 @@ class BusinessStakeholderTokenSynchronizationServiceImplTest {
 		emailBusinessStakeHolderField.setCode(EMAIL);
 		emailBusinessStakeHolderField.setValue(STK_EMAIL);
 
-		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder().stkId(STK_ID)
-				.hyperwalletProgram(HYPERWALLET_PROGRAM).userToken(USER_TOKEN).clientUserId(CLIENT_USER_ID)
-				.email(List.of(emailBusinessStakeHolderField), STK_ID).build();
+		final BusinessStakeHolderModel businessStakeHolderModel = BusinessStakeHolderModel.builder()
+			.stkId(STK_ID)
+			.hyperwalletProgram(HYPERWALLET_PROGRAM)
+			.userToken(USER_TOKEN)
+			.clientUserId(CLIENT_USER_ID)
+			.email(List.of(emailBusinessStakeHolderField), STK_ID)
+			.build();
 
 		doReturn(false).when(testObj).isStkEmailMandatory();
 
 		when(userHyperwalletSDKServiceMock.getHyperwalletInstanceByHyperwalletProgram(HYPERWALLET_PROGRAM))
-				.thenReturn(hyperwalletMock);
+			.thenReturn(hyperwalletMock);
 
 		final HyperwalletBusinessStakeholder hyperwalletBusinessStakeholder = new HyperwalletBusinessStakeholder();
 		hyperwalletBusinessStakeholder.setToken(STK_TOKEN);
@@ -202,8 +222,11 @@ class BusinessStakeholderTokenSynchronizationServiceImplTest {
 		assertThat(result.getEmail()).isEqualTo(STK_EMAIL);
 		assertThat(result.getUserToken()).isEqualTo(USER_TOKEN);
 		assertThat(result.getClientUserId()).isEqualTo(CLIENT_USER_ID);
-		assertThat(businessStakeHolderModelsArgumentCaptor.getValue().stream().findFirst()
-				.map(BusinessStakeHolderModel::getToken).orElse(StringUtils.EMPTY)).isEqualTo(STK_TOKEN);
+		assertThat(businessStakeHolderModelsArgumentCaptor.getValue()
+			.stream()
+			.findFirst()
+			.map(BusinessStakeHolderModel::getToken)
+			.orElse(StringUtils.EMPTY)).isEqualTo(STK_TOKEN);
 	}
 
 }

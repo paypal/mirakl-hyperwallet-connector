@@ -47,7 +47,7 @@ public class HyperwalletBankAccountCurrencyRestrictionsLoader {
 
 		return groupedByCountryBankAccountType.entrySet().stream()
 				.map(this::toCountryCurrencyEntry)
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	private String getGroupingKey(final HwBankAccountConstraintsJsonEntry entry) {
@@ -93,7 +93,7 @@ public class HyperwalletBankAccountCurrencyRestrictionsLoader {
 			final List<HwBankAccountConstraintsJsonEntry> hyperwalletBankAccountRestrictionsJsonEntries) {
 		return hyperwalletBankAccountRestrictionsJsonEntries.stream()
 				.filter(this::isSupported)
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	private boolean isSupported(final HwBankAccountConstraintsJsonEntry hwBankAccountConstraintsJsonEntry) {
@@ -102,7 +102,7 @@ public class HyperwalletBankAccountCurrencyRestrictionsLoader {
 
 	@Data
 	@NoArgsConstructor
-	private static class HwBankAccountConstraintsJsonEntry {
+	private static final class HwBankAccountConstraintsJsonEntry {
 
 		private String bankAccountType;
 

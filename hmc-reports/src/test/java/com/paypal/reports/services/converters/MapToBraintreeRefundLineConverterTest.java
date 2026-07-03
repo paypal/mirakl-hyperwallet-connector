@@ -6,7 +6,6 @@ import com.paypal.reports.model.HmcBraintreeTransactionLine;
 import com.paypal.reports.model.graphql.braintree.paymentransaction.BraintreeGraphQLAmountModel;
 import com.paypal.reports.model.graphql.braintree.paymentransaction.BraintreeNodeGraphQLModel;
 import com.paypal.reports.model.graphql.braintree.paymentransaction.BraintreeTransactionTypeEnum;
-import com.paypal.reports.services.converters.MapToBraintreeRefundLineConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -51,7 +50,7 @@ class MapToBraintreeRefundLineConverterTest {
 		when(edgeMock.get("legacyId")).thenReturn("cmVmdW5kXzhod3k1ZGZ0");
 		when(braintreeNodeGraphQLModelMock.getAmount()).thenReturn(braintreeNodeGraphQLAmountModelMock);
 		when(braintreeNodeGraphQLModelMock.getCreatedAt())
-				.thenReturn(DateUtil.convertToDate(createdAt, ZoneId.systemDefault()));
+			.thenReturn(DateUtil.convertToDate(createdAt, ZoneId.systemDefault()));
 		when(braintreeNodeGraphQLAmountModelMock.getValue()).thenReturn(expected);
 		when(braintreeNodeGraphQLAmountModelMock.getCurrencyCode()).thenReturn("USD");
 
@@ -63,7 +62,7 @@ class MapToBraintreeRefundLineConverterTest {
 		assertThat(result.getCurrencyIsoCode()).isEqualTo("USD");
 		assertThat(result.getOrderId()).isEqualTo("871633000");
 		assertThat(result.getTransactionType())
-				.isEqualTo(BraintreeTransactionTypeEnum.REFUND_OPERATOR_ORDER_AMOUNT.name());
+			.isEqualTo(BraintreeTransactionTypeEnum.REFUND_OPERATOR_ORDER_AMOUNT.name());
 	}
 
 	@Test

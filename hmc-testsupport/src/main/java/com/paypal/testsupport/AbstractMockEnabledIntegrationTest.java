@@ -5,8 +5,11 @@ import com.paypal.testsupport.mocks.hyperwallet.BusinessStakeHoldersEndpointMock
 import com.paypal.testsupport.mocks.hyperwallet.PaymentsEndpointMock;
 import com.paypal.testsupport.mocks.hyperwallet.UsersEndpointMock;
 import com.paypal.testsupport.mocks.hyperwallet.WebhookNotificationEndpointMock;
+import com.paypal.testsupport.mocks.mirakl.MiraklConfirmSellerBillingCyclePaymentEndpointMock;
+import com.paypal.testsupport.mocks.mirakl.MiraklSellerBillingCyclesEndpointMock;
 import com.paypal.testsupport.mocks.mirakl.MiraklShopsDocumentsEndpointMock;
 import com.paypal.testsupport.mocks.mirakl.MiraklShopsEndpointMock;
+import com.paypal.testsupport.mocks.mirakl.MiraklTransactionLinesEndpointMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockserver.client.MockServerClient;
 
@@ -24,6 +27,12 @@ public abstract class AbstractMockEnabledIntegrationTest extends AbstractIntegra
 
 	protected MiraklShopsDocumentsEndpointMock miraklShopsDocumentsEndpointMock;
 
+	protected MiraklTransactionLinesEndpointMock miraklTransactionLinesEndpointMock;
+
+	protected MiraklSellerBillingCyclesEndpointMock miraklSellerBillingCyclesEndpointMock;
+
+	protected MiraklConfirmSellerBillingCyclePaymentEndpointMock miraklConfirmSellerBillingCyclePaymentEndpointMock;
+
 	protected MockServerExpectationsLoader mockServerExpectationsLoader;
 
 	protected WebhookNotificationEndpointMock webhookNotificationEndpointMock;
@@ -35,6 +44,10 @@ public abstract class AbstractMockEnabledIntegrationTest extends AbstractIntegra
 		usersEndpointMock = new UsersEndpointMock(mockServerClient);
 		miraklShopsEndpointMock = new MiraklShopsEndpointMock(mockServerClient);
 		miraklShopsDocumentsEndpointMock = new MiraklShopsDocumentsEndpointMock(mockServerClient);
+		miraklTransactionLinesEndpointMock = new MiraklTransactionLinesEndpointMock(mockServerClient);
+		miraklSellerBillingCyclesEndpointMock = new MiraklSellerBillingCyclesEndpointMock(mockServerClient);
+		miraklConfirmSellerBillingCyclePaymentEndpointMock = new MiraklConfirmSellerBillingCyclePaymentEndpointMock(
+				mockServerClient);
 		mockServerExpectationsLoader = new MockServerExpectationsLoader(mockServerClient);
 		webhookNotificationEndpointMock = new WebhookNotificationEndpointMock(mockServerClient);
 	}

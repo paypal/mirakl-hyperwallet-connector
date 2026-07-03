@@ -3,14 +3,14 @@ package com.paypal.sellers.bankaccountextraction.services.strategies;
 import com.hyperwallet.clientsdk.HyperwalletException;
 import com.hyperwallet.clientsdk.model.HyperwalletBankAccount;
 import com.mirakl.client.core.exception.MiraklApiException;
-import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
-import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.hyperwallet.services.UserHyperwalletSDKService;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
-import com.paypal.infrastructure.support.strategy.Strategy;
-import com.paypal.infrastructure.support.strategy.StrategyExecutor;
+import com.paypal.infrastructure.support.exceptions.HMCHyperwalletAPIException;
+import com.paypal.infrastructure.support.exceptions.HMCMiraklAPIException;
 import com.paypal.infrastructure.support.logging.HyperwalletLoggingErrorsUtil;
 import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
+import com.paypal.infrastructure.support.strategy.Strategy;
+import com.paypal.infrastructure.support.strategy.StrategyExecutor;
 import com.paypal.sellers.sellerextractioncommons.model.SellerModel;
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,7 +46,7 @@ public abstract class AbstractHyperwalletBankAccountStrategy
 	public Optional<HyperwalletBankAccount> execute(final SellerModel seller) {
 		HyperwalletBankAccount hwCreatedBankAccount = null;
 		final HyperwalletBankAccount hwBankAccountRequest = sellerModelToHyperwalletBankAccountStrategyExecutor
-				.execute(seller);
+			.execute(seller);
 		if (Objects.nonNull(hwBankAccountRequest)) {
 			try {
 				hwCreatedBankAccount = callHyperwalletAPI(seller.getHyperwalletProgram(), hwBankAccountRequest);
@@ -54,11 +54,12 @@ public abstract class AbstractHyperwalletBankAccountStrategy
 			}
 			catch (final HyperwalletException e) {
 
-				mailNotificationUtil
-						.sendPlainTextEmail("Issue detected when creating or updating bank account in Hyperwallet",
-								String.format(ERROR_MESSAGE_PREFIX
+				mailNotificationUtil.sendPlainTextEmail(
+						"Issue detected when creating or updating bank account in Hyperwallet",
+						String.format(
+								ERROR_MESSAGE_PREFIX
 										+ "Bank account not created or updated for seller with clientId [%s]%n%s",
-										seller.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)));
+								seller.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)));
 				log.error(String.format("Bank account not created or updated for seller with clientId [%s].%n%s",
 						seller.getClientUserId(), HyperwalletLoggingErrorsUtil.stringify(e)), e);
 

@@ -4,7 +4,6 @@ import com.mirakl.client.mmp.domain.shop.MiraklShop;
 import com.mirakl.client.mmp.domain.shop.bank.MiraklPaymentInformation;
 import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.sellers.bankaccountextraction.model.BankAccountModel;
-import com.paypal.sellers.bankaccountextraction.services.converters.MiraklToBankAccountModelExecutor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -1,13 +1,5 @@
 package com.paypal.notifications.incoming.jobs;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
-
 import com.paypal.notifications.incoming.services.NotificationProcessingQueueService;
 import com.paypal.notifications.incoming.services.NotificationProcessingService;
 import com.paypal.notifications.storage.repositories.entities.NotificationEntity;
@@ -20,8 +12,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.quartz.JobExecutionContext;
+
 import java.util.List;
 import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class NotificationProcessJobTest {
@@ -49,7 +47,7 @@ class NotificationProcessJobTest {
 		final NotificationEntity entity = buildEntity(TOKEN, NotificationType.USR);
 		when(notificationProcessingQueueServiceMock.fetchNextBatch(anyInt())).thenReturn(List.of(entity));
 		when(notificationProcessingServiceMock.processNotification(entity))
-				.thenReturn(NotificationProcessingService.NotificationProcessingStatus.SUCCESS);
+			.thenReturn(NotificationProcessingService.NotificationProcessingStatus.SUCCESS);
 
 		testObj.execute(jobExecutionContextMock);
 
@@ -64,7 +62,7 @@ class NotificationProcessJobTest {
 		final NotificationEntity entity = buildEntity(TOKEN, NotificationType.USR);
 		when(notificationProcessingQueueServiceMock.fetchNextBatch(anyInt())).thenReturn(List.of(entity));
 		when(notificationProcessingServiceMock.processNotification(entity))
-				.thenReturn(NotificationProcessingService.NotificationProcessingStatus.ERROR);
+			.thenReturn(NotificationProcessingService.NotificationProcessingStatus.ERROR);
 
 		testObj.execute(jobExecutionContextMock);
 
@@ -89,9 +87,9 @@ class NotificationProcessJobTest {
 		final NotificationEntity entity2 = buildEntity("tok-2", NotificationType.USR);
 		when(notificationProcessingQueueServiceMock.fetchNextBatch(anyInt())).thenReturn(List.of(entity1, entity2));
 		when(notificationProcessingServiceMock.processNotification(entity1))
-				.thenReturn(NotificationProcessingService.NotificationProcessingStatus.SUCCESS);
+			.thenReturn(NotificationProcessingService.NotificationProcessingStatus.SUCCESS);
 		when(notificationProcessingServiceMock.processNotification(entity2))
-				.thenReturn(NotificationProcessingService.NotificationProcessingStatus.ERROR);
+			.thenReturn(NotificationProcessingService.NotificationProcessingStatus.ERROR);
 
 		testObj.execute(jobExecutionContextMock);
 
@@ -116,7 +114,7 @@ class NotificationProcessJobTest {
 	private void verifyStatusUpdate(
 			final Map<String, NotificationProcessingService.NotificationProcessingStatus> expected) {
 		final ArgumentCaptor<Map<String, NotificationProcessingService.NotificationProcessingStatus>> captor = ArgumentCaptor
-				.forClass(Map.class);
+			.forClass(Map.class);
 		verify(notificationProcessingQueueServiceMock).updateStatus(captor.capture());
 		assertThat(captor.getValue()).containsExactlyInAnyOrderEntriesOf(expected);
 	}

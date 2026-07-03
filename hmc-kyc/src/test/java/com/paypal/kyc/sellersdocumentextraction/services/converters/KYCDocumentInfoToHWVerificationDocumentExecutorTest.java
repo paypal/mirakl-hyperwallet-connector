@@ -3,7 +3,6 @@ package com.paypal.kyc.sellersdocumentextraction.services.converters;
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
 import com.paypal.infrastructure.support.strategy.Strategy;
 import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
-import com.paypal.kyc.sellersdocumentextraction.services.converters.KYCDocumentInfoToHWVerificationDocumentExecutor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +31,7 @@ class KYCDocumentInfoToHWVerificationDocumentExecutorTest {
 	@Test
 	void getStrategies_shouldReturnConverterStrategyMock() {
 		final Set<Strategy<KYCDocumentSellerInfoModel, HyperwalletVerificationDocument>> result = testObj
-				.getStrategies();
+			.getStrategies();
 
 		assertThat(result).containsExactly(strategyMock);
 	}

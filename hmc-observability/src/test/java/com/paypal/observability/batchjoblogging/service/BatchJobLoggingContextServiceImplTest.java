@@ -1,7 +1,7 @@
 package com.paypal.observability.batchjoblogging.service;
 
-import com.paypal.jobsystem.batchjobsupport.support.AbstractBatchJobItem;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
+import com.paypal.jobsystem.batchjobsupport.support.AbstractBatchJobItem;
 import com.paypal.observability.batchjoblogging.model.BatchJobLoggingTransaction;
 import com.paypal.observability.loggingcontext.model.LoggingTransaction;
 import com.paypal.observability.loggingcontext.service.LoggingContextService;
@@ -39,13 +39,13 @@ class BatchJobLoggingContextServiceImplTest {
 		when(batchJobContextMock.getJobName()).thenReturn("jobName");
 		final LoggingTransaction batchJobLoggingTransaction = new BatchJobLoggingTransaction("102230", "jobName");
 		when(loggingContextServiceMock.getCurrentLoggingTransaction())
-				.thenReturn(Optional.of(batchJobLoggingTransaction));
+			.thenReturn(Optional.of(batchJobLoggingTransaction));
 
 		testObj.refreshBatchJobInformation(batchJobContextMock);
 
 		verify(loggingContextServiceMock).updateLoggingTransaction(batchJobLoggingTransactionArgumentCaptor.capture());
 		final BatchJobLoggingTransaction expectedLoggingTransaction = batchJobLoggingTransactionArgumentCaptor
-				.getValue();
+			.getValue();
 		assertThat(expectedLoggingTransaction.getSubtype()).isEqualTo("jobName");
 		assertThat(expectedLoggingTransaction.getId()).isEqualTo("102230");
 		assertThat(expectedLoggingTransaction.getItemType()).isNull();
@@ -56,14 +56,14 @@ class BatchJobLoggingContextServiceImplTest {
 	void testRefreshBatchJobInformation_shouldSetItemTypeAndItemIdWithItemInformationPassedAndUpdateLoggingTransaction() {
 		final LoggingTransaction batchJobLoggingTransaction = new BatchJobLoggingTransaction("102230", "jobName");
 		when(loggingContextServiceMock.getCurrentLoggingTransaction())
-				.thenReturn(Optional.of(batchJobLoggingTransaction));
+			.thenReturn(Optional.of(batchJobLoggingTransaction));
 		final MyItem myItem = new MyItem("The item");
 
 		testObj.refreshBatchJobInformation(batchJobContextMock, myItem);
 
 		verify(loggingContextServiceMock).updateLoggingTransaction(batchJobLoggingTransactionArgumentCaptor.capture());
 		final BatchJobLoggingTransaction expectedLoggingTransaction = batchJobLoggingTransactionArgumentCaptor
-				.getValue();
+			.getValue();
 		assertThat(expectedLoggingTransaction.getId()).isEqualTo("102230");
 		assertThat(expectedLoggingTransaction.getItemType()).isEqualTo("MyItem");
 		assertThat(expectedLoggingTransaction.getItemId()).isEqualTo("The item");
@@ -73,13 +73,13 @@ class BatchJobLoggingContextServiceImplTest {
 	void removeBatchJobItemInformation_shouldClearItemTypeAndItemIdInformation() {
 		final LoggingTransaction batchJobLoggingTransaction = new BatchJobLoggingTransaction("102230", "jobName");
 		when(loggingContextServiceMock.getCurrentLoggingTransaction())
-				.thenReturn(Optional.of(batchJobLoggingTransaction));
+			.thenReturn(Optional.of(batchJobLoggingTransaction));
 
 		testObj.removeBatchJobItemInformation();
 
 		verify(loggingContextServiceMock).updateLoggingTransaction(batchJobLoggingTransactionArgumentCaptor.capture());
 		final BatchJobLoggingTransaction expectedLoggingTransaction = batchJobLoggingTransactionArgumentCaptor
-				.getValue();
+			.getValue();
 		assertThat(expectedLoggingTransaction.getItemType()).isNull();
 		assertThat(expectedLoggingTransaction.getItemId()).isNull();
 	}

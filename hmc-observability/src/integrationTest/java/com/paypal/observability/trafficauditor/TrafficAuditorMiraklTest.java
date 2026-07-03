@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +30,7 @@ class TrafficAuditorMiraklTest extends AbstractObservabilityIntegrationTest {
 	@Autowired
 	private DirectMiraklClient miraklClient;
 
-	@SpyBean
+	@MockitoSpyBean
 	private TrafficAuditorLogger trafficAuditorLogger;
 
 	@Captor
@@ -63,11 +63,11 @@ class TrafficAuditorMiraklTest extends AbstractObservabilityIntegrationTest {
 		assertThat(capturedTrace.getRequest().getMethod()).contains("GET");
 
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getBody())
-				.contains("hw-user-token");
+			.contains("hw-user-token");
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getResponseCode())
-				.isEqualTo(200);
+			.isEqualTo(200);
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getHeaders())
-				.containsEntry("Content-Type", List.of("application/json"));
+			.containsEntry("Content-Type", List.of("application/json"));
 	}
 
 	@Test
@@ -97,14 +97,15 @@ class TrafficAuditorMiraklTest extends AbstractObservabilityIntegrationTest {
 				List.of("application/json; charset=UTF-8"));
 		assertThat(capturedTrace.getRequest().getMethod()).contains("PUT");
 		assertThat(capturedTrace.getRequest().getQueryParameters())
-				.containsEntry("sdk-module", "com.mirakl%3Ammp-sdk-operator").containsKey("sdk-version");
+			.containsEntry("sdk-module", "com.mirakl%3Ammp-sdk-operator")
+			.containsKey("sdk-version");
 
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getBody()).contains("shop_id")
-				.contains("10000");
+			.contains("10000");
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getResponseCode())
-				.isEqualTo(200);
+			.isEqualTo(200);
 		assertThat(capturedTrace.getResponse().orElseThrow(IllegalStateException::new).getHeaders())
-				.containsEntry("Content-Type", List.of("application/json"));
+			.containsEntry("Content-Type", List.of("application/json"));
 	}
 
 }

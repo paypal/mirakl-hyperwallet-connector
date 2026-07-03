@@ -1,18 +1,14 @@
 package com.paypal.invoices.extractioncommons.batchjobs;
 
-import com.paypal.invoices.extractioncommons.batchjobs.AbstractAccountingDocumentBatchJob;
-import com.paypal.invoices.extractioncommons.batchjobs.AccountingDocumentBatchJobItemEnricher;
-import com.paypal.invoices.extractioncommons.batchjobs.AccountingDocumentBatchJobItemValidator;
-import com.paypal.invoices.extractioncommons.batchjobs.AccountingDocumentBatchJobPreProcessor;
+import com.paypal.invoices.extractioninvoices.batchjobs.InvoiceExtractJobItem;
 import com.paypal.jobsystem.batchjob.model.BatchJobContext;
 import com.paypal.jobsystem.batchjob.model.BatchJobType;
-import com.paypal.invoices.extractioninvoices.batchjobs.InvoiceExtractJobItem;
 import com.paypal.jobsystem.batchjobsupport.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.InjectMocks;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,21 +31,21 @@ class AbstractAccountingDocumentBatchJobTest {
 	@Test
 	void getBatchJobItemValidator_shouldReturnAccountingDocumenHandler() {
 		assertThat(testObj.getBatchJobItemValidator())
-				.contains((BatchJobItemValidator) accountingDocumentBatchJobItemValidatorMock);
+			.contains((BatchJobItemValidator) accountingDocumentBatchJobItemValidatorMock);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	void getBatchJobPreProcessor_shouldReturnAccountingDocumenHandler() {
 		assertThat(testObj.getBatchJobPreProcessor())
-				.contains((BatchJobPreProcessor) accountingDocumentBatchJobPreProcessorMock);
+			.contains((BatchJobPreProcessor) accountingDocumentBatchJobPreProcessorMock);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	void getBatchJobItemEnricher_shouldReturnAccountingDocumenHandler() {
 		assertThat(testObj.getBatchJobItemEnricher())
-				.contains((BatchJobItemEnricher) accountingDocumentBatchJobItemEnricherMock);
+			.contains((BatchJobItemEnricher) accountingDocumentBatchJobItemEnricherMock);
 	}
 
 	static class MyAccountingDocumentBatchJob extends AbstractAccountingDocumentBatchJob<InvoiceExtractJobItem> {

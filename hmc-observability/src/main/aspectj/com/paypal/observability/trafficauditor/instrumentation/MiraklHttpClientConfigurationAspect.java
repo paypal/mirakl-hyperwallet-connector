@@ -20,7 +20,7 @@ public class MiraklHttpClientConfigurationAspect {
 	public void exit(final HttpClientBuilder httpClientBuilder) {
 		try {
 			httpClientBuilder.addInterceptorLast(ApacheHttpRequestInterceptor.get())
-					.addInterceptorLast(ApacheHttpResponseInterceptor.get());
+				.addInterceptorLast(ApacheHttpResponseInterceptor.get());
 		}
 		catch (final Exception e) {
 			logger.trace("Error while intercepting Mirakl SDK instantiation", e);

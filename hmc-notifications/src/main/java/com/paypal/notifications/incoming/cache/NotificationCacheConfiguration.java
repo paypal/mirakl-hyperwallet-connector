@@ -31,8 +31,9 @@ public class NotificationCacheConfiguration {
 	@Bean(NOTIFICATION_CACHE_MANAGER)
 	public CacheManager notificationCacheManager(@Value("${hmc.webhooks.cache.max-size:5000}") final long maxSize,
 			@Value("${hmc.webhooks.cache.expire-after-days:15}") final long expireAfterDays) {
-		final Caffeine<Object, Object> caffeine = Caffeine.newBuilder().maximumSize(maxSize)
-				.expireAfterWrite(expireAfterDays, TimeUnit.DAYS);
+		final Caffeine<Object, Object> caffeine = Caffeine.newBuilder()
+			.maximumSize(maxSize)
+			.expireAfterWrite(expireAfterDays, TimeUnit.DAYS);
 		final CaffeineCacheManager manager = new CaffeineCacheManager(WEBHOOK_NOTIFICATION_CACHE);
 		manager.setCaffeine(caffeine);
 		return manager;

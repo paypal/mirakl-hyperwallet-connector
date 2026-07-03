@@ -109,8 +109,10 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 			return Collections.emptyList();
 		}
 		final MiraklShops shops = retrieveMiraklShopsByShopIds(shopIds);
-		return Stream.ofNullable(shops.getShops()).flatMap(Collection::stream)
-				.map(miraklShopSellerModelStrategyExecutor::execute).collect(Collectors.toList());
+		return Stream.ofNullable(shops.getShops())
+			.flatMap(Collection::stream)
+			.map(miraklShopSellerModelStrategyExecutor::execute)
+			.toList();
 	}
 
 	@Override
@@ -126,7 +128,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 				.flatMap(Collection::stream)
 				.map(miraklShopSellerModelStrategyExecutor::execute)
 				.filter(SellerModel::hasAcceptedTermsAndConditions)
-				.collect(Collectors.toList());
+				.toList();
 
 		//@formatter:on
 	}
@@ -151,7 +153,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 			log.error("Something went wrong getting information of shop [{}]", hyperwalletUser.getClientUserId());
 			sellerMailNotificationUtil.sendPlainTextEmail(EMAIL_SUBJECT_MESSAGE,
 					(ERROR_MESSAGE_PREFIX + "Something went wrong getting information of shop [%s]%n%s")
-							.formatted(hyperwalletUser.getClientUserId(), MiraklLoggingErrorsUtil.stringify(ex)));
+						.formatted(hyperwalletUser.getClientUserId(), MiraklLoggingErrorsUtil.stringify(ex)));
 		}
 	}
 
@@ -168,7 +170,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 				.filter(Predicate.not(MiraklShop::isProfessional))
 				.map(miraklShopSellerModelStrategyExecutor::execute)
 				.filter(SellerModel::hasAcceptedTermsAndConditions)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 
@@ -185,7 +187,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 				.filter(MiraklShop::isProfessional)
 				.map(miraklShopSellerModelStrategyExecutor::execute)
 				.filter(SellerModel::hasAcceptedTermsAndConditions)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 	}
 
@@ -201,7 +203,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 			log.error("Something went wrong getting shop information since [{}]", delta);
 			sellerMailNotificationUtil.sendPlainTextEmail(EMAIL_SUBJECT_MESSAGE,
 					(ERROR_MESSAGE_PREFIX + "Something went wrong getting shop information since [%s]%n%s")
-							.formatted(delta, MiraklLoggingErrorsUtil.stringify(ex)));
+						.formatted(delta, MiraklLoggingErrorsUtil.stringify(ex)));
 			return new MiraklShops();
 		}
 	}
@@ -218,7 +220,7 @@ public class MiraklSellersExtractServiceImpl implements MiraklSellersExtractServ
 			log.error("Something went wrong getting s information with ids [{}]", shopIds);
 			sellerMailNotificationUtil.sendPlainTextEmail(EMAIL_SUBJECT_MESSAGE,
 					(ERROR_MESSAGE_PREFIX + "Something went wrong getting shop information with ids [%s]%n%s")
-							.formatted(shopIds, MiraklLoggingErrorsUtil.stringify(ex)));
+						.formatted(shopIds, MiraklLoggingErrorsUtil.stringify(ex)));
 			return new MiraklShops();
 		}
 	}

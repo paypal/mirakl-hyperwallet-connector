@@ -13,9 +13,9 @@ public class HmcIgnoredProgramsCheckConverterImpl implements HmcIgnoredProgramsC
 	@Override
 	public StartupCheck from(final HmcIgnoredProgramsCheck ignoredProgramsCheck) {
 		return StartupCheck.builder()
-				.status(ignoredProgramsCheck.isSubset() ? StartupCheckStatus.READY
-						: StartupCheckStatus.READY_WITH_WARNINGS)
-				.statusMessage(getStatusMessage(ignoredProgramsCheck)).build();
+			.status(ignoredProgramsCheck.isSubset() ? StartupCheckStatus.READY : StartupCheckStatus.READY_WITH_WARNINGS)
+			.statusMessage(getStatusMessage(ignoredProgramsCheck))
+			.build();
 	}
 
 	private Optional<String> getStatusMessage(final HmcIgnoredProgramsCheck ignoredProgramsCheck) {

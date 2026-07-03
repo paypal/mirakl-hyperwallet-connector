@@ -33,13 +33,14 @@ class HyperwalletMiraklBankAccountMatcherTest {
 
 		final IBANBankAccountModel miraklBankAccount = ibanBankAccountModel(1);
 
-		when(hyperwalletMiraklBankAccountEqualityCheckerMock.isSameBankAccount(hyperwalletBankAccounts.get(0),
-				miraklBankAccount)).thenReturn(true);
+		when(hyperwalletMiraklBankAccountEqualityCheckerMock.isSameBankAccount(hyperwalletBankAccounts.getFirst(),
+				miraklBankAccount))
+			.thenReturn(true);
 
 		final Optional<HyperwalletBankAccount> result = testObj.findExactOrCompatibleMatch(hyperwalletBankAccounts,
 				miraklBankAccount);
 
-		assertThat(result).isPresent().contains(hyperwalletBankAccounts.get(0));
+		assertThat(result).isPresent().contains(hyperwalletBankAccounts.getFirst());
 	}
 
 	@Test
@@ -50,7 +51,7 @@ class HyperwalletMiraklBankAccountMatcherTest {
 		final IBANBankAccountModel miraklBankAccount = ibanBankAccountModel(2);
 
 		when(hyperwalletMiraklBankAccountCompatibilityCheckerMock
-				.isBankAccountCompatible(hyperwalletBankAccounts.get(1), miraklBankAccount)).thenReturn(true);
+			.isBankAccountCompatible(hyperwalletBankAccounts.get(1), miraklBankAccount)).thenReturn(true);
 
 		final Optional<HyperwalletBankAccount> result = testObj.findExactOrCompatibleMatch(hyperwalletBankAccounts,
 				miraklBankAccount);
@@ -66,9 +67,11 @@ class HyperwalletMiraklBankAccountMatcherTest {
 		final IBANBankAccountModel miraklBankAccount = ibanBankAccountModel();
 
 		when(hyperwalletMiraklBankAccountEqualityCheckerMock.isSameBankAccount(hyperwalletBankAccounts.get(0),
-				miraklBankAccount)).thenReturn(false);
+				miraklBankAccount))
+			.thenReturn(false);
 		when(hyperwalletMiraklBankAccountEqualityCheckerMock.isSameBankAccount(hyperwalletBankAccounts.get(1),
-				miraklBankAccount)).thenReturn(true);
+				miraklBankAccount))
+			.thenReturn(true);
 
 		final Optional<HyperwalletBankAccount> result = testObj.findExactOrCompatibleMatch(hyperwalletBankAccounts,
 				miraklBankAccount);
@@ -84,9 +87,9 @@ class HyperwalletMiraklBankAccountMatcherTest {
 		final IBANBankAccountModel miraklBankAccount = ibanBankAccountModel(1);
 
 		when(hyperwalletMiraklBankAccountCompatibilityCheckerMock
-				.isBankAccountCompatible(hyperwalletBankAccounts.get(0), miraklBankAccount)).thenReturn(false);
+			.isBankAccountCompatible(hyperwalletBankAccounts.get(0), miraklBankAccount)).thenReturn(false);
 		when(hyperwalletMiraklBankAccountCompatibilityCheckerMock
-				.isBankAccountCompatible(hyperwalletBankAccounts.get(1), miraklBankAccount)).thenReturn(true);
+			.isBankAccountCompatible(hyperwalletBankAccounts.get(1), miraklBankAccount)).thenReturn(true);
 
 		final Optional<HyperwalletBankAccount> result = testObj.findExactOrCompatibleMatch(hyperwalletBankAccounts,
 				miraklBankAccount);
@@ -102,9 +105,9 @@ class HyperwalletMiraklBankAccountMatcherTest {
 		final IBANBankAccountModel miraklBankAccount = ibanBankAccountModel();
 
 		when(hyperwalletMiraklBankAccountCompatibilityCheckerMock
-				.isBankAccountCompatible(hyperwalletBankAccounts.get(0), miraklBankAccount)).thenReturn(false);
+			.isBankAccountCompatible(hyperwalletBankAccounts.get(0), miraklBankAccount)).thenReturn(false);
 		when(hyperwalletMiraklBankAccountCompatibilityCheckerMock
-				.isBankAccountCompatible(hyperwalletBankAccounts.get(1), miraklBankAccount)).thenReturn(true);
+			.isBankAccountCompatible(hyperwalletBankAccounts.get(1), miraklBankAccount)).thenReturn(true);
 
 		final Optional<HyperwalletBankAccount> result = testObj.findExactOrCompatibleMatch(hyperwalletBankAccounts,
 				miraklBankAccount);
@@ -133,13 +136,15 @@ class HyperwalletMiraklBankAccountMatcherTest {
 		final IBANBankAccountModel miraklBankAccount = ibanBankAccountModel();
 
 		when(hyperwalletMiraklBankAccountEqualityCheckerMock.isSameBankAccount(hyperwalletBankAccounts.get(0),
-				miraklBankAccount)).thenReturn(false);
+				miraklBankAccount))
+			.thenReturn(false);
 		when(hyperwalletMiraklBankAccountEqualityCheckerMock.isSameBankAccount(hyperwalletBankAccounts.get(1),
-				miraklBankAccount)).thenReturn(false);
+				miraklBankAccount))
+			.thenReturn(false);
 		when(hyperwalletMiraklBankAccountCompatibilityCheckerMock
-				.isBankAccountCompatible(hyperwalletBankAccounts.get(0), miraklBankAccount)).thenReturn(false);
+			.isBankAccountCompatible(hyperwalletBankAccounts.get(0), miraklBankAccount)).thenReturn(false);
 		when(hyperwalletMiraklBankAccountCompatibilityCheckerMock
-				.isBankAccountCompatible(hyperwalletBankAccounts.get(1), miraklBankAccount)).thenReturn(false);
+			.isBankAccountCompatible(hyperwalletBankAccounts.get(1), miraklBankAccount)).thenReturn(false);
 
 		final Optional<HyperwalletBankAccount> result = testObj.findExactOrCompatibleMatch(hyperwalletBankAccounts,
 				miraklBankAccount);
@@ -155,15 +160,11 @@ class HyperwalletMiraklBankAccountMatcherTest {
 	}
 
 	private IBANBankAccountModel ibanBankAccountModel(final int idx) {
-		final IBANBankAccountModel ibanBankAccountModel = IBANBankAccountModel.builder().token("token" + idx).build();
-
-		return ibanBankAccountModel;
+		return IBANBankAccountModel.builder().token("token" + idx).build();
 	}
 
 	private IBANBankAccountModel ibanBankAccountModel() {
-		final IBANBankAccountModel ibanBankAccountModel = IBANBankAccountModel.builder().build();
-
-		return ibanBankAccountModel;
+		return IBANBankAccountModel.builder().build();
 	}
 
 }

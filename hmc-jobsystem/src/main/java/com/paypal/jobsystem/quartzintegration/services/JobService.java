@@ -1,9 +1,9 @@
 package com.paypal.jobsystem.quartzintegration.services;
 
-import com.paypal.jobsystem.quartzintegration.repositories.entities.JobStatus;
-import jakarta.annotation.Resource;
 import com.paypal.infrastructure.support.date.DateUtil;
 import com.paypal.infrastructure.support.date.TimeMachine;
+import com.paypal.jobsystem.quartzintegration.repositories.entities.JobStatus;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;

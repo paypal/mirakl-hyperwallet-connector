@@ -24,39 +24,45 @@ class HyperwalletMiraklBankAccountCompatibilityCheckerTest {
 
 	@Test
 	void isBankAccountCompatible_shouldReturnTrue_whenSameBankAccountTypeAndSameBankAccountCountry() {
-		final IBANBankAccountModel miraklBankAccount = IBANBankAccountModel.builder().transferMethodCountry("US")
-				.type(BankAccountType.ABA).build();
+		final IBANBankAccountModel miraklBankAccount = IBANBankAccountModel.builder()
+			.transferMethodCountry("US")
+			.type(BankAccountType.ABA)
+			.build();
 		final HyperwalletBankAccount hyperwalletBankAccount = new HyperwalletBankAccount();
 		hyperwalletBankAccount.setTransferMethodCountry("US");
 
 		when(hyperwalletBankAccountTypeResolverMock.getBankAccountType(hyperwalletBankAccount))
-				.thenReturn(BankAccountType.ABA);
+			.thenReturn(BankAccountType.ABA);
 
 		assertThat(testObj.isBankAccountCompatible(hyperwalletBankAccount, miraklBankAccount)).isTrue();
 	}
 
 	@Test
 	void isBankAccountCompatible_shouldReturnFalse_whenDifferentBankAccountTypeAndSameBankAccountCountry() {
-		final IBANBankAccountModel miraklBankAccount = IBANBankAccountModel.builder().transferMethodCountry("US")
-				.type(BankAccountType.IBAN).build();
+		final IBANBankAccountModel miraklBankAccount = IBANBankAccountModel.builder()
+			.transferMethodCountry("US")
+			.type(BankAccountType.IBAN)
+			.build();
 		final HyperwalletBankAccount hyperwalletBankAccount = new HyperwalletBankAccount();
 		hyperwalletBankAccount.setTransferMethodCountry("US");
 
 		when(hyperwalletBankAccountTypeResolverMock.getBankAccountType(hyperwalletBankAccount))
-				.thenReturn(BankAccountType.ABA);
+			.thenReturn(BankAccountType.ABA);
 
 		assertThat(testObj.isBankAccountCompatible(hyperwalletBankAccount, miraklBankAccount)).isFalse();
 	}
 
 	@Test
 	void isBankAccountCompatible_shouldReturnFalse_whenSameBankAccountTypeAndDifferentBankAccountCountry() {
-		final IBANBankAccountModel miraklBankAccount = IBANBankAccountModel.builder().transferMethodCountry("ES")
-				.type(BankAccountType.ABA).build();
+		final IBANBankAccountModel miraklBankAccount = IBANBankAccountModel.builder()
+			.transferMethodCountry("ES")
+			.type(BankAccountType.ABA)
+			.build();
 		final HyperwalletBankAccount hyperwalletBankAccount = new HyperwalletBankAccount();
 		hyperwalletBankAccount.setTransferMethodCountry("US");
 
 		when(hyperwalletBankAccountTypeResolverMock.getBankAccountType(hyperwalletBankAccount))
-				.thenReturn(BankAccountType.ABA);
+			.thenReturn(BankAccountType.ABA);
 
 		assertThat(testObj.isBankAccountCompatible(hyperwalletBankAccount, miraklBankAccount)).isFalse();
 	}

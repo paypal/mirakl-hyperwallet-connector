@@ -1,12 +1,11 @@
 package com.paypal.jobsystem.quartzintegration.controllers;
 
-import com.paypal.jobsystem.quartzintegration.support.AbstractDeltaInfoJob;
 import com.paypal.jobsystem.quartzintegration.services.JobService;
+import com.paypal.jobsystem.quartzintegration.support.AbstractDeltaInfoJob;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -20,7 +19,6 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class AbstractJobControllerTest {
 
-	@Spy
 	@InjectMocks
 	private MyAbstractJobController testObj;
 
@@ -59,7 +57,7 @@ class AbstractJobControllerTest {
 
 		@Override
 		public void execute(final JobExecutionContext context) {
-
+			// test stub
 		}
 
 	}

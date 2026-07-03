@@ -33,7 +33,7 @@ public abstract class AbstractSellerModelToHyperwalletBankAccount
 		hyperwalletBankAccount.setTransferMethodCountry(bankAccountDetails.getTransferMethodCountry());
 		hyperwalletBankAccount.setTransferMethodCurrency(bankAccountDetails.getTransferMethodCurrency());
 		hyperwalletBankAccount
-				.setType(HyperwalletBankAccount.Type.valueOf(bankAccountDetails.getTransferType().name()));
+			.setType(HyperwalletBankAccount.Type.valueOf(bankAccountDetails.getTransferType().name()));
 		hyperwalletBankAccount.setCountry(bankAccountDetails.getCountry());
 		hyperwalletBankAccount.setCity(bankAccountDetails.getCity());
 		hyperwalletBankAccount.setUserToken(source.getToken());

@@ -50,8 +50,9 @@ class MiraklOperatorAccessTokenAuthITTest extends AbstractMockEnabledIntegration
 
 		// then — MockServer received the request with Authorization: Bearer <token>
 		assertThat(version).isNotNull();
-		mockServerClient.verify(request().withMethod("GET").withPath("/api/version").withHeader("Authorization",
-				"Bearer " + TEST_ACCESS_TOKEN), VerificationTimes.exactly(1));
+		mockServerClient.verify(request().withMethod("GET")
+			.withPath("/api/version")
+			.withHeader("Authorization", "Bearer " + TEST_ACCESS_TOKEN), VerificationTimes.exactly(1));
 	}
 
 	@Test
@@ -90,8 +91,9 @@ class MiraklOperatorAccessTokenAuthITTest extends AbstractMockEnabledIntegration
 
 		// then — Bearer token takes precedence over the legacy API key
 		assertThat(version).isNotNull();
-		mockServerClient.verify(request().withMethod("GET").withPath("/api/version").withHeader("Authorization",
-				"Bearer " + TEST_ACCESS_TOKEN), VerificationTimes.exactly(1));
+		mockServerClient.verify(request().withMethod("GET")
+			.withPath("/api/version")
+			.withHeader("Authorization", "Bearer " + TEST_ACCESS_TOKEN), VerificationTimes.exactly(1));
 		mockServerClient.verify(
 				request().withMethod("GET").withPath("/api/version").withHeader("Authorization", TEST_OPERATOR_API_KEY),
 				VerificationTimes.exactly(0));

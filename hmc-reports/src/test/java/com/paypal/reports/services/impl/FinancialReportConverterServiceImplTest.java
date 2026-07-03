@@ -60,7 +60,7 @@ class FinancialReportConverterServiceImplTest {
 				hmcMiraklTransactionLineMock);
 
 		verify(hmcFinancialReportLineConverterMock)
-				.convert(Pair.of(hmcBraintreeTransactionLineMock, hmcMiraklTransactionLineMock));
+			.convert(Pair.of(hmcBraintreeTransactionLineMock, hmcMiraklTransactionLineMock));
 	}
 
 }

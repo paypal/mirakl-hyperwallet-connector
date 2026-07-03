@@ -58,8 +58,8 @@ public class BankAccountTokenSynchronizationServiceImpl implements TokenSynchron
 		// in Hyperwallet
 		final List<HyperwalletBankAccount> hyperwalletBankAccounts = getHwBankAccountByClientUserId(miraklSeller);
 		final HyperwalletBankAccount matchedHyperwalletBankAccount = hyperwalletMiraklBankAccountMatcher
-				.findExactOrCompatibleMatch(hyperwalletBankAccounts, miraklBankAccount)
-				.orElse(new HyperwalletBankAccount());
+			.findExactOrCompatibleMatch(hyperwalletBankAccounts, miraklBankAccount)
+			.orElse(new HyperwalletBankAccount());
 
 		if (!Objects.equals(miraklBankAccount.getToken(), matchedHyperwalletBankAccount.getToken())) {
 			updateMiraklBankAccountToken(miraklSeller, matchedHyperwalletBankAccount);
@@ -70,11 +70,11 @@ public class BankAccountTokenSynchronizationServiceImpl implements TokenSynchron
 	private List<HyperwalletBankAccount> getHwBankAccountByClientUserId(final SellerModel sellerModel) {
 
 		final Hyperwallet hyperwalletSDK = userHyperwalletSDKService
-				.getHyperwalletInstanceByProgramToken(sellerModel.getProgramToken());
+			.getHyperwalletInstanceByProgramToken(sellerModel.getProgramToken());
 
 		try {
 			final HyperwalletList<HyperwalletBankAccount> bankAccounts = hyperwalletSDK
-					.listBankAccounts(sellerModel.getToken());
+				.listBankAccounts(sellerModel.getToken());
 			return bankAccounts != null && bankAccounts.getData() != null ? bankAccounts.getData() : List.of();
 
 		}
@@ -104,9 +104,10 @@ public class BankAccountTokenSynchronizationServiceImpl implements TokenSynchron
 	private SellerModel updateSellerBankAccountWithHyperwalletToken(final SellerModel sellerModel,
 			final HyperwalletBankAccount hyperwalletBankAccount) {
 
-		return sellerModel.toBuilder().bankAccountDetails(
-				sellerModel.getBankAccountDetails().toBuilder().token(hyperwalletBankAccount.getToken()).build())
-				.build();
+		return sellerModel.toBuilder()
+			.bankAccountDetails(
+					sellerModel.getBankAccountDetails().toBuilder().token(hyperwalletBankAccount.getToken()).build())
+			.build();
 	}
 
 }

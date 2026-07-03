@@ -1,8 +1,8 @@
 package com.paypal.invoices.extractioncommons.batchjobs;
 
+import com.paypal.invoices.extractioncommons.model.AccountingDocumentModel;
 import com.paypal.jobsystem.batchjob.model.BatchJobItem;
 import com.paypal.jobsystem.batchjobsupport.support.AbstractBatchJobItem;
-import com.paypal.invoices.extractioncommons.model.AccountingDocumentModel;
 
 /**
  * Base class for all invoice related batch job items.

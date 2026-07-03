@@ -58,9 +58,9 @@ class HyperwalletKycUserStatusExtractServiceImplTest {
 		final Date startDate = new Date();
 		final Date endDate = new Date();
 		final List<KYCUserStatusInfoModel> extractedData = testObj.extractKycUserStatuses(startDate, endDate);
-		assertThat(extractedData.get(0)).isEqualTo(kycUserStatusInfoModelMock);
+		assertThat(extractedData.getFirst()).isEqualTo(kycUserStatusInfoModelMock);
 		verify(hyperwalletMock, times(1))
-				.listUsers(argThat(x -> x.getCreatedAfter().equals(startDate) && x.getCreatedBefore().equals(endDate)));
-	};
+			.listUsers(argThat(x -> x.getCreatedAfter().equals(startDate) && x.getCreatedBefore().equals(endDate)));
+	}
 
 }

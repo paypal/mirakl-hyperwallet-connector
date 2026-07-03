@@ -1,7 +1,6 @@
 package com.paypal.infrastructure.support.logging;
 
 import com.mirakl.client.core.exception.MiraklException;
-import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

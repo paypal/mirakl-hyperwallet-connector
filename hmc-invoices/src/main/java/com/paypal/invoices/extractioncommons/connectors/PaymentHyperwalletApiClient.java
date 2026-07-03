@@ -18,14 +18,14 @@ public class PaymentHyperwalletApiClient {
 
 	public HyperwalletPayment createPayment(final HyperwalletPayment hyperwalletPayment) {
 		final Hyperwallet client = sdkService
-				.getHyperwalletInstanceByProgramToken(hyperwalletPayment.getProgramToken());
+			.getHyperwalletInstanceByProgramToken(hyperwalletPayment.getProgramToken());
 		return client.createPayment(hyperwalletPayment);
 	}
 
 	public HyperwalletList<HyperwalletPayment> listPayments(final String programToken, final String clientPaymentId) {
 		final Hyperwallet client = sdkService.getHyperwalletInstanceByProgramToken(programToken);
 		final HyperwalletPaymentListOptions queryOptions = new HyperwalletPaymentListOptions()
-				.clientPaymentId(clientPaymentId);
+			.clientPaymentId(clientPaymentId);
 		return client.listPayments(queryOptions);
 	}
 

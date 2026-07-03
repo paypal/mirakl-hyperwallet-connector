@@ -1,15 +1,15 @@
 package com.paypal.invoices.extractioncreditnotes.services;
 
-import com.mirakl.client.mmp.domain.invoice.MiraklInvoice;
+import com.mirakl.client.mmp.domain.payment.sellerbillingcycle.MiraklSellerBillingCycle;
 import com.mirakl.client.mmp.domain.shop.MiraklShop;
-import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
+import com.paypal.infrastructure.support.converter.Converter;
 import com.paypal.invoices.extractioncommons.model.AccountingDocumentModel;
-import com.paypal.invoices.extractioncommons.services.AbstractAccountingDocumentsExtractServiceImpl;
-import com.paypal.invoices.extractioncreditnotes.model.CreditNoteModel;
 import com.paypal.invoices.extractioncommons.model.InvoiceTypeEnum;
+import com.paypal.invoices.extractioncommons.services.AbstractAccountingDocumentsExtractServiceImpl;
 import com.paypal.invoices.extractioncommons.services.AccountingDocumentsLinksService;
+import com.paypal.invoices.extractioncreditnotes.model.CreditNoteModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +18,11 @@ import org.springframework.stereotype.Service;
 public class MiraklCreditNotesExtractServiceImpl
 		extends AbstractAccountingDocumentsExtractServiceImpl<CreditNoteModel> {
 
-	private final Converter<MiraklInvoice, CreditNoteModel> miraklInvoiceToCreditNoteModelConverter;
+	private final Converter<MiraklSellerBillingCycle, CreditNoteModel> miraklInvoiceToCreditNoteModelConverter;
 
 	public MiraklCreditNotesExtractServiceImpl(final MiraklClient miraklMarketplacePlatformOperatorApiClient,
 			final Converter<MiraklShop, AccountingDocumentModel> miraklShopToAccountingModelConverter,
-			final Converter<MiraklInvoice, CreditNoteModel> miraklInvoiceToCreditNoteModelConverter,
+			final Converter<MiraklSellerBillingCycle, CreditNoteModel> miraklInvoiceToCreditNoteModelConverter,
 			final MailNotificationUtil invoicesMailNotificationUtil,
 			final AccountingDocumentsLinksService accountingDocumentsLinksService) {
 		super(miraklShopToAccountingModelConverter, miraklMarketplacePlatformOperatorApiClient,
@@ -36,7 +36,7 @@ public class MiraklCreditNotesExtractServiceImpl
 	}
 
 	@Override
-	protected Converter<MiraklInvoice, CreditNoteModel> getMiraklInvoiceToAccountingModelConverter() {
+	protected Converter<MiraklSellerBillingCycle, CreditNoteModel> getMiraklInvoiceToAccountingModelConverter() {
 		return miraklInvoiceToCreditNoteModelConverter;
 	}
 

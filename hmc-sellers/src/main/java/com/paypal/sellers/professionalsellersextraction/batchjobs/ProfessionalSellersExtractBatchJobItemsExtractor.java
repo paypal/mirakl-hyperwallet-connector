@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * The extractor class for retrieving all the sellers within a delta time from mirakl
@@ -37,9 +36,8 @@ public class ProfessionalSellersExtractBatchJobItemsExtractor
 	@Override
 	protected Collection<ProfessionalSellerExtractJobItem> getItems(final BatchJobContext ctx, final Date delta) {
 		final List<SellerModel> miraklProfessionalSellers = this.miraklSellersExtractService
-				.extractProfessionals(delta);
-		return miraklProfessionalSellers.stream().map(ProfessionalSellerExtractJobItem::new)
-				.collect(Collectors.toList());
+			.extractProfessionals(delta);
+		return miraklProfessionalSellers.stream().map(ProfessionalSellerExtractJobItem::new).toList();
 	}
 
 }

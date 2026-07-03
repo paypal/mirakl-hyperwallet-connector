@@ -38,7 +38,7 @@ public class KYCUserNotificationServiceImpl implements KYCUserNotificationServic
 	@Override
 	public void updateUserKYCStatus(final HyperwalletWebhookNotification incomingNotification) {
 		final KYCUserStatusNotificationBodyModel kycUserNotification = hyperWalletObjectToKycUserNotificationBodyModelConverter
-				.convert(incomingNotification.getObject());
+			.convert(incomingNotification.getObject());
 		kyCUserStatusExecutor.execute(kycUserNotification);
 	}
 
@@ -48,7 +48,7 @@ public class KYCUserNotificationServiceImpl implements KYCUserNotificationServic
 	@Override
 	public void updateUserDocumentsFlags(final HyperwalletWebhookNotification incomingNotification) {
 		final KYCUserDocumentFlagsNotificationBodyModel kycUserDocumentFlagsNotificationBodyModel = hyperWalletObjectToKycUserDocumentFlagsNotificationBodyModelConverter
-				.convert(incomingNotification.getObject());
+			.convert(incomingNotification.getObject());
 		kycUserDocumentFlagsExecutor.execute(kycUserDocumentFlagsNotificationBodyModel);
 	}
 

@@ -1,7 +1,7 @@
 package com.paypal.sellers.individualsellersextraction.jobs;
 
-import com.paypal.jobsystem.quartzadapter.support.AbstractBatchJobSupportQuartzJob;
 import com.paypal.jobsystem.quartzadapter.job.QuartzBatchJobAdapterFactory;
+import com.paypal.jobsystem.quartzadapter.support.AbstractBatchJobSupportQuartzJob;
 import com.paypal.sellers.individualsellersextraction.batchjobs.IndividualSellersExtractBatchJob;
 import org.quartz.*;
 

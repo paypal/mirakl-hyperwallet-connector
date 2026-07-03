@@ -2,8 +2,8 @@ package com.paypal.kyc.stakeholdersdocumentextraction.services.converters;
 
 import com.hyperwallet.clientsdk.model.HyperwalletVerificationDocument;
 import com.paypal.infrastructure.support.strategy.Strategy;
-import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentCategoryEnum;
+import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 

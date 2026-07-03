@@ -37,7 +37,7 @@ class SellersDocumentsExtractBatchJobItemExtractorITTest extends AbstractMockEna
 		final Collection<SellersDocumentsExtractBatchJobItem> result = invokeGetItems(delta);
 
 		assertThat(result.stream().map(SellersDocumentsExtractBatchJobItem::getItem).collect(Collectors.toList()))
-				.hasSize(2);
+			.hasSize(2);
 
 		verify(batchJobContextMock, times(1)).setPartialItemExtraction(false);
 		verify(batchJobContextMock, times(1)).setNumberOfItemsNotSuccessfullyExtracted(0);
@@ -54,7 +54,7 @@ class SellersDocumentsExtractBatchJobItemExtractorITTest extends AbstractMockEna
 		final Collection<SellersDocumentsExtractBatchJobItem> result = invokeGetItems(delta);
 
 		assertThat(result.stream().map(SellersDocumentsExtractBatchJobItem::getItem).collect(Collectors.toList()))
-				.hasSize(1);
+			.hasSize(1);
 
 		verify(batchJobContextMock, times(1)).setPartialItemExtraction(true);
 		verify(batchJobContextMock, times(1)).setNumberOfItemsNotSuccessfullyExtracted(1);

@@ -2,14 +2,13 @@ package com.paypal.kyc.stakeholdersdocumentextraction.services;
 
 import com.mirakl.client.core.exception.MiraklException;
 import com.mirakl.client.mmp.domain.shop.document.MiraklShopDocument;
-
 import com.mirakl.client.mmp.request.shop.document.MiraklGetShopDocumentsRequest;
 import com.paypal.infrastructure.mail.services.MailNotificationUtil;
 import com.paypal.infrastructure.mirakl.client.MiraklClient;
 import com.paypal.infrastructure.support.logging.MiraklLoggingErrorsUtil;
-import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
 import com.paypal.kyc.documentextractioncommons.services.MiraklDocumentsSelector;
+import com.paypal.kyc.stakeholdersdocumentextraction.model.KYCDocumentBusinessStakeHolderInfoModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -62,11 +61,12 @@ public class MiraklBusinessStakeholderDocumentDownloadExtractServiceImpl
 				.execute(kycBusinessStakeholderInfoModelWithMiraklShops)
 				.stream()
 				.flatMap(List::stream)
-				.collect(Collectors.toList());
+				.toList();
 		//@formatter:on
 
 		return kycBusinessStakeholderInfoModelWithMiraklShops.toBuilder()
-				.documents(extractedBusinessStakeholderDocumentsSelectedBySeller).build();
+			.documents(extractedBusinessStakeholderDocumentsSelectedBySeller)
+			.build();
 	}
 
 	private boolean isDocumentMissingForKYC(
@@ -104,7 +104,7 @@ public class MiraklBusinessStakeholderDocumentDownloadExtractServiceImpl
 			log.info("Retrieving business stakeholder documents for seller with id [{}]",
 					kycBusinessStakeHolderInfoModel.getClientUserId());
 			final List<MiraklShopDocument> shopDocuments = miraklMarketplacePlatformOperatorApiClient
-					.getShopDocuments(getShopBusinessStakeholderDocumentsRequest);
+				.getShopDocuments(getShopBusinessStakeholderDocumentsRequest);
 
 			//@formatter:off
 			log.info("Business stakeholder documents available for seller with id [{}]: [{}]", kycBusinessStakeHolderInfoModel.getClientUserId(),

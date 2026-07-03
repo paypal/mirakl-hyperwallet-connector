@@ -50,7 +50,7 @@ class NotificationsControllerTest {
 	void getAllNotifications_ShouldAnOkStatusAndAllTheNotificationsBetweenFromAndTo_WhenFromDateIsBeforeThanToDate() {
 
 		when(notificationStorageServiceMock.getNotificationsBetween(FROM_DATE, TO_DATE))
-				.thenReturn(List.of(notificationEntity1Mock, notificationEntity2Mock));
+			.thenReturn(List.of(notificationEntity1Mock, notificationEntity2Mock));
 
 		final List<NotificationEntity> result = testObj.getAllNotifications(FROM_DATE, TO_DATE);
 

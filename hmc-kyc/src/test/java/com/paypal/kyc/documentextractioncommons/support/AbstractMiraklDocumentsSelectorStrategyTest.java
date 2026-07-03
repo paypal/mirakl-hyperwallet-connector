@@ -49,12 +49,12 @@ class AbstractMiraklDocumentsSelectorStrategyTest {
 		miraklShopDocumentIdentityCardBack.setId("proofOfIdentityBack");
 		miraklShopDocumentIdentityCardBack.setTypeCode("field2");
 		final KYCDocumentSellerInfoModel kycDocumentSellerInfoModel = KYCDocumentSellerInfoModel.builder()
-				.clientUserId(MIRAKL_SHOP_ID)
-				.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD,
-						KYCProofOfIdentityEnum.GOVERNMENT_ID.name())))
-				.miraklShopDocuments(List.of(miraklShopDocumentIdentityCardFront, miraklShopDocumentIdentityCardBack))
-				.build();
+			.clientUserId(MIRAKL_SHOP_ID)
+			.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+					KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD,
+					KYCProofOfIdentityEnum.GOVERNMENT_ID.name())))
+			.miraklShopDocuments(List.of(miraklShopDocumentIdentityCardFront, miraklShopDocumentIdentityCardBack))
+			.build();
 
 		final MiraklDownloadShopsDocumentsRequest downloadShopsDocumentFrontRequest = new MiraklDownloadShopsDocumentsRequest();
 		downloadShopsDocumentFrontRequest.setDocumentIds(List.of("proofOfIdentityFront"));
@@ -63,20 +63,24 @@ class AbstractMiraklDocumentsSelectorStrategyTest {
 		downloadShopsDocumentBackRequest.setDocumentIds(List.of("proofOfIdentityBack"));
 
 		when(miraklApiClientMock.downloadShopsDocuments(downloadShopsDocumentFrontRequest))
-				.thenReturn(documentIdentityCardFrontFileWrapperMock);
+			.thenReturn(documentIdentityCardFrontFileWrapperMock);
 		when(documentIdentityCardFrontFileWrapperMock.getFile()).thenReturn(fileFrontIdentityCardMock);
 		when(miraklApiClientMock.downloadShopsDocuments(downloadShopsDocumentBackRequest))
-				.thenReturn(documentIdentityCardBackFileWrapperMock);
+			.thenReturn(documentIdentityCardBackFileWrapperMock);
 		when(documentIdentityCardBackFileWrapperMock.getFile()).thenReturn(fileBackIdentityCardMock);
 
 		final List<KYCDocumentModel> result = testObj.execute(kycDocumentSellerInfoModel);
 
 		verify(miraklApiClientMock).downloadShopsDocuments(downloadShopsDocumentFrontRequest);
 		verify(miraklApiClientMock).downloadShopsDocuments(downloadShopsDocumentBackRequest);
-		final KYCDocumentModel kycFront = KYCDocumentModel.builder().documentFieldName("field1")
-				.file(fileFrontIdentityCardMock).build();
-		final KYCDocumentModel kycBack = KYCDocumentModel.builder().documentFieldName("field2")
-				.file(fileBackIdentityCardMock).build();
+		final KYCDocumentModel kycFront = KYCDocumentModel.builder()
+			.documentFieldName("field1")
+			.file(fileFrontIdentityCardMock)
+			.build();
+		final KYCDocumentModel kycBack = KYCDocumentModel.builder()
+			.documentFieldName("field2")
+			.file(fileBackIdentityCardMock)
+			.build();
 
 		assertThat(result).containsExactlyInAnyOrder(kycFront, kycBack);
 	}

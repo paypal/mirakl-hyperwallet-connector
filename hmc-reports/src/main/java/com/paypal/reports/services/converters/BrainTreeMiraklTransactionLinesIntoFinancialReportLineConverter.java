@@ -14,10 +14,11 @@ public class BrainTreeMiraklTransactionLinesIntoFinancialReportLineConverter
 		implements Converter<Pair<HmcBraintreeTransactionLine, HmcMiraklTransactionLine>, HmcFinancialReportLine> {
 
 	/**
-	 * Method that retrieves a {@link Pair< HmcBraintreeTransactionLine ,
-	 * HmcMiraklTransactionLine >} and returns a {@link HmcFinancialReportLine}
-	 * @param source the source object {@link Pair< HmcBraintreeTransactionLine ,
-	 * HmcMiraklTransactionLine >}
+	 * Method that retrieves a
+	 * {@link Pair<HmcBraintreeTransactionLine,HmcMiraklTransactionLine>} and returns a
+	 * {@link HmcFinancialReportLine}
+	 * @param source the source object
+	 * {@link Pair<HmcBraintreeTransactionLine,HmcMiraklTransactionLine>}
 	 * @return the returned object {@link HmcFinancialReportLine}
 	 */
 	@Override
@@ -30,7 +31,7 @@ public class BrainTreeMiraklTransactionLinesIntoFinancialReportLineConverter
 			return null;
 		}
 		if (!hmcBraintreeTransactionLine.getPaymentTransactionId()
-				.equals(hmcMiraklTransactionLine.getTransactionNumber())) {
+			.equals(hmcMiraklTransactionLine.getTransactionNumber())) {
 			return null;
 		}
 

@@ -28,8 +28,8 @@ class HyperwalletBankAccountCurrencyRestrictionsTest {
 	void getCurrenciesFor_shouldReturnEmptyList_whenEntryFoundButNoCurrency() {
 		// given
 		final List<HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry> countryCurrencyEntries = List
-				.of(new HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry("bankAccountType", "country",
-						List.of()));
+			.of(new HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry("bankAccountType", "country",
+					List.of()));
 		testObj = new HyperwalletBankAccountCurrencyRestrictions(countryCurrencyEntries);
 
 		// when
@@ -46,9 +46,8 @@ class HyperwalletBankAccountCurrencyRestrictionsTest {
 				new HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry("bankAccountType", "country",
 						List.of(new HyperwalletBankAccountCurrencyInfo("country", "currency",
 								TransferType.BANK_ACCOUNT))),
-				new HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry("bankAccountType", "country2",
-						List.of(new HyperwalletBankAccountCurrencyInfo("country2", "currency",
-								TransferType.BANK_ACCOUNT))));
+				new HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry("bankAccountType", "country2", List
+					.of(new HyperwalletBankAccountCurrencyInfo("country2", "currency", TransferType.BANK_ACCOUNT))));
 		testObj = new HyperwalletBankAccountCurrencyRestrictions(countryCurrencyEntries);
 
 		// when
@@ -65,12 +64,10 @@ class HyperwalletBankAccountCurrencyRestrictionsTest {
 		// given
 		final List<HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry> countryCurrencyEntries = List.of(
 				new HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry("bankAccountType", "country", List
-						.of(new HyperwalletBankAccountCurrencyInfo("country", "currency", TransferType.BANK_ACCOUNT),
-								new HyperwalletBankAccountCurrencyInfo("country", "currency2",
-										TransferType.BANK_ACCOUNT))),
-				new HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry("bankAccountType", "country2",
-						List.of(new HyperwalletBankAccountCurrencyInfo("country2", "currency",
-								TransferType.BANK_ACCOUNT))));
+					.of(new HyperwalletBankAccountCurrencyInfo("country", "currency", TransferType.BANK_ACCOUNT),
+							new HyperwalletBankAccountCurrencyInfo("country", "currency2", TransferType.BANK_ACCOUNT))),
+				new HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry("bankAccountType", "country2", List
+					.of(new HyperwalletBankAccountCurrencyInfo("country2", "currency", TransferType.BANK_ACCOUNT))));
 		testObj = new HyperwalletBankAccountCurrencyRestrictions(countryCurrencyEntries);
 
 		// when
@@ -92,7 +89,7 @@ class HyperwalletBankAccountCurrencyRestrictionsTest {
 
 		// when
 		final List<HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry> result = testObj
-				.getEntriesFor("bankAccuntCountry", "currency", TransferType.BANK_ACCOUNT);
+			.getEntriesFor("bankAccuntCountry", "currency", TransferType.BANK_ACCOUNT);
 
 		// then
 		assertThat(result).isEmpty();
@@ -103,17 +100,15 @@ class HyperwalletBankAccountCurrencyRestrictionsTest {
 		// given
 		final List<HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry> countryCurrencyEntries = List.of(
 				new HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry("bankAccountType", "country", List
-						.of(new HyperwalletBankAccountCurrencyInfo("country", "currency", TransferType.BANK_ACCOUNT),
-								new HyperwalletBankAccountCurrencyInfo("country", "currency2",
-										TransferType.BANK_ACCOUNT))),
-				new HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry("bankAccountType", "country2",
-						List.of(new HyperwalletBankAccountCurrencyInfo("country2", "currency",
-								TransferType.BANK_ACCOUNT))));
+					.of(new HyperwalletBankAccountCurrencyInfo("country", "currency", TransferType.BANK_ACCOUNT),
+							new HyperwalletBankAccountCurrencyInfo("country", "currency2", TransferType.BANK_ACCOUNT))),
+				new HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry("bankAccountType", "country2", List
+					.of(new HyperwalletBankAccountCurrencyInfo("country2", "currency", TransferType.BANK_ACCOUNT))));
 		testObj = new HyperwalletBankAccountCurrencyRestrictions(countryCurrencyEntries);
 
 		// when
 		final List<HyperwalletBankAccountCurrencyRestrictions.CountryCurrencyEntry> result = testObj
-				.getEntriesFor("country", "currency", TransferType.BANK_ACCOUNT);
+			.getEntriesFor("country", "currency", TransferType.BANK_ACCOUNT);
 
 		// then
 		assertThat(result).hasSize(1);
@@ -123,11 +118,11 @@ class HyperwalletBankAccountCurrencyRestrictionsTest {
 		assertThat(result.get(0).getSupportedCurrencies().get(0).getCountry()).isEqualTo("country");
 		assertThat(result.get(0).getSupportedCurrencies().get(0).getCurrency()).isEqualTo("currency");
 		assertThat(result.get(0).getSupportedCurrencies().get(0).getTransferType())
-				.isEqualTo(TransferType.BANK_ACCOUNT);
+			.isEqualTo(TransferType.BANK_ACCOUNT);
 		assertThat(result.get(0).getSupportedCurrencies().get(1).getCountry()).isEqualTo("country");
 		assertThat(result.get(0).getSupportedCurrencies().get(1).getCurrency()).isEqualTo("currency2");
 		assertThat(result.get(0).getSupportedCurrencies().get(1).getTransferType())
-				.isEqualTo(TransferType.BANK_ACCOUNT);
+			.isEqualTo(TransferType.BANK_ACCOUNT);
 	}
 
 }

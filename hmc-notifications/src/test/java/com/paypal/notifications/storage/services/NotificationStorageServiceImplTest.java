@@ -1,7 +1,7 @@
 package com.paypal.notifications.storage.services;
 
-import com.paypal.notifications.storage.repositories.entities.NotificationEntity;
 import com.paypal.notifications.storage.repositories.NotificationEntityRepository;
+import com.paypal.notifications.storage.repositories.entities.NotificationEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

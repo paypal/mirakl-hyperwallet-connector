@@ -52,7 +52,7 @@ class PaymentHyperwalletApiClientTest {
 
 		client.listPayments(PROGRAM_TOKEN, CLIENT_PAYMENT_ID);
 		final ArgumentCaptor<HyperwalletPaymentListOptions> captor = ArgumentCaptor
-				.forClass(HyperwalletPaymentListOptions.class);
+			.forClass(HyperwalletPaymentListOptions.class);
 		verify(hyperwalletMock).listPayments(captor.capture());
 
 		Assertions.assertEquals(CLIENT_PAYMENT_ID, captor.getValue().getClientPaymentId());

@@ -4,10 +4,6 @@ import com.mirakl.client.mmp.domain.common.MiraklAdditionalFieldValue;
 import com.paypal.kyc.documentextractioncommons.model.KYCConstants;
 import com.paypal.kyc.documentextractioncommons.model.KYCDocumentModel;
 import com.paypal.kyc.documentextractioncommons.model.KYCProofOfIdentityEnum;
-import com.paypal.kyc.sellersdocumentextraction.model.KYCDocumentSellerInfoModel;
-import com.paypal.kyc.sellersdocumentextraction.model.KYCProofOfAddressEnum;
-import com.paypal.kyc.sellersdocumentextraction.model.KYCProofOfBusinessEnum;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,7 +15,6 @@ import static com.paypal.kyc.documentextractioncommons.model.KYCConstants.HwDocu
 import static com.paypal.kyc.documentextractioncommons.model.KYCConstants.HwDocuments.PROOF_OF_IDENTITY_FRONT;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Disabled("Fails randomly on first compilation with Gradle 6.x. Works with Gradle 7.x/Java 17. Disabled until upgrade")
 @ExtendWith(MockitoExtension.class)
 class KYCDocumentSellerInfoModelTest {
 
@@ -44,13 +39,16 @@ class KYCDocumentSellerInfoModelTest {
 	@Test
 	void containsIdentityDocuments_shouldReturnTrueWhenAllIdentityDocumentsAreFilled() {
 		final KYCDocumentModel nationalIdentityCardFront = KYCDocumentModel.builder()
-				.documentFieldName(PROOF_OF_IDENTITY_FRONT).build();
+			.documentFieldName(PROOF_OF_IDENTITY_FRONT)
+			.build();
 		final KYCDocumentModel nationalIdentityCardBack = KYCDocumentModel.builder()
-				.documentFieldName(PROOF_OF_IDENTITY_BACK).build();
+			.documentFieldName(PROOF_OF_IDENTITY_BACK)
+			.build();
 		final KYCDocumentSellerInfoModel testObj = KYCDocumentSellerInfoModel.builder()
-				.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD, "GOVERNMENT_ID")))
-				.documents(List.of(nationalIdentityCardFront, nationalIdentityCardBack)).build();
+			.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+					KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD, "GOVERNMENT_ID")))
+			.documents(List.of(nationalIdentityCardFront, nationalIdentityCardBack))
+			.build();
 
 		final boolean result = testObj.isIdentityDocumentsFilled();
 
@@ -60,11 +58,13 @@ class KYCDocumentSellerInfoModelTest {
 	@Test
 	void containsIdentityDocuments_shouldReturnFalseWhenIdentityDocumentsAreNotCompletelyFilled() {
 		final KYCDocumentModel nationalIdentityCardFront = KYCDocumentModel.builder()
-				.documentFieldName(PROOF_OF_IDENTITY_FRONT).build();
+			.documentFieldName(PROOF_OF_IDENTITY_FRONT)
+			.build();
 		final KYCDocumentSellerInfoModel testObj = KYCDocumentSellerInfoModel.builder()
-				.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD, "GOVERNMENT_ID")))
-				.documents(List.of(nationalIdentityCardFront)).build();
+			.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+					KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD, "GOVERNMENT_ID")))
+			.documents(List.of(nationalIdentityCardFront))
+			.build();
 
 		final boolean result = testObj.isIdentityDocumentsFilled();
 
@@ -75,9 +75,10 @@ class KYCDocumentSellerInfoModelTest {
 	void containsAddressDocuments_shouldReturnTrueWhenAllIdentityDocumentsAreFilled() {
 		final KYCDocumentModel taxReturn = KYCDocumentModel.builder().documentFieldName(PROOF_OF_ADDRESS).build();
 		final KYCDocumentSellerInfoModel testObj = KYCDocumentSellerInfoModel.builder()
-				.proofOfAddress(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_ADDRESS_FIELD, "TAX_RETURN")))
-				.documents(List.of(taxReturn)).build();
+			.proofOfAddress(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+					KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_ADDRESS_FIELD, "TAX_RETURN")))
+			.documents(List.of(taxReturn))
+			.build();
 
 		final boolean result = testObj.isAddressDocumentsFilled();
 
@@ -87,11 +88,13 @@ class KYCDocumentSellerInfoModelTest {
 	@Test
 	void containsAddressDocuments_shouldReturnFalseWhenAddressDocumentsAreNotCompletelyFilled() {
 		final KYCDocumentModel nationalIdentityCardFront = KYCDocumentModel.builder()
-				.documentFieldName(PROOF_OF_IDENTITY_FRONT).build();
+			.documentFieldName(PROOF_OF_IDENTITY_FRONT)
+			.build();
 		final KYCDocumentSellerInfoModel testObj = KYCDocumentSellerInfoModel.builder()
-				.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
-						KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD, "TAX_RETURN")))
-				.documents(List.of(nationalIdentityCardFront)).build();
+			.proofOfIdentity(List.of(new MiraklAdditionalFieldValue.MiraklValueListAdditionalFieldValue(
+					KYCConstants.HYPERWALLET_KYC_IND_PROOF_OF_IDENTITY_FIELD, "TAX_RETURN")))
+			.documents(List.of(nationalIdentityCardFront))
+			.build();
 
 		final boolean result = testObj.isIdentityDocumentsFilled();
 

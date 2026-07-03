@@ -79,8 +79,8 @@ public class WebhookNotificationRetrieverImpl implements WebhookNotificationRetr
 
 	private Cache getCache() {
 		return Optional.ofNullable(cacheManager.getCache(NotificationCacheConfiguration.WEBHOOK_NOTIFICATION_CACHE))
-				.orElseThrow(() -> new IllegalStateException(
-						"Cache [" + NotificationCacheConfiguration.WEBHOOK_NOTIFICATION_CACHE + "] is not configured"));
+			.orElseThrow(() -> new IllegalStateException(
+					"Cache [" + NotificationCacheConfiguration.WEBHOOK_NOTIFICATION_CACHE + "] is not configured"));
 	}
 
 }
