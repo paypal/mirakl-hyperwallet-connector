@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Install Node.js
       uses: actions/setup-node@v2
       with:
@@ -26,12 +26,12 @@ jobs:
       working-directory: ./docs
       run: npm i antora
     - name: Setup Pages
-      uses: actions/configure-pages@v1
+      uses: actions/configure-pages@v5
     - name: Generate Site
       working-directory: ./docs
       run: npx antora antora-playbook.yml
     - name: Upload artifact
-      uses: actions/upload-pages-artifact@v1
+      uses: actions/upload-pages-artifact@v5
       with:
         path: ./docs/build/site
   deploy:
@@ -43,4 +43,4 @@ jobs:
     steps:      
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
