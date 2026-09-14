@@ -12,8 +12,11 @@ import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -24,13 +27,16 @@ class QuartzBatchJobBeanTest {
 	private QuartzBatchJobBean testObj;
 
 	@Mock
-	private JobExecutionContext jobExecutionContextMock;
+	private BeanFactory beanFactory;
 
 	@Mock
 	private QuartzBatchJobAdapterFactory quartzBatchJobAdapterFactory;
 
 	@Mock
-	private BatchJob<BatchJobContext, BatchJobItem<?>> batchJobMock;
+	private JobExecutionContext jobExecutionContextMock;
+
+	@Mock
+	private TestBatchJob batchJobMock;
 
 	@Mock
 	private QuartzBatchJobAdapter quartzBatchJobAdapterMock;
@@ -42,7 +48,9 @@ class QuartzBatchJobBeanTest {
 	private JobDataMap jobDataMapMock;
 
 	@Test
-	void executeInternal_shouldExecuteBatchJob() throws JobExecutionException {
+	void executeInternal_shouldResolveTheBatchJobBeanByNameAndExecuteIt() throws JobExecutionException {
+		testObj.setBatchJob(TestBatchJob.class.getName());
+		when(beanFactory.getBean(TestBatchJob.class)).thenReturn(batchJobMock);
 		when(quartzBatchJobAdapterFactory.getQuartzJob(batchJobMock)).thenReturn(quartzBatchJobAdapterMock);
 
 		testObj.executeInternal(jobExecutionContextMock);
@@ -50,12 +58,43 @@ class QuartzBatchJobBeanTest {
 		verify(quartzBatchJobAdapterMock).execute(jobExecutionContextMock);
 	}
 
+	/**
+	 * A persisted job can outlive the class that defined it. That must fail this
+	 * execution cleanly rather than refire, since retrying cannot bring the class back.
+	 */
 	@Test
-	void getBatchJobClass_shouldReturnJobDataMapBatchJobBeanClass() {
+	void executeInternal_shouldFailWithoutRefiring_whenTheBatchJobClassIsGone() {
+		testObj.setBatchJob("com.paypal.jobsystem.NoLongerExistingBatchJob");
+
+		assertThatThrownBy(() -> testObj.executeInternal(jobExecutionContextMock))
+			.isInstanceOf(JobExecutionException.class)
+			.hasMessageContaining("NoLongerExistingBatchJob")
+			.matches(e -> !((JobExecutionException) e).refireImmediately(), "does not refire immediately");
+	}
+
+	@Test
+	void executeInternal_shouldFailWithoutRefiring_whenTheBatchJobBeanIsNotDefined() {
+		testObj.setBatchJob(TestBatchJob.class.getName());
+		when(beanFactory.getBean(TestBatchJob.class)).thenThrow(new NoSuchBeanDefinitionException(TestBatchJob.class));
+
+		assertThatThrownBy(() -> testObj.executeInternal(jobExecutionContextMock))
+			.isInstanceOf(JobExecutionException.class)
+			.matches(e -> !((JobExecutionException) e).refireImmediately(), "does not refire immediately");
+	}
+
+	@Test
+	void getBatchJobClassName_shouldReturnTheNameStoredInTheJobDataMap() {
 		when(jobExecutionContextMock.getJobDetail()).thenReturn(jobDetailMock);
 		when(jobDetailMock.getJobDataMap()).thenReturn(jobDataMapMock);
-		when(jobDataMapMock.get(QuartzBatchJobBean.KEY_BATCH_JOB_BEAN)).thenReturn(batchJobMock);
-		assertThat(QuartzBatchJobBean.getBatchJobClass(jobExecutionContextMock)).isEqualTo(batchJobMock.getClass());
+		when(jobDataMapMock.get(QuartzBatchJobBean.KEY_BATCH_JOB_BEAN)).thenReturn(TestBatchJob.class.getName());
+
+		assertThat(QuartzBatchJobBean.getBatchJobClassName(jobExecutionContextMock))
+			.isEqualTo(TestBatchJob.class.getName());
+	}
+
+	/** Stands in for a concrete batch job bean; only its type and name matter here. */
+	interface TestBatchJob extends BatchJob<BatchJobContext, BatchJobItem<?>> {
+
 	}
 
 }

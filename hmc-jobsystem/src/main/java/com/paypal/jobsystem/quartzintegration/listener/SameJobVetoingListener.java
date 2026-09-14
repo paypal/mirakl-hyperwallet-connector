@@ -51,15 +51,21 @@ public class SameJobVetoingListener extends TriggerListenerSupport {
 	}
 
 	private static Predicate<JobExecutionContext> isSameType(final JobExecutionContext jecToBeExecuted) {
-		return context -> getJobClass(context).equals(getJobClass(jecToBeExecuted));
+		return context -> getJobClassName(context).equals(getJobClassName(jecToBeExecuted));
 	}
 
-	private static Class<?> getJobClass(final JobExecutionContext jec) {
+	/**
+	 * Returns the name identifying the type of job of the given execution.
+	 * <p>
+	 * Names are compared rather than {@link Class} objects so that no class has to be
+	 * loaded to decide whether two executions are of the same type.
+	 */
+	private static String getJobClassName(final JobExecutionContext jec) {
 		if (jec.getJobInstance() instanceof QuartzBatchJobBean) {
-			return QuartzBatchJobBean.getBatchJobClass(jec);
+			return QuartzBatchJobBean.getBatchJobClassName(jec);
 		}
 		else {
-			return jec.getJobInstance().getClass();
+			return jec.getJobInstance().getClass().getName();
 		}
 	}
 

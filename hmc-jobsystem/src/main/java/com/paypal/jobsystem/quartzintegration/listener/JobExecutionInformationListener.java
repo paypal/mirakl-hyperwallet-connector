@@ -10,6 +10,7 @@ import jakarta.annotation.Resource;
 import org.quartz.*;
 import org.quartz.listeners.JobListenerSupport;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ClassUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -81,7 +82,9 @@ public class JobExecutionInformationListener extends JobListenerSupport {
 
 	private String getJobClass(final JobExecutionContext context) {
 		if (QuartzBatchJobBean.class.equals(context.getJobDetail().getJobClass())) {
-			return QuartzBatchJobBean.getBatchJobClass(context).getSimpleName();
+			// Derived from the name so that recording what ran never requires loading the
+			// class, which a persisted job may outlive.
+			return ClassUtils.getShortName(QuartzBatchJobBean.getBatchJobClassName(context));
 		}
 		else {
 			return context.getJobDetail().getJobClass().getSimpleName();
