@@ -16,6 +16,11 @@
     {
       "groupName": "mockserver",
       "matchPackagePatterns": ["^mockserver", "^@testcontainers/mockserver", "mock-server"]
+    },
+		{
+      "matchDepTypes": ["engines"],
+      "matchPackageNames": ["node"],
+      "allowedVersions": "<25.0.0"
     }
   ]
 }

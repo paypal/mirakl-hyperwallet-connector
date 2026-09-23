@@ -61,7 +61,8 @@ class InvoicesExtractJobConfigTest {
 
 		assertThat(result.getJobClass()).hasSameClassAs(QuartzBatchJobBean.class);
 		assertThat(result.getKey().getName()).isEqualTo(RETRY_JOB_NAME);
-		assertThat(result.getJobDataMap()).containsEntry("batchJob", invoicesRetryBatchJob);
+		assertThat(result.getJobDataMap()).containsEntry(QuartzBatchJobBean.KEY_BATCH_JOB_BEAN,
+				InvoicesRetryBatchJob.class.getName());
 	}
 
 	@Test

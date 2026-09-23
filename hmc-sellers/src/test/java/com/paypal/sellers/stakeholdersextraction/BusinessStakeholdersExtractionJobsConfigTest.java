@@ -35,7 +35,8 @@ class BusinessStakeholdersExtractionJobsConfigTest {
 
 		assertThat(result.getJobClass()).hasSameClassAs(QuartzBatchJobBean.class);
 		assertThat(result.getKey().getName()).isEqualTo(RETRY_JOB_NAME);
-		assertThat(result.getJobDataMap()).containsEntry("batchJob", businessStakeholdersRetryBatchJob);
+		assertThat(result.getJobDataMap()).containsEntry(QuartzBatchJobBean.KEY_BATCH_JOB_BEAN,
+				BusinessStakeholdersRetryBatchJob.class.getName());
 	}
 
 	@Test
