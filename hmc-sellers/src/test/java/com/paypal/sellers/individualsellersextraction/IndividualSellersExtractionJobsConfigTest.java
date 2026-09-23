@@ -56,7 +56,7 @@ class IndividualSellersExtractionJobsConfigTest {
 		assertThat(result.getJobClass()).hasSameClassAs(QuartzBatchJobBean.class);
 		assertThat(result.getKey().getName()).isEqualTo(INDIVIDUAL_SELLERS_EXTRACT_RETRY_JOB_IDENTITY);
 		assertThat(result.getJobDataMap()).containsEntry(QuartzBatchJobBean.KEY_BATCH_JOB_BEAN,
-				individualSellersRetryBatchJobMock);
+				IndividualSellersRetryBatchJob.class.getName());
 	}
 
 	@Test

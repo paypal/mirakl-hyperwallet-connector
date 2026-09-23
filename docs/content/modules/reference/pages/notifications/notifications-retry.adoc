@@ -4,7 +4,7 @@ The connector retries the processing of notifications that could not be delivere
 
 === How retries work
 
-All notifications are stored in the `NotificationEntity` table from the moment they arrive (see xref:notifications-handling.adoc[Storing and processing]). When processing a notification fails, the connector:
+All notifications are stored in the `NotificationEntity` table from the moment they arrive (see <<_storing_and_processing,Storing and processing>>). When processing a notification fails, the connector:
 
 . Increments the `retryCounter` on the entity.
 . Sets `status` to `RETRYING`.
@@ -28,7 +28,7 @@ With the default values (`initialRetryDelay = PT1M`, `backoffMultiplier = 2.0`) 
 
 The <<notification-process-job,Notification Processing Job>> only picks up `RETRYING` entries whose `nextRetryDate` is in the past, ensuring the back-off window is respected.
 
-When all retry attempts for a notification are exhausted, the entry is set to `FAILED` and the connector sends an email alert to the operator. Failed entries are never retried again automatically, but they can be managed through the xref:notifications-handling.adoc#management-api[Failed Notifications Management API].
+When all retry attempts for a notification are exhausted, the entry is set to `FAILED` and the connector sends an email alert to the operator. Failed entries are never retried again automatically, but they can be managed through the <<management-api,Failed Notifications Management API>>.
 
 === Incoming notifications while retrying
 
@@ -52,7 +52,7 @@ The connector exposes a management REST API that lets operators inspect and mana
 |Returns a paged list of `FAILED` and `RETRYING` notifications. Supports optional `type` (notification type, e.g. `USR`) and `target` (object token) query parameters for filtering.
 
 |`GET`
-|`/management/failed-notifications/{notificationToken}`
+|`/management/failed-notifications/\{notificationToken\}`
 |Returns a single notification by its webhook token. Returns `404` if not found.
 
 |`POST`
@@ -60,7 +60,7 @@ The connector exposes a management REST API that lets operators inspect and mana
 |Adds a new entry directly with `FAILED` status (useful for manual re-injection).
 
 |`PUT`
-|`/management/failed-notifications/{notificationToken}`
+|`/management/failed-notifications/\{notificationToken\}`
 |Updates mutable fields (e.g. `retryCounter`, `program`) of an existing entry. Returns `404` if not found.
 
 |`PUT`
@@ -68,7 +68,7 @@ The connector exposes a management REST API that lets operators inspect and mana
 |Replaces the entire list of `FAILED` and `RETRYING` entries — deletes all existing entries and persists the provided list.
 
 |`DELETE`
-|`/management/failed-notifications/{notificationToken}`
+|`/management/failed-notifications/\{notificationToken\}`
 |Deletes a single entry by webhook token. Returns `404` if not found.
 
 |===
@@ -80,9 +80,9 @@ NOTE: Both `FAILED` and `RETRYING` notifications are returned by `GET /managemen
 The connector sends an email to the operator when all retry attempts for a notification are exhausted. The email contains the following information:
 
 ....
-Subject: [HMC] Technical error occurred when processing the notification <NOTIFICATION_TOKEN>
+Subject: [HMC] Technical error occurred when processing the notification `NOTIFICATION_TOKEN`
 
-Body: There was an error processing the notification <NOTIFICATION_TOKEN> and the operation
+Body: There was an error processing the notification `NOTIFICATION_TOKEN` and the operation
 could not be completed. The maximum number of attempts has been reached, therefore it will
 not try to re-process the notification anymore. Please check the logs for further information.
 ....
