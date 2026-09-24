@@ -19,17 +19,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Install Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
-        node-version: '16'
+        node-version: '24'
     - name: Install Antora
       working-directory: ./docs
-      run: npm i antora
+      run: npm ci
     - name: Setup Pages
       uses: actions/configure-pages@v5
     - name: Generate Site
       working-directory: ./docs
-      run: npx antora antora-playbook.yml
+      run: npm run build
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v5
       with:
