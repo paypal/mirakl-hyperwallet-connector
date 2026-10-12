@@ -62,6 +62,10 @@ class HyperWalletObjectToKYCUserStatusExecutorNotificationBodyModelConverterTest
 		assertThat(result.getLetterOfAuthorizationStatus()).isEqualTo(FAILED_LETTER_VERIFICATION_STATUS);
 		assertThat(result.getReasonsType())
 			.containsExactlyInAnyOrder(KYCRejectionReasonTypeEnum.VERIFICATIONSTATUS_PROF_REQUIRED);
+		assertThat(result.getBusinessName()).isEqualTo("Legal Entity Ltd");
+		assertThat(result.getBusinessOperatingName()).isEqualTo("Shop DBA");
+		assertThat(result.getBusinessRegistrationId()).isEqualTo("REG-1");
+		assertThat(result.getEmail()).isEqualTo("seller@example.com");
 		verify(objectKYCDocumentNotificationModelListConverterMock).convert(hyperWalletKycUserBodyNotification);
 	}
 
@@ -132,6 +136,10 @@ class HyperWalletObjectToKYCUserStatusExecutorNotificationBodyModelConverterTest
 		if (BUSINESS_PROFILE_TYPE.equals(profileType)) {
 			detailInfo.put("businessStakeholderVerificationStatus", NOT_REQUIRED_BUSINESS_VERIFICATION_STATUS.name());
 			detailInfo.put("letterOfAuthorizationStatus", FAILED_LETTER_VERIFICATION_STATUS.name());
+			detailInfo.put("businessName", "Legal Entity Ltd");
+			detailInfo.put("businessOperatingName", "Shop DBA");
+			detailInfo.put("businessRegistrationId", "REG-1");
+			detailInfo.put("email", "seller@example.com");
 		}
 
 		return detailInfo;

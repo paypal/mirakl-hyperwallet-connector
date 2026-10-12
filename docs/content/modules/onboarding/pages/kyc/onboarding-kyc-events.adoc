@@ -12,6 +12,11 @@ a| * `token`
 * `object.token`
 * `object.clientUserId`
 * `object.verificationStatus`
+* `object.profileType`
+* `object.businessName`
+* `object.businessOperatingName`
+* `object.businessRegistrationId`
+* `object` contact and address fields (`email`, `firstName`, `lastName`, `phoneNumber`, `addressLine1`, `city`, `country`, `postalCode`)
 |===
 
 Hyperwallet documentation provides more information about https://docs.hyperwallet.com/content/webhooks/v1/notification-types/users[the Hyperwallet user events].

@@ -13,6 +13,17 @@ publishing setup.
 This file exists only because Claude Code loads `CLAUDE.md` by name. Do not duplicate
 AGENTS.md here — if guidance applies to every agent, it belongs there.
 
+## Webhook payee corrections
+
+Hyperwallet KYC webhooks update more than verification status. `HyperwalletPayeeToMiraklShopMapper` adds the corrected payee onto the same S07 shop update built by `AbstractKYCUserStatusNotificationStrategy`.
+
+The name-swap toggle `hmc.toggle-features.new-user-mapping` still controls Mirakl → Hyperwallet mapping in `SellerModelToHyperWalletUserConverter`. Webhook handling reverses that mapping:
+
+- `false`: `businessName` → Mirakl shop name, `businessOperatingName` → company registration name
+- `true`: `businessName` → company registration name, `businessOperatingName` → Mirakl shop name
+
+Only non-blank webhook fields are written. Do not drop the profile from the shop update, and do not apply the toggle in the outbound direction on this path.
+
 ## Verifying a change without Mirakl credentials
 
 The one thing AGENTS.md does not cover, because it assumes you have the credentials.

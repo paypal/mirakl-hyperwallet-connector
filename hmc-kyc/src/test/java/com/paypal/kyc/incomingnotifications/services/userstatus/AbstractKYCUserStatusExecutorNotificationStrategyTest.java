@@ -33,6 +33,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -134,6 +135,34 @@ class AbstractKYCUserStatusExecutorNotificationStrategyTest {
 		assertThat(request.getShops().get(0).getShopId()).isEqualTo(Long.valueOf(SHOP_ID));
 		assertThat(request.getShops().get(0).getKyc().getStatus()).isEqualTo(MiraklShopKycStatus.APPROVED);
 		assertThat(request.getShops().get(0).getAdditionalFieldValues()).isNull();
+		assertThat(request.getShops().get(0).getName()).isNull();
+	}
+
+	@Test
+	void updateShop_shouldIncludeCorrectedPayeeProfileOnTheSameShopUpdate() {
+		ReflectionTestUtils.setField(testObj, "newUserMappingEnabled", true);
+		when(kycUserStatusNotificationBodyModelMock.getClientUserId()).thenReturn(SHOP_ID);
+		when(kycUserStatusNotificationBodyModelMock.getProfileType()).thenReturn(HyperwalletUser.ProfileType.BUSINESS);
+		when(kycUserStatusNotificationBodyModelMock.getBusinessName()).thenReturn("Legal Entity Ltd");
+		when(kycUserStatusNotificationBodyModelMock.getBusinessOperatingName()).thenReturn("Shop DBA");
+		when(miraklClientMock.updateShops(any(MiraklUpdateShopsRequest.class)))
+			.thenReturn(miraklUpdatedShopResponseMock);
+		when(testObj.expectedKycMiraklStatus(kycUserStatusNotificationBodyModelMock))
+			.thenReturn(MiraklShopKycStatus.APPROVED);
+		when(kycRejectionReasonServiceMock.getRejectionReasonDescriptions(Mockito.anyList()))
+			.thenReturn(StringUtils.EMPTY);
+
+		testObj.updateShop(kycUserStatusNotificationBodyModelMock);
+
+		verify(miraklClientMock).updateShops(miraklUpdateShopMockArgumentCaptor.capture());
+		final MiraklUpdateShopsRequest request = miraklUpdateShopMockArgumentCaptor.getValue();
+		assertThat(request.getShops().get(0).getKyc().getStatus()).isEqualTo(MiraklShopKycStatus.APPROVED);
+		assertThat(request.getShops().get(0).getName()).isEqualTo("Shop DBA");
+		assertThat(request.getShops()
+			.get(0)
+			.getDefaultBillingInformation()
+			.getCorporateInformation()
+			.getCompanyRegistrationName()).isEqualTo("Legal Entity Ltd");
 	}
 
 	@Test
