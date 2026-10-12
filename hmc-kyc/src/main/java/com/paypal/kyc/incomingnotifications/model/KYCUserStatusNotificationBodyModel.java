@@ -16,4 +16,32 @@ public class KYCUserStatusNotificationBodyModel extends KYCNotificationBodyModel
 
 	protected final transient List<KYCDocumentNotificationModel> documents;
 
+	protected final String businessName;
+
+	protected final String businessOperatingName;
+
+	protected final String businessRegistrationId;
+
+	protected final String firstName;
+
+	protected final String lastName;
+
+	protected final String email;
+
+	protected final String phoneNumber;
+
+	protected final String mobileNumber;
+
+	protected final String addressLine1;
+
+	protected final String addressLine2;
+
+	protected final String city;
+
+	protected final String stateProvince;
+
+	protected final String country;
+
+	protected final String postalCode;
+
 }

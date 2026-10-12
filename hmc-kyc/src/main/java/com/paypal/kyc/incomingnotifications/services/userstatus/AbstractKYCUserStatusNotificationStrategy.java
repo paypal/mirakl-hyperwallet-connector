@@ -25,6 +25,7 @@ import com.paypal.kyc.incomingnotifications.model.KYCDocumentNotificationModel;
 import com.paypal.kyc.incomingnotifications.model.KYCDocumentStatusEnum;
 import com.paypal.kyc.incomingnotifications.model.KYCUserStatusNotificationBodyModel;
 import com.paypal.kyc.incomingnotifications.services.KYCRejectionReasonService;
+import com.paypal.kyc.incomingnotifications.services.converters.HyperwalletPayeeToMiraklShopMapper;
 import com.paypal.kyc.sellersdocumentextraction.services.MiraklSellerDocumentsExtractService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -56,6 +57,9 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 
 	@Value("${hmc.toggle-features.automated-kyc}")
 	protected boolean isKycAutomated;
+
+	@Value("${hmc.toggle-features.new-user-mapping}")
+	protected boolean newUserMappingEnabled;
 
 	protected final MailNotificationUtil mailNotificationUtil;
 
@@ -201,6 +205,10 @@ public abstract class AbstractKYCUserStatusNotificationStrategy
 			if (!CollectionUtils.isEmpty(additionalFieldValues)) {
 				miraklUpdateShop.setAdditionalFieldValues(additionalFieldValues);
 			}
+		}
+		if (HyperwalletPayeeToMiraklShopMapper.apply(miraklUpdateShop, kycUserStatusNotificationBodyModel,
+				newUserMappingEnabled)) {
+			log.info("Included Hyperwallet payee corrections in shop update for shop [{}]", shopId);
 		}
 		return new MiraklUpdateShopsRequest(List.of(miraklUpdateShop));
 	}

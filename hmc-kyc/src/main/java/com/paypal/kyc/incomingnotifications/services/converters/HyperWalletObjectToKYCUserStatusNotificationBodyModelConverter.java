@@ -7,6 +7,7 @@ import com.paypal.kyc.incomingnotifications.model.KYCUserStatusNotificationBodyM
 import com.paypal.kyc.incomingnotifications.services.KYCRejectionReasonService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,11 +60,33 @@ public class HyperWalletObjectToKYCUserStatusNotificationBodyModelConverter
 									.orElse(null)))
 					.reasonsType(kycRejectionReasonService.getReasonTypes(source))
 					.documents(objectKYCDocumentNotificationModelListConverter.convert(source))
+					.businessName(stringValue(notificationDetails, "businessName"))
+					.businessOperatingName(stringValue(notificationDetails, "businessOperatingName"))
+					.businessRegistrationId(stringValue(notificationDetails, "businessRegistrationId"))
+					.firstName(stringValue(notificationDetails, "firstName"))
+					.lastName(stringValue(notificationDetails, "lastName"))
+					.email(stringValue(notificationDetails, "email"))
+					.phoneNumber(stringValue(notificationDetails, "phoneNumber"))
+					.mobileNumber(stringValue(notificationDetails, "mobileNumber"))
+					.addressLine1(stringValue(notificationDetails, "addressLine1"))
+					.addressLine2(stringValue(notificationDetails, "addressLine2"))
+					.city(stringValue(notificationDetails, "city"))
+					.stateProvince(stringValue(notificationDetails, "stateProvince"))
+					.country(stringValue(notificationDetails, "country"))
+					.postalCode(stringValue(notificationDetails, "postalCode"))
 					.build();
 			//@formatter:on
 
 		}
 		log.warn("The notification body looks empty");
+		return null;
+	}
+
+	private static String stringValue(final Map<String, Object> details, final String key) {
+		final Object value = details.get(key);
+		if (value instanceof String text && StringUtils.isNotBlank(text)) {
+			return text;
+		}
 		return null;
 	}
 

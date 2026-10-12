@@ -11,3 +11,21 @@ Based on the `verificationStatus` field of Hyperwallet's user updated event, the
 | `REQUIRED` | Awaiting KYC data (REFUSED)
 | `NOT REQUIRED` | KYC Passed (Approved)
 |===
+
+== Payee profile corrections
+
+The same webhook also carries the Hyperwallet user object. Corrected profile fields are written on the shop update together with the KYC status. Hyperwallet's verified values take precedence for the fields present in that payload. Fields the webhook leaves blank are not sent, so the current Mirakl values stay in place.
+
+Business name fields are the reverse of the seller onboarding mapping controlled by `PAYPAL_HYPERWALLET_NEW_USER_MAPPING_ENABLED`:
+
+[width="100%",cols="34%,33%,33%",options="header",]
+|===
+| Toggle | Mirakl shop name (`shop_name`) | Mirakl legal entity name (`company_registration_name`)
+
+| `false` | Hyperwallet `businessName` | Hyperwallet `businessOperatingName`
+| `true` | Hyperwallet `businessOperatingName` | Hyperwallet `businessName`
+|===
+
+The toggle still decides how names are sent to Hyperwallet when a seller is created or updated. It does not change the direction of this webhook: verified Hyperwallet data is written back either way.
+
+Individual sellers map Hyperwallet `businessName` to the Mirakl shop name, and `firstName` / `lastName` to the shop contact. Contact email, phone, and address are copied for both profile types when present. `businessRegistrationId` is written to the company registration number for business sellers.
